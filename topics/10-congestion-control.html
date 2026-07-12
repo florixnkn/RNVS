@@ -49,6 +49,7 @@
         <li><a href="#rechnen">Rechnen: Beispiele &amp; Formeln</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
     </aside>
 
@@ -618,6 +619,45 @@
           <p>Slow-Start ist langsamer als nötig bei: <strong>hohem Bandwidth-Delay-Product</strong> (großes RTT × hohe Bandbreite),
             <strong>kurzen Übertragungen</strong> (Slow-Start endet, bevor alle Daten raus sind) und
             <strong>unstaugten Netzen</strong> (unnötig vorsichtiger Start). RFC 6928 erlaubt daher ein Initial Window von 10 MSS statt 1.</p>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+          <div class="quiz-q" data-type="number" data-answer="8">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Slow-Start startet bei CongWin = 1 und verdoppelt pro Runde: 1, 2, 4, … Welchen Wert hat CongWin in Runde 4?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">MSS</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Runde 1=1, 2=2, 3=4, 4=<strong>8</strong> (Verdopplung pro RTT = exponentiell).</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie wächst das Fenster CongWin in der Slow-Start-Phase?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>exponentiell (Verdopplung pro RTT)</button>
+              <button class="quiz-choice" type="button">linear (+1 pro RTT)</button>
+              <button class="quiz-choice" type="button">gar nicht (bleibt konstant)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Slow-Start verdoppelt CongWin pro RTT → <strong>exponentiell</strong>. Erst in der Congestion Avoidance wächst es linear (+1 pro RTT).</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie reagiert TCP Reno auf 3 Duplikat-ACKs?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">CongWin = 1, zurück zu Slow-Start</button>
+              <button class="quiz-choice" type="button" data-correct>Fast Recovery: CongWin halbieren, weiter mit Congestion Avoidance</button>
+              <button class="quiz-choice" type="button">nichts, einfach weiter erhöhen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei 3 Dup-ACKs macht Reno <strong>Fast Recovery</strong> (CongWin halbiert, kein Slow-Start). Nur bei einem <em>Timeout</em> geht CongWin auf 1 zurück (wie Tahoe).</div>
+          </div>
         </div>
       </section>
 

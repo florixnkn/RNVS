@@ -253,6 +253,48 @@ UDP-/TCP-Header (8 vs. 20 Byte), Sägezahn-Kurve (Congestion Window über Zeit).
 
 ---
 
+## 4b) Wissenscheck / Quiz-Komponente (interaktiv)
+
+Jede Seite hat vor der Prev/Next-Navigation eine Sektion `<section id="check" class="reveal">` mit
+Überschrift „🧩 Wissenscheck" und einem passenden TOC-Eintrag `<li><a href="#check">🧩 Wissenscheck</a></li>`.
+Die Logik steckt bereits in `js/main.js` — du schreibst nur das Markup. Drei Fragetypen:
+
+**Eingabefeld (Zahl):** `data-type="number"`, `data-answer="8"` (mehrere erlaubt via `|`), optional
+`data-tol="0.5"` (absolute Toleranz; ohne Angabe 1 % relativ). Komma/Punkt und Einheiten werden ignoriert.
+```html
+<div class="quiz-q" data-type="number" data-answer="120" data-tol="1">
+  <p class="quiz-prompt"><span class="q-no">1.</span>t_übertr für 12000 bit bei 100 Mbit/s? (in µs)</p>
+  <div class="quiz-input-row">
+    <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+    <span class="quiz-unit">µs</span>
+    <button class="quiz-check" type="button">Prüfen</button>
+    <button class="quiz-reveal" type="button">Lösung</button>
+  </div>
+  <div class="quiz-feedback" aria-live="polite"></div>
+  <div class="quiz-explain" hidden>12000 bit / 10⁸ bit/s = 120 µs.</div>
+</div>
+```
+
+**Eingabefeld (Text):** wie oben, aber `data-type="text"`, `data-answer="Semantik|semantik"`
+(Groß/klein, Leerzeichen, Endsatzzeichen egal). Einheit-Span weglassen.
+
+**Multiple Choice / Richtig-Falsch:** `data-type="choice"`. Die **richtige** Antwort-Schaltfläche bekommt das
+Attribut `data-correct`. Für Richtig/Falsch die Klasse `quiz-tf` an `.quiz-choices` (zwei breite Buttons).
+```html
+<div class="quiz-q" data-type="choice">
+  <p class="quiz-prompt"><span class="q-no">2.</span>Auf welcher OSI-Schicht liegt TCP?</p>
+  <div class="quiz-choices">
+    <button class="quiz-choice" type="button">Schicht 3</button>
+    <button class="quiz-choice" type="button" data-correct>Schicht 4</button>
+    <button class="quiz-choice" type="button">Schicht 7</button>
+  </div>
+  <div class="quiz-feedback" aria-live="polite"></div>
+  <div class="quiz-explain" hidden>TCP ist Transport → Schicht 4. (IP ist Schicht 3.)</div>
+</div>
+```
+Regeln: **3–4 Fragen pro Seite**, mindestens **eine Zahlen-/Texteingabe**. Antworten fachlich korrekt,
+Erklärungen kurz. Nummeriere mit `<span class="q-no">N.</span>` im Prompt.
+
 ## 5) Navigationstabelle (Titel & prev/next verbindlich)
 
 | NN | Datei | CAT | Icon | H1-Titel | prev | next |

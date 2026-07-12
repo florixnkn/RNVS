@@ -49,6 +49,7 @@
         <li><a href="#schritt">Handshake Schritt für Schritt</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
     </aside>
 
@@ -485,6 +486,44 @@
             <div class="fact"><b>◯ Zustand</b><span>Kreis/Oval mit Name</span></div>
             <div class="fact"><b>→ Übergang</b><span>Trigger / Aktion</span></div>
             <div class="fact"><b>◉ Endzustand</b><span>Doppelkreis</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Aus wie vielen Nachrichten besteht der TCP-Verbindungsaufbau (der „Handshake")?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <span class="quiz-unit">Nachrichten</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>3</strong> — SYN, SYN-ACK, ACK (der 3-Wege-Handschlag).</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Richtig oder falsch: „Ein 2-Wege-Handshake garantiert eine sichere, konsistente Verbindung."</p>
+            <div class="quiz-choices quiz-tf">
+              <button class="quiz-choice" type="button">Richtig</button>
+              <button class="quiz-choice" type="button" data-correct>Falsch</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Falsch — geht die 2. Nachricht verloren, entsteht eine <strong>halboffene Verbindung</strong>. Deshalb nutzt TCP den 3-Wege-Handschlag.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Welches Prinzip beweist, dass KEIN Handshake 100 % Konsens garantieren kann?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Das Halteproblem</button>
+              <button class="quiz-choice" type="button" data-correct>Das Two Generals' Problem</button>
+              <button class="quiz-choice" type="button">Das Pizzadienst-Problem</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das <strong>Two Generals' Problem</strong>: Die letzte Nachricht kann immer verloren gehen, ihr Absender weiß nie sicher, ob sie ankam.</div>
           </div>
         </div>
       </section>

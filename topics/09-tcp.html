@@ -49,6 +49,7 @@
         <li><a href="#schritt">Handshake &amp; Datenübertragung</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
     </aside>
 
@@ -681,6 +682,45 @@
             <li><strong>SACK-Blöcke berechnen:</strong> Liste empfangener Bereiche außerhalb der Lücken.</li>
             <li><strong>HTTP-Antwortzeit:</strong> 2 RTT für TCP, 1 RTT für UDP (kein Handshake).</li>
           </ol>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+          <div class="quiz-q" data-type="number" data-answer="207">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Ein Segment hat SeqNr = 127 und 80 Byte Daten (also Bytes 127–206). Welche AckNr sendet der Empfänger zurück?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="AckNr …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die AckNr ist das <strong>nächste erwartete Byte</strong>: nach Byte 206 kommt <strong>207</strong>.</div>
+          </div>
+          <div class="quiz-q" data-type="number" data-answer="20">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie viele Byte hat der TCP-Header mindestens?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">Byte</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>20 Byte</strong> (bis 60 Byte mit Options). Achtung: 8 Byte wäre UDP!</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Was bedeutet die Acknowledgment Number (AckNr)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">das zuletzt empfangene Byte</button>
+              <button class="quiz-choice" type="button" data-correct>das nächste erwartete Byte (kumulativ)</button>
+              <button class="quiz-choice" type="button">die Anzahl empfangener Segmente</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die AckNr nennt das <strong>nächste erwartete Byte</strong> und bestätigt damit kumulativ alles davor.</div>
+          </div>
         </div>
       </section>
 

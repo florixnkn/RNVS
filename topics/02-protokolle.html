@@ -51,6 +51,7 @@
         <li><a href="#schritt">Sequenzdiagramm zeichnen</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
     </aside>
 
@@ -328,6 +329,46 @@
           <div class="fr">
             <div class="right"><span class="fr-tag">✅ Vorteile</span>Modularität, Wiederverwendbarkeit, weniger Komplexität, klare Zuständigkeiten.</div>
             <div class="wrong"><span class="fr-tag">⚠️ Nachteile</span>Header-Overhead, Performance-Verlust durch Indirektion, manchmal zu starr.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+
+        <div class="quiz">
+          <div class="quiz-q" data-type="text" data-answer="Semantik">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Welcher Bestandteil eines Protokolls legt die <em>Bedeutung</em> der Nachrichten fest? (ein Wort)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Semantik</strong> legt die Bedeutung fest (z.&nbsp;B. „CONN_REQ = Verbindungswunsch"). Die <em>Syntax</em> ist das Format, das <em>Timing</em> die Reihenfolge.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>„1× Salami-Pizza" ist ein Beispiel für …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Nutzdaten (der eigentliche Inhalt)</button>
+              <button class="quiz-choice" type="button">Steuerdaten (das Drumherum)</button>
+              <button class="quiz-choice" type="button">ein Protokoll</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der bestellte Inhalt sind <strong>Nutzdaten</strong>. Steuerdaten wären „Hallo", „Ihre Adresse?" usw.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Was ist typisch für <em>verbindungsorientierte</em> Kommunikation?</p>
+            <div class="quiz-choices quiz-tf">
+              <button class="quiz-choice" type="button" data-correct>Aufbau-Phase (wie ein Anruf)</button>
+              <button class="quiz-choice" type="button">Kein Aufbau (wie eine Postkarte)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Verbindungsorientiert (z.&nbsp;B. TCP) heißt: erst aufbauen, dann Daten, dann abbauen — wie ein Telefonanruf. Ohne Aufbau ist verbindungslos (z.&nbsp;B. UDP).</div>
           </div>
         </div>
       </section>

@@ -74,6 +74,90 @@
     document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
   }
 
+  /* ---- Wissenscheck / Quiz ---- */
+  function normText(s) {
+    return (s || "").toLowerCase().trim().replace(/\s+/g, " ").replace(/[.,;:!?]+$/, "");
+  }
+  function normNum(s) {
+    s = (s || "").replace(/ /g, "").replace(/\s+/g, "");
+    s = s.replace(",", ".").replace(/[^0-9.eE+\-]/g, "");
+    return parseFloat(s);
+  }
+  function setFeedback(q, ok, msg) {
+    var fb = q.querySelector(".quiz-feedback");
+    if (fb) { fb.textContent = msg; fb.className = "quiz-feedback " + (ok ? "ok" : "bad"); }
+    if (ok) {
+      var ex = q.querySelector(".quiz-explain");
+      if (ex) ex.hidden = false;
+      q.classList.add("solved");
+    }
+  }
+  function checkInput(q) {
+    if (!q) return;
+    var input = q.querySelector(".quiz-input");
+    if (!input) return;
+    var val = input.value;
+    if (val.trim() === "") { setFeedback(q, false, "Bitte gib zuerst eine Antwort ein."); return; }
+    var type = q.getAttribute("data-type");
+    var answers = (q.getAttribute("data-answer") || "").split("|");
+    var ok = false;
+    if (type === "number") {
+      var u = normNum(val);
+      for (var i = 0; i < answers.length; i++) {
+        var c = normNum(answers[i]);
+        if (isNaN(c)) continue;
+        var rawTol = q.getAttribute("data-tol");
+        var tol = (rawTol !== null && rawTol !== "") ? parseFloat(rawTol) : Math.abs(c) * 0.01 + 1e-9;
+        if (!isNaN(u) && Math.abs(u - c) <= tol) { ok = true; break; }
+      }
+    } else {
+      var nu = normText(val);
+      for (var j = 0; j < answers.length; j++) {
+        if (normText(answers[j]) === nu) { ok = true; break; }
+      }
+    }
+    input.classList.toggle("ok", ok);
+    input.classList.toggle("bad", !ok);
+    setFeedback(q, ok, ok ? "✅ Richtig!" : "❌ Noch nicht — probier es nochmal oder sieh dir die Lösung an.");
+  }
+
+  document.addEventListener("click", function (e) {
+    var chk = e.target.closest(".quiz-check");
+    if (chk) { checkInput(chk.closest(".quiz-q")); return; }
+
+    var rev = e.target.closest(".quiz-reveal");
+    if (rev) {
+      var qr = rev.closest(".quiz-q");
+      var ex = qr.querySelector(".quiz-explain");
+      if (ex) ex.hidden = !ex.hidden;
+      return;
+    }
+
+    var ch = e.target.closest(".quiz-choice");
+    if (ch) {
+      var q = ch.closest(".quiz-q");
+      var correct = ch.hasAttribute("data-correct");
+      q.querySelectorAll(".quiz-choice").forEach(function (b) {
+        b.classList.remove("picked");
+      });
+      ch.classList.add("picked");
+      ch.classList.add(correct ? "correct" : "wrong");
+      if (!correct) {
+        var cc = q.querySelector(".quiz-choice[data-correct]");
+        if (cc) cc.classList.add("correct");
+      }
+      setFeedback(q, correct, correct ? "✅ Richtig!" : "❌ Leider falsch — die richtige Antwort ist grün markiert.");
+      return;
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      var inp = e.target.closest(".quiz-input");
+      if (inp) { e.preventDefault(); checkInput(inp.closest(".quiz-q")); }
+    }
+  });
+
   /* ---- Jahr im Footer ---- */
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = new Date().getFullYear();
