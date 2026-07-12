@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sequenznummern &amp; Sliding Window · RNVS</title>
+<meta name="description" content="Warum braucht man Sequenznummern? Stop-and-Wait, Sliding Window, Go-Back-N, Fehlerfälle und die Nutzungseffizienz-Rechnung – Schritt für Schritt am Satelliten-Beispiel erklärt." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 07</div>
+    <span class="th-icon">🪟</span>
+    <h1>Sequenznummern &amp; Sliding Window</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Super klausurrelevant</span>
+      <span class="badge badge-blatt">Blatt 4·5·7</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie: Stop-and-Wait &amp; Sliding Window</a></li>
+        <li><a href="#rechnen">Nutzungseffizienz berechnen</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Wenn Pakete im Netz verloren gehen, vertauscht ankommen oder doppelt auftauchen – wie merkt der Empfänger das überhaupt? Die Antwort: <strong>Sequenznummern</strong>. Und damit der Sender nicht nach jeder Nachricht untätig wartet, gibt es das <strong>Sliding Window</strong> – ein rollierendes Sendefenster, das die Leitung maximal auslastet.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du schickst einem Freund einen langen Roman per Post – Seite für Seite in separaten Umschlägen. Damit er merkt, ob ein Brief fehlt oder die Reihenfolge stimmt, nimmst du auf jeden Umschlag eine Nummer: 1, 2, 3 … Das ist die <strong>Sequenznummer</strong>.<br><br>
+          Beim normalen Briefeschreiben wartest du auf eine Antwort, bevor du den nächsten Brief abschickst – das wäre <strong>Stop-and-Wait</strong>. Sehr langsam! Wenn du aber schon die nächsten drei Seiten einwirfst, bevor die erste Antwort zurückkommt, nutzt du das <strong>Sliding Window</strong>. Dein „Fenster" – die Anzahl Briefe, die gleichzeitig unterwegs sein dürfen – gleitet mit jeder Bestätigung weiter.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Sequenznummern erkennen</div>
+          <p>Mit Sequenznummern erkennt der Empfänger sofort: <strong>Duplikat</strong> (gleiche Nummer zweimal), <strong>Reihenfolge-Fehler</strong> (kleinere Nummer nach größerer) und <strong>Verlust</strong> (eine Nummer fehlt in der Sequenz).</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie: Stop-and-Wait &amp; Sliding Window</h2>
+
+        <h3>Stop-and-Wait – der brave, langsame Weg</h3>
+        <p>Beim <strong>Stop-and-Wait</strong>-Verfahren sendet der Sender genau eine Nachricht (PDU) und wartet, bis er eine Quittung (ACK) empfangen hat. Erst dann darf die nächste Nachricht raus. Fenstergröße w = 1.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Stop-and-Wait: viel Wartezeit, kaum Durchsatz</div>
+          <svg viewBox="0 0 560 340" width="560" role="img" aria-label="Stop-and-Wait Sequenzdiagramm mit deutlicher Wartezeit zwischen Nachrichten">
+            <defs>
+              <marker id="arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="arrG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Beschriftungen -->
+              <text x="100" y="22" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15">Sender</text>
+              <text x="460" y="22" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15">Empfänger</text>
+              <!-- Zeitlinien -->
+              <line x1="100" y1="30" x2="100" y2="325" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="460" y1="30" x2="460" y2="325" stroke="#8a94a6" stroke-width="2"/>
+              <!-- Zeitpfeil -->
+              <text x="30" y="178" text-anchor="middle" class="svg-soft" font-size="11" transform="rotate(-90, 30, 178)">Zeit →</text>
+
+              <!-- Runde 1 -->
+              <rect x="82" y="42" width="36" height="16" rx="4" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="100" y="53" text-anchor="middle" class="svg-soft" font-size="10">t_PDU</text>
+              <line x1="100" y1="60" x2="460" y2="90" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB)"/>
+              <text x="280" y="64" text-anchor="middle" class="svg-soft" font-size="11">N1 (SeqNr=1)</text>
+              <line x1="460" y1="96" x2="100" y2="126" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="280" y="100" text-anchor="middle" class="svg-soft" font-size="11">ACK(1)</text>
+
+              <!-- Warte-Markierung Runde 1 -->
+              <rect x="66" y="60" width="28" height="66" rx="4" fill="#e0483d" fill-opacity="0.12" stroke="#e0483d" stroke-dasharray="4 3"/>
+              <text x="52" y="94" text-anchor="middle" class="svg-soft" font-size="10" fill="#e0483d">Warten</text>
+
+              <!-- Runde 2 -->
+              <rect x="82" y="138" width="36" height="16" rx="4" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="100" y="149" text-anchor="middle" class="svg-soft" font-size="10">t_PDU</text>
+              <line x1="100" y1="156" x2="460" y2="186" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB)"/>
+              <text x="280" y="161" text-anchor="middle" class="svg-soft" font-size="11">N2 (SeqNr=2)</text>
+              <line x1="460" y1="192" x2="100" y2="222" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="280" y="197" text-anchor="middle" class="svg-soft" font-size="11">ACK(2)</text>
+
+              <!-- Warte-Markierung Runde 2 -->
+              <rect x="66" y="156" width="28" height="66" rx="4" fill="#e0483d" fill-opacity="0.12" stroke="#e0483d" stroke-dasharray="4 3"/>
+              <text x="52" y="190" text-anchor="middle" class="svg-soft" font-size="10" fill="#e0483d">Warten</text>
+
+              <!-- Runde 3 -->
+              <line x1="100" y1="234" x2="460" y2="264" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB)"/>
+              <text x="280" y="250" text-anchor="middle" class="svg-soft" font-size="11">N3 (SeqNr=3)</text>
+              <line x1="460" y1="270" x2="100" y2="300" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="280" y="286" text-anchor="middle" class="svg-soft" font-size="11">ACK(3)</text>
+
+              <!-- Warte-Markierung Runde 3 -->
+              <rect x="66" y="234" width="28" height="66" rx="4" fill="#e0483d" fill-opacity="0.12" stroke="#e0483d" stroke-dasharray="4 3"/>
+              <text x="52" y="268" text-anchor="middle" class="svg-soft" font-size="10" fill="#e0483d">Warten</text>
+
+              <!-- Legende -->
+              <rect x="375" y="305" width="80" height="18" rx="4" fill="#e0483d" fill-opacity="0.12" stroke="#e0483d" stroke-dasharray="4 3"/>
+              <text x="415" y="317" text-anchor="middle" class="svg-soft" font-size="10">= Leerlauf</text>
+            </g>
+          </svg>
+          <figcaption>Stop-and-Wait: Sender sendet N1, wartet auf ACK(1) (rote Box = Leerlauf!), dann erst N2. Bei großer Latenz (z.B. Satellit) liegt die Leitung fast die ganze Zeit brach.</figcaption>
+        </figure>
+
+        <h3>Fehlerfälle: Was passiert, wenn etwas schiefläuft?</h3>
+
+        <figure class="diagram">
+          <div class="diagram-title">Fehlerfall A: ACK geht verloren – Sender merkt es per Timeout</div>
+          <svg viewBox="0 0 560 260" width="560" role="img" aria-label="Sequenzdiagramm: ACK geht verloren, Sender hat Timeout und sendet N1 erneut">
+            <defs>
+              <marker id="arrB2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="arrG2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+              <marker id="arrR2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e0483d"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="100" y="20" text-anchor="middle" class="svg-ink" font-weight="700">Sender</text>
+              <text x="460" y="20" text-anchor="middle" class="svg-ink" font-weight="700">Empfänger</text>
+              <line x1="100" y1="28" x2="100" y2="245" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="460" y1="28" x2="460" y2="245" stroke="#8a94a6" stroke-width="2"/>
+
+              <!-- N1 gesendet, empfangen -->
+              <line x1="100" y1="50" x2="460" y2="80" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB2)"/>
+              <text x="280" y="54" text-anchor="middle" class="svg-soft" font-size="11">N1 (SeqNr=1)</text>
+
+              <!-- ACK verloren -->
+              <line x1="460" y1="88" x2="320" y2="106" stroke="#12b28c" stroke-width="1.5" stroke-dasharray="6 4"/>
+              <text x="400" y="88" text-anchor="end" class="svg-soft" font-size="11" fill="#e0483d">ACK(1)</text>
+              <text x="316" y="115" text-anchor="middle" font-size="18" fill="#e0483d">✗</text>
+              <text x="316" y="128" text-anchor="middle" class="svg-soft" font-size="10" fill="#e0483d">verloren!</text>
+
+              <!-- Timeout -->
+              <rect x="68" y="90" width="64" height="22" rx="6" fill="#f5810b" fill-opacity="0.2" stroke="#f5810b"/>
+              <text x="100" y="105" text-anchor="middle" class="svg-soft" font-size="11" fill="#f5810b">⏱ Timeout</text>
+
+              <!-- N1 Wiederholung -->
+              <line x1="100" y1="130" x2="460" y2="160" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB2)"/>
+              <text x="280" y="134" text-anchor="middle" class="svg-soft" font-size="11">N1 (SeqNr=1) <tspan fill="#f5810b" font-weight="700">[Wiederholung]</tspan></text>
+
+              <!-- Empfänger: Duplikat erkannt -->
+              <rect x="442" y="168" width="100" height="30" rx="6" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6"/>
+              <text x="492" y="182" text-anchor="middle" class="svg-soft" font-size="10">Duplikat erkannt!</text>
+              <text x="492" y="195" text-anchor="middle" class="svg-soft" font-size="10">ACK erneut senden</text>
+
+              <!-- ACK wieder gut -->
+              <line x1="460" y1="200" x2="100" y2="228" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG2)"/>
+              <text x="280" y="205" text-anchor="middle" class="svg-soft" font-size="11">ACK(1) ✓</text>
+            </g>
+          </svg>
+          <figcaption>ACK verloren: Sender wartet, bis Timeout abläuft, und sendet N1 nochmal. Empfänger erkennt das Duplikat (SeqNr=1 schon gesehen) und schickt ACK(1) nochmals – verwirft aber die Nachricht.</figcaption>
+        </figure>
+
+        <figure class="diagram">
+          <div class="diagram-title">Fehlerfall B: Nachricht geht verloren – ebenfalls Timeout</div>
+          <svg viewBox="0 0 560 240" width="560" role="img" aria-label="Sequenzdiagramm: Nachricht N2 geht verloren, kein ACK, Timeout, Wiederholung">
+            <defs>
+              <marker id="arrB3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="arrG3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="100" y="20" text-anchor="middle" class="svg-ink" font-weight="700">Sender</text>
+              <text x="460" y="20" text-anchor="middle" class="svg-ink" font-weight="700">Empfänger</text>
+              <line x1="100" y1="28" x2="100" y2="225" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="460" y1="28" x2="460" y2="225" stroke="#8a94a6" stroke-width="2"/>
+
+              <!-- N2 verloren -->
+              <line x1="100" y1="50" x2="280" y2="72" stroke="#2f6df6" stroke-width="1.5" stroke-dasharray="6 4"/>
+              <text x="280" y="54" text-anchor="middle" class="svg-soft" font-size="11">N2 (SeqNr=2)</text>
+              <text x="284" y="80" text-anchor="middle" font-size="18" fill="#e0483d">✗</text>
+              <text x="284" y="94" text-anchor="middle" class="svg-soft" font-size="10" fill="#e0483d">verloren!</text>
+              <text x="460" y="82" text-anchor="middle" class="svg-soft" font-size="10" fill="#8a94a6">(kommt nie an)</text>
+
+              <!-- Kein ACK -->
+              <text x="280" y="115" text-anchor="middle" class="svg-soft" font-size="11" fill="#8a94a6">… kein ACK kommt …</text>
+
+              <!-- Timeout -->
+              <rect x="68" y="118" width="64" height="22" rx="6" fill="#f5810b" fill-opacity="0.2" stroke="#f5810b"/>
+              <text x="100" y="133" text-anchor="middle" class="svg-soft" font-size="11" fill="#f5810b">⏱ Timeout</text>
+
+              <!-- N2 Wiederholung -->
+              <line x1="100" y1="158" x2="460" y2="188" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB3)"/>
+              <text x="280" y="162" text-anchor="middle" class="svg-soft" font-size="11">N2 (SeqNr=2) <tspan fill="#f5810b" font-weight="700">[Wiederholung]</tspan></text>
+
+              <line x1="460" y1="194" x2="100" y2="218" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG3)"/>
+              <text x="280" y="200" text-anchor="middle" class="svg-soft" font-size="11">ACK(2) ✓</text>
+            </g>
+          </svg>
+          <figcaption>Nachricht verloren: Empfänger empfängt gar nichts, sendet kein ACK. Sender erkennt das durch Timeout und sendet N2 erneut.</figcaption>
+        </figure>
+
+        <h3>Sliding Window – die Schnelle-Post-Lösung</h3>
+        <p>Mit Fenstergröße <strong>w &gt; 1</strong> darf der Sender mehrere Pakete auf einmal „in Umlauf" bringen, ohne auf ACKs zu warten. Sobald das erste ACK zurückkommt, <em>rutscht das Fenster</em> um eine Position nach rechts – das nächste Paket kann sofort raus.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Sendefenster w = 3: So gleitet das Fenster nach rechts</div>
+          <svg viewBox="0 0 660 120" width="660" role="img" aria-label="Sliding Window Darstellung: Sendefenster mit w=3 verschiebt sich nach rechts wenn ACKs eintreffen">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Zeile 1: Anfang -->
+              <text x="10" y="28" class="svg-soft" font-size="12">Zustand 1:</text>
+              <!-- Bestätigte Pakete (grün) -->
+              <!-- Fenster (blau) -->
+              <rect x="100" y="14" width="56" height="28" rx="6" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="128" y="32" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">N1</text>
+              <rect x="158" y="14" width="56" height="28" rx="6" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="186" y="32" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">N2</text>
+              <rect x="216" y="14" width="56" height="28" rx="6" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="244" y="32" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">N3</text>
+              <!-- Noch nicht gesendet (grau) -->
+              <rect x="274" y="14" width="56" height="28" rx="6" fill="#8a94a6" fill-opacity="0.12" stroke="#8a94a6"/>
+              <text x="302" y="32" text-anchor="middle" class="svg-soft" font-size="12">N4</text>
+              <rect x="332" y="14" width="56" height="28" rx="6" fill="#8a94a6" fill-opacity="0.12" stroke="#8a94a6"/>
+              <text x="360" y="32" text-anchor="middle" class="svg-soft" font-size="12">N5</text>
+              <rect x="390" y="14" width="56" height="28" rx="6" fill="#8a94a6" fill-opacity="0.12" stroke="#8a94a6"/>
+              <text x="418" y="32" text-anchor="middle" class="svg-soft" font-size="12">N6</text>
+
+              <!-- Klammer für Fenster -->
+              <text x="186" y="52" text-anchor="middle" class="svg-soft" font-size="10" fill="#2f6df6">← Sendefenster w=3 →</text>
+              <text x="356" y="52" text-anchor="middle" class="svg-soft" font-size="10">noch nicht gesendet</text>
+
+              <!-- Zeile 2: nach ACK(1) -->
+              <text x="10" y="80" class="svg-soft" font-size="12">Nach ACK(1):</text>
+              <!-- N1 bestätigt -->
+              <rect x="100" y="66" width="56" height="28" rx="6" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c"/>
+              <text x="128" y="84" text-anchor="middle" class="svg-ink" font-size="12">N1 ✓</text>
+              <!-- Fenster jetzt N2 N3 N4 -->
+              <rect x="158" y="66" width="56" height="28" rx="6" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="186" y="84" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">N2</text>
+              <rect x="216" y="66" width="56" height="28" rx="6" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="244" y="84" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">N3</text>
+              <rect x="274" y="66" width="56" height="28" rx="6" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="302" y="84" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">N4 !</text>
+              <!-- N5, N6 noch nicht -->
+              <rect x="332" y="66" width="56" height="28" rx="6" fill="#8a94a6" fill-opacity="0.12" stroke="#8a94a6"/>
+              <text x="360" y="84" text-anchor="middle" class="svg-soft" font-size="12">N5</text>
+              <rect x="390" y="66" width="56" height="28" rx="6" fill="#8a94a6" fill-opacity="0.12" stroke="#8a94a6"/>
+              <text x="418" y="84" text-anchor="middle" class="svg-soft" font-size="12">N6</text>
+
+              <text x="244" y="106" text-anchor="middle" class="svg-soft" font-size="10" fill="#2f6df6">← Fenster gerutscht →</text>
+              <text x="128" y="106" text-anchor="middle" class="svg-soft" font-size="10" fill="#12b28c">bestätigt</text>
+              <text x="302" y="106" text-anchor="middle" class="svg-soft" font-size="10" fill="#f5810b">neu!</text>
+            </g>
+          </svg>
+          <figcaption>Das Sendefenster (blau) umfasst immer genau w = 3 Pakete. Sobald ACK(1) eintrifft, gilt N1 als bestätigt (grün), das Fenster rutscht: N4 kann sofort gesendet werden – ohne Pause!</figcaption>
+        </figure>
+
+        <figure class="diagram">
+          <div class="diagram-title">Sliding Window (w = 3): Pipelining im Sequenzdiagramm</div>
+          <svg viewBox="0 0 600 380" width="600" role="img" aria-label="Sliding Window Sequenzdiagramm mit w=3: N1 N2 N3 direkt gesendet, Fenster gleitet mit ACKs">
+            <defs>
+              <marker id="arrB4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="arrG4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <text x="100" y="22" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">Sender</text>
+              <text x="490" y="22" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">Empfänger</text>
+              <line x1="100" y1="30" x2="100" y2="368" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="490" y1="30" x2="490" y2="368" stroke="#8a94a6" stroke-width="2"/>
+
+              <!-- Fenster-Anzeige links -->
+              <text x="15" y="50" class="svg-soft" font-size="10" fill="#2f6df6">Fenster:</text>
+              <text x="15" y="62" class="svg-soft" font-size="10">[N1 N2 N3]</text>
+
+              <!-- N1 N2 N3 direkt (Pipelining!) -->
+              <line x1="100" y1="50" x2="490" y2="96" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB4)"/>
+              <text x="295" y="58" text-anchor="middle" class="svg-soft" font-size="11">N1</text>
+              <line x1="100" y1="72" x2="490" y2="118" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB4)"/>
+              <text x="295" y="80" text-anchor="middle" class="svg-soft" font-size="11">N2</text>
+              <line x1="100" y1="94" x2="490" y2="140" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB4)"/>
+              <text x="295" y="102" text-anchor="middle" class="svg-soft" font-size="11">N3</text>
+
+              <!-- ACK(1) zurück → Fenster rutscht, N4 sofort -->
+              <line x1="490" y1="146" x2="100" y2="176" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG4)"/>
+              <text x="295" y="150" text-anchor="middle" class="svg-soft" font-size="11" fill="#12b28c">ACK(1)</text>
+              <text x="15" y="170" class="svg-soft" font-size="10" fill="#2f6df6">Fenster:</text>
+              <text x="15" y="182" class="svg-soft" font-size="10">[N2 N3 N4]</text>
+              <line x1="100" y1="184" x2="490" y2="222" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB4)"/>
+              <text x="295" y="196" text-anchor="middle" class="svg-soft" font-size="11">N4 <tspan fill="#f5810b">(sofort!)</tspan></text>
+
+              <!-- ACK(2) → N5 -->
+              <line x1="490" y1="168" x2="100" y2="210" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG4)"/>
+              <text x="295" y="172" text-anchor="middle" class="svg-soft" font-size="11" fill="#12b28c">ACK(2)</text>
+              <text x="15" y="220" class="svg-soft" font-size="10" fill="#2f6df6">Fenster:</text>
+              <text x="15" y="232" class="svg-soft" font-size="10">[N3 N4 N5]</text>
+              <line x1="100" y1="224" x2="490" y2="262" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB4)"/>
+              <text x="295" y="240" text-anchor="middle" class="svg-soft" font-size="11">N5 <tspan fill="#f5810b">(sofort!)</tspan></text>
+
+              <!-- ACK(3) → N6 -->
+              <line x1="490" y1="192" x2="100" y2="248" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG4)"/>
+              <text x="295" y="196" text-anchor="middle" class="svg-soft" font-size="11" fill="#12b28c">ACK(3)</text>
+              <text x="15" y="266" class="svg-soft" font-size="10" fill="#2f6df6">Fenster:</text>
+              <text x="15" y="278" class="svg-soft" font-size="10">[N4 N5 N6]</text>
+              <line x1="100" y1="264" x2="490" y2="302" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB4)"/>
+              <text x="295" y="278" text-anchor="middle" class="svg-soft" font-size="11">N6 <tspan fill="#f5810b">(sofort!)</tspan></text>
+
+              <!-- ACK(4) ACK(5) ACK(6) -->
+              <line x1="490" y1="310" x2="100" y2="338" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG4)"/>
+              <text x="295" y="316" text-anchor="middle" class="svg-soft" font-size="11" fill="#12b28c">ACK(4)</text>
+              <line x1="490" y1="330" x2="100" y2="356" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG4)"/>
+              <text x="295" y="340" text-anchor="middle" class="svg-soft" font-size="11" fill="#12b28c">ACK(5) · ACK(6)</text>
+
+              <!-- Legende Pipelining -->
+              <rect x="440" y="44" width="150" height="36" rx="6" fill="#f5810b" fill-opacity="0.12" stroke="#f5810b"/>
+              <text x="515" y="57" text-anchor="middle" class="svg-soft" font-size="10" fill="#f5810b">Pipelining!</text>
+              <text x="515" y="70" text-anchor="middle" class="svg-soft" font-size="10">N1-N3 direkt raus</text>
+            </g>
+          </svg>
+          <figcaption>Pipelining mit w=3: N1, N2 und N3 werden direkt hintereinander gesendet – ohne Wartezeit. Sobald ACK(1) kommt, gleitet das Fenster: N4 geht sofort raus. Die Leitung bleibt fast durchgehend ausgelastet.</figcaption>
+        </figure>
+
+        <h3>Go-Back-N: Was passiert bei einem Verlust im Fenster?</h3>
+        <p>Im <strong>Go-Back-N</strong>-Verfahren akzeptiert der Empfänger Nachrichten nur strikt in Reihenfolge. Fehlt eine Nachricht, werden alle folgenden verworfen. Der Sender wiederholt ab der verlorenen Nachricht alles.</p>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Go-Back-N – Achtung!</div>
+          <p>N2 geht verloren bei w=3: Sender schickt N1, N2(verloren!), N3, N4, N5. Empfänger nimmt nur N1 an, wirft N3, N4, N5 weg. ACK bleibt bei ACK(1) hängen. Nach Timeout muss der Sender <strong>N2, N3, N4, N5 alle wiederholen</strong> – auch wenn N3-N5 beim ersten Mal ankamen!</p>
+        </div>
+
+        <h3>Erweiterungen: NAK, Out-of-Order, kumulative ACKs</h3>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Technik</th><th>Idee</th><th>Vorteil</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Negative Quittung (NAK)</strong></td><td>Empfänger meldet Fehler sofort aktiv</td><td>Kein Warten auf Timeout → schnellere Reaktion</td></tr>
+            <tr><td><strong>Out-of-Order Puffer</strong></td><td>Empfänger speichert Pakete außer Reihenfolge</td><td>Nur das wirklich fehlende Paket muss erneut gesendet werden</td></tr>
+            <tr><td><strong>Kumulative ACK</strong></td><td>ACK(N) bestätigt alles bis N</td><td>Weniger ACK-Overhead</td></tr>
+            <tr><td><strong>Selective ACK (SACK)</strong></td><td>Empfänger meldet einzelne Blöcke</td><td>Minimale Wiederholungen (TCP-Erweiterung)</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p><strong>ACK(N) = kumulative Quittung</strong> bedeutet: „Ich habe N1, N2, … bis N alle korrekt erhalten." Erst das <em>nächste</em> erwartete Paket muss N+1 sein.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Nutzungseffizienz berechnen</h2>
+        <p>Wie gut die Leitung ausgenutzt wird, hängt davon ab, wie viele Pakete der Sender gleichzeitig „in die Pipeline" stecken kann. Hier lernst du alle Formeln und das komplette Satelliten-Beispiel Schritt für Schritt.</p>
+
+        <h3>Die vier wichtigen Zeiten</h3>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel</div>
+          <span class="formula">t_PDU = L / R</span>
+          <p><strong>L</strong> = PDU-Größe in Bit · <strong>R</strong> = Übertragungsrate in bit/s → Wie lange braucht der Sender, um eine PDU auf die Leitung zu bringen?</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel</div>
+          <span class="formula">t_ACK = a / R</span>
+          <p><strong>a</strong> = ACK-Größe in Bit · <strong>R</strong> = Übertragungsrate → Wie lange braucht die Quittung auf dem Rückkanal? (Nicht vergessen – auch ACKs brauchen Zeit!)</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel</div>
+          <span class="formula">T_cycle = t_PDU + 2 · t_sig + t_ACK</span>
+          <p><strong>t_sig</strong> = einfache Signalverzögerung (Sender → Empfänger). Der Faktor 2 gilt für den vollen Umlauf (Hin + zurück). T_cycle = Zeit vom ersten Bit der PDU bis zum letzten Bit des ACK beim Sender.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel</div>
+          <span class="formula">η = (w · t_PDU) / T_cycle &nbsp;[falls &lt; 100%]</span>
+          <p><strong>w</strong> = Fenstergröße. Wenn <strong>w · t_PDU ≥ T_cycle</strong> → Sender ist nie idle → η = 100 %. Sonst: Pipeline nicht voll, Leerlauf entsteht.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel</div>
+          <span class="formula">w_min = ⌈T_cycle / t_PDU⌉</span>
+          <p>Minimale ganzzahlige Fenstergröße für 100 % Auslastung (immer <strong>aufrunden</strong>!).</p>
+        </div>
+
+        <h3>Vollständiges Beispiel: Satellitenkanal (Blatt 7)</h3>
+
+        <div class="factgrid">
+          <div class="fact"><b>R = 64 kbit/s</b><span>Übertragungsrate</span></div>
+          <div class="fact"><b>L = 512 B = 4096 bit</b><span>PDU-Größe</span></div>
+          <div class="fact"><b>a = 8 B = 64 bit</b><span>ACK-Größe</span></div>
+          <div class="fact"><b>t_sig = 270 ms</b><span>Signalverzögerung (einfach)</span></div>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <strong>Sendezeit pro PDU berechnen:</strong><br>
+            t_PDU = L / R = 4096 bit / 64.000 bit/s = <strong>0,064 s = 64 ms</strong>
+          </li>
+          <li>
+            <strong>ACK-Sendezeit berechnen:</strong><br>
+            t_ACK = a / R = 64 bit / 64.000 bit/s = <strong>0,001 s = 1 ms</strong>
+          </li>
+          <li>
+            <strong>Zykluszeit T_cycle berechnen:</strong><br>
+            T_cycle = t_PDU + 2 · t_sig + t_ACK = 64 + 2 · 270 + 1 = 64 + 540 + 1 = <strong>605 ms</strong>
+          </li>
+          <li>
+            <strong>Pipeline-Check für jede Fenstergröße:</strong>
+            w · t_PDU vs. T_cycle — wenn w · t_PDU ≥ 605 ms → 100 %
+          </li>
+          <li>
+            <strong>Werte für w = 1, 7, 15 berechnen</strong> (siehe unten)
+          </li>
+          <li>
+            <strong>Minimale Fenstergröße:</strong>
+            w_min = ⌈605 / 64⌉ = ⌈9,453⌉ = <strong>10</strong>
+          </li>
+        </ol>
+
+        <h3>Ergebnistabelle</h3>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Fenstergröße w</th><th>w · t_PDU</th><th>Vergleich mit T_cycle</th><th>R_eff</th><th>Effizienz η</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>w = 1</strong> (Stop-and-Wait)</td>
+              <td>1 · 64 = 64 ms</td>
+              <td>64 &lt; 605 → Pipeline leer!</td>
+              <td>4096 bit / 0,605 s ≈ <strong>6,77 kbit/s</strong></td>
+              <td><strong style="color:#e0483d">≈ 10,6 %</strong></td>
+            </tr>
+            <tr>
+              <td><strong>w = 7</strong></td>
+              <td>7 · 64 = 448 ms</td>
+              <td>448 &lt; 605 → noch nicht voll</td>
+              <td>(7 · 4096) / 0,605 ≈ <strong>47,4 kbit/s</strong></td>
+              <td><strong style="color:#f5810b">≈ 74 %</strong></td>
+            </tr>
+            <tr>
+              <td><strong>w = 15</strong></td>
+              <td>15 · 64 = 960 ms</td>
+              <td>960 ≥ 605 → <strong>100 %!</strong></td>
+              <td>R = <strong>64 kbit/s</strong></td>
+              <td><strong style="color:#12b28c">100 %</strong></td>
+            </tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Schritt-für-Schritt für w = 7 (ausgerechnet)</div>
+          <span class="formula">η = (7 · 64 ms) / 605 ms = 448 / 605 ≈ 0,74 = 74 %</span>
+          <p>R_eff = η · R = 0,74 · 64 kbit/s ≈ 47,4 kbit/s<br>
+          Alternativ direkt: R_eff = (w · L) / T_cycle = (7 · 4096 bit) / 0,605 s = 28.672 / 0,605 ≈ 47.400 bit/s</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: w_min</div>
+          <p>w_min = ⌈T_cycle / t_PDU⌉ = ⌈605 / 64⌉ = ⌈9,453⌉ = <strong>10</strong> — immer aufrunden! Mit w=9 wäre 9 · 64 = 576 &lt; 605 → noch nicht 100 %. Mit w=10: 10 · 64 = 640 ≥ 605 ✓</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>T_cycle = t_PDU + 2 · t_sig (ACK-Zeit wird vergessen)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>T_cycle = t_PDU + 2 · t_sig + <strong>t_ACK</strong>. Der ACK wird ebenfalls über den Kanal übertragen und braucht Zeit. Bei a = 8 Byte, R = 64 kbit/s wären das immerhin 1 ms – in manchen Aufgaben kommt es auf jeden Millisekunde an!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>RTT = t_sig = 270 ms (nur einfache Laufzeit)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>RTT = <strong>2 · t_sig</strong> = 540 ms — das Signal muss von Sender zu Empfänger (270 ms) und der ACK wieder zurück (270 ms). t_sig ist immer die <em>einfache</em> Verzögerung.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>w_min = T_cycle / t_PDU = 9,45 (keine Ganzzahl!)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>w muss eine ganze Zahl sein → <strong>aufrunden</strong>! w_min = ⌈9,45⌉ = <strong>10</strong>. Mit w=9 wäre die Leitung noch nicht voll ausgelastet.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei Go-Back-N quittiert der Empfänger N3, N4, N5, auch wenn N2 fehlt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ohne Out-of-Order-Puffer akzeptiert der Empfänger nur <em>in Reihenfolge</em>. N3, N4, N5 werden verworfen – der ACK bleibt bei ACK(1) stehen. Erst nach Timeout wird alles ab N2 wiederholt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Das Sliding Window sendet erst alle w Pakete, wartet dann auf alle ACKs, sendet dann die nächsten w Pakete.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das Fenster <strong>gleitet</strong>: Sobald ACK(1) kommt, rutscht das Fenster und N4 kann <em>sofort</em> raus – nicht erst wenn alle anderen ACKs eingetroffen sind. Genau deshalb heißt es <em>Sliding</em> Window.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Stop-and-Wait ist grundsätzlich schlechtes Design.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Stop-and-Wait ist bei <strong>niedriger Latenz</strong> oder <strong>geringem Durchsatzbedarf</strong> völlig OK (z.B. interaktive Steuerung kleiner Geräte). Schlecht wird es erst bei hoher Latenz (Satellit!) – dann wird η sehr klein.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Formeln im Überblick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Größe</th><th>Formel</th><th>Einheit</th></tr></thead>
+            <tbody>
+              <tr><td><strong>t_PDU</strong></td><td>L / R</td><td>Sekunden</td></tr>
+              <tr><td><strong>t_ACK</strong></td><td>a / R</td><td>Sekunden</td></tr>
+              <tr><td><strong>T_cycle</strong></td><td>t_PDU + 2 · t_sig + t_ACK</td><td>Sekunden</td></tr>
+              <tr><td><strong>R_eff (Pipeline nicht voll)</strong></td><td>(w · L) / T_cycle</td><td>bit/s</td></tr>
+              <tr><td><strong>R_eff (Pipeline voll)</strong></td><td>R</td><td>bit/s</td></tr>
+              <tr><td><strong>η (Effizienz)</strong></td><td>min(w · t_PDU / T_cycle, 1)</td><td>–</td></tr>
+              <tr><td><strong>w_min</strong></td><td>⌈T_cycle / t_PDU⌉</td><td>(ganzzahlig, aufrunden!)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Satelliten-Beispiel (Referenz)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Parameter</th><th>Wert</th></tr></thead>
+            <tbody>
+              <tr><td>R = 64 kbit/s, L = 512 B, a = 8 B, t_sig = 270 ms</td><td></td></tr>
+              <tr><td>t_PDU</td><td>64 ms</td></tr>
+              <tr><td>t_ACK</td><td>1 ms</td></tr>
+              <tr><td>T_cycle</td><td>605 ms</td></tr>
+              <tr><td>η(w=1)</td><td>≈ 10,6 %</td></tr>
+              <tr><td>η(w=7)</td><td>≈ 74 %</td></tr>
+              <tr><td>η(w=15)</td><td>100 %</td></tr>
+              <tr><td>w_min</td><td>10</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Fehlererkennung</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Fall</th><th>Sender erkennt</th><th>Empfänger erkennt</th></tr></thead>
+            <tbody>
+              <tr><td>Nachricht verloren</td><td>Timeout</td><td>(kommt nie an)</td></tr>
+              <tr><td>Nachricht beschädigt</td><td>Timeout (kein ACK)</td><td>Checksum-Fehler → kein ACK</td></tr>
+              <tr><td>ACK verloren</td><td>Timeout</td><td>Duplikat (SeqNr schon gesehen) → ACK nochmals</td></tr>
+              <tr><td>Reihenfolge falsch</td><td>–</td><td>SeqNr nicht erwartet</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Algorithmus für Berechnungsaufgaben</h4>
+          <pre class="code">Gegeben: L, R, t_sig, a, w
+──────────────────────────────────────────────
+1. t_PDU = L / R
+2. t_ACK = a / R
+3. T_cycle = t_PDU + 2·t_sig + t_ACK
+4. Pipeline-Check: w·t_PDU vs. T_cycle
+   ├─ w·t_PDU ≥ T_cycle  →  R_eff = R, η = 100%
+   └─ w·t_PDU &lt; T_cycle  →  R_eff = (w·L)/T_cycle
+                               η = (w·t_PDU)/T_cycle
+5. w_min = ⌈T_cycle / t_PDU⌉  (AUFRUNDEN!)</pre>
+
+          <h4>Optimierungen auf einen Blick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Technik</th><th>Effekt</th></tr></thead>
+            <tbody>
+              <tr><td>Negative Quittung (NAK)</td><td>Schnellere Reaktion, kein Timeout-Warten</td></tr>
+              <tr><td>Out-of-Order Puffer</td><td>Nur fehlendes Paket neu senden (Selective Repeat)</td></tr>
+              <tr><td>Kumulative ACK</td><td>ACK(N) = alles bis N bestätigt → weniger Overhead</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="06-handshakes.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Verbindungsmanagement: Handshakes</div>
+        </a>
+        <a class="next" href="08-udp.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">UDP &amp; RFC 768</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

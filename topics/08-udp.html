@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UDP &amp; RFC 768 · RNVS</title>
+<meta name="description" content="UDP erklärt für Einsteiger: verbindungslos, schnell, 8-Byte-Header, RFC 768. Wofür wird UDP benutzt? Wie unterscheidet es sich von TCP? Live-Beispiele und Fallen." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 08</div>
+    <span class="th-icon">📮</span>
+    <h1>UDP &amp; RFC 768</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-blatt">Blatt 2·5</span>
+      <span class="badge badge-soft">Transportschicht</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Was ist UDP?</a></li>
+        <li><a href="#schritt">UDP-Header aufbauen</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">UDP ist das <strong>schnelle, unkomplizierte Transportprotokoll</strong> im Internet. Wenn du Daten
+          schnell vom einen Computer zum anderen schicken willst und es dir <em>nicht</em> ausmacht, wenn manchmal eine
+          Nachricht verlorengeht, dann ist UDP dein Protokoll. Keine Anrufe vorher, keine Versprechen — einfach
+          absenden, wie eine Postkarte.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du schickst deine Pizza-Bestellung als Postkarte zur Pizzeria statt per Telefon anzurufen. Die Postkarte
+            ist schnell unterwegs, du musst nicht „Hallo?" sagen und auf eine Antwort warten. Aber es gibt auch Probleme:
+            Wenn die Postkarte verloren geht, weiß die Pizzeria nicht, dass du bestellt hast. Wenn mehrere Postkarten
+            ankommen, könnte sie dir fünf Pizzen liefern. Und wenn deine Adresse auf einer Postkarte fehlt, kriegt deine
+            Pizza der Nachbar. Das ist UDP: <strong>schnell, aber ohne Garantien.</strong></p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Was ist UDP?</h2>
+        <p><strong>UDP</strong> steht für <em>User Datagram Protocol</em> und ist ein <strong>Transportschicht-Protokoll</strong>
+          (Schicht 4 im Internet-Modell). Es wurde 1980 in <strong>RFC 768</strong> definiert — eine der kurz und knapp
+          geschriebenen RFCs überhaupt!</p>
+
+        <h3>Zentrales Merkmal: Verbindungslosigkeit</h3>
+        <p>UDP ist <strong>verbindungslos</strong>. Das heißt: Es gibt kein „Hallo" vorher, keinen Handshake, keine
+          Vereinbarung. Du packst deine Daten einfach ein und schickst sie los. Der Empfänger weiß erst Bescheid, wenn
+          das erste Paket ankommt.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gut zu wissen</div>
+          <p>UDP ist <strong>verbindungslos UND unzuverlässig</strong> — aber das ist manchmal genau das Richtige! Bei
+            VoIP, Online-Spielen oder Streaming ist eine kurze Aussetzer besser als eine Verzögerung. UDP hat keine
+            Wiederholung von verlorenen Paketen (das würde zu Lag führen).</p>
+        </div>
+
+        <h3>UDP-Anwendungen in der echten Welt</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Anwendung</th><th>Grund für UDP</th><th>Besonderheit</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DNS</strong> (Port 53)</td><td>Kurze Anfrage-Antwort, wenn verloren → nächster Versuch</td><td>~100 Bytes</td></tr>
+            <tr><td><strong>DHCP</strong> (Port 67/68)</td><td>Client braucht schnell eine IP zum Starten</td><td>Boot-Protokoll</td></tr>
+            <tr><td><strong>VoIP / RTP</strong></td><td>Echtzeit, Verluste OK, Verzögerung nicht</td><td>&lt;100 ms!</td></tr>
+            <tr><td><strong>Online-Games</strong></td><td>Schnelle State-Updates, lieber Aussetzer als Lag</td><td>&lt;50 ms ideales Latenz</td></tr>
+            <tr><td><strong>NTP</strong> (Port 123)</td><td>Zeitsynchronisation, kurz und einfach</td><td>~48 Bytes</td></tr>
+            <tr><td><strong>QUIC/HTTP/3</strong> (Port 443)</td><td>Schnelle Verbindung ohne TCP-Overhead</td><td>Zuverlässigkeit in der App!</td></tr>
+            <tr><td><strong>Streaming (DASH)</strong></td><td>Hohe Durchsätze, adaptive Bitrate, Pufferung</td><td>1–10 MB/s</td></tr>
+          </tbody>
+        </table></div>
+
+        <figure class="diagram">
+          <div class="diagram-title">UDP-Header — 8 Byte, 4 Felder je 2 Byte</div>
+          <svg viewBox="0 0 660 200" width="660" role="img" aria-label="UDP-Header-Struktur mit 4 Feldern: Source Port, Destination Port, Length, Checksum">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Byte-Leiste oben -->
+              <text x="330" y="24" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">Bytes: 0–1 | 2–3 | 4–5 | 6–7 | 8+ (Daten)</text>
+              <!-- Reihe 1: Ports -->
+              <rect x="40" y="40" width="130" height="50" rx="6" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="105" y="58" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Source Port</text>
+              <text x="105" y="76" text-anchor="middle" class="svg-soft" font-size="11">2 Byte</text>
+              <text x="105" y="96" text-anchor="middle" class="svg-soft" font-size="10">(zufällig)</text>
+
+              <rect x="190" y="40" width="130" height="50" rx="6" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="255" y="58" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Destination Port</text>
+              <text x="255" y="76" text-anchor="middle" class="svg-soft" font-size="11">2 Byte</text>
+              <text x="255" y="96" text-anchor="middle" class="svg-soft" font-size="10">(Ziel)</text>
+
+              <!-- Reihe 2: Length + Checksum -->
+              <rect x="340" y="40" width="130" height="50" rx="6" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="405" y="58" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Length</text>
+              <text x="405" y="76" text-anchor="middle" class="svg-soft" font-size="11">2 Byte</text>
+              <text x="405" y="96" text-anchor="middle" class="svg-soft" font-size="10">(8+Daten)</text>
+
+              <rect x="490" y="40" width="130" height="50" rx="6" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="555" y="58" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Checksum</text>
+              <text x="555" y="76" text-anchor="middle" class="svg-soft" font-size="11">2 Byte</text>
+              <text x="555" y="96" text-anchor="middle" class="svg-soft" font-size="10">(Prüfsumme)</text>
+
+              <!-- Daten -->
+              <rect x="40" y="110" width="580" height="60" rx="6" fill="#2f6df6" fill-opacity="0.12" stroke="#2f6df6" stroke-width="2" stroke-dasharray="4 3"/>
+              <text x="330" y="140" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Nutzdaten (beliebige Länge)</text>
+              <text x="330" y="160" text-anchor="middle" class="svg-soft" font-size="11">Anwendungs-Daten (z.B. DNS-Anfrage, VoIP-Sample)</text>
+            </g>
+          </svg>
+          <figcaption>Der UDP-Header: nur 8 Byte, minimal, schnell. Das ist alles, was UDP braucht.</figcaption>
+        </figure>
+
+        <h3>UDP vs. TCP — Der Schnell-Vergleich</h3>
+        <figure class="diagram">
+          <div class="diagram-title">UDP vs. TCP: Header-Größe und Verbindung</div>
+          <svg viewBox="0 0 640 240" width="640" role="img" aria-label="Vergleich UDP (8 Byte, verbindungslos) und TCP (20 Byte, verbindungsorientiert)">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- UDP-Seite (links) -->
+              <text x="160" y="30" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">UDP</text>
+              <text x="160" y="50" text-anchor="middle" class="svg-soft" font-size="12">Verbindungslos</text>
+              <!-- Header-Balken UDP -->
+              <rect x="60" y="70" width="200" height="35" rx="6" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b" stroke-width="2"/>
+              <text x="160" y="93" text-anchor="middle" class="svg-ink" font-weight="700">8 Byte Header</text>
+              <!-- Merkmal -->
+              <rect x="40" y="125" width="240" height="26" rx="5" fill="#f5810b" fill-opacity="0.08"/>
+              <text x="160" y="144" text-anchor="middle" class="svg-soft" font-size="11">✓ Schnell, keine Bestätigung</text>
+              <rect x="40" y="165" width="240" height="26" rx="5" fill="#f5810b" fill-opacity="0.08"/>
+              <text x="160" y="184" text-anchor="middle" class="svg-soft" font-size="11">✗ Keine Flusskontrolle</text>
+
+              <!-- TCP-Seite (rechts) -->
+              <text x="480" y="30" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">TCP</text>
+              <text x="480" y="50" text-anchor="middle" class="svg-soft" font-size="12">Verbindungsorientiert</text>
+              <!-- Header-Balken TCP -->
+              <rect x="340" y="70" width="280" height="35" rx="6" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="480" y="93" text-anchor="middle" class="svg-ink" font-weight="700">20 Byte Header (min.)</text>
+              <!-- Merkmal -->
+              <rect x="320" y="125" width="240" height="26" rx="5" fill="#2f6df6" fill-opacity="0.08"/>
+              <text x="440" y="144" text-anchor="middle" class="svg-soft" font-size="11">✓ Zuverlässig, Sequenznummern</text>
+              <rect x="320" y="165" width="240" height="26" rx="5" fill="#2f6df6" fill-opacity="0.08"/>
+              <text x="440" y="184" text-anchor="middle" class="svg-soft" font-size="11">✗ Mehr Overhead, Handshake</text>
+
+              <!-- Vergleich-Pfeil -->
+              <line x1="310" y1="87" x2="340" y2="87" stroke="#8a94a6" stroke-width="2"/>
+              <text x="325" y="103" text-anchor="middle" class="svg-soft" font-size="10" font-weight="700">2,5×</text>
+            </g>
+          </svg>
+          <figcaption>UDP-Header ist 2,5× kleiner als TCP. Das spart Bandbreite und ist schneller — ein großer Vorteil bei Echtzeit-Anwendungen.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p><strong>UDP = Best-Effort-Protokoll.</strong> Es versucht, deine Daten zu übertragen, aber garantiert nichts.
+            Keine Verbindung, kein Handshake, keine Reihenfolge, keine Wiederholung. Dafür: minimal schnell, minimal Overhead.
+            Perfekt für Anwendungen, die Echtzeit brauchen oder selbst Zuverlässigkeit handhaben (wie QUIC).</p>
+        </div>
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>UDP-Header aufbauen — Schritt für Schritt</h2>
+        <p>Wenn eine Anwendung ein UDP-Paket versendet, passieren genau diese Schritte:</p>
+
+        <ol class="steps">
+          <li><strong>Source Port wählen:</strong> Meist ein zufälliger hoher Port (ephemer, >1023), damit der Empfänger
+            antwortet kann.</li>
+          <li><strong>Destination Port bestimmen:</strong> Der Port, an den die Nachricht gehen soll (z.B. Port 53 für DNS).</li>
+          <li><strong>Length berechnen:</strong> Header (8 Byte) + Nutzdaten zusammenzählen.</li>
+          <li><strong>Checksum berechnen:</strong> Eine Prüfsumme über alle Daten (erkennt Bitfehler).</li>
+          <li><strong>Header zusammensetzen:</strong> Source Port | Dest Port | Length | Checksum — genau 8 Byte.</li>
+          <li><strong>An die IP-Schicht weitergeben:</strong> Die IP-Schicht schickt es dann ins Netzwerk.</li>
+        </ol>
+
+        <h3>Beispiel: sendto-Pseudocode analysieren</h3>
+        <p>Dies ist echter Code aus einer Prüfung (Blatt 5). Schauen wir uns an, was hier passiert:</p>
+
+        <pre class="code">def sendto(bytes, (address, dst_port)):
+    address_bytes = hton(address)           # IP-Adresse konvertieren
+    destination_port = hton(dst_port)       # Ziel-Port
+    source_port = hton(random())            # Zufälliger Sender-Port
+    length = hton(len(bytes) + 8)           # 8 Byte Header + Nutzdaten
+    checksum = build_checksum(...)          # Prüfsumme
+    PDU = length + destination_port + source_port + checksum + bytes
+    route_packet(address_bytes, PDU)        # An IP-Schicht
+    return</pre>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Was zeigt dieser Code?</div>
+          <p><strong>PDU-Aufbau:</strong> Header (4 Felder à 2 Byte = 8 Byte) + Nutzdaten.</p>
+          <p><strong>Verbindungslos?</strong> Ja! Es gibt keinen State, kein Handshake, jeder Aufruf ist unabhängig.</p>
+          <p><strong>Source Port ist zufällig:</strong> `random()` — das ist das Erkennungszeichen von UDP (TCP würde eine
+            Sequence Number haben).</p>
+          <p><strong>Length = Header + Daten:</strong> `len(bytes) + 8` — wichtig, oft Fehlerquelle!</p>
+        </div>
+
+        <figure class="diagram">
+          <div class="diagram-title">Postkarte vs. Brief — UDP vs. TCP</div>
+          <svg viewBox="0 0 640 280" width="640" role="img" aria-label="Postkarte (UDP: schnell, kein Bestätigung) vs. Brief (TCP: Bestätigung, Verzögerung)">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- UDP-Postkarte (links) -->
+              <text x="160" y="28" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">UDP: Postkarte 📮</text>
+              <rect x="40" y="45" width="240" height="90" rx="8" fill="#f5810b" fill-opacity="0.12" stroke="#f5810b" stroke-width="2"/>
+              <text x="160" y="70" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">Vorderseite (Header)</text>
+              <text x="160" y="85" text-anchor="middle" class="svg-soft" font-size="10">Port, Länge, Prüfsumme</text>
+              <text x="160" y="102" text-anchor="middle" class="svg-soft" font-size="10">(minimal!)</text>
+              <text x="160" y="120" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">Rückseite (Daten)</text>
+              <text x="160" y="135" text-anchor="middle" class="svg-soft" font-size="10">Botschaft</text>
+
+              <text x="160" y="160" text-anchor="middle" class="svg-soft" font-size="11" font-style="italic">↓ Abschicken! ↓</text>
+              <text x="160" y="180" text-anchor="middle" class="svg-soft" font-size="10">Schnell (keine ACK)</text>
+              <text x="160" y="196" text-anchor="middle" class="svg-soft" font-size="10">Verlust möglich</text>
+              <text x="160" y="212" text-anchor="middle" class="svg-soft" font-size="10">Keine Reihenfolge</text>
+
+              <!-- TCP-Brief (rechts) -->
+              <text x="480" y="28" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">TCP: Brief 📨</text>
+              <rect x="360" y="45" width="240" height="90" rx="8" fill="#2f6df6" fill-opacity="0.12" stroke="#2f6df6" stroke-width="2"/>
+              <text x="480" y="70" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">Header (20+ Byte)</text>
+              <text x="480" y="85" text-anchor="middle" class="svg-soft" font-size="10">Sequenznummern,</text>
+              <text x="480" y="100" text-anchor="middle" class="svg-soft" font-size="10">Flags, Checksumme</text>
+              <text x="480" y="120" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">Inhalt + Umschlag</text>
+              <text x="480" y="135" text-anchor="middle" class="svg-soft" font-size="10">Adresse, Absender</text>
+
+              <text x="480" y="160" text-anchor="middle" class="svg-soft" font-size="11" font-style="italic">↓ Mit Bestätigung ↓</text>
+              <text x="480" y="180" text-anchor="middle" class="svg-soft" font-size="10">Langsamer (mit ACK)</text>
+              <text x="480" y="196" text-anchor="middle" class="svg-soft" font-size="10">Zuverlässig</text>
+              <text x="480" y="212" text-anchor="middle" class="svg-soft" font-size="10">Reihenfolge garantiert</text>
+            </g>
+          </svg>
+          <figcaption>UDP ist wie eine Postkarte: schnell, anonym, kein Bestätigung. TCP ist wie ein Brief mit Einschreiben: sicher, aber langsamer.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>UDP-Header ist 20 Byte groß.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>UDP-Header ist <strong>8 Byte</strong>. TCP-Header ist 20 Byte (mindestens). Das ist ein wichtiger Unterschied!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>UDP hat keine Checksum.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>UDP HAT eine Checksum (2 Byte) — aber nur zur <strong>Erkennung</strong> von Fehlern, nicht zur Behebung.
+            Wenn die Checksum fehlschlägt, verwirft UDP das Paket einfach. TCP würde es neu anfordern.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>UDP ist immer schlechter als TCP.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>UDP ist für Echtzeit-Anwendungen besser! Bei VoIP, Online-Spielen oder Live-Streaming ist eine kurze Aussetzer
+            (ein verlorenes Paket) weit weniger schlimm als Verzögerung (durch TCP-Wiederholung). Schnelligkeit schlägt Zuverlässigkeit.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Length im UDP-Header zählt nur die Nutzdaten.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Length zählt den gesamten UDP-Block: Header (8 Byte) + Nutzdaten.
+            Im Pseudocode: `length = len(bytes) + 8`. Ein häufiger Fehler!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Pizza über UDP: Alle Informationen (Name, Adresse, Pizza-Typ) kommen in der richtigen Reihenfolge an.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>UDP garantiert <strong>keine Reihenfolge</strong>. Deine Bestellung könnte ankommen als:
+            „Pizza Salami", dann (Stunden später) „Adresse: Hauptstr. 5", dann „Name: Florian". Das ist chaotisch — deshalb ist UDP für Pizza ungeeignet!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Source Port in UDP ist immer 0 oder fix.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Source Port ist meist ein zufälliger, ephemerer Port (>1023), damit der Empfänger weiß, wohin er antworten soll.
+            Im Code: `random()` — das ist normal und wichtig!</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <h4>UDP-Steckbrief</h4>
+          <div class="factgrid">
+            <div class="fact"><b>RFC 768</b><span>Spezifikation (1980)</span></div>
+            <div class="fact"><b>8 Byte</b><span>Header-Größe</span></div>
+            <div class="fact"><b>Schicht 4</b><span>Transport</span></div>
+            <div class="fact"><b>Verbindungslos</b><span>Keine Handshake</span></div>
+            <div class="fact"><b>Best-Effort</b><span>Keine Garantie</span></div>
+            <div class="fact"><b>Echtzeit</b><span>Optimiert für Speed</span></div>
+          </div>
+
+          <h4>UDP-Header: 4 Felder, je 2 Byte</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Feld</th><th>Größe</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Source Port</strong></td><td>2 Byte</td><td>Sender-Port (zufällig/ephemer)</td></tr>
+              <tr><td><strong>Destination Port</strong></td><td>2 Byte</td><td>Empfänger-Port (z.B. 53=DNS)</td></tr>
+              <tr><td><strong>Length</strong></td><td>2 Byte</td><td>8 + Nutzdaten (nicht nur Nutzdaten!)</td></tr>
+              <tr><td><strong>Checksum</strong></td><td>2 Byte</td><td>Fehlererkennung (nicht Fehlerbehebung)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>UDP vs. TCP — schnell</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Kriterium</th><th>UDP</th><th>TCP</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Header</strong></td><td>8 Byte</td><td>20+ Byte</td></tr>
+              <tr><td><strong>Verbindung</strong></td><td>✗ Nein</td><td>✓ Ja (3-Way-Handshake)</td></tr>
+              <tr><td><strong>Zuverlässig</strong></td><td>✗ Nein</td><td>✓ Ja</td></tr>
+              <tr><td><strong>Reihenfolge</strong></td><td>✗ Nein</td><td>✓ Ja</td></tr>
+              <tr><td><strong>Flusskontrolle</strong></td><td>✗ Nein</td><td>✓ Ja</td></tr>
+              <tr><td><strong>Einsatz</strong></td><td>DNS, VoIP, Games</td><td>HTTP, SSH, Email</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Typische UDP-Anwendungen (und ihre Ports)</h4>
+          <ul style="margin: 1em 0; padding-left: 1.5em;">
+            <li><strong>Port 53:</strong> DNS (Domain Name System)</li>
+            <li><strong>Port 67/68:</strong> DHCP (dynamische IP-Vergabe)</li>
+            <li><strong>Port 123:</strong> NTP (Zeitsynchronisation)</li>
+            <li><strong>Port 69:</strong> TFTP (Trivial File Transfer)</li>
+            <li><strong>Variable:</strong> VoIP, RTP (Real-time Transport)</li>
+            <li><strong>Variable:</strong> Online-Games</li>
+            <li><strong>Port 443:</strong> QUIC/HTTP/3 (Zuverlässigkeit in der App)</li>
+          </ul>
+
+          <h4>RFC 768 Kernpunkte</h4>
+          <ol style="margin: 1em 0; padding-left: 1.5em;">
+            <li><strong>Was beschreibt RFC 768?</strong> UDP — ein minimales Transportprotokoll mit „Minimum of Protocol Mechanism".</li>
+            <li><strong>Zentrales Merkmal?</strong> Verbindungslos + Best-Effort (keine Garantien).</li>
+            <li><strong>Wofür ideal?</strong> Echtzeit-Anwendungen, die Geschwindigkeit über Zuverlässigkeit stellen.</li>
+            <li><strong>Was braucht die Anwendung selbst?</strong> Wenn Zuverlässigkeit nötig ist (z.B. QUIC), bauen wir sie über UDP.</li>
+          </ol>
+
+          <div class="callout callout-tip">
+            <div class="c-title">Merksatz für die Klausur</div>
+            <p><strong>UDP = 8 Byte, verbindungslos, schnell, Best-Effort.</strong> Keine Wiederholung, keine Reihenfolge, keine Flusskontrolle —
+              aber auch kein Overhead. Perfect für Echtzeitanwendungen wie VoIP und Online-Games. Wenn du Zuverlässigkeit brauchst → TCP oder Anwendungslogik.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="07-sliding-window.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Sequenznummern &amp; Sliding Window</div>
+        </a>
+        <a class="next" href="09-tcp.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">TCP: Verbindung, Sequenznummern &amp; SACK</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

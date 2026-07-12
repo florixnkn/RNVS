@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TCP Congestion Control: Slow-Start, Tahoe &amp; Reno · RNVS</title>
+<meta name="description" content="TCP Congestion Control anschaulich erklärt: Slow-Start, Congestion Avoidance, AIMD, Tahoe vs. Reno, Fast Recovery, Sägezahn-Kurve und Durchsatz-Formel — mit Diagrammen und Rechenbeispielen für Einsteiger." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 10</div>
+    <span class="th-icon">📈</span>
+    <h1>TCP Congestion Control: Slow-Start, Tahoe &amp; Reno</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨🚨 Super klausurrelevant</span>
+      <span class="badge badge-blatt">Blatt 6·7</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie: Parameter &amp; Phasen</a></li>
+        <li><a href="#rechnen">Rechnen: Beispiele &amp; Formeln</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Wenn zu viele Autos gleichzeitig auf die Autobahn fahren, entsteht ein Stau — und nichts kommt mehr durch.
+          Im Internet passiert dasselbe: Wenn zu viele Datenpakete gleichzeitig durch einen Router fließen, läuft seine Warteschlange über,
+          Pakete gehen verloren, und es kommt zur <strong>Congestion Collapse</strong> (Stau-Kollaps).
+          TCP Congestion Control ist das Regelwerk, das jeden Sender zwingt, sein Tempo dem Netz anzupassen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du fährst auf eine Autobahn. Am Anfang ist sie leer — du gibst Gas und wirst schneller und schneller (Slow-Start:
+            Geschwindigkeit verdoppelt sich). Irgendwann siehst du erste Bremsspuren: du nimmst vorsichtig den Fuß vom Gas und fährst
+            nur noch ein kleines bisschen schneller pro Minute (Congestion Avoidance: lineares Wachstum). Dann bremst du abrupt:
+            <strong>bei einem Hupe-Konzert</strong> (3 Duplikat-ACKs) halbierst du dein Tempo — bei einem echten Unfall (Timeout)
+            bremst du bis auf Schrittgeschwindigkeit. Dieses Auf und Ab macht die Sägezahn-Kurve sichtbar.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Historisches Beispiel: NSFnet 1986</div>
+          <p>1986 kollabierte das NSFnet (Vorläufer des Internets), weil TCP damals noch kein Congestion Control hatte.
+            Der Durchsatz fiel von <strong>32 Mbit/s auf 40 bit/s</strong> — ein Faktor von 800.000! Van Jacobson entwickelte
+            daraufhin Slow-Start und Congestion Avoidance, die noch heute die Basis jeder TCP-Implementierung sind.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie: Parameter &amp; Phasen</h2>
+
+        <h3>Die drei Schlüsselparameter</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Variable</th><th>Bedeutung</th><th>Startwert</th></tr></thead>
+          <tbody>
+            <tr><td><strong>CongWin</strong></td><td>Congestion Window — wie viele Segmente darf der Sender gleichzeitig „in flight" haben?</td><td>1 MSS</td></tr>
+            <tr><td><strong>ssthresh</strong> (Threshold)</td><td>Schwellwert: unter dem Threshold → Slow-Start; ab dem Threshold → Congestion Avoidance</td><td>sehr groß (∞)</td></tr>
+            <tr><td><strong>MSS</strong></td><td>Maximum Segment Size — Größe eines Datensegments (typisch 500 B oder 1460 B)</td><td>fest</td></tr>
+            <tr><td><strong>RTT / RTD</strong></td><td>Round-Trip-Time: Zeit bis ein gesendetes Paket bestätigt zurückkommt</td><td>gemessen</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="factgrid">
+          <div class="fact"><b>1 MSS</b><span>CongWin-Start</span></div>
+          <div class="fact"><b>×2 / RTT</b><span>Slow-Start</span></div>
+          <div class="fact"><b>+1 / RTT</b><span>Cong. Avoidance</span></div>
+          <div class="fact"><b>AIMD</b><span>Additive Inc. / Mult. Dec.</span></div>
+        </div>
+
+        <h3>Phase 1: Slow-Start (exponentielles Wachstum)</h3>
+        <p><strong>Idee:</strong> Das Netz ist unbekannt — starte vorsichtig mit 1 Segment und taste dich heran.
+          Aber: Pro erhaltenes ACK erhöhe CongWin um 1 MSS. Da pro RTT so viele ACKs zurückkommen, wie Segmente gesendet wurden,
+          <strong>verdoppelt sich CongWin pro RTT</strong>.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Slow-Start: Verdopplung pro Runde</div>
+          <svg viewBox="0 0 640 200" width="640" role="img" aria-label="Slow-Start Verdopplung: Runde 1 = 1 Segment, Runde 2 = 2, Runde 3 = 4, Runde 4 = 8">
+            <defs>
+              <marker id="arr-bl" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Runde 1: 1 Segment -->
+              <text x="60" y="24" text-anchor="middle" class="svg-soft" font-weight="700">Runde 1</text>
+              <rect x="30" y="140" width="60" height="36" rx="6" fill="#2f6df6" fill-opacity="0.85"/>
+              <text x="60" y="163" text-anchor="middle" fill="#fff" font-weight="700">1</text>
+              <text x="60" y="193" text-anchor="middle" class="svg-soft">1 Seg.</text>
+
+              <!-- Runde 2: 2 Segmente -->
+              <text x="210" y="24" text-anchor="middle" class="svg-soft" font-weight="700">Runde 2</text>
+              <rect x="163" y="104" width="42" height="36" rx="6" fill="#12b28c" fill-opacity="0.85"/>
+              <text x="184" y="127" text-anchor="middle" fill="#fff" font-weight="700">1</text>
+              <rect x="215" y="104" width="42" height="36" rx="6" fill="#12b28c" fill-opacity="0.85"/>
+              <text x="236" y="127" text-anchor="middle" fill="#fff" font-weight="700">2</text>
+              <text x="210" y="158" text-anchor="middle" class="svg-soft">2 Seg.</text>
+              <text x="210" y="173" text-anchor="middle" class="svg-soft">(×2)</text>
+
+              <!-- Pfeil 1→2 -->
+              <line x1="96" y1="158" x2="155" y2="130" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-bl)"/>
+
+              <!-- Runde 3: 4 Segmente -->
+              <text x="390" y="24" text-anchor="middle" class="svg-soft" font-weight="700">Runde 3</text>
+              <rect x="318" y="68" width="36" height="36" rx="6" fill="#8b5cf6" fill-opacity="0.85"/>
+              <text x="336" y="91" text-anchor="middle" fill="#fff" font-weight="700">1</text>
+              <rect x="360" y="68" width="36" height="36" rx="6" fill="#8b5cf6" fill-opacity="0.85"/>
+              <text x="378" y="91" text-anchor="middle" fill="#fff" font-weight="700">2</text>
+              <rect x="402" y="68" width="36" height="36" rx="6" fill="#8b5cf6" fill-opacity="0.85"/>
+              <text x="420" y="91" text-anchor="middle" fill="#fff" font-weight="700">3</text>
+              <rect x="444" y="68" width="36" height="36" rx="6" fill="#8b5cf6" fill-opacity="0.85"/>
+              <text x="462" y="91" text-anchor="middle" fill="#fff" font-weight="700">4</text>
+              <text x="390" y="124" text-anchor="middle" class="svg-soft">4 Seg.</text>
+              <text x="390" y="139" text-anchor="middle" class="svg-soft">(×2)</text>
+
+              <!-- Pfeil 2→3 -->
+              <line x1="265" y1="115" x2="310" y2="96" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-bl)"/>
+
+              <!-- Runde 4: 8 Segmente -->
+              <text x="575" y="24" text-anchor="middle" class="svg-soft" font-weight="700">Runde 4</text>
+              <rect x="507" y="32" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="521" y="51" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+              <rect x="539" y="32" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="553" y="51" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+              <rect x="571" y="32" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="585" y="51" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+              <rect x="603" y="32" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="617" y="51" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+              <rect x="507" y="66" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="521" y="85" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+              <rect x="539" y="66" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="553" y="85" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">6</text>
+              <rect x="571" y="66" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="585" y="85" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">7</text>
+              <rect x="603" y="66" width="28" height="28" rx="5" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="617" y="85" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">8</text>
+              <text x="575" y="114" text-anchor="middle" class="svg-soft">8 Seg.</text>
+              <text x="575" y="129" text-anchor="middle" class="svg-soft">(×2)</text>
+
+              <!-- Pfeil 3→4 -->
+              <line x1="468" y1="85" x2="500" y2="74" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-bl)"/>
+            </g>
+          </svg>
+          <figcaption>Slow-Start verdoppelt die Anzahl der Segmente pro RTT: 1 → 2 → 4 → 8 → … — exponentielles Wachstum!</figcaption>
+        </figure>
+
+        <h3>Phase 2: Congestion Avoidance (lineares Wachstum)</h3>
+        <p>Wenn CongWin den Threshold (ssthresh) erreicht oder überschreitet, wird der Sender vorsichtiger:
+          statt zu verdoppeln, wächst CongWin jetzt nur noch um <strong>+1 MSS pro RTT</strong> (additives Wachstum).
+          Das nennt man <em>Additive Increase</em>.</p>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: AIMD</div>
+          <p><strong>A</strong>dditive <strong>I</strong>ncrease — <strong>M</strong>ultiplicative <strong>D</strong>ecrease:
+            Langsam erhöhen, schnell senken. Das ist das Grundprinzip von TCP Congestion Control.
+            Dadurch pendelt CongWin zwischen W/2 und W — das erzeugt die charakteristische <strong>Sägezahn-Kurve</strong>.</p>
+        </div>
+
+        <h3>Reaktion auf Paketverlust: Tahoe vs. Reno</h3>
+        <p>Es gibt zwei Arten, Paketverlust zu erkennen — und zwei TCP-Varianten, die unterschiedlich darauf reagieren:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Erkennungs-Art</th><th>Bedeutung</th><th>TCP Tahoe</th><th>TCP Reno</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Timeout</strong></td>
+              <td>Kein ACK kam an — schwerwiegender Stau</td>
+              <td>CongWin = 1, Slow-Start</td>
+              <td>CongWin = 1, Slow-Start (wie Tahoe)</td>
+            </tr>
+            <tr>
+              <td><strong>3 Duplikat-ACKs</strong></td>
+              <td>Folge-Pakete kamen an, nur eins fehlt → eher leichter Verlust</td>
+              <td>CongWin = 1, Slow-Start</td>
+              <td><strong>Fast Recovery</strong>: CongWin = ssthresh, direkt Congestion Avoidance</td>
+            </tr>
+            <tr>
+              <td colspan="2"><em>In beiden Fällen gilt:</em> neues ssthresh = CongWin_alt / 2</td>
+              <td colspan="2">Threshold immer halbiert</td>
+            </tr>
+          </tbody>
+        </table></div>
+
+        <figure class="diagram">
+          <div class="diagram-title">Tahoe vs. Reno: Reaktion nach Verlust (3 Dup-ACKs)</div>
+          <svg viewBox="0 0 640 280" width="640" role="img" aria-label="Vergleich Tahoe und Reno nach einem Paketverlust durch 3 Duplikat-ACKs">
+            <defs>
+              <marker id="arr-tahoe" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#e0483d"/>
+              </marker>
+              <marker id="arr-reno" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+
+              <!-- TAHOE links -->
+              <rect x="10" y="10" width="295" height="260" rx="10" fill="#e0483d" fill-opacity="0.08" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="157" y="32" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15" fill="#e0483d">TCP Tahoe</text>
+
+              <!-- Y-Achse Tahoe -->
+              <line x1="50" y1="50" x2="50" y2="220" stroke="#8a94a6" stroke-width="1.5"/>
+              <!-- X-Achse Tahoe -->
+              <line x1="50" y1="220" x2="290" y2="220" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="170" y="245" text-anchor="middle" class="svg-soft" font-size="11">Runde</text>
+              <text x="32" y="138" text-anchor="middle" class="svg-soft" font-size="11" transform="rotate(-90, 32, 138)">CongWin</text>
+
+              <!-- Tahoe Kurve: aufsteigend, Verlust → auf 1, neu Slow-Start -->
+              <!-- Slow-Start Aufstieg -->
+              <polyline points="50,210 90,195 130,165 170,105 195,78" fill="none" stroke="#e0483d" stroke-width="2.5"/>
+              <!-- Verlust-Marker -->
+              <circle cx="195" cy="78" r="5" fill="#e0483d"/>
+              <text x="200" y="72" class="svg-soft" font-size="11" fill="#e0483d">Verlust!</text>
+              <!-- Sturz auf 1 -->
+              <line x1="195" y1="78" x2="215" y2="210" stroke="#e0483d" stroke-width="2.5" stroke-dasharray="5 3"/>
+              <!-- Neu Slow-Start von 1 -->
+              <polyline points="215,210 245,195 275,165" fill="none" stroke="#e0483d" stroke-width="2.5"/>
+              <!-- Label Tahoe -->
+              <text x="120" y="240" text-anchor="middle" class="svg-soft" font-size="11">Slow-Start → Verlust → zurück auf 1!</text>
+
+              <!-- Threshold Tahoe -->
+              <line x1="50" y1="140" x2="290" y2="140" stroke="#e0483d" stroke-width="1" stroke-dasharray="4 3"/>
+              <text x="55" y="136" class="svg-soft" font-size="10" fill="#e0483d">ssthresh</text>
+
+              <!-- RENO rechts -->
+              <rect x="335" y="10" width="295" height="260" rx="10" fill="#12b28c" fill-opacity="0.08" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="482" y="32" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15" fill="#12b28c">TCP Reno (Fast Recovery)</text>
+
+              <!-- Y-Achse Reno -->
+              <line x1="375" y1="50" x2="375" y2="220" stroke="#8a94a6" stroke-width="1.5"/>
+              <!-- X-Achse Reno -->
+              <line x1="375" y1="220" x2="615" y2="220" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="495" y="245" text-anchor="middle" class="svg-soft" font-size="11">Runde</text>
+
+              <!-- Reno Kurve: aufsteigend, Verlust → halbierung, weiter CA (kein Slow-Start) -->
+              <polyline points="375,210 415,195 455,165 495,105 520,78" fill="none" stroke="#12b28c" stroke-width="2.5"/>
+              <!-- Verlust-Marker -->
+              <circle cx="520" cy="78" r="5" fill="#12b28c"/>
+              <text x="525" y="72" class="svg-soft" font-size="11" fill="#12b28c">Verlust!</text>
+              <!-- Fast Recovery: Halbierung, direkt CA weiter -->
+              <line x1="520" y1="78" x2="540" y2="142" stroke="#12b28c" stroke-width="2.5" stroke-dasharray="5 3"/>
+              <!-- Weiter CA linear -->
+              <polyline points="540,142 570,130 600,118" fill="none" stroke="#12b28c" stroke-width="2.5"/>
+              <!-- Label Reno -->
+              <text x="490" y="240" text-anchor="middle" class="svg-soft" font-size="11">3 Dup-ACK → halbiert → direkt weiter!</text>
+
+              <!-- Threshold Reno -->
+              <line x1="375" y1="140" x2="615" y2="140" stroke="#12b28c" stroke-width="1" stroke-dasharray="4 3"/>
+              <text x="380" y="136" class="svg-soft" font-size="10" fill="#12b28c">ssthresh (alt)</text>
+              <line x1="375" y1="142" x2="615" y2="142" stroke="#12b28c" stroke-width="1" stroke-dasharray="4 3"/>
+
+              <!-- Annotation: kein Slow-Start bei Reno -->
+              <text x="482" y="165" text-anchor="middle" class="svg-ink" font-size="12" fill="#12b28c" font-weight="700">kein Slow-Start!</text>
+              <text x="482" y="180" text-anchor="middle" class="svg-soft" font-size="11">direkt Congestion Avoidance</text>
+            </g>
+          </svg>
+          <figcaption>Tahoe (rot) fällt bei 3 Dup-ACKs auf CongWin = 1 zurück und startet Slow-Start neu. Reno (grün) halbiert nur und fährt direkt mit Congestion Avoidance weiter — deutlich effizienter!</figcaption>
+        </figure>
+
+        <h3>Das Sägezahn-Muster (Steady State)</h3>
+        <p>Im normalen Betrieb pendelt TCP in der Congestion Avoidance zwischen zwei Werten: CongWin wächst linear von W/2 bis W,
+          dann tritt Verlust auf, CongWin halbiert auf W/2, und das Spiel beginnt von vorn. Dieser Kreislauf ergibt die
+          charakteristische <strong>Sägezahn-Kurve</strong>.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Die vollständige CongWin-Kurve: Slow-Start, CA, Fast Recovery, Timeout</div>
+          <svg viewBox="0 0 700 320" width="700" role="img" aria-label="Sägezahn-Kurve des CongWin über Runden: Slow-Start, Congestion Avoidance, Fast Recovery bei Dup-ACK, Timeout-Sturz auf 1">
+            <defs>
+              <marker id="arr-axis" markerWidth="8" markerHeight="8" refX="7" refY="2.5" orient="auto">
+                <path d="M0,0 L7,2.5 L0,5 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+
+              <!-- Achsen -->
+              <line x1="50" y1="270" x2="680" y2="270" stroke="#8a94a6" stroke-width="2" marker-end="url(#arr-axis)"/>
+              <line x1="50" y1="270" x2="50" y2="20" stroke="#8a94a6" stroke-width="2" marker-end="url(#arr-axis)"/>
+              <text x="680" y="285" text-anchor="middle" class="svg-soft">Runde (RTT)</text>
+              <text x="22" y="148" text-anchor="middle" class="svg-soft" transform="rotate(-90, 22, 148)">CongWin (MSS)</text>
+
+              <!-- Y-Markierungen -->
+              <line x1="46" y1="250" x2="54" y2="250" stroke="#8a94a6"/>
+              <text x="40" y="254" text-anchor="end" class="svg-soft" font-size="10">1</text>
+              <line x1="46" y1="210" x2="54" y2="210" stroke="#8a94a6"/>
+              <text x="40" y="214" text-anchor="end" class="svg-soft" font-size="10">8</text>
+              <line x1="46" y1="170" x2="54" y2="170" stroke="#8a94a6"/>
+              <text x="40" y="174" text-anchor="end" class="svg-soft" font-size="10">16</text>
+              <line x1="46" y1="130" x2="54" y2="130" stroke="#8a94a6"/>
+              <text x="40" y="134" text-anchor="end" class="svg-soft" font-size="10">24</text>
+              <line x1="46" y1="90" x2="54" y2="90" stroke="#8a94a6"/>
+              <text x="40" y="94" text-anchor="end" class="svg-soft" font-size="10">32</text>
+              <line x1="46" y1="50" x2="54" y2="50" stroke="#8a94a6"/>
+              <text x="40" y="54" text-anchor="end" class="svg-soft" font-size="10">42</text>
+
+              <!-- X-Markierungen / Rundenbezeichnungen -->
+              <line x1="80" y1="266" x2="80" y2="274" stroke="#8a94a6"/>
+              <text x="80" y="284" text-anchor="middle" class="svg-soft" font-size="10">1</text>
+              <line x1="130" y1="266" x2="130" y2="274" stroke="#8a94a6"/>
+              <text x="130" y="284" text-anchor="middle" class="svg-soft" font-size="10">3</text>
+              <line x1="180" y1="266" x2="180" y2="274" stroke="#8a94a6"/>
+              <text x="180" y="284" text-anchor="middle" class="svg-soft" font-size="10">5</text>
+              <line x1="230" y1="266" x2="230" y2="274" stroke="#8a94a6"/>
+              <text x="230" y="284" text-anchor="middle" class="svg-soft" font-size="10">7</text>
+              <line x1="305" y1="266" x2="305" y2="274" stroke="#8a94a6"/>
+              <text x="305" y="284" text-anchor="middle" class="svg-soft" font-size="10">10</text>
+              <line x1="380" y1="266" x2="380" y2="274" stroke="#8a94a6"/>
+              <text x="380" y="284" text-anchor="middle" class="svg-soft" font-size="10">13</text>
+              <line x1="430" y1="266" x2="430" y2="274" stroke="#8a94a6"/>
+              <text x="430" y="284" text-anchor="middle" class="svg-soft" font-size="10">16</text>
+              <line x1="480" y1="266" x2="480" y2="274" stroke="#8a94a6"/>
+              <text x="480" y="284" text-anchor="middle" class="svg-soft" font-size="10">17</text>
+              <line x1="555" y1="266" x2="555" y2="274" stroke="#8a94a6"/>
+              <text x="555" y="284" text-anchor="middle" class="svg-soft" font-size="10">22</text>
+              <line x1="580" y1="266" x2="580" y2="274" stroke="#8a94a6"/>
+              <text x="580" y="284" text-anchor="middle" class="svg-soft" font-size="10">23</text>
+              <line x1="660" y1="266" x2="660" y2="274" stroke="#8a94a6"/>
+              <text x="660" y="284" text-anchor="middle" class="svg-soft" font-size="10">26</text>
+
+              <!-- ssthresh Linie (Start bei 32) -->
+              <line x1="50" y1="90" x2="680" y2="90" stroke="#f5810b" stroke-width="1.2" stroke-dasharray="6 4"/>
+              <text x="645" y="86" text-anchor="end" class="svg-soft" font-size="10" fill="#f5810b">ssthresh=32</text>
+
+              <!-- PHASE 1: Slow-Start R1–R6 (1→2→4→8→16→32) -->
+              <polyline points="80,250 105,242 130,226 155,194 180,162 205,130 230,90"
+                fill="none" stroke="#2f6df6" stroke-width="2.5"/>
+              <!-- Phase-Label -->
+              <rect x="55" y="56" width="110" height="18" rx="4" fill="#2f6df6" fill-opacity="0.15"/>
+              <text x="110" y="69" text-anchor="middle" class="svg-ink" font-size="11" fill="#2f6df6" font-weight="700">Slow-Start</text>
+
+              <!-- PHASE 2: Congestion Avoidance R6–R16 (32→42, +1/RTT) -->
+              <polyline points="230,90 280,78 305,72 330,66 355,60 380,54 405,48 430,42"
+                fill="none" stroke="#12b28c" stroke-width="2.5"/>
+              <rect x="260" y="30" width="150" height="18" rx="4" fill="#12b28c" fill-opacity="0.15"/>
+              <text x="335" y="43" text-anchor="middle" class="svg-ink" font-size="11" fill="#12b28c" font-weight="700">Congestion Avoidance (+1/RTT)</text>
+
+              <!-- Fast Recovery bei Runde 16→17: Halbierung (42→21) -->
+              <line x1="430" y1="42" x2="480" y2="155" stroke="#e0483d" stroke-width="2.5" stroke-dasharray="5 3"/>
+              <circle cx="430" cy="42" r="5" fill="#e0483d"/>
+              <text x="450" y="38" class="svg-soft" font-size="10" fill="#e0483d" font-weight="700">3 Dup-ACK!</text>
+              <text x="510" y="148" class="svg-soft" font-size="10" fill="#e0483d">CongWin → 21</text>
+
+              <!-- ssthresh neue Linie bei 21 nach Fast Recovery -->
+              <line x1="480" y1="155" x2="680" y2="155" stroke="#e0483d" stroke-width="1" stroke-dasharray="4 3"/>
+              <text x="645" y="151" text-anchor="end" class="svg-soft" font-size="10" fill="#e0483d">ssthresh=21</text>
+
+              <!-- PHASE 3: CA nach Fast Recovery R17–R22 (21→26, +1/RTT) -->
+              <polyline points="480,155 505,147 530,139 555,131"
+                fill="none" stroke="#12b28c" stroke-width="2.5"/>
+
+              <!-- Timeout R22→23: Sturz auf 1 -->
+              <line x1="555" y1="131" x2="580" y2="250" stroke="#8b5cf6" stroke-width="2.5" stroke-dasharray="5 3"/>
+              <circle cx="555" cy="131" r="5" fill="#8b5cf6"/>
+              <text x="535" y="115" class="svg-soft" font-size="10" fill="#8b5cf6" font-weight="700">Timeout!</text>
+              <text x="545" y="128" class="svg-soft" font-size="10" fill="#8b5cf6">CongWin = 1</text>
+
+              <!-- ssthresh nach Timeout bei 13 -->
+              <!-- neue ssthresh linie bei 26/2=13 -->
+
+              <!-- PHASE 4: Slow-Start nach Timeout R23–R26 (1→2→4→8) -->
+              <polyline points="580,250 610,242 635,226 660,210"
+                fill="none" stroke="#2f6df6" stroke-width="2.5"/>
+              <rect x="568" y="200" width="105" height="18" rx="4" fill="#2f6df6" fill-opacity="0.15"/>
+              <text x="620" y="213" text-anchor="middle" class="svg-ink" font-size="11" fill="#2f6df6" font-weight="700">Slow-Start neu</text>
+
+              <!-- Legende -->
+              <rect x="55" y="295" width="12" height="8" rx="2" fill="#2f6df6"/>
+              <text x="72" y="303" class="svg-soft" font-size="10">Slow-Start</text>
+              <rect x="145" y="295" width="12" height="8" rx="2" fill="#12b28c"/>
+              <text x="162" y="303" class="svg-soft" font-size="10">Congestion Avoidance</text>
+              <rect x="300" y="295" width="12" height="8" rx="2" fill="#e0483d"/>
+              <text x="317" y="303" class="svg-soft" font-size="10">Fast Recovery (3 Dup-ACK)</text>
+              <rect x="495" y="295" width="12" height="8" rx="2" fill="#8b5cf6"/>
+              <text x="512" y="303" class="svg-soft" font-size="10">Timeout (→ CongWin=1)</text>
+            </g>
+          </svg>
+          <figcaption>Die vollständige Sägezahn-Kurve: exponentieller Slow-Start, lineares CA-Wachstum, Fast Recovery bei 3 Dup-ACKs (Halbierung, kein Slow-Start), und harter Sturz auf 1 bei Timeout.</figcaption>
+        </figure>
+
+        <h3>Fast Retransmit: Warum 3 Duplikat-ACKs?</h3>
+        <p>Wenn der Empfänger ein Paket bekommt, das nicht das erwartete ist (z. B. Paket 3 kommt, aber Paket 2 fehlt),
+          schickt er sofort ein ACK für das letzte korrekte Paket zurück. Das ist ein <strong>Duplikat-ACK</strong>.
+          Kommen <em>drei davon</em> hintereinander, ist das ein starkes Signal: Das gesuchte Paket ist verloren,
+          aber die Verbindung funktioniert noch. TCP Reno sendet es dann sofort erneut — <strong>Fast Retransmit</strong>
+          — ohne auf den Timeout zu warten.</p>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Achtung: Timeout vs. 3 Dup-ACKs</div>
+          <p>Ein <strong>Timeout</strong> bedeutet: das Netz ist verstopft, kein einziges Paket kommt mehr durch.
+            Reagiere radikal mit CongWin = 1 und Slow-Start.
+            <strong>3 Duplikat-ACKs</strong> bedeuten: nur <em>ein</em> Paket fehlt, der Rest kommt gut an.
+            Reno reagiert daher gemäßigt: halbieren und linear weitermachen.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Rechnen: Beispiele &amp; Formeln</h2>
+
+        <h3>Beispiel: Slow-Start-Runden (Blatt 7)</h3>
+        <p>Gegeben: 15 Segmente à 500 B müssen übertragen werden. Wie viele Runden braucht Slow-Start?</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Runde</th><th>CongWin (Seg.)</th><th>Gesendete Segmente</th><th>Kumulativ gesendet</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td><strong>2</strong></td><td>2</td><td>2</td><td>3</td></tr>
+            <tr><td><strong>3</strong></td><td>4</td><td>4</td><td>7</td></tr>
+            <tr><td><strong>4</strong></td><td>8</td><td>8 (nur 8 von 15 noch nötig)</td><td>15 ✓</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>Nach Runde 4 sind alle 15 Segmente übertragen. Die Übertragungsdauer ergibt sich so:</p>
+
+        <ol class="steps">
+          <li><strong>Verbindungsaufbau (SYN/SYN-ACK):</strong> 1 RTT = 200 ms</li>
+          <li><strong>Runde 1</strong> (1 Segment, 500 B, R = 20 kB/s → Sendezeit 25 ms): 25 ms + 200 ms RTT = 225 ms</li>
+          <li><strong>Runde 2</strong> (2 Segmente → 50 ms Sendezeit): 50 ms + 200 ms = 250 ms</li>
+          <li><strong>Runde 3</strong> (4 Segmente → 100 ms Sendezeit): 100 ms + 200 ms = 300 ms</li>
+          <li><strong>Runde 4</strong> (8 Segmente → 200 ms Sendezeit + halbe RTT = 100 ms Netzverz.): 300 ms</li>
+          <li><strong>Gesamt (vereinfacht):</strong> Aufbau + 4 Runden ≈ 5 × RTT = 5 × 200 ms = <strong>~1000 ms</strong> (+ Sendezeiten)</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">Vergleich: ohne Slow-Start (festes Fenster ≥ 15)</div>
+          <p>Ohne Slow-Start (Fenster groß genug für alle 15 Segmente) gehen alle auf einmal raus.
+            Übertragungszeit: 1 RTT (Aufbau) + 15 × 25 ms (Sendezeit) + 100 ms (Netzverz.) = <strong>~675 ms</strong>.
+            Slow-Start ist in diesem Fall langsamer — aber dafür überlastet er das Netz nicht!</p>
+        </div>
+
+        <h3>Durchsatz-Formel herleiten</h3>
+        <p>Im Steady-State pendelt CongWin zwischen W/2 und W. Daraus lässt sich eine Formel für den
+          Durchsatz und die Verlustrate herleiten:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Verlustrate L</div>
+          <span class="formula">L = 1 / ((3/8)·W² + (3/4)·W)</span>
+          <p>Pro Sägezahn-Zyklus werden insgesamt W/2 + (W/2 + 1) + … + W Pakete gesendet.
+            Das ergibt näherungsweise (3/8)·W² Pakete. Davon geht genau 1 verloren → Verlustrate = 1 / (3/8)·W²
+            für großes W.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">W aus Verlustrate rückrechnen</div>
+          <span class="formula">L ≈ 1 / ((3/8)·W²)  →  W ≈ √(8 / (3·L))</span>
+          <p>Für große W lässt sich der lineare Term (3/4)·W vernachlässigen. Dann lässt sich W direkt aus L berechnen.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Durchsatz-Formel (TCP-Throughput-Modell)</div>
+          <span class="formula">R ≈ 1,22 · MSS / (RTD · √L)</span>
+          <p>Herleitung: Avg. CongWin ≈ (3/4)·W (Mitte zwischen W/2 und W).
+            Durchsatz = Avg. CongWin · MSS / RTD = (3/4)·W·MSS/RTD.
+            Einsetzen von W = √(8/(3L)) ergibt: R ≈ (3/4)·√(8/(3L))·MSS/RTD = √(9/(8·L))·MSS/RTD ≈ 1,22·MSS/(RTD·√L).</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Formel merken</div>
+          <p>Die Durchsatz-Formel sagt: je größer die Verlustrate L, desto geringer der Durchsatz R.
+            Und: je größer MSS oder je kleiner RTD, desto höher R. Logisch — große Pakete und kurze RTTs bedeuten mehr Daten pro Zeit!</p>
+        </div>
+
+        <h3>Reno-Beispielverlauf (aus Aufgabe Blatt 6)</h3>
+        <p>Ein konkretes Beispiel, wie man einen CongWin-Verlauf Runde für Runde liest:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Runden</th><th>CongWin-Werte</th><th>Phase</th><th>Erklärung</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1–6</td><td>1, 2, 4, 8, 16, 32</td><td>Slow-Start</td><td>Verdopplung, bis ssthresh (32) erreicht</td></tr>
+            <tr><td>6–16</td><td>32, 33, 34, … 42</td><td>Congestion Avoidance</td><td>+1 MSS pro RTT (lineares Wachstum)</td></tr>
+            <tr><td>16 → 17</td><td>42 → 21</td><td>Fast Recovery (3 Dup-ACKs)</td><td>Halbierung; neues ssthresh = 21; kein Slow-Start!</td></tr>
+            <tr><td>17–22</td><td>21, 22, 23, 24, 25, 26</td><td>Congestion Avoidance</td><td>Linear weiter ab neuem ssthresh</td></tr>
+            <tr><td>22 → 23</td><td>26 → 1</td><td>Timeout!</td><td>Sturz auf 1; neues ssthresh = 13; Slow-Start neu</td></tr>
+            <tr><td>23–26</td><td>1, 2, 4, 8</td><td>Slow-Start</td><td>Verdopplung, bis neues ssthresh (13) erreicht</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Slow-Start wächst langsam — daher heißt es „Slow".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Slow-Start <strong>startet</strong> langsam (bei 1 MSS), wächst aber <em>exponentiell</em> — pro RTT verdoppelt sich CongWin. „Slow" bezieht sich auf den Start, nicht auf das Wachstum!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>TCP Reno reagiert bei Timeout genauso wie bei 3 Dup-ACKs (Fast Recovery).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bei <strong>Timeout</strong> macht Reno dasselbe wie Tahoe: CongWin = 1, Slow-Start. Nur bei <strong>3 Dup-ACKs</strong> nutzt Reno Fast Recovery (halbieren, direkt CA).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Threshold (ssthresh) bleibt während einer Verbindung konstant.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Threshold wird bei <em>jedem</em> Verlust neu gesetzt: neues ssthresh = CongWin_alt / 2. Er kann sich also mehrfach pro Verbindung ändern!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Schon ein Duplikat-ACK löst Fast Recovery aus.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Erst <strong>drei</strong> Duplikat-ACKs lösen Fast Recovery aus. 1–2 Dup-ACKs können auch durch normale Pakete-Umordnung entstehen und bedeuten nicht zwingend Verlust.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>CongWin = Anzahl Bytes in flight.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>CongWin = Anzahl <strong>Segmente</strong> (in MSS-Einheiten). Die tatsächliche Byte-Zahl ist: Bytes = CongWin × MSS.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei Reno und 3 Dup-ACKs fällt CongWin auf 1 und startet Slow-Start.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das ist Tahoe-Verhalten! Reno halbiert CongWin auf ssthresh und springt <strong>direkt</strong> in Congestion Avoidance — kein Slow-Start, effizientere Erholung.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Parameter auf einen Blick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Variable</th><th>Bedeutung</th><th>Startwert / Formel</th></tr></thead>
+            <tbody>
+              <tr><td><strong>CongWin</strong></td><td>Überlastfenster (Segmente in flight)</td><td>1 MSS</td></tr>
+              <tr><td><strong>ssthresh</strong></td><td>Threshold Slow-Start / CA</td><td>∞ (am Anfang)</td></tr>
+              <tr><td><strong>MSS</strong></td><td>Max. Segmentgröße</td><td>fest (z. B. 500 B)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Phasen und Wachstum</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Phase</th><th>Bedingung</th><th>Wachstum pro RTT</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Slow-Start</strong></td><td>CongWin &lt; ssthresh</td><td>×2 (exponentiell)</td></tr>
+              <tr><td><strong>Congestion Avoidance</strong></td><td>CongWin ≥ ssthresh</td><td>+1 MSS (linear)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Reaktion auf Verlust</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Ereignis</th><th>TCP Tahoe</th><th>TCP Reno</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Timeout</strong></td>
+                <td>ssthresh = CongWin/2; CongWin = 1; Slow-Start</td>
+                <td>ssthresh = CongWin/2; CongWin = 1; Slow-Start</td>
+              </tr>
+              <tr>
+                <td><strong>3 Dup-ACKs</strong></td>
+                <td>ssthresh = CongWin/2; CongWin = 1; Slow-Start</td>
+                <td>ssthresh = CongWin/2; CongWin = ssthresh; direkt CA (Fast Recovery)</td>
+              </tr>
+            </tbody>
+          </table></div>
+
+          <h4>Diagramm lesen — Quick-Check</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Beobachtung im Diagramm</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>Verdopplung pro Runde (1→2→4→8)</td><td>Slow-Start</td></tr>
+              <tr><td>+1 pro Runde</td><td>Congestion Avoidance</td></tr>
+              <tr><td>Knick von Verdopplung auf +1</td><td>ssthresh wurde erreicht</td></tr>
+              <tr><td>Halbierung (ohne Sturz auf 1)</td><td>Fast Recovery — 3 Dup-ACKs (nur Reno)</td></tr>
+              <tr><td>Sturz auf CongWin = 1</td><td>Timeout</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Wichtige Formeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td><code>ssthresh_neu = CongWin_alt / 2</code></td><td>Threshold nach Verlust</td></tr>
+              <tr><td><code>L ≈ 1 / ((3/8)·W²)</code></td><td>Verlustrate (für großes W)</td></tr>
+              <tr><td><code>R ≈ 1,22 · MSS / (RTD · √L)</code></td><td>Durchsatz aus Verlustrate</td></tr>
+              <tr><td><code>W ≈ √(8 / (3·L))</code></td><td>Fenstergröße aus Verlustrate</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Wann ist Slow-Start nachteilig?</h4>
+          <p>Slow-Start ist langsamer als nötig bei: <strong>hohem Bandwidth-Delay-Product</strong> (großes RTT × hohe Bandbreite),
+            <strong>kurzen Übertragungen</strong> (Slow-Start endet, bevor alle Daten raus sind) und
+            <strong>unstaugten Netzen</strong> (unnötig vorsichtiger Start). RFC 6928 erlaubt daher ein Initial Window von 10 MSS statt 1.</p>
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="09-tcp.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">TCP: Verbindung, Sequenznummern &amp; SACK</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Übersicht →</div>
+          <div class="pn-title">Zurück zur Themenübersicht</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

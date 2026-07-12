@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TCP: Verbindung, Sequenznummern &amp; SACK · RNVS</title>
+<meta name="description" content="TCP von Grund auf erklärt: 3-Wege-Handshake, Sequenznummern, Acknowledgment Numbers, SACK und Verbindungsabbau – mit vielen Diagrammen für Einsteiger." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 09</div>
+    <span class="th-icon">🔗</span>
+    <h1>TCP: Verbindung, Sequenznummern &amp; SACK</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Super klausurrelevant</span>
+      <span class="badge badge-blatt">Blatt 5·6</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">TCP-Header &amp; Flags</a></li>
+        <li><a href="#schritt">Handshake &amp; Datenübertragung</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">
+          <strong>TCP (Transmission Control Protocol)</strong> ist das Rückgrat des Internets: HTTP, E-Mail, SSH – alles
+          läuft über TCP. Es sorgt dafür, dass Daten <em>zuverlässig</em>, <em>vollständig</em> und in der
+          <em>richtigen Reihenfolge</em> ankommen. Dafür baut TCP vor dem ersten Datenbyte eine Verbindung auf,
+          nummeriert jedes Byte und verlangt eine Quittung vom Empfänger.
+        </p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du schickst einen wichtigen Roman per Post – aber nicht das ganze Buch auf einmal, sondern Seite für
+            Seite in nummerierten Umschlägen. Der Empfänger schickt dir nach jeder empfangenen Seite eine
+            Postkarte zurück: „Seite 47 angekommen, warte auf Seite 48." Kommt mal eine Seite nicht an,
+            sendest du sie nochmal. Genau das macht TCP – nur dass statt Seiten einzelne <strong>Bytes</strong>
+            nummeriert werden, und die „Postkarte" eine <strong>ACK-Nummer</strong> trägt.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>RFC 793</b><span>Ursprungsstandard (+1122, 9293)</span></div>
+          <div class="fact"><b>Schicht 4</b><span>Transport (OSI-Modell)</span></div>
+          <div class="fact"><b>min. 20 Byte</b><span>Header-Größe</span></div>
+          <div class="fact"><b>3-Way</b><span>Handshake zum Verbindungsaufbau</span></div>
+          <div class="fact"><b>Vollduplex</b><span>beide Richtungen gleichzeitig</span></div>
+          <div class="fact"><b>SACK</b><span>Selektive Quittungen (RFC 2018)</span></div>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>TCP-Header &amp; Flags</h2>
+
+        <p>Jedes TCP-Segment beginnt mit einem <strong>Header von mindestens 20 Byte</strong>. Dort stehen alle
+          Steuerinformationen: Ports, Sequenznummern, Flags und das Empfangsfenster. Erst danach kommen die
+          eigentlichen Nutzdaten.</p>
+
+        <!-- SVG 1: TCP-Header Box-Layout -->
+        <figure class="diagram">
+          <div class="diagram-title">TCP-Header (20 Byte Minimum) – Feld für Feld</div>
+          <svg viewBox="0 0 680 380" width="680" role="img" aria-label="TCP Header Felder als Box-Layout">
+            <defs>
+              <marker id="arr-b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Bit-Ruler -->
+              <text x="10"  y="18" class="svg-soft" font-size="10">Bit 0</text>
+              <text x="159" y="18" class="svg-soft" font-size="10">Bit 15</text>
+              <text x="340" y="18" class="svg-soft" font-size="10">Bit 16</text>
+              <text x="638" y="18" class="svg-soft" font-size="10" text-anchor="end">Bit 31</text>
+
+              <!-- Row 1: Ports (Bytes 0-3) -->
+              <rect x="10"  y="24" width="320" height="44" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="170" y="43" text-anchor="middle" class="svg-ink" font-weight="700">Quellport (Source Port)</text>
+              <text x="170" y="60" text-anchor="middle" class="svg-soft">16 Bit · z.B. 54321 (ephemer)</text>
+              <rect x="334" y="24" width="334" height="44" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="501" y="43" text-anchor="middle" class="svg-ink" font-weight="700">Zielport (Destination Port)</text>
+              <text x="501" y="60" text-anchor="middle" class="svg-soft">16 Bit · z.B. 80 (HTTP)</text>
+
+              <!-- Row 2: Sequence Number (Bytes 4-7) -->
+              <rect x="10" y="74" width="658" height="44" rx="8" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="339" y="93" text-anchor="middle" class="svg-ink" font-weight="700">Sequenznummer (Sequence Number)</text>
+              <text x="339" y="110" text-anchor="middle" class="svg-soft">32 Bit · Byte-Nummer des ERSTEN Daten-Bytes in diesem Segment</text>
+
+              <!-- Row 3: Acknowledgment Number (Bytes 8-11) -->
+              <rect x="10" y="124" width="658" height="44" rx="8" fill="#f5810b" fill-opacity="0.15" stroke="#f5810b"/>
+              <text x="339" y="143" text-anchor="middle" class="svg-ink" font-weight="700">Bestätigungsnummer (Acknowledgment Number)</text>
+              <text x="339" y="160" text-anchor="middle" class="svg-soft">32 Bit · NÄCHSTES erwartetes Byte · nur gültig wenn ACK-Flag gesetzt</text>
+
+              <!-- Row 4: Flags + Window (Bytes 12-15) -->
+              <rect x="10"  y="174" width="80"  height="44" rx="8" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6"/>
+              <text x="50"  y="193" text-anchor="middle" class="svg-ink" font-weight="700">Data</text>
+              <text x="50"  y="210" text-anchor="middle" class="svg-soft">Offset</text>
+
+              <rect x="96"  y="174" width="208" height="44" rx="8" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d"/>
+              <text x="200" y="193" text-anchor="middle" class="svg-ink" font-weight="700">Flags: URG ACK PSH RST SYN FIN</text>
+              <text x="200" y="210" text-anchor="middle" class="svg-soft">6 Bit (+ 6 Reserved)</text>
+
+              <rect x="310" y="174" width="358" height="44" rx="8" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6"/>
+              <text x="489" y="193" text-anchor="middle" class="svg-ink" font-weight="700">Empfangsfenster (Window)</text>
+              <text x="489" y="210" text-anchor="middle" class="svg-soft">16 Bit · Flusskontrolle: freier Pufferplatz beim Empfänger</text>
+
+              <!-- Row 5: Checksum + Urgent Pointer (Bytes 16-19) -->
+              <rect x="10"  y="224" width="320" height="44" rx="8" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6"/>
+              <text x="170" y="243" text-anchor="middle" class="svg-ink" font-weight="700">Prüfsumme (Checksum)</text>
+              <text x="170" y="260" text-anchor="middle" class="svg-soft">16 Bit · Fehlererkennung</text>
+              <rect x="334" y="224" width="334" height="44" rx="8" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6"/>
+              <text x="501" y="243" text-anchor="middle" class="svg-ink" font-weight="700">Urgent Pointer</text>
+              <text x="501" y="260" text-anchor="middle" class="svg-soft">16 Bit · nur wenn URG-Flag gesetzt</text>
+
+              <!-- Row 6: Options (Bytes 20+) -->
+              <rect x="10" y="274" width="658" height="44" rx="8" fill="#2f6df6" fill-opacity="0.08" stroke="#2f6df6" stroke-dasharray="6 4"/>
+              <text x="339" y="293" text-anchor="middle" class="svg-soft" font-weight="700">Options (variabel, z.B. SACK – RFC 2018)</text>
+              <text x="339" y="310" text-anchor="middle" class="svg-soft">0–40 Byte · optional · macht Header bis zu 60 Byte groß</text>
+
+              <!-- Byte label -->
+              <text x="10"  y="344" class="svg-soft" font-size="11">Bytes 0–3</text>
+              <text x="10"  y="358" class="svg-soft" font-size="11">Bytes 4–7</text>
+            </g>
+          </svg>
+          <figcaption>Der TCP-Header hat mindestens 20 Byte – die grün markierte Sequenznummer und die orange markierte ACK-Nummer sind die wichtigsten Felder für die Klausur.</figcaption>
+        </figure>
+
+        <h3>Die wichtigsten TCP-Flags</h3>
+        <p>Flags sind Schalter im Header – jedes ist genau 1 Bit. Mehrere können gleichzeitig gesetzt sein (z.B. SYN+ACK).</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Flag</th><th>Name</th><th>Bedeutung</th><th>Wann?</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SYN</strong></td><td>Synchronize</td><td>Verbindungsaufbau einleiten, ISN übermitteln</td><td>1. und 2. Schritt des Handshakes</td></tr>
+            <tr><td><strong>ACK</strong></td><td>Acknowledge</td><td>AckNr-Feld ist gültig und enthält eine Quittung</td><td>Fast immer – außer erstes SYN</td></tr>
+            <tr><td><strong>FIN</strong></td><td>Finish</td><td>Verbindung in DIESER Richtung beenden</td><td>Verbindungsabbau (4-Wege)</td></tr>
+            <tr><td><strong>RST</strong></td><td>Reset</td><td>Verbindung sofort und hart abbrechen</td><td>Bei Fehler oder unbekannter Verbindung</td></tr>
+            <tr><td><strong>PSH</strong></td><td>Push</td><td>Daten sofort an Anwendung weiterreichen, nicht puffern</td><td>Interaktive Anwendungen</td></tr>
+            <tr><td><strong>URG</strong></td><td>Urgent</td><td>Daten mit höchster Priorität, Urgent-Pointer gültig</td><td>Selten, z.B. Ctrl+C in SSH</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: SYN und FIN kosten je eine SeqNr</div>
+          <p>Auch wenn SYN und FIN <em>keine Nutzdaten</em> enthalten, verbrauchen sie trotzdem je einen
+            Sequenznummer-Slot. Deshalb ist nach einem SYN mit SeqNr=6000 die erste AckNr <strong>6001</strong> –
+            nicht 6000!</p>
+        </div>
+
+        <h3>Sequenznummer (SeqNr) vs. Bestätigungsnummer (AckNr)</h3>
+        <p>Das sind die zwei häufigsten Klausur-Fragen – und die häufigsten Fehlerquellen. Lerne den Unterschied auswendig:</p>
+
+        <!-- SVG 2: SeqNr/AckNr Byte-Strom Visualisierung -->
+        <figure class="diagram">
+          <div class="diagram-title">SeqNr &amp; AckNr – der Byte-Strom erklärt</div>
+          <svg viewBox="0 0 680 280" width="680" role="img" aria-label="Byte-Strom mit SeqNr und AckNr Erklärung">
+            <defs>
+              <marker id="arr-g2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+              <marker id="arr-o2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/>
+              </marker>
+              <marker id="arr-b2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Byte-Strom Boxes -->
+              <text x="10" y="30" class="svg-soft" font-weight="700">Byte-Strom von A nach B:</text>
+
+              <!-- Already received: bytes 1-126 (grau) -->
+              <rect x="10" y="42" width="100" height="40" rx="6" fill="#8a94a6" fill-opacity="0.25" stroke="#8a94a6"/>
+              <text x="60" y="57" text-anchor="middle" class="svg-soft" font-size="11">Bytes 1–126</text>
+              <text x="60" y="72" text-anchor="middle" class="svg-soft" font-size="10">(schon da)</text>
+
+              <!-- Segment 1: bytes 127-206 (grün) -->
+              <rect x="115" y="42" width="160" height="40" rx="6" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="195" y="55" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Segment 1</text>
+              <text x="195" y="70" text-anchor="middle" class="svg-soft" font-size="11">Bytes 127–206 (80 Byte)</text>
+              <text x="115" y="97" class="svg-soft" font-size="11">127</text>
+              <text x="263" y="97" text-anchor="end" class="svg-soft" font-size="11">206</text>
+
+              <!-- Segment 2: bytes 207-246 (blau) -->
+              <rect x="280" y="42" width="110" height="40" rx="6" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="335" y="55" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Segment 2</text>
+              <text x="335" y="70" text-anchor="middle" class="svg-soft" font-size="11">Bytes 207–246 (40 B)</text>
+              <text x="280" y="97" class="svg-soft" font-size="11">207</text>
+              <text x="379" y="97" text-anchor="end" class="svg-soft" font-size="11">246</text>
+
+              <!-- Future bytes -->
+              <rect x="395" y="42" width="80" height="40" rx="6" fill="#8a94a6" fill-opacity="0.12" stroke="#8a94a6" stroke-dasharray="5 3"/>
+              <text x="435" y="65" text-anchor="middle" class="svg-soft" font-size="11">247, 248 …</text>
+
+              <!-- SeqNr arrows -->
+              <line x1="115" y1="110" x2="115" y2="130" stroke="#12b28c" stroke-width="2" marker-end="url(#arr-g2)"/>
+              <text x="115" y="148" text-anchor="middle" class="svg-ink" font-size="12" fill="#12b28c" font-weight="700">SeqNr = 127</text>
+              <text x="115" y="163" text-anchor="middle" class="svg-soft" font-size="11">(1. Byte des Segments)</text>
+
+              <line x1="280" y1="110" x2="280" y2="130" stroke="#2f6df6" stroke-width="2" marker-end="url(#arr-b2)"/>
+              <text x="280" y="148" text-anchor="middle" class="svg-ink" font-size="12" fill="#2f6df6" font-weight="700">SeqNr = 207</text>
+              <text x="280" y="163" text-anchor="middle" class="svg-soft" font-size="11">(1. Byte des Segments)</text>
+
+              <!-- AckNr arrows -->
+              <line x1="275" y1="200" x2="275" y2="88" stroke="#f5810b" stroke-width="2" marker-end="url(#arr-o2)"/>
+              <text x="275" y="220" text-anchor="middle" class="svg-ink" font-size="12" fill="#f5810b" font-weight="700">AckNr = 207</text>
+              <text x="275" y="237" text-anchor="middle" class="svg-soft" font-size="11">nach Seg.1: „erwarte 207"</text>
+
+              <line x1="470" y1="200" x2="420" y2="88" stroke="#f5810b" stroke-width="2" marker-end="url(#arr-o2)"/>
+              <text x="490" y="220" text-anchor="middle" class="svg-ink" font-size="12" fill="#f5810b" font-weight="700">AckNr = 247</text>
+              <text x="490" y="237" text-anchor="middle" class="svg-soft" font-size="11">nach Seg.2: „erwarte 247"</text>
+
+              <!-- Formel unten -->
+              <rect x="10" y="252" width="658" height="22" rx="6" fill="#12b28c" fill-opacity="0.10" stroke="#12b28c"/>
+              <text x="339" y="267" text-anchor="middle" class="svg-ink" font-size="12">
+                SeqNr = letztes AckNr des Senders  |  AckNr = SeqNr + Segmentlänge (= nächstes erwartetes Byte)
+              </text>
+            </g>
+          </svg>
+          <figcaption>SeqNr ist immer die Nummer des ERSTEN Bytes im Segment. AckNr ist immer das NÄCHSTE erwartete Byte – also SeqNr + Länge des Segments.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: SeqNr und AckNr</div>
+          <span class="formula">AckNr = SeqNr + Segmentlänge (in Byte)</span>
+          <p><strong>SeqNr</strong> = Byte-Nummer des 1. Daten-Bytes im Segment<br/>
+          <strong>AckNr</strong> = SeqNr des nächsten erwarteten Bytes (= alles bis AckNr−1 ist bestätigt)<br/>
+          Beispiel: SeqNr=127, 80 Byte → Bytes 127–206 → AckNr=207</p>
+        </div>
+
+        <h3>Kumulative Quittungen und das Lücken-Problem</h3>
+        <p>Standard-TCP quittiert <strong>kumulativ</strong>: die AckNr gibt das nächste erwartete Byte an und
+          bestätigt damit alle Bytes darunter. Das Problem: kommt ein Segment in der Mitte verloren, kann der
+          Empfänger die danach empfangenen Bytes nicht bestätigen.</p>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Achtung: Lücken-Problem bei kumulativem ACK</div>
+          <p>Bytes 1–500 ankommen ✓, Bytes 501–1000 verloren ✗, Bytes 1001–2000 ankommen ✓. Der Empfänger
+            kann nur <strong>ACK 501</strong> schicken – die schon empfangenen Bytes 1001–2000 bleiben
+            „unsichtbar" für den Sender. Ohne SACK muss der Sender alles ab 501 erneut schicken (Go-Back-N).</p>
+        </div>
+
+        <h3>Selektive Quittungen (SACK) – RFC 2018</h3>
+        <p>SACK löst das Lücken-Problem: Der Empfänger sendet <em>zusätzlich</em> zur normalen AckNr eine
+          Liste der bereits empfangenen Byte-Bereiche. Der Sender kann dann <strong>gezielt</strong> nur
+          die fehlenden Segmente wiederholen – kein unnötiger Re-Send.</p>
+
+        <!-- SVG 3: SACK Visualisierung mit 8 Segmenten -->
+        <figure class="diagram">
+          <div class="diagram-title">SACK Beispiel 2: Jedes zweite Segment verloren</div>
+          <svg viewBox="0 0 680 310" width="680" role="img" aria-label="SACK Diagramm mit 8 Segmenten, jedes zweite verloren">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Legend -->
+              <rect x="420" y="12" width="18" height="14" rx="3" fill="#12b28c" fill-opacity="0.85"/>
+              <text x="442" y="24" class="svg-soft">empfangen ✓</text>
+              <rect x="530" y="12" width="18" height="14" rx="3" fill="#e0483d" fill-opacity="0.85"/>
+              <text x="552" y="24" class="svg-soft">verloren ✗</text>
+
+              <!-- Sender label -->
+              <text x="10" y="54" class="svg-ink" font-weight="700">Sender schickt 8 Segmente à 500 Byte (ab SeqNr 5000):</text>
+
+              <!-- 8 segment boxes -->
+              <!-- Seg 1: 5000-5499 received -->
+              <rect x="10"  y="66" width="74" height="50" rx="6" fill="#12b28c" fill-opacity="0.80"/>
+              <text x="47"  y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 1</text>
+              <text x="47"  y="100" text-anchor="middle" fill="#fff" font-size="10">5000–5499</text>
+              <text x="47"  y="129" text-anchor="middle" class="svg-soft" font-size="10">✓</text>
+
+              <!-- Seg 2: 5500-5999 lost -->
+              <rect x="89"  y="66" width="74" height="50" rx="6" fill="#e0483d" fill-opacity="0.80"/>
+              <text x="126" y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 2</text>
+              <text x="126" y="100" text-anchor="middle" fill="#fff" font-size="10">5500–5999</text>
+              <text x="126" y="129" text-anchor="middle" class="svg-soft" font-size="10">✗ verloren</text>
+
+              <!-- Seg 3: 6000-6499 received -->
+              <rect x="168" y="66" width="74" height="50" rx="6" fill="#12b28c" fill-opacity="0.80"/>
+              <text x="205" y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 3</text>
+              <text x="205" y="100" text-anchor="middle" fill="#fff" font-size="10">6000–6499</text>
+              <text x="205" y="129" text-anchor="middle" class="svg-soft" font-size="10">✓</text>
+
+              <!-- Seg 4: 6500-6999 lost -->
+              <rect x="247" y="66" width="74" height="50" rx="6" fill="#e0483d" fill-opacity="0.80"/>
+              <text x="284" y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 4</text>
+              <text x="284" y="100" text-anchor="middle" fill="#fff" font-size="10">6500–6999</text>
+              <text x="284" y="129" text-anchor="middle" class="svg-soft" font-size="10">✗ verloren</text>
+
+              <!-- Seg 5: 7000-7499 received -->
+              <rect x="326" y="66" width="74" height="50" rx="6" fill="#12b28c" fill-opacity="0.80"/>
+              <text x="363" y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 5</text>
+              <text x="363" y="100" text-anchor="middle" fill="#fff" font-size="10">7000–7499</text>
+              <text x="363" y="129" text-anchor="middle" class="svg-soft" font-size="10">✓</text>
+
+              <!-- Seg 6: 7500-7999 lost -->
+              <rect x="405" y="66" width="74" height="50" rx="6" fill="#e0483d" fill-opacity="0.80"/>
+              <text x="442" y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 6</text>
+              <text x="442" y="100" text-anchor="middle" fill="#fff" font-size="10">7500–7999</text>
+              <text x="442" y="129" text-anchor="middle" class="svg-soft" font-size="10">✗ verloren</text>
+
+              <!-- Seg 7: 8000-8499 received -->
+              <rect x="484" y="66" width="74" height="50" rx="6" fill="#12b28c" fill-opacity="0.80"/>
+              <text x="521" y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 7</text>
+              <text x="521" y="100" text-anchor="middle" fill="#fff" font-size="10">8000–8499</text>
+              <text x="521" y="129" text-anchor="middle" class="svg-soft" font-size="10">✓</text>
+
+              <!-- Seg 8: 8500-8999 lost -->
+              <rect x="563" y="66" width="74" height="50" rx="6" fill="#e0483d" fill-opacity="0.80"/>
+              <text x="600" y="86" text-anchor="middle" fill="#fff" font-weight="700">Seg 8</text>
+              <text x="600" y="100" text-anchor="middle" fill="#fff" font-size="10">8500–8999</text>
+              <text x="600" y="129" text-anchor="middle" class="svg-soft" font-size="10">✗ verloren</text>
+
+              <!-- Divider -->
+              <line x1="10" y1="148" x2="660" y2="148" stroke="#8a94a6" stroke-dasharray="4 3"/>
+
+              <!-- Cumulative ACK -->
+              <text x="10" y="168" class="svg-ink" font-weight="700">Empfänger antwortet:</text>
+              <rect x="10" y="176" width="280" height="40" rx="8" fill="#f5810b" fill-opacity="0.15" stroke="#f5810b" stroke-width="2"/>
+              <text x="150" y="192" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Kumulativer ACK: AckNr = 5500</text>
+              <text x="150" y="208" text-anchor="middle" class="svg-soft" font-size="11">„Bis 5499 OK, warte auf 5500"</text>
+
+              <!-- SACK blocks -->
+              <rect x="300" y="176" width="370" height="40" rx="8" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="485" y="192" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">SACK-Blöcke (Options-Feld):</text>
+              <text x="485" y="208" text-anchor="middle" class="svg-soft" font-size="11">(6000, 6500) · (7000, 7500) · (8000, 8500)</text>
+
+              <!-- Result -->
+              <rect x="10" y="232" width="660" height="58" rx="8" fill="#12b28c" fill-opacity="0.10" stroke="#12b28c"/>
+              <text x="340" y="252" text-anchor="middle" class="svg-ink" font-weight="700">Sender weiß jetzt genau:</text>
+              <text x="340" y="270" text-anchor="middle" class="svg-soft">Nur 5500–5999, 6500–6999, 7500–7999, 8500–8999 müssen wiederholt werden.</text>
+              <text x="340" y="285" text-anchor="middle" class="svg-soft">Ohne SACK: alles ab 5500 erneut (4× so viel Daten)!</text>
+            </g>
+          </svg>
+          <figcaption>SACK gibt dem Sender eine exakte Karte der Lücken – er wiederholt nur das Verlorene, nicht alle nachfolgenden Segmente.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Aspekt</th><th>Kumulativer ACK</th><th>SACK (zusätzlich)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Wozu?</strong></td><td>Zeigt nächstes erwartetes Byte</td><td>Listet schon empfangene Bereiche</td></tr>
+            <tr><td><strong>Position</strong></td><td>AckNr-Feld (immer vorhanden)</td><td>Options-Feld (nur wenn ausgehandelt)</td></tr>
+            <tr><td><strong>Lücken</strong></td><td>Nicht erkennbar für Sender</td><td>Sender sieht genau, was fehlt</td></tr>
+            <tr><td><strong>Wiederholung</strong></td><td>Alles ab der Lücke (Go-Back-N)</td><td>Nur die fehlenden Segmente</td></tr>
+            <tr><td><strong>RFC</strong></td><td>793 (Basis-TCP)</td><td>2018 (Erweiterung)</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>Handshake, Datenübertragung &amp; Abbau</h2>
+
+        <h3>3-Wege-Handshake (Verbindungsaufbau)</h3>
+        <p>Bevor TCP auch nur ein Datenbyte sendet, einigen sich Client und Server über drei Schritte auf
+          je eine <strong>Initial Sequence Number (ISN)</strong> – eine zufällig gewählte Startnummer für jede
+          Richtung. Das erhöht die Sicherheit (Anti-Spoofing) und vermeidet Verwechslungen mit alten Paketen.</p>
+
+        <!-- SVG 4: 3-Wege-Handshake Sequenzdiagramm mit konkreten Nummern -->
+        <figure class="diagram">
+          <div class="diagram-title">3-Wege-Handshake – Client ISN=6000, Server ISN=9000</div>
+          <svg viewBox="0 0 620 360" width="620" role="img" aria-label="3-Wege-Handshake Sequenzdiagramm mit Sequenznummern 6000 und 9000">
+            <defs>
+              <marker id="arr-hs" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+              <marker id="arr-hs-g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Labels -->
+              <rect x="30" y="10" width="120" height="36" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="90" y="24" text-anchor="middle" class="svg-ink" font-weight="700">Client</text>
+              <text x="90" y="40" text-anchor="middle" class="svg-soft" font-size="11">ISN = 6000</text>
+              <rect x="470" y="10" width="120" height="36" rx="8" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="530" y="24" text-anchor="middle" class="svg-ink" font-weight="700">Server</text>
+              <text x="530" y="40" text-anchor="middle" class="svg-soft" font-size="11">ISN = 9000</text>
+
+              <!-- Lifelines -->
+              <line x1="90"  y1="46" x2="90"  y2="348" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="530" y1="46" x2="530" y2="348" stroke="#8a94a6" stroke-width="2"/>
+
+              <!-- State labels client -->
+              <text x="10" y="82" class="svg-soft" font-size="10" text-anchor="middle" transform="rotate(-90,10,120)">CLOSED</text>
+              <text x="10" y="160" class="svg-soft" font-size="10" text-anchor="middle" transform="rotate(-90,10,160)">SYN_SENT</text>
+              <text x="10" y="250" class="svg-soft" font-size="10" text-anchor="middle" transform="rotate(-90,10,250)">ESTABLISHED</text>
+
+              <!-- Step 1: SYN -->
+              <text x="310" y="83" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">① SYN</text>
+              <line x1="90" y1="92" x2="530" y2="110" stroke="#2f6df6" stroke-width="2.5" marker-end="url(#arr-hs)"/>
+              <rect x="120" y="95" width="260" height="28" rx="5" fill="#2f6df6" fill-opacity="0.10"/>
+              <text x="250" y="107" text-anchor="middle" class="svg-ink" font-size="12">SeqNr = 6000 · [SYN]</text>
+              <text x="250" y="119" text-anchor="middle" class="svg-soft" font-size="10">„Hallo, ich starte bei Byte 6000"</text>
+
+              <!-- Server state change -->
+              <text x="605" y="132" class="svg-soft" font-size="10">SYN_RCVD</text>
+
+              <!-- Step 2: SYN+ACK -->
+              <text x="310" y="154" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">② SYN + ACK</text>
+              <line x1="530" y1="162" x2="90" y2="180" stroke="#12b28c" stroke-width="2.5" marker-end="url(#arr-hs-g)"/>
+              <rect x="140" y="164" width="300" height="30" rx="5" fill="#12b28c" fill-opacity="0.10"/>
+              <text x="290" y="176" text-anchor="middle" class="svg-ink" font-size="12">SeqNr = 9000 · AckNr = 6001 · [SYN, ACK]</text>
+              <text x="290" y="190" text-anchor="middle" class="svg-soft" font-size="10">„OK! Ich starte bei 9000, du fängst bei 6001 an"</text>
+
+              <!-- Step 3: ACK -->
+              <text x="310" y="222" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">③ ACK</text>
+              <line x1="90" y1="230" x2="530" y2="248" stroke="#2f6df6" stroke-width="2.5" marker-end="url(#arr-hs)"/>
+              <rect x="120" y="233" width="290" height="28" rx="5" fill="#2f6df6" fill-opacity="0.10"/>
+              <text x="265" y="245" text-anchor="middle" class="svg-ink" font-size="12">SeqNr = 6001 · AckNr = 9001 · [ACK]</text>
+              <text x="265" y="257" text-anchor="middle" class="svg-soft" font-size="10">„Verstanden! Du fängst bei 9001 an"</text>
+
+              <!-- ESTABLISHED bar -->
+              <rect x="30" y="268" width="120" height="26" rx="6" fill="#12b28c" fill-opacity="0.80"/>
+              <text x="90" y="284" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">ESTABLISHED</text>
+              <rect x="470" y="268" width="120" height="26" rx="6" fill="#12b28c" fill-opacity="0.80"/>
+              <text x="530" y="284" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">ESTABLISHED</text>
+
+              <!-- Daten können jetzt fließen -->
+              <text x="310" y="320" text-anchor="middle" class="svg-soft" font-size="12">↕ Datenübertragung möglich ↕</text>
+
+              <!-- Warum ISN+1? -->
+              <text x="310" y="342" text-anchor="middle" class="svg-soft" font-size="11">SYN belegt 1 SeqNr → deshalb AckNr = ISN + 1 (nicht ISN!)</text>
+            </g>
+          </svg>
+          <figcaption>Der 3-Wege-Handshake: Client schickt SYN, Server antwortet SYN+ACK (eigene ISN + Quittung), Client bestätigt mit ACK. Erst danach ist die Verbindung offen.</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li><strong>SYN (Client → Server):</strong> Client wählt eine zufällige ISN (hier: 6000) und schickt ein Segment mit gesetztem SYN-Flag. Noch keine Nutzdaten.</li>
+          <li><strong>SYN+ACK (Server → Client):</strong> Server bestätigt (AckNr = 6001 = ISNc + 1) und sendet gleichzeitig seine eigene ISN (9000) mit einem SYN-Flag.</li>
+          <li><strong>ACK (Client → Server):</strong> Client bestätigt die Server-ISN (AckNr = 9001 = ISNs + 1). Danach sind <strong>beide Seiten ESTABLISHED</strong> und Daten können fließen.</li>
+        </ol>
+
+        <h3>Datenübertragung: HTTP-Beispiel (Blatt 6)</h3>
+        <p>Nach dem Handshake sendet der Client seinen HTTP-Request (50 Byte). Die Sequenznummern setzen
+          sich dabei direkt fort – da der Client nach dem Handshake bei SeqNr=6001 war und 50 Byte sendet,
+          bestätigt der Server mit AckNr=6051.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">HTTP-Antwortzeit: TCP vs. UDP</div>
+          <p><strong>Setup:</strong> RTT = 300 ms (Netzverzögerung 150 ms × 2), Request 50 Byte, Response 1000 Byte.</p>
+          <p><strong>TCP:</strong> 3-Way-Handshake = 1,5 RTT, dann Request+Response = 1 RTT →
+            <strong>Antwort beim Client nach 2 RTT = 600 ms</strong>.</p>
+          <p><strong>UDP:</strong> Kein Handshake nötig. Request raus, Response zurück = 2 × 150 ms =
+            <strong>300 ms</strong>. TCP braucht doppelt so lang!</p>
+        </div>
+
+        <h3>4-Wege-Verbindungsabbau (FIN)</h3>
+        <p>TCP schließt jede Richtung separat. Der erste FIN beendet nur den Datenfluss in <em>einer</em>
+          Richtung – die andere Richtung kann danach noch Daten senden (Halbschluss). Erst wenn beide
+          FINs quittiert sind, ist die Verbindung wirklich zu.</p>
+
+        <!-- SVG 5: 4-Wege-Abbau -->
+        <figure class="diagram">
+          <div class="diagram-title">4-Wege-Verbindungsabbau (FIN, ACK, FIN, ACK)</div>
+          <svg viewBox="0 0 540 310" width="540" role="img" aria-label="4-Wege-Verbindungsabbau mit FIN und ACK Paketen">
+            <defs>
+              <marker id="arr-fin" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#e0483d"/>
+              </marker>
+              <marker id="arr-ack-f" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="80"  y="22" text-anchor="middle" class="svg-ink" font-weight="700">Client</text>
+              <text x="460" y="22" text-anchor="middle" class="svg-ink" font-weight="700">Server</text>
+              <line x1="80"  y1="30" x2="80"  y2="295" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="460" y1="30" x2="460" y2="295" stroke="#8a94a6" stroke-width="2"/>
+
+              <!-- FIN client -> server -->
+              <line x1="80" y1="58" x2="460" y2="76" stroke="#e0483d" stroke-width="2.5" marker-end="url(#arr-fin)"/>
+              <text x="270" y="54" text-anchor="middle" class="svg-ink" font-size="12" fill="#e0483d" font-weight="700">FIN [FIN, ACK]</text>
+              <text x="270" y="67" text-anchor="middle" class="svg-soft" font-size="11">„Ich bin fertig mit Senden"</text>
+
+              <!-- ACK server -> client -->
+              <line x1="460" y1="102" x2="80" y2="120" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#arr-ack-f)"/>
+              <text x="270" y="100" text-anchor="middle" class="svg-ink" font-size="12" fill="#8b5cf6" font-weight="700">ACK</text>
+              <text x="270" y="116" text-anchor="middle" class="svg-soft" font-size="11">„OK, dein FIN bestätigt"</text>
+
+              <!-- Server kann noch senden (Halbschluss) -->
+              <rect x="390" y="132" width="130" height="36" rx="6" fill="#f5810b" fill-opacity="0.15" stroke="#f5810b" stroke-dasharray="5 3"/>
+              <text x="455" y="148" text-anchor="middle" class="svg-soft" font-size="10">(Server kann noch</text>
+              <text x="455" y="162" text-anchor="middle" class="svg-soft" font-size="10">Daten senden)</text>
+
+              <!-- FIN server -> client -->
+              <line x1="460" y1="184" x2="80" y2="202" stroke="#e0483d" stroke-width="2.5" marker-end="url(#arr-fin)"/>
+              <text x="270" y="182" text-anchor="middle" class="svg-ink" font-size="12" fill="#e0483d" font-weight="700">FIN [FIN, ACK]</text>
+              <text x="270" y="196" text-anchor="middle" class="svg-soft" font-size="11">„Ich bin auch fertig"</text>
+
+              <!-- ACK client -> server -->
+              <line x1="80" y1="224" x2="460" y2="242" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#arr-ack-f)"/>
+              <text x="270" y="222" text-anchor="middle" class="svg-ink" font-size="12" fill="#8b5cf6" font-weight="700">ACK</text>
+              <text x="270" y="238" text-anchor="middle" class="svg-soft" font-size="11">„Alles klar, Tschüss!"</text>
+
+              <!-- CLOSED -->
+              <rect x="20" y="260" width="120" height="26" rx="6" fill="#e0483d" fill-opacity="0.70"/>
+              <text x="80" y="277" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">CLOSED</text>
+              <rect x="400" y="260" width="120" height="26" rx="6" fill="#e0483d" fill-opacity="0.70"/>
+              <text x="460" y="277" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">CLOSED</text>
+            </g>
+          </svg>
+          <figcaption>4 Pakete für den Abbau: FIN + ACK + FIN + ACK. Jede Richtung wird unabhängig geschlossen. Nach dem zweiten ACK ist die Verbindung auf beiden Seiten CLOSED.</figcaption>
+        </figure>
+
+        <h3>Wireshark-Tipps: TCP-Traces analysieren</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Was suchen?</th><th>Wireshark-Filter</th><th>Erkennungszeichen</th></tr></thead>
+          <tbody>
+            <tr><td>3-Wege-Handshake</td><td><code>tcp.flags.syn == 1</code></td><td>SYN → SYN+ACK → ACK (erste 3 TCP-Segmente)</td></tr>
+            <tr><td>Verbindungsabbau</td><td><code>tcp.flags.fin == 1</code></td><td>FIN, ACK, FIN, ACK (letzte 4 Segmente)</td></tr>
+            <tr><td>RTD messen</td><td>–</td><td>Zeit zwischen SYN und SYN+ACK</td></tr>
+            <tr><td>Seq-Nummern</td><td>–</td><td>Wireshark zeigt relative (normiert auf 0) und absolute (32-bit) Werte</td></tr>
+            <tr><td>SSH über TCP</td><td><code>tcp.port == 22</code></td><td>Protocol-Spalte: TCP mit SSHv2-Payload</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Port-Tausch bei ACKs</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Gut zu wissen: Ports werden gespiegelt</div>
+          <p>Sendet Host A ein Segment mit <strong>Quellport 302 → Zielport 80</strong>, dann dreht Host B im ACK die Ports um:
+            <strong>Quellport 80 → Zielport 302</strong>. Sender und Empfänger tauschen die Rollen – und damit auch die Ports.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Sequenznummer zählt, wie viele Segmente schon gesendet wurden.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>SeqNr = <strong>Byte-Nummer des ERSTEN Daten-Bytes</strong> in diesem Segment. Segmente interessieren gar nicht — nur Bytes!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>AckNr = Nummer des zuletzt empfangenen Bytes.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>AckNr = Nummer des <strong>NÄCHSTEN erwarteten Bytes</strong>. Wenn Byte 206 das letzte empfangene war, dann AckNr = 207. Merksatz: AckNr ist <em>exklusiv</em> – „ich warte auf …".</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>SYN verbraucht keine Sequenznummer, weil es ja keine Nutzdaten trägt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>SYN belegt <strong>1 SeqNr-Slot</strong> – deshalb ist die erste AckNr nach SYN(6000) immer 6001. Gleiches gilt für FIN!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>SACK ersetzt die normale ACK-Nummer.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>SACK ist <strong>ZUSÄTZLICH</strong> zur normalen AckNr (im Options-Feld). Die AckNr bleibt weiterhin der höchste lückenlos empfangene Byte+1.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>TCP-Header = 8 Byte.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>8 Byte ist der <strong>UDP</strong>-Header. TCP hat mindestens <strong>20 Byte</strong>, mit Options (z.B. SACK) bis zu 60 Byte.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Ports im ACK sind dieselben wie im Original-Segment.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Im ACK werden Quell- und Zielport <strong>gespiegelt</strong>. A→B(302→80) wird im ACK zu B→A(80→302).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>TCP baut die Verbindung mit 2 Paketen auf (SYN + SYN-ACK).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es sind <strong>3 Pakete</strong> (3-Wege-Handshake): SYN → SYN+ACK → ACK. Erst das dritte Paket schließt den Handshake ab.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>TCP-Steckbrief</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Eigenschaft</th><th>Wert</th></tr></thead>
+            <tbody>
+              <tr><td><strong>RFC</strong></td><td>793 (+ 1122, 9293)</td></tr>
+              <tr><td><strong>OSI-Schicht</strong></td><td>4 (Transport)</td></tr>
+              <tr><td><strong>Header</strong></td><td>min. 20 Byte, max. 60 Byte (mit Options)</td></tr>
+              <tr><td><strong>Verbindungsaufbau</strong></td><td>3-Wege-Handshake (SYN, SYN+ACK, ACK)</td></tr>
+              <tr><td><strong>Verbindungsabbau</strong></td><td>4-Wege (FIN, ACK, FIN, ACK)</td></tr>
+              <tr><td><strong>Zuverlässig</strong></td><td>Ja – Re-Transmit bei Timeout oder 3× Duplikat-ACK</td></tr>
+              <tr><td><strong>Reihenfolge</strong></td><td>Ja – SeqNr garantiert Ordnung</td></tr>
+              <tr><td><strong>Flusskontrolle</strong></td><td>Receive-Window-Feld</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>SeqNr / AckNr – die zwei wichtigsten Formeln</h4>
+          <div class="callout callout-formula">
+            <div class="c-title">Formeln</div>
+            <span class="formula">SeqNr = Byte-Nr. des 1. Daten-Bytes im Segment</span>
+            <span class="formula">AckNr = SeqNr + Länge des Segments (in Byte)</span>
+            <p>Beispiel: SeqNr=127, 80 Byte → enthält Bytes 127–206 → AckNr=207<br/>
+            Merke: AckNr ist <em>exklusiv</em> (das nächste erwartete, nicht das letzte erhaltene).</p>
+          </div>
+
+          <h4>3-Wege-Handshake – Muster-Antwort</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schritt</th><th>Richtung</th><th>Flags</th><th>SeqNr</th><th>AckNr</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Client → Server</td><td>[SYN]</td><td>ISNc (z.B. 6000)</td><td>–</td></tr>
+              <tr><td>2</td><td>Server → Client</td><td>[SYN, ACK]</td><td>ISNs (z.B. 9000)</td><td>ISNc + 1 = 6001</td></tr>
+              <tr><td>3</td><td>Client → Server</td><td>[ACK]</td><td>ISNc + 1 = 6001</td><td>ISNs + 1 = 9001</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Flags – Cheatsheet</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Flag</th><th>Bedeutung</th><th>Wann?</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SYN</strong></td><td>Verbindungsaufbau</td><td>Handshake (Schritt 1 + 2)</td></tr>
+              <tr><td><strong>ACK</strong></td><td>Quittung</td><td>Fast immer (außer erstes SYN)</td></tr>
+              <tr><td><strong>FIN</strong></td><td>Verbindungsabbau</td><td>4-Wege-Abbau</td></tr>
+              <tr><td><strong>RST</strong></td><td>Sofortiger Abbruch</td><td>Fehler, unbekannte Verbindung</td></tr>
+              <tr><td><strong>PSH</strong></td><td>Push – sofort weiterreichen</td><td>Interaktive Apps</td></tr>
+              <tr><td><strong>URG</strong></td><td>Dringend</td><td>Sehr selten</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>SACK – Quick Summary</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Aspekt</th><th>Erklärung</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Position</strong></td><td>Options-Feld des TCP-Headers</td></tr>
+              <tr><td><strong>Inhalt</strong></td><td>Liste von Bereichen: (Anfang, Ende) – jeder Block = 8 Byte</td></tr>
+              <tr><td><strong>Kombiniert mit</strong></td><td>Normale AckNr – SACK ist <em>zusätzlich</em>, nicht stattdessen!</td></tr>
+              <tr><td><strong>Vorteil</strong></td><td>Selective Repeat statt Go-Back-N → weniger Redundanz</td></tr>
+              <tr><td><strong>RFC</strong></td><td>2018</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>HTTP-Antwortzeit (RTT-Rechnung)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schritt</th><th>Zeit (RTT = 300 ms)</th></tr></thead>
+            <tbody>
+              <tr><td>3-Wege-Handshake</td><td>1,5 RTT = 450 ms</td></tr>
+              <tr><td>Request raus + Response zurück</td><td>1 RTT = 300 ms</td></tr>
+              <tr><td><strong>Antwort beim Client (TCP)</strong></td><td><strong>2 RTT = 600 ms</strong></td></tr>
+              <tr><td>Antwort beim Client (UDP – kein HS)</td><td>1 RTT = 300 ms</td></tr>
+              <tr><td><strong>Faktor TCP vs. UDP</strong></td><td><strong>2× langsamer</strong></td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Typische Klausur-Aufgabentypen</h4>
+          <ol class="steps">
+            <li><strong>SeqNr/AckNr berechnen:</strong> Start-SeqNr + Segmentlänge = AckNr des Empfängers.</li>
+            <li><strong>Sequenzdiagramm zeichnen:</strong> 3-Wege-HS mit korrekten Nummern; Daten + ACK; Abbau.</li>
+            <li><strong>Out-of-Order:</strong> Seg 2 vor Seg 1 → AckNr bleibt bei erwartetem Seg 1 (Duplikat-ACK).</li>
+            <li><strong>ACK-Verlust + Retransmit:</strong> Seg 1 ACK verloren → Timeout → Seg 1 erneut; Empfänger ignoriert Duplikat, sendet aktuelles ACK.</li>
+            <li><strong>SACK-Blöcke berechnen:</strong> Liste empfangener Bereiche außerhalb der Lücken.</li>
+            <li><strong>HTTP-Antwortzeit:</strong> 2 RTT für TCP, 1 RTT für UDP (kein Handshake).</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="08-udp.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">UDP &amp; RFC 768</div>
+        </a>
+        <a class="next" href="10-congestion-control.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">TCP Congestion Control</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

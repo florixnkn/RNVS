@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verzögerungszeiten &amp; Vermittlungsarten · RNVS</title>
+<meta name="description" content="Warum dauert eine Netzwerkübertragung? Die 4 Verzögerungsarten (Signalverzögerung, Nachrichtendauer, Verarbeitung, Warteschlange), ihre Formeln, das Heim-Netz-Beispiel durchgerechnet – und wann Leitungs- vs. Paketvermittlung besser ist." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 05</div>
+    <span class="th-icon">⏱️</span>
+    <h1>Verzögerungszeiten &amp; Vermittlungsarten</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🧮 Rechenaufgabe</span>
+      <span class="badge badge-blatt">Blatt 7</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Die 4 Verzögerungsarten</a></li>
+        <li><a href="#rechnen">Schritt-für-Schritt: Heim-Netz</a></li>
+        <li><a href="#vermittlung">Leitungs- vs. Paketvermittlung</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Du sendest eine Datei, ein Paket reist von deinem Rechner durchs Kabel, durch einen Router
+          und per WLAN zum Empfänger. Aber <strong>warum dauert das überhaupt?</strong> Es gibt vier ganz verschiedene
+          Ursachen für Verzögerungen — und sie entstehen an ganz verschiedenen Stellen. Wer sie verwechselt, verrechnet
+          sich in der Klausur.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du schickst einen <strong>Konvoi aus 100 Autos</strong> von München nach Berlin. Zwei völlig
+            verschiedene Wartezeiten spielen hier eine Rolle:<br>
+            <strong>(1) Wie lange braucht der Konvoi, um die Auffahrt zu verlassen</strong> — das hängt davon ab,
+            wie viele Autos fahren und wie eng die Auffahrt ist. Das ist die <strong>Nachrichtendauer</strong>
+            (t_übertr): Wie lange dauert es, alle Bits ins Kabel zu takten?<br>
+            <strong>(2) Wie lange braucht das erste Auto, um Berlin zu erreichen</strong> — das hängt nur von der
+            Strecke und der Geschwindigkeit ab, nicht von der Anzahl der Autos. Das ist die
+            <strong>Signalverzögerung</strong> (t_sig): Wie lange ist das Signal physikalisch unterwegs?<br>
+            Dazu kommen noch Stopps an <strong>Raststätten (Router)</strong> für Kontrolle und mögliche
+            Wartezeiten im Stau (Warteschlange).</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die 4 Verzögerungsarten</h2>
+        <p>Jedes Paket, das durchs Netz reist, sammelt auf dem Weg <strong>vier verschiedene Arten von Verzögerung</strong>
+          auf — an ganz unterschiedlichen Stellen:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>#</th><th>Verzögerung</th><th>Symbol</th><th>Entsteht durch …</th><th>Wo?</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>Signalverzögerung</strong><br><small>(Propagation Delay)</small></td>
+              <td>t_sig</td>
+              <td>Endliche Ausbreitungsgeschwindigkeit im Medium</td>
+              <td>Auf dem <strong>Kabel / Funk</strong></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>Nachrichtendauer</strong><br><small>(Transmission Delay)</small></td>
+              <td>t_übertr</td>
+              <td>Bits werden nacheinander ins Medium „getaktet"</td>
+              <td>Im <strong>Sender</strong> (oder Router beim Weiterleiten)</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>Verarbeitungsverzögerung</strong><br><small>(Processing Delay)</small></td>
+              <td>t_verarb</td>
+              <td>Router liest Header, trifft Routing-Entscheidung</td>
+              <td>Im <strong>Router / Knoten</strong></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong>Warteschlangenverzögerung</strong><br><small>(Queueing Delay)</small></td>
+              <td>t_queue</td>
+              <td>Paket wartet in der Router-Queue auf freie Leitung</td>
+              <td>Im <strong>Router / Knoten</strong></td>
+            </tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 1: Zeitachse Sender → Router → Empfänger -->
+        <figure class="diagram">
+          <div class="diagram-title">Wo entsteht welche Verzögerung?</div>
+          <svg viewBox="0 0 700 320" width="700" role="img" aria-label="Zeitachse: Sender, Router, Empfänger mit farbigen Verzögerungsabschnitten">
+            <defs>
+              <marker id="arr-dark" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+              <marker id="arr-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+              <marker id="arr-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+              <marker id="arr-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/>
+              </marker>
+              <marker id="arr-purple" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Zeitachse (x = Zeit) -->
+              <text x="10" y="30" class="svg-soft" font-size="11" font-weight="700">Zeit →</text>
+              <line x1="10" y1="38" x2="690" y2="38" stroke="#8a94a6" stroke-width="1.5" marker-end="url(#arr-dark)"/>
+
+              <!-- Sender Box -->
+              <rect x="10" y="55" width="90" height="36" rx="8" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6"/>
+              <text x="55" y="73" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Sender</text>
+              <text x="55" y="86" text-anchor="middle" class="svg-soft" font-size="10">Rechner A</text>
+
+              <!-- t_übertr1: Sender -->
+              <rect x="110" y="55" width="130" height="36" rx="8" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="175" y="73" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">t_übertr (Link 1)</text>
+              <text x="175" y="86" text-anchor="middle" class="svg-soft" font-size="10">Bits ins Kabel takten</text>
+
+              <!-- t_sig1: Kabel -->
+              <rect x="250" y="55" width="100" height="36" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="300" y="73" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="12">t_sig (Link 1)</text>
+              <text x="300" y="86" text-anchor="middle" class="svg-soft" font-size="10">Signal unterwegs</text>
+
+              <!-- Router Box -->
+              <rect x="355" y="50" width="95" height="44" rx="8" fill="#f5810b" fill-opacity="0.12" stroke="#f5810b"/>
+              <text x="402" y="68" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Router</text>
+              <rect x="362" y="73" width="40" height="16" rx="4" fill="#f5810b" fill-opacity="0.35"/>
+              <text x="382" y="84" text-anchor="middle" fill="#f5810b" font-size="10" font-weight="700">t_verarb</text>
+              <rect x="406" y="73" width="37" height="16" rx="4" fill="#8b5cf6" fill-opacity="0.35"/>
+              <text x="424" y="84" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="700">t_queue</text>
+
+              <!-- t_übertr2: Router sendet weiter -->
+              <rect x="458" y="55" width="120" height="36" rx="8" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="518" y="73" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">t_übertr (Link 2)</text>
+              <text x="518" y="86" text-anchor="middle" class="svg-soft" font-size="10">Bits ins WLAN takten</text>
+
+              <!-- t_sig2: WLAN -->
+              <rect x="585" y="55" width="85" height="36" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="627" y="73" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="12">t_sig (Link 2)</text>
+              <text x="627" y="86" text-anchor="middle" class="svg-soft" font-size="10">Funk unterwegs</text>
+
+              <!-- Empfänger -->
+              <text x="688" y="75" class="svg-ink" font-weight="700" font-size="12">B</text>
+
+              <!-- Legende -->
+              <rect x="20" y="120" width="16" height="16" rx="4" fill="#2f6df6" fill-opacity="0.6"/>
+              <text x="42" y="132" class="svg-ink" font-size="12">Nachrichtendauer t_übertr = L / R — hängt von Paketgröße &amp; Leitungsrate ab</text>
+              <rect x="20" y="145" width="16" height="16" rx="4" fill="#12b28c" fill-opacity="0.6"/>
+              <text x="42" y="157" class="svg-ink" font-size="12">Signalverzögerung t_sig = d / v — hängt nur von Distanz &amp; Ausbreitungsgeschw. ab</text>
+              <rect x="20" y="170" width="16" height="16" rx="4" fill="#f5810b" fill-opacity="0.6"/>
+              <text x="42" y="182" class="svg-ink" font-size="12">Verarbeitungsverzögerung t_verarb — Router trifft Routing-Entscheidung</text>
+              <rect x="20" y="195" width="16" height="16" rx="4" fill="#8b5cf6" fill-opacity="0.6"/>
+              <text x="42" y="207" class="svg-ink" font-size="12">Warteschlangenverzögerung t_queue — Paket wartet in Router-Queue</text>
+
+              <!-- Gesamtpfeil -->
+              <line x1="110" y1="240" x2="680" y2="240" stroke="#e0483d" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr-orange)"/>
+              <text x="395" y="258" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="12">t_gesamt = Σ t_übertr + Σ t_sig + Σ t_verarb (+ Σ t_queue)</text>
+              <text x="395" y="275" text-anchor="middle" class="svg-soft" font-size="11">Pro Link: einmal Übertragung + einmal Signal. Pro Router: einmal Verarbeitung.</text>
+            </g>
+          </svg>
+          <figcaption>Der zeitliche Ablauf eines Pakets von Sender über Router zu Empfänger. Jede Farbe steht für eine andere Verzögerungsart an einem anderen Ort.</figcaption>
+        </figure>
+
+        <h3>Formeln im Detail</h3>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Signalverzögerung</div>
+          <span class="formula">t_sig = d / v</span>
+          <p><strong>d</strong> = Distanz in Metern &nbsp;|&nbsp; <strong>v</strong> = Ausbreitungsgeschwindigkeit in m/s<br>
+          Kupferkabel: v = 2 × 10⁸ m/s &nbsp;|&nbsp; Glasfaser: v ≈ 2 × 10⁸ m/s &nbsp;|&nbsp; Funk/Luft: v = 3 × 10⁸ m/s (Lichtgeschw.)<br>
+          <strong>Hängt NICHT von der Paketgröße ab</strong> — egal ob 1 Bit oder 1 GB: das Signal braucht dieselbe Zeit.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Nachrichtendauer (Übertragungsverzögerung)</div>
+          <span class="formula">t_übertr = L / R</span>
+          <p><strong>L</strong> = Paketgröße in <em>Bit</em> (Achtung: Byte × 8!) &nbsp;|&nbsp; <strong>R</strong> = Übertragungsrate in Bit/s<br>
+          Beispiel: 1500 Byte bei 100 Mbit/s → L = 12 000 bit, R = 10⁸ bit/s → t = 120 µs<br>
+          <strong>Hängt NICHT von der Distanz ab</strong> — dieselbe Rate auf 1 m oder 100 km.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>2 × 10⁸ m/s</b><span>Kupfer &amp; Glasfaser</span></div>
+          <div class="fact"><b>3 × 10⁸ m/s</b><span>Funk / Luft</span></div>
+          <div class="fact"><b>L in Bit!</b><span>Byte × 8 vor der Rechnung</span></div>
+          <div class="fact"><b>pro Link</b><span>1× t_übertr + 1× t_sig</span></div>
+        </div>
+
+        <h3>Konvoi-Analogie: Nachrichtendauer ≠ Signalverzögerung</h3>
+        <p>Die häufigste Verwechslung in der Klausur! Das Diagramm macht den Unterschied sichtbar:</p>
+
+        <!-- SVG 2: Konvoi-Analogie -->
+        <figure class="diagram">
+          <div class="diagram-title">Konvoi-Analogie: Nachrichtendauer vs. Signalverzögerung</div>
+          <svg viewBox="0 0 680 310" width="680" role="img" aria-label="Konvoi-Analogie: Nachrichtendauer ist die Länge des Konvois, Signalverzögerung ist die Länge der Strecke">
+            <defs>
+              <marker id="arr-k1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+              <marker id="arr-k2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+
+              <!-- Straße -->
+              <rect x="10" y="100" width="660" height="40" rx="6" fill="#8a94a6" fill-opacity="0.10" stroke="#8a94a6" stroke-dasharray="10 8"/>
+
+              <!-- Auffahrt (= Sender) -->
+              <rect x="10" y="88" width="55" height="64" rx="8" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6" stroke-width="2"/>
+              <text x="37" y="108" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="11">Auffahrt</text>
+              <text x="37" y="122" text-anchor="middle" class="svg-soft" font-size="10">Sender</text>
+
+              <!-- Berlin (= Empfänger) -->
+              <rect x="620" y="88" width="55" height="64" rx="8" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c" stroke-width="2"/>
+              <text x="647" y="108" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="11">Berlin</text>
+              <text x="647" y="122" text-anchor="middle" class="svg-soft" font-size="10">Empfänger</text>
+
+              <!-- Konvoi auf der Straße (Autos) -->
+              <rect x="80" y="106" width="28" height="28" rx="5" fill="#2f6df6" fill-opacity="0.8"/>
+              <text x="94" y="123" text-anchor="middle" fill="#fff" font-size="10">🚗</text>
+              <rect x="114" y="106" width="28" height="28" rx="5" fill="#2f6df6" fill-opacity="0.7"/>
+              <text x="128" y="123" text-anchor="middle" fill="#fff" font-size="10">🚗</text>
+              <rect x="148" y="106" width="28" height="28" rx="5" fill="#2f6df6" fill-opacity="0.6"/>
+              <text x="162" y="123" text-anchor="middle" fill="#fff" font-size="10">🚗</text>
+              <rect x="182" y="106" width="28" height="28" rx="5" fill="#2f6df6" fill-opacity="0.5"/>
+              <text x="196" y="123" text-anchor="middle" fill="#fff" font-size="10">🚗</text>
+              <rect x="216" y="106" width="28" height="28" rx="5" fill="#2f6df6" fill-opacity="0.4"/>
+              <text x="230" y="123" text-anchor="middle" fill="#fff" font-size="10">🚗</text>
+
+              <!-- Doppelpfeil Nachrichtendauer (Länge des Konvois) -->
+              <line x1="80" y1="75" x2="244" y2="75" stroke="#2f6df6" stroke-width="2" marker-end="url(#arr-k1)"/>
+              <line x1="244" y1="75" x2="80" y2="75" stroke="#2f6df6" stroke-width="2" marker-end="url(#arr-k1)"/>
+              <text x="162" y="68" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">t_übertr = L / R</text>
+              <text x="162" y="56" text-anchor="middle" class="svg-soft" font-size="11">Nachrichtendauer = Wie lang ist der Konvoi zeitlich?</text>
+
+              <!-- Doppelpfeil Signalverzögerung (Länge der Strecke) -->
+              <line x1="80" y1="170" x2="620" y2="170" stroke="#12b28c" stroke-width="2" marker-end="url(#arr-k2)"/>
+              <line x1="620" y1="170" x2="80" y2="170" stroke="#12b28c" stroke-width="2" marker-end="url(#arr-k2)"/>
+              <text x="350" y="188" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="12">t_sig = d / v</text>
+              <text x="350" y="202" text-anchor="middle" class="svg-soft" font-size="11">Signalverzögerung = Wie weit ist die Strecke?</text>
+
+              <!-- Trenner Tabelle -->
+              <rect x="10" y="220" width="660" height="80" rx="8" fill="#f5810b" fill-opacity="0.07" stroke="#f5810b" stroke-opacity="0.3"/>
+              <text x="20" y="240" class="svg-ink" font-weight="700" font-size="12">Mehr Autos (größeres Paket):</text>
+              <text x="30" y="258" fill="#2f6df6" font-size="11">→ t_übertr wächst (länger auf der Auffahrt)</text>
+              <text x="30" y="272" fill="#12b28c" font-size="11">→ t_sig bleibt gleich (Strecke München–Berlin ändert sich nicht)</text>
+              <text x="350" y="240" class="svg-ink" font-weight="700" font-size="12">Längere Strecke (größere Distanz):</text>
+              <text x="360" y="258" fill="#2f6df6" font-size="11">→ t_übertr bleibt gleich (Auffahrt dieselbe)</text>
+              <text x="360" y="272" fill="#12b28c" font-size="11">→ t_sig wächst (weiter zu fahren)</text>
+            </g>
+          </svg>
+          <figcaption>Der Konvoi-Vergleich: Nachrichtendauer = Wie lange braucht der Konvoi, um die Auffahrt zu verlassen. Signalverzögerung = Wie lange fährt das erste Auto bis Berlin.</figcaption>
+        </figure>
+
+        <h3>Praktische Szenarien: Was dominiert?</h3>
+
+        <div class="callout callout-info">
+          <div class="c-title">Szenario 1: LAN-Nah (1 Mbit/s, 10 m Kupfer)</div>
+          <p>Paket: 1000 Byte = 8000 bit<br>
+          <strong>t_übertr</strong> = 8000 / 10⁶ = <strong>8 ms</strong> (dominiert!)<br>
+          t_sig = 10 / (2 × 10⁸) = 0,00005 ms (vernachlässigbar)<br>
+          → Hier ist die <strong>Übertragungsrate der Engpass</strong>. Breitband hilft direkt.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Szenario 2: Satellit (10 Mbit/s, 36 000 km)</div>
+          <p>Paket: 1500 Byte = 12 000 bit<br>
+          t_übertr = 12 000 / (10 × 10⁶) = <strong>1,2 ms</strong> (klein)<br>
+          <strong>t_sig</strong> = 36 000 000 / (3 × 10⁸) = <strong>120 ms</strong> (dominiert!)<br>
+          → RTT ≈ 240 ms — Satelliten-Ping ist träge, egal wie schnell die Leitung ist.<br>
+          Für Sliding Window braucht man deshalb große Fenster (w_min ≈ 600 Segmente).</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: Wann was dominiert</div>
+          <p>Kurze Distanz + langsame Leitung → <strong>Nachrichtendauer dominiert</strong>.<br>
+          Lange Distanz + schnelle Leitung → <strong>Signalverzögerung dominiert</strong>.<br>
+          In typischen LANs: Übertragung. Im Internet/Satellit: Signal.</p>
+        </div>
+
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Heim-Netz-Beispiel</h2>
+        <p>Eine typische Klausuraufgabe: Berechne die Ende-zu-Ende-Verzögerung in einem konkreten Netzwerk.
+           Wir rechnen das Standard-Heim-Netz-Beispiel <strong>vollständig durch</strong>.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gegeben: Topologie &amp; Parameter</div>
+          <p>
+            Rechner A → Kupferkabel 20 m → Router → WLAN 10 m → Rechner B<br>
+            Paket: <strong>1500 Byte</strong><br>
+            Kupfer-Übertragungsrate: <strong>100 Mbit/s</strong> &nbsp;|&nbsp; Ausbreitung: <strong>2 × 10⁸ m/s</strong><br>
+            WLAN-Übertragungsrate: <strong>54 Mbit/s</strong> &nbsp;|&nbsp; Ausbreitung: <strong>3 × 10⁸ m/s</strong><br>
+            Verarbeitungsverzögerung Router: <strong>2 µs</strong> &nbsp;|&nbsp; Warteschlange: vernachlässigt
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <strong>Paketgröße in Bit umrechnen:</strong><br>
+            L = 1500 Byte × 8 = <strong>12 000 bit</strong><br>
+            <em>Merke: IMMER zuerst in Bit umrechnen, bevor du durch die Rate dividierst!</em>
+          </li>
+          <li>
+            <strong>Link 1 — Kupferkabel (A → Router):</strong><br>
+            t_übertr1 = 12 000 bit / (100 × 10⁶ bit/s) = <strong>120 µs</strong><br>
+            t_sig1 = 20 m / (2 × 10⁸ m/s) = <strong>0,1 µs</strong>
+          </li>
+          <li>
+            <strong>Router — Verarbeitungsverzögerung:</strong><br>
+            t_verarb = <strong>2 µs</strong> (aus Aufgabe gegeben)<br>
+            <em>Der Router liest den Header, entscheidet wohin, und sendet dann erneut.</em>
+          </li>
+          <li>
+            <strong>Link 2 — WLAN (Router → B):</strong><br>
+            t_übertr2 = 12 000 bit / (54 × 10⁶ bit/s) ≈ <strong>222,2 µs</strong><br>
+            t_sig2 = 10 m / (3 × 10⁸ m/s) ≈ <strong>0,033 µs</strong>
+          </li>
+          <li>
+            <strong>Alles addieren — Gesamtverzögerung:</strong><br>
+            t_gesamt = 120 + 0,1 + 2 + 222,2 + 0,033 ≈ <strong>344,3 µs</strong>
+          </li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Vollständige Rechnung</div>
+          <span class="formula">t_gesamt = t_übertr1 + t_sig1 + t_verarb + t_übertr2 + t_sig2</span>
+          <p>
+            t_übertr1 = 12 000 bit ÷ 10⁸ bit/s = <strong>120,000 µs</strong><br>
+            t_sig1 &nbsp;&nbsp; = 20 m ÷ (2 × 10⁸ m/s) = <strong>0,100 µs</strong><br>
+            t_verarb = <strong>2,000 µs</strong><br>
+            t_übertr2 = 12 000 bit ÷ (54 × 10⁶ bit/s) = <strong>222,222 µs</strong><br>
+            t_sig2 &nbsp;&nbsp; = 10 m ÷ (3 × 10⁸ m/s) = <strong>0,033 µs</strong><br>
+            <br>
+            t_gesamt = 120,000 + 0,100 + 2,000 + 222,222 + 0,033 = <strong>344,355 µs ≈ 344,3 µs</strong>
+          </p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Beobachtung aus dem Beispiel</div>
+          <p>Das WLAN (54 Mbit/s) dominiert mit 222 µs — mehr als Kupfer (120 µs) + Router (2 µs) zusammen.
+             Die Signalverzögerungen (0,1 µs und 0,033 µs) sind <strong>winzig</strong> — im Heim-Netz fast vernachlässigbar.
+             Das ändert sich erst bei langen Distanzen (Satellit, Transatlantik-Kabel).</p>
+        </div>
+
+        <h3>Einheiten-Umrechnung — der Überblick</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Größe</th><th>Umrechnung</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td>1 Byte</td><td>= 8 bit</td><td>1500 B = 12 000 bit</td></tr>
+            <tr><td>1 kbit</td><td>= 10³ bit</td><td>100 kbit/s = 10⁵ bit/s</td></tr>
+            <tr><td>1 Mbit</td><td>= 10⁶ bit</td><td>100 Mbit/s = 10⁸ bit/s</td></tr>
+            <tr><td>1 Gbit</td><td>= 10⁹ bit</td><td>1 Gbit/s = 10⁹ bit/s</td></tr>
+            <tr><td>1 ms</td><td>= 10⁻³ s</td><td>8 ms = 0,008 s</td></tr>
+            <tr><td>1 µs</td><td>= 10⁻⁶ s</td><td>120 µs = 0,000120 s</td></tr>
+            <tr><td>1 ns</td><td>= 10⁻⁹ s</td><td>50 ns = 0,00000005 s</td></tr>
+          </tbody>
+        </table></div>
+
+      </section>
+
+      <!-- ===== VERMITTLUNG ===== -->
+      <section id="vermittlung" class="reveal">
+        <h2>Leitungs- vs. Paketvermittlung</h2>
+        <p>Wie wird eine Nachricht durchs Netz geleitet? Es gibt zwei grundlegend verschiedene Ansätze:</p>
+
+        <!-- SVG 3: Leitungs- vs. Paketvermittlung -->
+        <figure class="diagram">
+          <div class="diagram-title">Leitungsvermittlung vs. Paketvermittlung im Vergleich</div>
+          <svg viewBox="0 0 700 360" width="700" role="img" aria-label="Links: Leitungsvermittlung mit reservierter Leitung. Rechts: Paketvermittlung mit geteilten Paketen.">
+            <defs>
+              <marker id="arr-lv" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/>
+              </marker>
+              <marker id="arr-pv" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+
+              <!-- Leitungsvermittlung (links) -->
+              <rect x="10" y="10" width="320" height="300" rx="10" fill="#f5810b" fill-opacity="0.07" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="170" y="34" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="15">Leitungsvermittlung</text>
+              <text x="170" y="50" text-anchor="middle" class="svg-soft" font-size="11">wie ein Telefonanruf ☎️</text>
+
+              <!-- Sender, Switch 1, Switch 2, Empfänger -->
+              <circle cx="45" cy="110" r="18" fill="#f5810b" fill-opacity="0.25" stroke="#f5810b" stroke-width="2"/>
+              <text x="45" y="114" text-anchor="middle" class="svg-ink" font-size="11" font-weight="700">A</text>
+              <circle cx="160" cy="90" r="16" fill="#f5810b" fill-opacity="0.2" stroke="#f5810b"/>
+              <text x="160" y="94" text-anchor="middle" class="svg-ink" font-size="11">SW1</text>
+              <circle cx="250" cy="130" r="16" fill="#f5810b" fill-opacity="0.2" stroke="#f5810b"/>
+              <text x="250" y="134" text-anchor="middle" class="svg-ink" font-size="11">SW2</text>
+              <circle cx="310" cy="110" r="18" fill="#f5810b" fill-opacity="0.25" stroke="#f5810b" stroke-width="2"/>
+              <text x="310" y="114" text-anchor="middle" class="svg-ink" font-size="11" font-weight="700">B</text>
+
+              <!-- Reservierte Leitung -->
+              <line x1="63" y1="110" x2="144" y2="95" stroke="#f5810b" stroke-width="5" stroke-opacity="0.7"/>
+              <line x1="176" y1="98" x2="234" y2="123" stroke="#f5810b" stroke-width="5" stroke-opacity="0.7"/>
+              <line x1="266" y1="125" x2="292" y2="115" stroke="#f5810b" stroke-width="5" stroke-opacity="0.7"/>
+              <text x="170" y="165" text-anchor="middle" fill="#f5810b" font-size="11" font-weight="700">Reservierte Leitung</text>
+              <text x="170" y="180" text-anchor="middle" class="svg-soft" font-size="11">(gehört A↔B für die gesamte Dauer)</text>
+
+              <!-- Andere Nutzer wollen auch -->
+              <circle cx="45" cy="220" r="14" fill="#8a94a6" fill-opacity="0.3" stroke="#8a94a6"/>
+              <text x="45" y="224" text-anchor="middle" class="svg-soft" font-size="10">C</text>
+              <line x1="59" y1="220" x2="144" y2="100" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <text x="80" y="198" class="svg-soft" font-size="10">wartet …</text>
+
+              <!-- Eigenschaften -->
+              <rect x="20" y="248" width="300" height="52" rx="8" fill="#f5810b" fill-opacity="0.10"/>
+              <text x="30" y="266" class="svg-ink" font-size="11">✅ Garantierte Bandbreite &amp; feste Latenz</text>
+              <text x="30" y="282" class="svg-ink" font-size="11">✅ Kein Paketverlust während Übertragung</text>
+              <text x="30" y="296" class="svg-ink" font-size="11">⚠️ Ressourcen blockiert auch bei Pause</text>
+
+              <!-- Trennlinie -->
+              <line x1="345" y1="10" x2="345" y2="350" stroke="#8a94a6" stroke-width="1" stroke-dasharray="6 5"/>
+
+              <!-- Paketvermittlung (rechts) -->
+              <rect x="360" y="10" width="330" height="300" rx="10" fill="#8b5cf6" fill-opacity="0.07" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="525" y="34" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="15">Paketvermittlung</text>
+              <text x="525" y="50" text-anchor="middle" class="svg-soft" font-size="11">wie das Internet 📦</text>
+
+              <!-- Router -->
+              <circle cx="390" cy="110" r="18" fill="#8b5cf6" fill-opacity="0.25" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="390" y="114" text-anchor="middle" class="svg-ink" font-size="11" font-weight="700">A</text>
+              <circle cx="510" cy="90" r="16" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6"/>
+              <text x="510" y="94" text-anchor="middle" class="svg-ink" font-size="11">R1</text>
+              <circle cx="590" cy="130" r="16" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6"/>
+              <text x="590" y="134" text-anchor="middle" class="svg-ink" font-size="11">R2</text>
+              <circle cx="665" cy="110" r="18" fill="#8b5cf6" fill-opacity="0.25" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="665" y="114" text-anchor="middle" class="svg-ink" font-size="11" font-weight="700">B</text>
+
+              <!-- Pakete mit Nummern -->
+              <rect x="402" y="100" width="26" height="18" rx="4" fill="#8b5cf6" fill-opacity="0.8"/>
+              <text x="415" y="112" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">P1</text>
+              <rect x="430" y="97" width="26" height="18" rx="4" fill="#8b5cf6" fill-opacity="0.6"/>
+              <text x="443" y="109" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">P2</text>
+              <rect x="460" y="93" width="26" height="18" rx="4" fill="#8b5cf6" fill-opacity="0.4"/>
+              <text x="473" y="105" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">P3</text>
+
+              <text x="525" y="165" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="700">Pakete teilen sich die Leitung</text>
+              <text x="525" y="180" text-anchor="middle" class="svg-soft" font-size="11">(Statistical Multiplexing)</text>
+
+              <!-- C sendet auch -->
+              <circle cx="390" cy="220" r="14" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6"/>
+              <text x="390" y="224" text-anchor="middle" class="svg-ink" font-size="10">C</text>
+              <rect x="406" y="214" width="26" height="14" rx="3" fill="#12b28c" fill-opacity="0.8"/>
+              <text x="419" y="224" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">Q1</text>
+              <line x1="432" y1="220" x2="494" y2="100" stroke="#12b28c" stroke-width="1.5" marker-end="url(#arr-pv)"/>
+              <text x="455" y="175" class="svg-soft" font-size="10" transform="rotate(-55,455,175)">C sendet auch</text>
+
+              <!-- Eigenschaften -->
+              <rect x="370" y="248" width="310" height="52" rx="8" fill="#8b5cf6" fill-opacity="0.10"/>
+              <text x="380" y="266" class="svg-ink" font-size="11">✅ Flexibel, effizient bei bursty Traffic</text>
+              <text x="380" y="282" class="svg-ink" font-size="11">✅ Kein Verbindungsaufbau nötig</text>
+              <text x="380" y="296" class="svg-ink" font-size="11">⚠️ Paketverlust möglich, variable Latenz</text>
+            </g>
+          </svg>
+          <figcaption>Links: Leitungsvermittlung reserviert eine dedizierte Leitung für A↔B. Rechts: Paketvermittlung teilt die Leitung flexibel zwischen allen Nutzern (Statistical Multiplexing).</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Aspekt</th><th>Leitungsvermittlung</th><th>Paketvermittlung</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Verbindungsaufbau</strong></td><td>Ja (vorher)</td><td>Nein</td></tr>
+            <tr><td><strong>Bandbreite</strong></td><td>Reserviert, dediziert</td><td>Geteilt, dynamisch</td></tr>
+            <tr><td><strong>Paketverlust</strong></td><td>Nein (Leitung reserviert)</td><td>Möglich (Queue-Überlauf)</td></tr>
+            <tr><td><strong>Latenz</strong></td><td>Konstant &amp; vorhersagbar</td><td>Variabel</td></tr>
+            <tr><td><strong>Reihenfolge</strong></td><td>Garantiert</td><td>Nicht garantiert</td></tr>
+            <tr><td><strong>Beispiel</strong></td><td>Klassisches Telefonnetz</td><td>Internet (IP)</td></tr>
+            <tr><td><strong>Optimal für</strong></td><td>Konstante Rate, lange Übertragung</td><td>Stoßweiser Verkehr (bursty)</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Wann welche Vermittlung?</h3>
+
+        <!-- SVG 4: Wann Leitungs- vs. Paketvermittlung -->
+        <figure class="diagram">
+          <div class="diagram-title">Verkehrsmuster entscheidet: Bursty vs. konstant</div>
+          <svg viewBox="0 0 660 220" width="660" role="img" aria-label="Oben: bursty Traffic-Muster, besser für Paketvermittlung. Unten: konstanter Traffic, besser für Leitungsvermittlung.">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Zeitachse -->
+              <text x="20" y="22" class="svg-soft" font-size="11">Traffic-Muster</text>
+              <line x1="20" y1="30" x2="640" y2="30" stroke="#8a94a6" stroke-width="1"/>
+
+              <!-- Bursty Traffic -->
+              <text x="20" y="58" fill="#8b5cf6" font-weight="700" font-size="12">Bursty (stoßweise):</text>
+              <!-- Balken -->
+              <rect x="130" y="42" width="30" height="28" rx="3" fill="#8b5cf6" fill-opacity="0.8"/>
+              <rect x="175" y="48" width="20" height="22" rx="3" fill="#8b5cf6" fill-opacity="0.6"/>
+              <rect x="280" y="40" width="50" height="30" rx="3" fill="#8b5cf6" fill-opacity="0.8"/>
+              <rect x="420" y="44" width="25" height="26" rx="3" fill="#8b5cf6" fill-opacity="0.6"/>
+              <rect x="530" y="38" width="60" height="32" rx="3" fill="#8b5cf6" fill-opacity="0.8"/>
+              <text x="640" y="62" text-anchor="end" fill="#8b5cf6" font-weight="700" font-size="11">→ Paketvermittlung</text>
+              <!-- Lücken markieren -->
+              <line x1="210" y1="55" x2="275" y2="55" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <text x="242" y="50" text-anchor="middle" class="svg-soft" font-size="10">Pause</text>
+
+              <!-- Trennlinie -->
+              <line x1="20" y1="90" x2="640" y2="90" stroke="#8a94a6" stroke-width="1" stroke-dasharray="5 5"/>
+
+              <!-- Konstanter Traffic -->
+              <text x="20" y="118" fill="#f5810b" font-weight="700" font-size="12">Konstant:</text>
+              <rect x="130" y="100" width="500" height="26" rx="3" fill="#f5810b" fill-opacity="0.4" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="380" y="118" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="11">gleichmäßiger Datenstrom</text>
+              <text x="640" y="120" text-anchor="end" fill="#f5810b" font-weight="700" font-size="11">→ Leitungsvermittlung</text>
+
+              <!-- Erklärung -->
+              <rect x="20" y="145" width="620" height="60" rx="8" fill="#8a94a6" fill-opacity="0.08"/>
+              <text x="330" y="165" text-anchor="middle" class="svg-ink" font-size="12">Bei bursty Traffic liegt die Leitung oft leer — Leitungsvermittlung verschwendet reservierte Ressourcen.</text>
+              <text x="330" y="184" text-anchor="middle" class="svg-ink" font-size="12">Paketvermittlung nutzt Pausen anderer Teilnehmer (Statistical Multiplexing) → effizienter.</text>
+              <text x="330" y="203" text-anchor="middle" class="svg-soft" font-size="11">⚠️ Aber: Wenn viele gleichzeitig senden → Queue-Überlauf → Paketverlust!</text>
+            </g>
+          </svg>
+          <figcaption>Bursty Verkehr profitiert von Paketvermittlung; konstante Datenströme (z. B. VoIP) bevorzugen Leitungsvermittlung mit garantierter Bandbreite.</figcaption>
+        </figure>
+
+        <h3>Paketverlust durch Burstiness</h3>
+        <div class="callout callout-warning">
+          <div class="c-title">Achtung: Paketverlust auch bei ausreichender Kapazität!</div>
+          <p>Auch wenn die Link-Kapazität <em>im Durchschnitt</em> größer ist als die Summe aller Raten, können
+             Pakete verloren gehen: Wenn mehrere Applikationen <strong>gleichzeitig</strong> senden, läuft die
+             Router-Queue voll und Pakete werden verworfen.<br>
+             → <strong>Statistical Multiplexing erfordert Puffer — und Puffer können überlaufen.</strong></p>
+        </div>
+
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>1500 B ÷ 100 Mbit/s = 1500 ÷ 10⁸ = 15 µs</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ERST in Bit umrechnen: 1500 B × 8 = 12 000 bit. Dann: 12 000 ÷ 10⁸ = <strong>120 µs</strong>. Byte ≠ Bit!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Größeres Paket = längere Signalverzögerung.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Signalverzögerung hängt <strong>nur von Distanz und Ausbreitungsgeschwindigkeit</strong> ab (t_sig = d/v). Die Paketgröße ist egal. Größeres Paket → längere <em>Nachrichtendauer</em> (t_übertr).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Funk hat dieselbe Ausbreitungsgeschwindigkeit wie Kupfer (2 × 10⁸ m/s).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Funk breitet sich mit Lichtgeschwindigkeit aus: <strong>3 × 10⁸ m/s</strong>. Kupfer und Glasfaser: <strong>2 × 10⁸ m/s</strong>.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein Paket über 2 Links: t_übertr nur einmal zählen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Pro Link wird das Paket <strong>neu ins Medium getaktet</strong>: Der Router empfängt und sendet dann erneut. Also: <strong>pro Link einmal t_übertr + einmal t_sig</strong>.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>t_gesamt = t_übertr1 + t_sig1 + t_übertr2 + t_sig2 (Router vergessen)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>PRO Router kommt <strong>t_verarb dazu</strong>: t_gesamt = t_übertr1 + t_sig1 + <strong>t_verarb</strong> + t_übertr2 + t_sig2</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>TCP nutzt Leitungsvermittlung, weil es verbindungsorientiert ist.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>TCP ist <strong>logisch verbindungsorientiert</strong> (Handshake), aber nutzt physisch <strong>Paketvermittlung</strong> (IP). Verbindungsorientiert ≠ Leitungsvermittlung!</div>
+        </div>
+
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Die 4 Verzögerungsarten</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Verzögerung</th><th>Formel</th><th>Hängt ab von</th><th>Wo?</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Signalverzögerung</strong> t_sig</td>
+                <td>d / v</td>
+                <td>Distanz, Ausbreitungsgeschw.</td>
+                <td>Kabel / Funk</td>
+              </tr>
+              <tr>
+                <td><strong>Nachrichtendauer</strong> t_übertr</td>
+                <td>L / R</td>
+                <td>Paketgröße (in bit!), Rate</td>
+                <td>Sender / Router</td>
+              </tr>
+              <tr>
+                <td><strong>Verarbeitungsverzögerung</strong> t_verarb</td>
+                <td>gegeben (konst.)</td>
+                <td>Router-Hardware</td>
+                <td>Knoten</td>
+              </tr>
+              <tr>
+                <td><strong>Warteschlangenverzögerung</strong> t_queue</td>
+                <td>variabel</td>
+                <td>Auslastung der Queue</td>
+                <td>Knoten</td>
+              </tr>
+            </tbody>
+          </table></div>
+
+          <h4>Standardwerte Ausbreitungsgeschwindigkeit</h4>
+          <div class="factgrid">
+            <div class="fact"><b>2 × 10⁸ m/s</b><span>Kupfer</span></div>
+            <div class="fact"><b>2 × 10⁸ m/s</b><span>Glasfaser</span></div>
+            <div class="fact"><b>3 × 10⁸ m/s</b><span>Funk / Luft</span></div>
+          </div>
+
+          <h4>Berechnungs-Cheatsheet</h4>
+          <pre class="code">t_übertr = L [bit] / R [bit/s]     → Sekunden (1 Byte = 8 bit!)
+t_sig    = d [m]  / v [m/s]        → Sekunden
+t_verarb = gegeben (µs)            → aus Aufgabenstellung
+t_queue  = oft vernachlässigt
+
+t_gesamt = Σ links (t_übertr + t_sig) + Σ router (t_verarb + t_queue)</pre>
+
+          <h4>Heim-Netz-Ergebnis (1500 B, 100 Mbit/s Kupfer + 54 Mbit/s WLAN, 2 µs Router)</h4>
+          <pre class="code">t_übertr1 = 12000 / 10⁸       = 120,000 µs
+t_sig1    = 20 / (2×10⁸)      =   0,100 µs
+t_verarb  = 2 µs               =   2,000 µs
+t_übertr2 = 12000 / (54×10⁶)  = 222,222 µs
+t_sig2    = 10 / (3×10⁸)      =   0,033 µs
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+t_gesamt                       ≈ 344,3 µs</pre>
+
+          <h4>Vermittlungsarten im Vergleich</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Aspekt</th><th>Leitungsvermittlung</th><th>Paketvermittlung</th></tr></thead>
+            <tbody>
+              <tr><td>Aufbau</td><td>Ja</td><td>Nein</td></tr>
+              <tr><td>Bandbreite</td><td>Reserviert</td><td>Geteilt</td></tr>
+              <tr><td>Verluste</td><td>Nein</td><td>Möglich</td></tr>
+              <tr><td>Latenz</td><td>Konstant</td><td>Variabel</td></tr>
+              <tr><td>Beispiel</td><td>Telefonnetz</td><td>Internet (IP)</td></tr>
+              <tr><td>Besser für</td><td>Konstante Rate, lang</td><td>Bursty Traffic</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Übertragung</strong> = WIE LANGE Bits ins Medium getaktet werden (Sender-seitig, hängt von L und R ab)</li>
+            <li><strong>Signal</strong> = WIE LANGE das Signal physikalisch unterwegs ist (Medium-seitig, hängt von d und v ab)</li>
+            <li><strong>Pro Link:</strong> einmal t_übertr + einmal t_sig</li>
+            <li><strong>Pro Router:</strong> einmal t_verarb + ggf. t_queue</li>
+            <li><strong>IMMER</strong> Byte → Bit umrechnen (× 8) BEVOR du durch die Rate dividierst!</li>
+            <li><strong>TCP ≠ Leitungsvermittlung</strong> — TCP ist logisch verbindungsorientiert, physisch Paketvermittlung</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="04-osi-modell.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">OSI- &amp; Internet-Referenzmodell</div>
+        </a>
+        <a class="next" href="06-handshakes.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Verbindungsmanagement: Handshakes</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

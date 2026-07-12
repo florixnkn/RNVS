@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OSI- &amp; Internet-Referenzmodell (PDU/SDU) · RNVS</title>
+<meta name="description" content="Das OSI-Modell mit 7 Schichten und das Internet-Referenzmodell mit 4 Schichten – einfach erklärt: PDU, SDU, PCI, ICI, Peer-Kommunikation, Schnittbildung und Klausur-Tipps." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 04</div>
+    <span class="th-icon">🏛️</span>
+    <h1>OSI- &amp; Internet-Referenzmodell (PDU/SDU)</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausurrelevant</span><span class="badge badge-blatt">Blatt 3</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie &amp; Konzepte</a></li>
+        <li><a href="#schritt">Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Damit Computer weltweit miteinander kommunizieren können, brauchen wir ein gemeinsames
+          Regelwerk — ein <strong>Referenzmodell</strong>. Das OSI-Modell teilt diese Aufgabe in
+          <strong>7 sauber getrennte Schichten</strong>, das Internet-Modell komprimiert das Ganze auf
+          <strong>4 Schichten</strong>. Beide erklären, wie Daten von einer App über Kabel und Router
+          bis zur App auf der Gegenseite wandern.</p>
+        <p>Außerdem lernst du, was <strong>PDU, SDU und PCI</strong> bedeuten — die Grundvokabeln für jeden Klausur-Aufgabentyp rund ums Schichtenmodell.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du schickst einen Brief. Sieben „Abteilungen" arbeiten nacheinander daran:
+            (7) Du <em>schreibst</em> den Brief · (6) Er wird <em>formatiert und in Kurzschrift übersetzt</em> ·
+            (5) Ein <em>Termin</em> für die Übergabe wird vereinbart · (4) Der Brief wird in einen
+            <em>Umschlag mit Absender/Empfänger</em> gesteckt · (3) Die <em>Postroute</em> wird geplant ·
+            (2) Ein <em>lokaler Postbote</em> nimmt ihn mit · (1) Der Brief wird als
+            <em>physisches Signal</em> (Licht im Glasfaser-Kabel) übertragen.
+            Jede Abteilung kennt nur ihren eigenen Job — genau so funktionieren die 7 OSI-Schichten.
+            Auf der Empfängerseite läuft der Prozess rückwärts ab: jede Schicht packt ihr eigenes
+            „Etikett" wieder ab, bis oben der Inhalt ankommt.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie &amp; Konzepte</h2>
+
+        <!-- ---- OSI 7 Schichten ---- -->
+        <h3>Das OSI-Referenzmodell (7 Schichten)</h3>
+        <p>Das OSI-Modell (<em>Open Systems Interconnection</em>) wurde von der ISO entwickelt, um Netzwerkstandards
+          herstellerunabhängig zu definieren. Es zerlegt die Netzwerkkommunikation in <strong>7 Schichten</strong>,
+          jede mit klarer Aufgabe, eigenem PDU-Namen und eigenen Protokollen.</p>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merkspruch (von Schicht 7 bis 1)</div>
+          <p><strong>„Alle Priester Saufen Tequila Vor Sieben Bleibender"</strong><br/>
+          A=Anwendung (7) · P=Darstellung (6) · S=Sitzung (5) · T=Transport (4) · V=Vermittlung (3) · S=Sicherung (2) · B=Bitübertragung (1)</p>
+        </div>
+
+        <figure class="diagram">
+          <div class="diagram-title">Die 7 OSI-Schichten als Stapel</div>
+          <svg viewBox="0 0 680 360" width="680" role="img" aria-label="7 OSI-Schichten als farbige Rechtecke von Anwendung bis Bitübertragung">
+            <defs>
+              <marker id="arr-grey" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+
+              <!-- Schicht 7: Anwendung -->
+              <rect x="20" y="20" width="640" height="40" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="42" y="45" class="svg-ink" font-weight="700" font-size="15" fill="#2f6df6">7</text>
+              <text x="230" y="45" text-anchor="middle" class="svg-ink" font-weight="700">Anwendung · Application</text>
+              <text x="530" y="38" text-anchor="middle" class="svg-soft" font-size="11">PDU: Message</text>
+              <text x="530" y="52" text-anchor="middle" class="svg-soft" font-size="11">HTTP, FTP, SMTP, DNS</text>
+
+              <!-- Schicht 6: Darstellung -->
+              <rect x="20" y="68" width="640" height="40" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="42" y="93" class="svg-ink" font-weight="700" font-size="15" fill="#8b5cf6">6</text>
+              <text x="230" y="93" text-anchor="middle" class="svg-ink" font-weight="700">Darstellung · Presentation</text>
+              <text x="530" y="86" text-anchor="middle" class="svg-soft" font-size="11">PDU: Message</text>
+              <text x="530" y="100" text-anchor="middle" class="svg-soft" font-size="11">TLS/SSL, JPEG, ASCII</text>
+
+              <!-- Schicht 5: Sitzung -->
+              <rect x="20" y="116" width="640" height="40" rx="8" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="42" y="141" class="svg-ink" font-weight="700" font-size="15" fill="#12b28c">5</text>
+              <text x="230" y="141" text-anchor="middle" class="svg-ink" font-weight="700">Sitzung · Session</text>
+              <text x="530" y="134" text-anchor="middle" class="svg-soft" font-size="11">PDU: Message</text>
+              <text x="530" y="148" text-anchor="middle" class="svg-soft" font-size="11">NetBIOS, RPC</text>
+
+              <!-- Schicht 4: Transport -->
+              <rect x="20" y="164" width="640" height="40" rx="8" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="42" y="189" class="svg-ink" font-weight="700" font-size="15" fill="#f5810b">4</text>
+              <text x="230" y="189" text-anchor="middle" class="svg-ink" font-weight="700">Transport · Transport</text>
+              <text x="530" y="182" text-anchor="middle" class="svg-soft" font-size="11">PDU: Segment / Datagram</text>
+              <text x="530" y="196" text-anchor="middle" class="svg-soft" font-size="11">TCP, UDP</text>
+
+              <!-- Schicht 3: Vermittlung -->
+              <rect x="20" y="212" width="640" height="40" rx="8" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="42" y="237" class="svg-ink" font-weight="700" font-size="15" fill="#e0483d">3</text>
+              <text x="230" y="237" text-anchor="middle" class="svg-ink" font-weight="700">Vermittlung · Network</text>
+              <text x="530" y="230" text-anchor="middle" class="svg-soft" font-size="11">PDU: Paket</text>
+              <text x="530" y="244" text-anchor="middle" class="svg-soft" font-size="11">IP (v4/v6), ICMP</text>
+
+              <!-- Schicht 2: Sicherung -->
+              <rect x="20" y="260" width="640" height="40" rx="8" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="42" y="285" class="svg-ink" font-weight="700" font-size="15" fill="#0e8a6e">2</text>
+              <text x="230" y="285" text-anchor="middle" class="svg-ink" font-weight="700">Sicherung · Data Link</text>
+              <text x="530" y="278" text-anchor="middle" class="svg-soft" font-size="11">PDU: Frame</text>
+              <text x="530" y="292" text-anchor="middle" class="svg-soft" font-size="11">Ethernet, WLAN (802.11)</text>
+
+              <!-- Schicht 1: Bitübertragung -->
+              <rect x="20" y="308" width="640" height="40" rx="8" fill="#8a94a6" fill-opacity="0.20" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="42" y="333" class="svg-ink" font-weight="700" font-size="15" fill="#8a94a6">1</text>
+              <text x="230" y="333" text-anchor="middle" class="svg-ink" font-weight="700">Bitübertragung · Physical</text>
+              <text x="530" y="326" text-anchor="middle" class="svg-soft" font-size="11">PDU: Bits / Signale</text>
+              <text x="530" y="340" text-anchor="middle" class="svg-soft" font-size="11">Kupfer, Glasfaser, Funk</text>
+
+              <!-- Trennlinie Protokollebene / Transportebene -->
+              <line x1="20" y1="156" x2="660" y2="156" stroke="#8a94a6" stroke-width="1" stroke-dasharray="4 4"/>
+              <text x="660" y="153" text-anchor="end" class="svg-soft" font-size="10">Protokollschicht</text>
+              <text x="660" y="170" text-anchor="end" class="svg-soft" font-size="10">Transportschicht</text>
+            </g>
+          </svg>
+          <figcaption>Die 7 OSI-Schichten von oben (Anwendung) nach unten (Bitübertragung) – jede hat einen klaren Job und einen eigenen PDU-Namen.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>#</th><th>Schicht (DE)</th><th>Schicht (EN)</th><th>Hauptaufgabe</th><th>Protokolle</th><th>PDU-Name</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>7</strong></td><td>Anwendung</td><td>Application</td><td>Dienste für Apps</td><td>HTTP, FTP, SMTP, DNS</td><td>Message</td></tr>
+            <tr><td><strong>6</strong></td><td>Darstellung</td><td>Presentation</td><td>Format, Verschlüsselung, Kompression</td><td>TLS/SSL, JPEG, ASCII</td><td>Message</td></tr>
+            <tr><td><strong>5</strong></td><td>Sitzung</td><td>Session</td><td>Sitzungsverwaltung</td><td>NetBIOS, RPC</td><td>Message</td></tr>
+            <tr><td><strong>4</strong></td><td>Transport</td><td>Transport</td><td>Ende-zu-Ende-Übertragung</td><td>TCP, UDP</td><td>Segment / Datagram</td></tr>
+            <tr><td><strong>3</strong></td><td>Vermittlung</td><td>Network</td><td>Routing, Adressierung</td><td>IP (v4/v6), ICMP</td><td>Paket</td></tr>
+            <tr><td><strong>2</strong></td><td>Sicherung</td><td>Data Link</td><td>Frames, MAC, Fehlererkennung</td><td>Ethernet, WLAN (802.11)</td><td>Frame</td></tr>
+            <tr><td><strong>1</strong></td><td>Bitübertragung</td><td>Physical</td><td>Bits über Medium</td><td>Kupfer, Glasfaser, Funk</td><td>Bits / Signale</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- ---- Internet-Referenzmodell ---- -->
+        <h3>Das Internet-Referenzmodell (4 Schichten)</h3>
+        <p>Das Internet-Modell (auch TCP/IP-Modell genannt) ist <strong>schlanker</strong> als OSI und
+          spiegelt besser wider, wie das Internet tatsächlich gebaut ist. Es fasst die OSI-Schichten 5, 6
+          und 7 zur „Anwendung" zusammen und die Schichten 1 und 2 zum „Netzanschluss".</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">OSI ↔ Internet-Referenzmodell: Zuordnung der Schichten</div>
+          <svg viewBox="0 0 640 340" width="640" role="img" aria-label="OSI-Modell links mit 7 Schichten, Internet-Modell rechts mit 4 Schichten, verbunden durch Klammern">
+            <defs>
+              <marker id="arr-map" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+
+              <!-- OSI Spalte Überschrift -->
+              <text x="130" y="18" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">OSI-Modell</text>
+
+              <!-- OSI Schicht 7 -->
+              <rect x="20" y="28" width="220" height="36" rx="6" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6"/>
+              <text x="130" y="51" text-anchor="middle" class="svg-ink" font-weight="600">7 · Anwendung</text>
+
+              <!-- OSI Schicht 6 -->
+              <rect x="20" y="70" width="220" height="36" rx="6" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6"/>
+              <text x="130" y="93" text-anchor="middle" class="svg-ink" font-weight="600">6 · Darstellung</text>
+
+              <!-- OSI Schicht 5 -->
+              <rect x="20" y="112" width="220" height="36" rx="6" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c"/>
+              <text x="130" y="135" text-anchor="middle" class="svg-ink" font-weight="600">5 · Sitzung</text>
+
+              <!-- OSI Schicht 4 -->
+              <rect x="20" y="160" width="220" height="36" rx="6" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b"/>
+              <text x="130" y="183" text-anchor="middle" class="svg-ink" font-weight="600">4 · Transport</text>
+
+              <!-- OSI Schicht 3 -->
+              <rect x="20" y="202" width="220" height="36" rx="6" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d"/>
+              <text x="130" y="225" text-anchor="middle" class="svg-ink" font-weight="600">3 · Vermittlung</text>
+
+              <!-- OSI Schicht 2 -->
+              <rect x="20" y="244" width="220" height="36" rx="6" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c"/>
+              <text x="130" y="267" text-anchor="middle" class="svg-ink" font-weight="600">2 · Sicherung</text>
+
+              <!-- OSI Schicht 1 -->
+              <rect x="20" y="286" width="220" height="36" rx="6" fill="#8a94a6" fill-opacity="0.18" stroke="#8a94a6"/>
+              <text x="130" y="309" text-anchor="middle" class="svg-ink" font-weight="600">1 · Bitübertragung</text>
+
+              <!-- Internet Spalte Überschrift -->
+              <text x="510" y="18" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">Internet-Modell</text>
+
+              <!-- Internet: Anwendung (= OSI 5+6+7) -->
+              <rect x="400" y="28" width="220" height="120" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="510" y="82" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14" fill="#2f6df6">Anwendung</text>
+              <text x="510" y="100" text-anchor="middle" class="svg-soft" font-size="11">HTTP, DNS, TLS</text>
+              <text x="510" y="116" text-anchor="middle" class="svg-soft" font-size="11">= OSI 5 + 6 + 7</text>
+
+              <!-- Internet: Transport (= OSI 4) -->
+              <rect x="400" y="160" width="220" height="36" rx="8" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="510" y="180" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13" fill="#f5810b">Transport</text>
+              <text x="510" y="192" text-anchor="middle" class="svg-soft" font-size="10">TCP, UDP · = OSI 4</text>
+
+              <!-- Internet: Vermittlung (= OSI 3) -->
+              <rect x="400" y="202" width="220" height="36" rx="8" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d" stroke-width="2"/>
+              <text x="510" y="222" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13" fill="#e0483d">Vermittlung</text>
+              <text x="510" y="234" text-anchor="middle" class="svg-soft" font-size="10">IP, ICMP · = OSI 3</text>
+
+              <!-- Internet: Netzanschluss (= OSI 1+2) -->
+              <rect x="400" y="244" width="220" height="78" rx="8" fill="#8a94a6" fill-opacity="0.18" stroke="#8a94a6" stroke-width="2"/>
+              <text x="510" y="278" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13" fill="#8a94a6">Netzanschluss</text>
+              <text x="510" y="296" text-anchor="middle" class="svg-soft" font-size="11">Ethernet, WLAN</text>
+              <text x="510" y="312" text-anchor="middle" class="svg-soft" font-size="10">= OSI 1 + 2</text>
+
+              <!-- Verbindungslinien: Klammern in der Mitte -->
+              <!-- OSI 7+6+5 → Internet Anwendung: Linie von rechts Mitte OSI 5-7 bis links Mitte Internet Anwendung -->
+              <line x1="240" y1="46" x2="260" y2="46" stroke="#2f6df6" stroke-width="1.5"/>
+              <line x1="240" y1="88" x2="260" y2="88" stroke="#2f6df6" stroke-width="1.5"/>
+              <line x1="240" y1="130" x2="260" y2="130" stroke="#2f6df6" stroke-width="1.5"/>
+              <!-- vertikale Klammer links -->
+              <line x1="260" y1="46" x2="260" y2="130" stroke="#2f6df6" stroke-width="1.5"/>
+              <!-- horizontaler Pfeil zur Internet-Box -->
+              <line x1="260" y1="88" x2="395" y2="88" stroke="#2f6df6" stroke-width="1.5" marker-end="url(#arr-map)"/>
+
+              <!-- OSI 4 → Internet Transport -->
+              <line x1="240" y1="178" x2="395" y2="178" stroke="#f5810b" stroke-width="1.5" marker-end="url(#arr-map)"/>
+
+              <!-- OSI 3 → Internet Vermittlung -->
+              <line x1="240" y1="220" x2="395" y2="220" stroke="#e0483d" stroke-width="1.5" marker-end="url(#arr-map)"/>
+
+              <!-- OSI 2+1 → Internet Netzanschluss -->
+              <line x1="240" y1="262" x2="260" y2="262" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="240" y1="304" x2="260" y2="304" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="260" y1="262" x2="260" y2="304" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="260" y1="283" x2="395" y2="283" stroke="#8a94a6" stroke-width="1.5" marker-end="url(#arr-map)"/>
+            </g>
+          </svg>
+          <figcaption>OSI links, Internet rechts: OSI 5+6+7 verschmelzen zur Internet-Anwendungsschicht, OSI 1+2 werden zum Netzanschluss.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Schicht</th><th>Aufgabe</th><th>OSI-Äquivalent</th><th>Beispiele</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Anwendung</strong></td><td>App-Protokolle + Codierung + Session</td><td>OSI 5+6+7</td><td>HTTP, DNS, TLS</td></tr>
+            <tr><td><strong>Transport</strong></td><td>Ende-zu-Ende (TCP/UDP)</td><td>OSI 4</td><td>TCP, UDP</td></tr>
+            <tr><td><strong>Vermittlung</strong></td><td>Routing (IP)</td><td>OSI 3</td><td>IP, ICMP</td></tr>
+            <tr><td><strong>Netzanschluss</strong></td><td>Lokales Netz</td><td>OSI 1+2</td><td>Ethernet, WLAN</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-info">
+          <div class="c-title">OSI vs. Internet – Anwendungsschicht</div>
+          <p>Im OSI-Modell sind <strong>Sitzung (5)</strong>, <strong>Darstellung (6)</strong> und
+            <strong>Anwendung (7)</strong> getrennte Schichten. Im Internet-Modell macht das alles die
+            <strong>Anwendung selbst</strong> — z.&nbsp;B. ist TLS die Verschlüsselung direkt in der App
+            (kein gesonderter OSI-Layer 6), und JSON ist das Format direkt in der App (kein gesonderter OSI-Layer 6).
+            In der Praxis sind Schichten 5 und 6 bei OSI oft leer.</p>
+        </div>
+
+        <!-- ---- PDU, SDU, PCI, ICI, IDU ---- -->
+        <h3>PDU, SDU, PCI, ICI und IDU</h3>
+        <p>Jede Schicht verpackt die Daten der darüberliegenden Schicht in ihr eigenes „Paket" —
+          dafür brauchen wir präzise Begriffe:</p>
+
+        <ul>
+          <li><strong>SDU</strong> = <em>Service Data Unit</em> = die Nutzdaten, die von oben reinkommen
+            (der <strong>Inhalt</strong> des Briefes, z.&nbsp;B. der HTTP-Body)</li>
+          <li><strong>PCI</strong> = <em>Protocol Control Information</em> = der Header, den <em>diese</em>
+            Schicht selbst draufschreibt (der Aufkleber auf dem Umschlag: Absender, Empfänger, Porto)</li>
+          <li><strong>PDU</strong> = <em>Protocol Data Unit</em> = SDU + PCI = das fertige Paket dieser Schicht
+            (der versiegelte Umschlag, z.&nbsp;B. das TCP-Segment)</li>
+          <li><strong>ICI</strong> = <em>Interface Control Information</em> = interne Steuerinfo zwischen
+            benachbarten Schichten, die <strong>NICHT</strong> im Netz übertragen wird
+            (mündliche Anweisung an den Postboten: „Express!")</li>
+          <li><strong>IDU</strong> = <em>Interface Data Unit</em> = SDU + ICI bei der Übergabe zwischen Schichten</li>
+        </ul>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Die Grundformeln</div>
+          <span class="formula">(N)-PDU = (N)-PCI + (N)-SDU</span>
+          <span class="formula">(N)-SDU = (N+1)-PDU</span>
+          <p><strong>N</strong> steht für die Schicht-Nummer (z.&nbsp;B. 4 = Transport).
+            Die PDU der Schicht N+1 (z.&nbsp;B. HTTP-Nachricht) wird zur SDU der Schicht N (z.&nbsp;B. TCP).
+            TCP fügt seinen Header (PCI) hinzu und erzeugt sein eigenes Segment (PDU).
+            Dieses Segment wird dann wiederum zur SDU der Schicht 3 (IP), die ihren Header draufpackt — und so weiter.</p>
+        </div>
+
+        <figure class="diagram">
+          <div class="diagram-title">PDU-Verschachtelung (Kapselung / Encapsulation)</div>
+          <svg viewBox="0 0 680 320" width="680" role="img" aria-label="Drei Schichten zeigen, wie jede Schicht einen neuen Header hinzufügt: HTTP oben, TCP in der Mitte, IP unten">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+
+              <!-- ---- Schicht 7: Anwendung ---- -->
+              <text x="20" y="30" class="svg-ink" font-weight="700" font-size="13">Anwendung (Schicht 7)</text>
+              <text x="20" y="48" class="svg-soft" font-size="11">SDU = HTTP-Daten</text>
+
+              <!-- HTTP PDU: [HTTP-Header | HTTP-Daten] -->
+              <rect x="200" y="22" width="130" height="34" rx="6" fill="#2f6df6" fill-opacity="0.85"/>
+              <text x="265" y="44" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">HTTP-Header</text>
+              <rect x="332" y="22" width="320" height="34" rx="6" fill="#12b28c" fill-opacity="0.85"/>
+              <text x="492" y="44" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">HTTP-Daten (Body)</text>
+
+              <text x="650" y="35" class="svg-soft" font-size="10" text-anchor="end">HTTP-PDU</text>
+              <text x="650" y="48" class="svg-soft" font-size="10" text-anchor="end">= Message</text>
+
+              <!-- Pfeil nach unten -->
+              <line x1="340" y1="58" x2="340" y2="90" stroke="#8a94a6" stroke-width="2" marker-end="url(#arr-down)"/>
+              <text x="360" y="79" class="svg-soft" font-size="11">wird zur SDU von Schicht 4</text>
+
+              <!-- ---- Schicht 4: Transport ---- -->
+              <text x="20" y="115" class="svg-ink" font-weight="700" font-size="13">Transport (Schicht 4)</text>
+              <text x="20" y="133" class="svg-soft" font-size="11">SDU = komplette HTTP-PDU</text>
+
+              <!-- TCP PDU: [TCP-Header | HTTP-Header | HTTP-Daten] -->
+              <rect x="200" y="107" width="100" height="34" rx="6" fill="#f5810b" fill-opacity="0.90"/>
+              <text x="250" y="129" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">TCP-Header</text>
+              <rect x="302" y="107" width="118" height="34" rx="6" fill="#2f6df6" fill-opacity="0.70"/>
+              <text x="361" y="129" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">HTTP-Header</text>
+              <rect x="422" y="107" width="230" height="34" rx="6" fill="#12b28c" fill-opacity="0.70"/>
+              <text x="537" y="129" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">HTTP-Daten</text>
+
+              <text x="650" y="120" class="svg-soft" font-size="10" text-anchor="end">TCP-PDU</text>
+              <text x="650" y="133" class="svg-soft" font-size="10" text-anchor="end">= Segment</text>
+
+              <!-- Pfeil nach unten -->
+              <line x1="340" y1="143" x2="340" y2="175" stroke="#8a94a6" stroke-width="2" marker-end="url(#arr-down)"/>
+              <text x="360" y="164" class="svg-soft" font-size="11">wird zur SDU von Schicht 3</text>
+
+              <!-- ---- Schicht 3: Vermittlung ---- -->
+              <text x="20" y="200" class="svg-ink" font-weight="700" font-size="13">Vermittlung (Schicht 3)</text>
+              <text x="20" y="218" class="svg-soft" font-size="11">SDU = komplette TCP-PDU</text>
+
+              <!-- IP PDU: [IP-Header | TCP-Header | HTTP-Header | HTTP-Daten] -->
+              <rect x="200" y="192" width="88" height="34" rx="6" fill="#e0483d" fill-opacity="0.90"/>
+              <text x="244" y="214" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">IP-Header</text>
+              <rect x="290" y="192" width="86" height="34" rx="6" fill="#f5810b" fill-opacity="0.75"/>
+              <text x="333" y="214" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">TCP-Hdr</text>
+              <rect x="378" y="192" width="100" height="34" rx="6" fill="#2f6df6" fill-opacity="0.60"/>
+              <text x="428" y="214" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">HTTP-Hdr</text>
+              <rect x="480" y="192" width="172" height="34" rx="6" fill="#12b28c" fill-opacity="0.60"/>
+              <text x="566" y="214" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">HTTP-Daten</text>
+
+              <text x="650" y="205" class="svg-soft" font-size="10" text-anchor="end">IP-PDU</text>
+              <text x="650" y="218" class="svg-soft" font-size="10" text-anchor="end">= Paket</text>
+
+              <!-- Legende unten -->
+              <rect x="200" y="260" width="18" height="14" rx="3" fill="#e0483d"/>
+              <text x="224" y="272" class="svg-soft" font-size="11">IP-Header (PCI)</text>
+              <rect x="335" y="260" width="18" height="14" rx="3" fill="#f5810b"/>
+              <text x="359" y="272" class="svg-soft" font-size="11">TCP-Header (PCI)</text>
+              <rect x="468" y="260" width="18" height="14" rx="3" fill="#2f6df6"/>
+              <text x="492" y="272" class="svg-soft" font-size="11">HTTP-Header (PCI)</text>
+              <rect x="200" y="285" width="18" height="14" rx="3" fill="#12b28c"/>
+              <text x="224" y="297" class="svg-soft" font-size="11">Nutzdaten (SDU)</text>
+            </g>
+            <defs>
+              <marker id="arr-down" markerWidth="10" markerHeight="10" refX="5" refY="8" orient="auto">
+                <path d="M2,0 L8,0 L5,8 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+          </svg>
+          <figcaption>Mit jeder Schicht nach unten kommt ein neuer Header dazu – wie Schichten einer Zwiebel (Encapsulation / Kapselung). Beim Empfänger wird in umgekehrter Reihenfolge „geschält".</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Akronym</th><th>Bedeutung</th><th>Wo?</th><th>Beispiel</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>SDU</strong></td><td>Nutzdaten von oben</td><td>Intern</td><td>„Hello"-String von der Anwendung</td></tr>
+            <tr><td><strong>PCI</strong></td><td>Header dieser Schicht (für Peer)</td><td>Im Netz</td><td>TCP-Flags, SeqNr, Ports</td></tr>
+            <tr><td><strong>PDU</strong></td><td>Fertiges Paket = PCI + SDU</td><td>Im Netz</td><td>TCP-Segment</td></tr>
+            <tr><td><strong>ICI</strong></td><td>Steuerinfo zwischen Schichten (vertikal)</td><td>Nur im Host</td><td>Port zum Multiplexing</td></tr>
+            <tr><td><strong>IDU</strong></td><td>SDU + ICI bei Schicht-Übergabe</td><td>Nur im Host</td><td>UDP-Daten + Port</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- ---- Peer-Kommunikation ---- -->
+        <h3>Peer-Kommunikation</h3>
+        <p>Gleiche Schichten auf beiden Seiten einer Verbindung heißen <strong>Peer-Entities</strong>.
+          Sie kommunizieren <em>logisch</em> miteinander — z.&nbsp;B. redet TCP auf Sender-Seite
+          „logisch" mit TCP auf Empfänger-Seite. <strong>Physisch</strong> läuft jedes Bit aber
+          komplett durch alle Schichten nach unten, über die Leitung und auf der anderen Seite
+          durch alle Schichten wieder hoch.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Logisch vs. Physisch</div>
+          <p><strong>Logisch:</strong> HTTP auf Seite A „glaubt", direkt mit HTTP auf Seite B zu reden —
+            als hätten sie eine unsichtbare direkte Verbindung. Das ist die Peer-Kommunikation.<br/>
+            <strong>Physisch:</strong> Die HTTP-Nachricht geht zuerst runter zu TCP, dann IP, dann Ethernet,
+            dann über Kupferkabel / Glasfaser, beim Router durch die Vermittlungsschicht, dann weiter
+            bis zum Empfänger, wo alles wieder hochgereicht wird. Es gibt keine echte Abkürzung.</p>
+        </div>
+
+        <!-- ---- Schnittbildung ---- -->
+        <h3>Schnittbildung</h3>
+        <p>Je nachdem, welchen „Blickwinkel" man auf eine Netzwerkkommunikation einnimmt, entstehen drei
+          verschiedene Diagrammtypen — die <strong>drei Schnitte</strong>:</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Schnittbildung: System-, Dienst- und Protokollschnitt</div>
+          <svg viewBox="0 0 680 300" width="680" role="img" aria-label="Drei Blickwinkel auf eine Netzwerkkommunikation: LMU links als Protokoll-Stack, Internet in der Mitte als Wolke, MIT rechts als Protokoll-Stack">
+            <defs>
+              <marker id="arr-prot" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+              <marker id="arr-prot2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+
+              <!-- Überschrift -->
+              <text x="340" y="16" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Protokollschnitt (zeigt alle Stacks)</text>
+
+              <!-- LMU Stack -->
+              <text x="92" y="36" text-anchor="middle" class="svg-ink" font-weight="700">LMU (Sender)</text>
+              <rect x="30" y="44" width="124" height="28" rx="5" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="92" y="63" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">HTTP</text>
+              <rect x="30" y="76" width="124" height="28" rx="5" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b"/>
+              <text x="92" y="95" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">TCP</text>
+              <rect x="30" y="108" width="124" height="28" rx="5" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d"/>
+              <text x="92" y="127" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">IP</text>
+              <rect x="30" y="140" width="124" height="28" rx="5" fill="#8a94a6" fill-opacity="0.18" stroke="#8a94a6"/>
+              <text x="92" y="159" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">Ethernet</text>
+
+              <!-- Wolke (Dienstschnitt = Internet als Blob) -->
+              <!-- Internet Wolke als Ellipse + Wölbungen -->
+              <ellipse cx="340" cy="130" rx="100" ry="60" fill="#e5eefe" stroke="#2f6df6" stroke-width="1.5" stroke-dasharray="6 4"/>
+              <ellipse cx="305" cy="108" rx="32" ry="22" fill="#e5eefe" stroke="#2f6df6" stroke-width="1" stroke-dasharray="4 3"/>
+              <ellipse cx="375" cy="105" rx="30" ry="20" fill="#e5eefe" stroke="#2f6df6" stroke-width="1" stroke-dasharray="4 3"/>
+              <ellipse cx="340" cy="95" rx="28" ry="18" fill="#e5eefe" stroke="#2f6df6" stroke-width="1" stroke-dasharray="4 3"/>
+              <text x="340" y="126" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Internet</text>
+              <text x="340" y="144" text-anchor="middle" class="svg-soft" font-size="10">(Dienstschnitt)</text>
+              <text x="340" y="160" text-anchor="middle" class="svg-soft" font-size="10">Routing, IP</text>
+
+              <!-- MIT Stack -->
+              <text x="588" y="36" text-anchor="middle" class="svg-ink" font-weight="700">MIT (Empfänger)</text>
+              <rect x="526" y="44" width="124" height="28" rx="5" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="588" y="63" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">HTTP</text>
+              <rect x="526" y="76" width="124" height="28" rx="5" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b"/>
+              <text x="588" y="95" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">TCP</text>
+              <rect x="526" y="108" width="124" height="28" rx="5" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d"/>
+              <text x="588" y="127" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">IP</text>
+              <rect x="526" y="140" width="124" height="28" rx="5" fill="#8a94a6" fill-opacity="0.18" stroke="#8a94a6"/>
+              <text x="588" y="159" text-anchor="middle" class="svg-ink" font-size="11" font-weight="600">Ethernet</text>
+
+              <!-- Logische Peer-Pfeile (gestrichelt) -->
+              <!-- HTTP ↔ HTTP -->
+              <line x1="154" y1="58" x2="526" y2="58" stroke="#2f6df6" stroke-width="1.5" stroke-dasharray="7 4" marker-end="url(#arr-prot)"/>
+              <text x="340" y="54" text-anchor="middle" class="svg-soft" font-size="10">Peer (logisch)</text>
+
+              <!-- TCP ↔ TCP -->
+              <line x1="154" y1="90" x2="526" y2="90" stroke="#f5810b" stroke-width="1.5" stroke-dasharray="7 4"/>
+              <text x="340" y="86" text-anchor="middle" class="svg-soft" font-size="10" fill="#f5810b">Peer (logisch)</text>
+
+              <!-- Physische Verbindung Ethernet (unten) -->
+              <line x1="154" y1="154" x2="240" y2="154" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="440" y1="154" x2="526" y2="154" stroke="#8a94a6" stroke-width="2"/>
+              <text x="340" y="198" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11">Physisch: über Router durch das Internet</text>
+
+              <!-- Systemschnitt Beschriftung -->
+              <text x="340" y="225" text-anchor="middle" class="svg-soft" font-size="11">Systemschnitt: LMU-Router-Router-...-MIT (konkrete Geräte)</text>
+              <text x="340" y="242" text-anchor="middle" class="svg-soft" font-size="11">Dienstschnitt: LMU → [Internet-Wolke] → MIT (logische Sicht)</text>
+              <text x="340" y="259" text-anchor="middle" class="svg-soft" font-size="11">Protokollschnitt: HTTP/TCP/IP/Ethernet-Stacks pro Knoten (diese Grafik)</text>
+            </g>
+          </svg>
+          <figcaption>Drei Blickwinkel auf dieselbe Kommunikation: System-, Dienst- und Protokollschnitt. Hier ist der Protokollschnitt zu sehen (Stacks nebeneinander), ergänzt durch die Internet-Wolke als Dienstschnitt.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Schnitt</th><th>Was zeigt es?</th><th>Erkennungsmerkmal</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Systemschnitt</strong></td><td>Physische Geräte / Knoten</td><td>Router, Switches, Kabel eingezeichnet</td></tr>
+            <tr><td><strong>Dienstschnitt</strong></td><td>Logischer Dienst</td><td>Internet als Wolke dargestellt</td></tr>
+            <tr><td><strong>Protokollschnitt</strong></td><td>Protokoll-Stacks pro Knoten</td><td>Layer-Boxen nebeneinander</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- ---- Vor- und Nachteile ---- -->
+        <h3>Vor- und Nachteile der Schichtenarchitektur &amp; OSI-Kritik</h3>
+
+        <div class="factgrid">
+          <div class="fact"><b>Modularität</b><span>Schichten einzeln austauschbar (z.&nbsp;B. IP v4 → v6)</span></div>
+          <div class="fact"><b>Wiederverwendung</b><span>TCP kann von HTTP, FTP, SMTP etc. genutzt werden</span></div>
+          <div class="fact"><b>Komplexitätsreduktion</b><span>1 klar definiertes Problem pro Schicht</span></div>
+          <div class="fact"><b>Standardisierung</b><span>Klare Schnittstellen, Interoperabilität weltweit</span></div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Nachteile &amp; Overhead</div>
+          <p>Jede Schicht fügt einen <strong>Header</strong> hinzu → Overhead steigt pro Schicht.
+            <strong>Performance-Verlust</strong> durch viele Übergaben. <strong>Cross-Layer-Optimierung</strong>
+            ist schwierig (eine Schicht darf die andere nicht einfach umgehen).
+            <strong>Redundanz</strong>: manche Funktionen (z.&nbsp;B. Fehlererkennung) werden in
+            mehreren Schichten wiederholt.</p>
+        </div>
+
+        <p><strong>OSI-Kritik:</strong> Die OSI-Schichten 5 (Sitzung) und 6 (Darstellung) sind in der
+          Praxis oft leer — das Internet hat sie nie gebraucht. Der OSI-Stack hat sich als Protokoll-Familie
+          <em>nie</em> durchgesetzt; TCP/IP war bereits verbreitet und einfacher zu implementieren.
+          Heute ist OSI vor allem ein <strong>pädagogisches Werkzeug</strong>, das Konzepte (Schichten,
+          PDU/SDU, Peer-Kommunikation) präzise beschreibt.</p>
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>Schritt für Schritt: PDU-Aufbau analysieren</h2>
+
+        <h3>PDU einer Schicht bestimmen</h3>
+        <ol class="steps">
+          <li><strong>Identifiziere die Schicht N</strong> — z.&nbsp;B. TCP = Schicht 4, IP = Schicht 3.</li>
+          <li><strong>Was ist die (N)-SDU?</strong> → Das, was von Schicht N+1 reinkommt — z.&nbsp;B. bei TCP
+            sind das die HTTP-Daten (= HTTP-PDU = Schicht-7-PDU).</li>
+          <li><strong>Was ist die (N)-PCI?</strong> → Alle Felder, die das Protokoll <em>selbst</em> hinzufügt —
+            z.&nbsp;B. bei TCP: Source-Port, Dest-Port, Sequence Number, Flags, Checksum (= TCP-Header).</li>
+          <li><strong>Was ist die (N)-PDU?</strong> → PCI + SDU = das fertige Paket dieser Schicht —
+            z.&nbsp;B. das komplette TCP-Segment.</li>
+          <li><strong>Was bekommt Schicht N-1?</strong> → Die (N)-PDU wird zur (N-1)-SDU, dann kommt noch
+            (N-1)-PCI dazu → neue PDU auf Schicht N-1.</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Durchgerechnetes Beispiel: HTTP über TCP über IP</div>
+          <span class="formula">Schicht 7: HTTP-Daten = 200 Byte (SDU für Schicht 4)</span>
+          <span class="formula">Schicht 4: TCP-Header (PCI) = 20 Byte → TCP-Segment (PDU) = 220 Byte</span>
+          <span class="formula">Schicht 3: IP-Header (PCI) = 20 Byte → IP-Paket (PDU) = 240 Byte</span>
+          <p>Das TCP-Segment (220 Byte) wird zur SDU von Schicht 3. IP fügt 20 Byte Header hinzu → IP-Paket = 240 Byte.
+            Das IP-Paket wird dann zur SDU von Schicht 2 (Ethernet), die ihren Frame-Header und Frame-Trailer hinzufügt.</p>
+        </div>
+
+        <h3>Schnittbildung bestimmen</h3>
+        <ol class="steps">
+          <li><strong>Sind physische Geräte eingezeichnet?</strong> — Router, Switches, Hosts mit Kabelverbindungen
+            → <strong>Systemschnitt</strong></li>
+          <li><strong>Ist das Netz als Wolke oder Blob dargestellt?</strong> — Internet-Symbol ohne Details →
+            <strong>Dienstschnitt</strong></li>
+          <li><strong>Sind Protokoll-Stacks (Schichten-Boxen) pro Knoten gezeigt?</strong> — HTTP/TCP/IP-Layer
+            nebeneinander für verschiedene Systeme → <strong>Protokollschnitt</strong></li>
+          <li><strong>Begründung formulieren:</strong> „Hier sind [X] dargestellt, daher handelt es sich um den
+            [Typ]-Schnitt."</li>
+        </ol>
+
+        <h3>OSI-Modell auswendig lernen</h3>
+        <ol class="steps">
+          <li><strong>Merkspruch wählen:</strong> „<em>Alle Priester Saufen Tequila Vor Sieben Bleibender</em>" —
+            von oben nach unten: 7 → 1.</li>
+          <li><strong>Richtung merken:</strong> Von oben (7 = Anwendung / Nutzer) nach unten (1 = Kabel / Physik).</li>
+          <li><strong>Pro Schicht merken:</strong> 1 Aufgabe + 1–2 Protokolle — z.&nbsp;B. Schicht 3 = Routing → IP.</li>
+          <li><strong>PDU-Namen:</strong> Message (7–5) · Segment/Datagram (4) · Paket (3) · Frame (2) · Bits (1).</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Transport ist OSI-Schicht 3.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Transport ist <strong>Schicht 4</strong>. Vermittlung/IP ist Schicht 3. Merke: TCP=4, IP=3.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die SDU enthält den Header (PCI).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>PDU = PCI (Header) + SDU (Nutzdaten)</strong>. Die SDU ist das, was von oben reinkommt — also ohne eigenen Header. Der Header kommt erst durch die aktuelle Schicht dazu.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>ICI ist der Header, der im Netz übertragen wird.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ICI bleibt im Host — es ist vertikale Steuerinfo zwischen benachbarten Schichten. Im Netz steckt der <strong>PCI</strong>. Merke: PCI = über-Netz, ICI = im-Host.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Das Internet-Modell hat 5 Schichten.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>LMU nutzt <strong>4 Schichten</strong> (Anwendung, Transport, Vermittlung, Netzanschluss). Manche Bücher trennen Physical und Data Link — LMU fasst beides als „Netzanschluss" zusammen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Im Internet-Modell gibt es eine Darstellungsschicht für TLS/Verschlüsselung.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das Internet-Modell hat <strong>KEINE Darstellungsschicht</strong>. TLS, JSON, Codierung — das macht die Anwendung selbst. Es gibt nur 4 Schichten.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Peer-Kommunikation bedeutet, dass zwei gleiche Schichten direkt physisch verbunden sind.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Peer-Kommunikation ist <strong>logisch</strong>. Physisch läuft jede Nachricht komplett nach unten, über die Leitung, und auf der anderen Seite wieder hoch — keine direkte Abkürzung.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>OSI-Cheat-Sheet (von oben nach unten)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead>
+              <tr><th>#</th><th>Schicht</th><th>Aufgabe (1-Liner)</th><th>Beispielprotokoll</th><th>PDU-Name</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>7</strong></td><td>Anwendung</td><td>Dienste für den Nutzer bereitstellen</td><td>HTTP, DNS, SMTP</td><td>Message</td></tr>
+              <tr><td><strong>6</strong></td><td>Darstellung</td><td>Format, Verschlüsselung, Kompression</td><td>TLS, JPEG</td><td>Message</td></tr>
+              <tr><td><strong>5</strong></td><td>Sitzung</td><td>Verbindungssitzung verwalten</td><td>NetBIOS, RPC</td><td>Message</td></tr>
+              <tr><td><strong>4</strong></td><td>Transport</td><td>Ende-zu-Ende-Übertragung</td><td>TCP, UDP</td><td>Segment / Datagram</td></tr>
+              <tr><td><strong>3</strong></td><td>Vermittlung</td><td>Routing und Adressierung</td><td>IP, ICMP</td><td>Paket</td></tr>
+              <tr><td><strong>2</strong></td><td>Sicherung</td><td>Frames, MAC, Fehlererkennung</td><td>Ethernet, WLAN</td><td>Frame</td></tr>
+              <tr><td><strong>1</strong></td><td>Bitübertragung</td><td>Bits physisch übertragen</td><td>Kupfer, Glasfaser</td><td>Bits / Signale</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Internet-Referenzmodell</h4>
+          <div class="table-wrap"><table class="data">
+            <thead>
+              <tr><th>Schicht</th><th>Aufgabe</th><th>OSI-Äquiv.</th><th>Beispiel</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Anwendung</strong></td><td>App-Protokolle + Format + Session</td><td>OSI 5+6+7</td><td>HTTP, DNS, TLS</td></tr>
+              <tr><td><strong>Transport</strong></td><td>Ende-zu-Ende (zuverlässig/unzuverlässig)</td><td>OSI 4</td><td>TCP, UDP</td></tr>
+              <tr><td><strong>Vermittlung</strong></td><td>Routing &amp; IP-Adressierung</td><td>OSI 3</td><td>IP, ICMP</td></tr>
+              <tr><td><strong>Netzanschluss</strong></td><td>Lokale Übertragung</td><td>OSI 1+2</td><td>Ethernet, WLAN</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>PDU/SDU/PCI-Formeln</h4>
+          <div class="callout callout-formula">
+            <div class="c-title">Grundformeln</div>
+            <span class="formula">(N)-PDU = (N)-PCI + (N)-SDU</span>
+            <span class="formula">(N)-SDU = (N+1)-PDU</span>
+          </div>
+
+          <h4>Schnittbildung auf einen Blick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead>
+              <tr><th>Schnitt</th><th>Was?</th><th>Erkennungsmerkmal</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Systemschnitt</strong></td><td>Physische Geräte</td><td>Router, Switches, Kabel</td></tr>
+              <tr><td><strong>Dienstschnitt</strong></td><td>Logischer Dienst</td><td>Internet als Wolke</td></tr>
+              <tr><td><strong>Protokollschnitt</strong></td><td>Protokoll-Stacks</td><td>Layer-Boxen pro Knoten</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merkspruch</h4>
+          <p><strong>„Alle Priester Saufen Tequila Vor Sieben Bleibender"</strong>
+            (A=7·P=6·S=5·T=4·V=3·S=2·B=1)</p>
+
+          <h4>Vor- und Nachteile</h4>
+          <div class="fr">
+            <div class="right"><span class="fr-tag">✅ Vorteile</span>Modularität, Wiederverwendbarkeit, Komplexitätsreduktion, Standardisierung.</div>
+            <div class="wrong"><span class="fr-tag">⚠️ Nachteile</span>Header-Overhead, Performance-Verlust, Cross-Layer-Optimierung schwer, Redundanz.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="03-netze-tools.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Rechnernetz vs. Verteiltes System &amp; Tools</div>
+        </a>
+        <a class="next" href="05-verzoegerung.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Verzögerungszeiten &amp; Vermittlungsarten</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

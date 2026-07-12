@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verbindungsmanagement: Handshakes · RNVS</title>
+<meta name="description" content="Verbindungslos vs. verbindungsorientiert, 2-Wege- und 3-Wege-Handshake, Zustandsdiagramme, Two-Generals-Problem — bildlich erklärt für Einsteiger." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 06</div>
+    <span class="th-icon">🤝</span>
+    <h1>Verbindungsmanagement: Handshakes</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-blatt">Blatt 4</span>
+      <span class="badge badge-soft">Verbindung</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Verbindungslos vs. -orientiert</a></li>
+        <li><a href="#schritt">Handshake Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Bevor zwei Computer Daten austauschen, müssen sie sich absprechen: <em>Wollen wir überhaupt miteinander reden?</em> Und: <em>Haben wir beide verstanden, dass wir jetzt reden?</em> Der <strong>Handshake</strong> ist genau dieses gegenseitige Einverständnis — ein kurzes Begrüßungsritual, bevor die eigentlichen Daten fließen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du rufst jemanden an und sagst einfach los, ohne zu warten, ob die andere Seite abgenommen hat. Du könntest die ganze Zeit in eine Mailbox sprechen und es nicht merken. Genau das ist das Problem ohne Handshake! Beim <strong>2-Wege-Handshake</strong> wartest du, bis der andere „Hallo" sagt. Beim <strong>3-Wege-Handshake</strong> sagst du dann noch einmal kurz „Alles klar, ich höre dich" — und erst dann redet ihr wirklich. TCP macht genau das: SYN, SYN-ACK, ACK — und dann fließen die Daten.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Verbindungslos vs. verbindungsorientiert</h2>
+        <p>Es gibt zwei grundlegend verschiedene Arten, wie Computer Daten schicken können. Der Unterschied: ob sie vorher eine „Leitung aufbauen" oder einfach drauflosschicken.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Verbindungslos vs. verbindungsorientiert</div>
+          <svg viewBox="0 0 660 240" width="660" role="img" aria-label="Vergleich verbindungslos (Brief) und verbindungsorientiert (Telefonanruf)">
+            <defs>
+              <marker id="arrO" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/></marker>
+              <marker id="arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Links: verbindungslos -->
+              <rect x="14" y="18" width="298" height="200" rx="10" fill="#f5810b" fill-opacity="0.10" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="163" y="44" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15">Verbindungslos</text>
+              <text x="163" y="63" text-anchor="middle" class="svg-soft">wie eine Postkarte 📮</text>
+              <!-- Icon: Brief direkt weg -->
+              <rect x="44" y="84" width="76" height="34" rx="6" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b"/>
+              <text x="82" y="106" text-anchor="middle" class="svg-ink">Absender</text>
+              <line x1="120" y1="101" x2="252" y2="101" stroke="#f5810b" stroke-width="2.5" marker-end="url(#arrO)"/>
+              <text x="186" y="92" text-anchor="middle" class="svg-soft" font-size="12">Paket</text>
+              <rect x="254" y="84" width="46" height="34" rx="6" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b"/>
+              <text x="277" y="106" text-anchor="middle" class="svg-ink">Ziel</text>
+              <text x="163" y="148" text-anchor="middle" class="svg-soft">Einfach abschicken —</text>
+              <text x="163" y="166" text-anchor="middle" class="svg-soft">kein Aufbau, kein Handschlag.</text>
+              <text x="163" y="200" text-anchor="middle" class="svg-soft" font-size="11">Beispiele: UDP, IP, DNS, VoIP</text>
+
+              <!-- Rechts: verbindungsorientiert -->
+              <rect x="348" y="18" width="298" height="200" rx="10" fill="#2f6df6" fill-opacity="0.10" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="497" y="44" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15">Verbindungsorientiert</text>
+              <text x="497" y="63" text-anchor="middle" class="svg-soft">wie ein Telefonanruf ☎️</text>
+              <!-- 3 Pfeile für Aufbau/Daten/Abbau -->
+              <line x1="374" y1="90"  x2="620" y2="90"  stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB)"/>
+              <text x="497" y="85" text-anchor="middle" class="svg-soft" font-size="12">1. Aufbau (Handshake)</text>
+              <line x1="620" y1="118" x2="374" y2="118" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG2)"/>
+              <text x="497" y="113" text-anchor="middle" class="svg-soft" font-size="12">2. Datenübertragung</text>
+              <line x1="374" y1="146" x2="620" y2="146" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrP)"/>
+              <text x="497" y="141" text-anchor="middle" class="svg-soft" font-size="12">3. Abbau (Tschüss)</text>
+              <text x="497" y="180" text-anchor="middle" class="svg-soft">Erst einigen, dann reden,</text>
+              <text x="497" y="198" text-anchor="middle" class="svg-soft" font-size="11">dann auflegen. Beispiel: TCP</text>
+            </g>
+            <defs>
+              <marker id="arrG2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+              <marker id="arrP"  markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+          </svg>
+          <figcaption>Verbindungslos schickt einfach drauf los — verbindungsorientiert baut erst eine gemeinsame Leitung auf.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Aspekt</th><th>Verbindungslos</th><th>Verbindungsorientiert</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Aufbau</strong></td><td>Kein Aufbau nötig</td><td>Aufbau-Phase (Handshake) nötig</td></tr>
+            <tr><td><strong>Zustand</strong></td><td>Statelos — keine Seite kennt die andere</td><td>Beide kennen die Verbindung</td></tr>
+            <tr><td><strong>Reihenfolge</strong></td><td>Nicht garantiert</td><td>Garantiert</td></tr>
+            <tr><td><strong>Verluste</strong></td><td>Nicht erkannt</td><td>Erkannt und behoben</td></tr>
+            <tr><td><strong>Overhead</strong></td><td>Gering</td><td>Höher (mehr Nachrichten)</td></tr>
+            <tr><td><strong>Analogie</strong></td><td>Briefpost 📮</td><td>Telefonanruf ☎️</td></tr>
+            <tr><td><strong>Beispiele</strong></td><td>UDP, IP, DNS, VoIP, Games</td><td>TCP, HTTP, SSH, FTP, SMTP</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Wann ist verbindungslos vorteilhaft?</h3>
+
+        <div class="factgrid">
+          <div class="fact"><b>Kurze Nachrichten</b><span>Aufbau-Overhead lohnt nicht</span></div>
+          <div class="fact"><b>Echtzeit</b><span>keine Re-Transmits, lieber Pakete verlieren</span></div>
+          <div class="fact"><b>Broadcast/Multicast</b><span>viele Empfänger gleichzeitig</span></div>
+          <div class="fact"><b>Stateless Server</b><span>z.&nbsp;B. DNS, DHCP</span></div>
+        </div>
+
+        <h3>Der 2-Wege-Handschlag und sein Problem</h3>
+        <p>Beim <strong>2-Wege-Handschlag</strong> schickt der Client einen Verbindungswunsch (<em>CONN_REQ</em>), und der Server antwortet mit einer Bestätigung (<em>CONN_ACK</em>). Klingt einfach — aber es gibt ein heimtückisches Problem:</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">2-Wege-Handschlag: normal &amp; Fehlerfall nebeneinander</div>
+          <svg viewBox="0 0 680 320" width="680" role="img" aria-label="2-Wege-Handschlag: links normaler Ablauf, rechts Verlust der Bestätigung">
+            <defs>
+              <marker id="arr2n" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="arr2r" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e0483d"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- ---- LINKE HÄLFTE: Normaler Ablauf ---- -->
+              <rect x="10" y="8" width="310" height="300" rx="10" fill="#2f6df6" fill-opacity="0.06" stroke="#2f6df6" stroke-width="1"/>
+              <text x="165" y="28" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">✅ Normaler Ablauf</text>
+
+              <text x="74"  y="50" text-anchor="middle" class="svg-ink" font-weight="700">Client</text>
+              <text x="286" y="50" text-anchor="middle" class="svg-ink" font-weight="700">Server</text>
+              <line x1="74"  y1="58" x2="74"  y2="295" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="286" y1="58" x2="286" y2="295" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <!-- CONN_REQ -->
+              <line x1="74" y1="90" x2="286" y2="108" stroke="#2f6df6" stroke-width="2" marker-end="url(#arr2n)"/>
+              <text x="180" y="86" text-anchor="middle" class="svg-soft">CONN_REQ</text>
+              <!-- CONN_ACK -->
+              <line x1="286" y1="144" x2="74" y2="162" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG3)"/>
+              <text x="180" y="140" text-anchor="middle" class="svg-soft">CONN_ACK</text>
+
+              <!-- Zustands-Labels -->
+              <rect x="20"  y="185" width="88" height="22" rx="5" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="64"  y="200" text-anchor="middle" class="svg-ink" font-size="11">Verbunden ✅</text>
+              <rect x="232" y="170" width="88" height="22" rx="5" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="276" y="185" text-anchor="middle" class="svg-ink" font-size="11">Verbunden ✅</text>
+
+              <text x="165" y="260" text-anchor="middle" class="svg-soft" font-size="11">Beide im gleichen Zustand.</text>
+              <text x="165" y="278" text-anchor="middle" class="svg-soft" font-size="11">Alles gut! 🎉</text>
+
+              <!-- ---- RECHTE HÄLFTE: Fehlerfall ---- -->
+              <rect x="358" y="8" width="310" height="300" rx="10" fill="#e0483d" fill-opacity="0.06" stroke="#e0483d" stroke-width="1"/>
+              <text x="513" y="28" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">❌ CONN_ACK geht verloren</text>
+
+              <text x="422" y="50" text-anchor="middle" class="svg-ink" font-weight="700">Client</text>
+              <text x="634" y="50" text-anchor="middle" class="svg-ink" font-weight="700">Server</text>
+              <line x1="422" y1="58" x2="422" y2="295" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="634" y1="58" x2="634" y2="295" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <!-- CONN_REQ -->
+              <line x1="422" y1="90" x2="634" y2="108" stroke="#2f6df6" stroke-width="2" marker-end="url(#arr2n)"/>
+              <text x="528" y="86" text-anchor="middle" class="svg-soft">CONN_REQ</text>
+              <!-- CONN_ACK – verloren (gestrichelt, endet mit X) -->
+              <line x1="634" y1="144" x2="500" y2="158" stroke="#e0483d" stroke-width="2" stroke-dasharray="6 4"/>
+              <text x="565" y="140" text-anchor="middle" fill="#e0483d" font-size="11">CONN_ACK</text>
+              <text x="498" y="170" text-anchor="middle" fill="#e0483d" font-size="16" font-weight="700">✕</text>
+
+              <!-- Server denkt: verbunden -->
+              <rect x="580" y="172" width="88" height="22" rx="5" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c"/>
+              <text x="624" y="187" text-anchor="middle" class="svg-ink" font-size="11">Verbunden ✅</text>
+              <!-- Client: wartet immer noch -->
+              <rect x="368" y="200" width="100" height="22" rx="5" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b"/>
+              <text x="418" y="215" text-anchor="middle" class="svg-ink" font-size="11">Wartet… ⏳</text>
+
+              <text x="513" y="256" text-anchor="middle" fill="#e0483d" font-size="11" font-weight="700">Inkonsistenz!</text>
+              <text x="513" y="274" text-anchor="middle" class="svg-soft" font-size="11">Server: verbunden / Client: wartet</text>
+            </g>
+            <defs>
+              <marker id="arrG3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+            </defs>
+          </svg>
+          <figcaption>Wenn die Bestätigung verloren geht, glaubt der Server, die Verbindung stehe — der Client wartet aber noch. Das nennt man eine <strong>halboffene Verbindung</strong>.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Achtung: Das Duplikat-Problem</div>
+          <p>Noch tückischer: Ein <strong>verspätetes Duplikat</strong> einer alten CONN_REQ kann ankommen, wenn die ursprüngliche Verbindung längst beendet ist. Der Server hält diese für eine neue Verbindungsanfrage und reserviert Ressourcen — für eine Verbindung, die der Client gar nicht mehr will. Ergebnis: wieder eine halboffene Verbindung auf dem Server.</p>
+        </div>
+
+        <h3>Der 3-Wege-Handschlag: die Lösung</h3>
+        <p>Mit einem dritten Schritt — dem finalen <em>ACK</em> vom Client — bestätigt der Client, dass er die Antwort des Servers empfangen hat. Erst dann geht der Server in den Zustand „Verbunden". So kann keine halboffene Verbindung durch Verlust der zweiten Nachricht entstehen.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">3-Wege-Handschlag (SYN → SYN-ACK → ACK)</div>
+          <svg viewBox="0 0 520 330" width="520" role="img" aria-label="3-Wege-Handshake Sequenzdiagramm: SYN, SYN-ACK, ACK zwischen Client und Server">
+            <defs>
+              <marker id="arr3b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="arr3g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+              <marker id="arr3p" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="100" y="26" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">Client</text>
+              <text x="420" y="26" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">Server</text>
+
+              <!-- Lebenslinien -->
+              <line x1="100" y1="34" x2="100" y2="318" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="420" y1="34" x2="420" y2="318" stroke="#8a94a6" stroke-width="2"/>
+
+              <!-- Zustands-Label: Idle / Listen -->
+              <text x="100"  y="54" text-anchor="middle" class="svg-soft" font-size="11">[Idle]</text>
+              <text x="420" y="54" text-anchor="middle" class="svg-soft" font-size="11">[Listen]</text>
+
+              <!-- 1. SYN -->
+              <line x1="100" y1="80" x2="420" y2="100" stroke="#2f6df6" stroke-width="2.5" marker-end="url(#arr3b)"/>
+              <text x="260" y="74" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="13">① SYN</text>
+              <text x="100"  y="118" text-anchor="middle" class="svg-soft" font-size="11">[SYN-Sent]</text>
+              <text x="420"  y="118" text-anchor="middle" class="svg-soft" font-size="11">[SYN-Received]</text>
+
+              <!-- 2. SYN-ACK -->
+              <line x1="420" y1="144" x2="100" y2="164" stroke="#12b28c" stroke-width="2.5" marker-end="url(#arr3g)"/>
+              <text x="260" y="138" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="13">② SYN-ACK</text>
+
+              <!-- 3. ACK -->
+              <line x1="100" y1="210" x2="420" y2="230" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#arr3p)"/>
+              <text x="260" y="204" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="13">③ ACK</text>
+
+              <!-- Verbunden-Boxen -->
+              <rect x="30"  y="250" width="140" height="28" rx="7" fill="#12b28c" fill-opacity="0.20" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="100" y="268" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">✅ Verbunden</text>
+              <rect x="350" y="250" width="140" height="28" rx="7" fill="#12b28c" fill-opacity="0.20" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="420" y="268" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">✅ Verbunden</text>
+
+              <text x="260" y="308" text-anchor="middle" class="svg-soft" font-size="11">Beide Seiten sind erst nach dem ACK im Zustand „Verbunden".</text>
+            </g>
+          </svg>
+          <figcaption>Drei Schritte, drei Farben: SYN (blau) → SYN-ACK (grün) → ACK (lila). Erst nach dem dritten Schritt sind <strong>beide</strong> sicher, dass die Verbindung steht.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: Warum 3?</div>
+          <p>Beim 2-Wege-Handschlag kann der <em>Empfänger der zweiten Nachricht</em> nicht wissen, ob seine Antwort ankam. Mit einem dritten Schritt (ACK) bestätigt der Client genau das. Der Server geht erst dann in „Verbunden" — keine halboffene Verbindung mehr.</p>
+        </div>
+
+        <h3>Zustandsdiagramme: Client &amp; Server</h3>
+        <p>Ein <strong>Zustandsdiagramm</strong> zeigt nicht Nachrichten über die Zeit (das wäre ein Sequenzdiagramm), sondern die <em>Zustände</em>, in denen sich eine Seite befinden kann, und die <em>Übergänge</em> zwischen ihnen. Jeder Übergang hat die Form <code>Trigger / Aktion</code>.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Zustandsdiagramme Client (oben) und Server (unten)</div>
+          <svg viewBox="0 0 660 380" width="660" role="img" aria-label="Zustandsdiagramm: Client oben (Idle, SYN-Sent, Verbunden), Server unten (Listen, SYN-Received, Verbunden)">
+            <defs>
+              <marker id="arrZb" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="arrZg" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+              <marker id="arrZp" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+
+              <!-- ====== CLIENT (oben) ====== -->
+              <text x="330" y="18" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Client</text>
+
+              <!-- Zustände: Idle -->
+              <circle cx="70"  cy="70" r="36" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="2"/>
+              <text x="70"  y="66" text-anchor="middle" class="svg-ink" font-weight="700">Idle</text>
+              <text x="70"  y="82" text-anchor="middle" class="svg-soft" font-size="11">(Closed)</text>
+
+              <!-- Zustand: SYN-Sent -->
+              <circle cx="310" cy="70" r="46" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6" stroke-width="2"/>
+              <text x="310" y="66" text-anchor="middle" class="svg-ink" font-weight="700">SYN-Sent</text>
+              <text x="310" y="83" text-anchor="middle" class="svg-soft" font-size="11">(wartet auf SYN-ACK)</text>
+
+              <!-- Zustand: Verbunden Client -->
+              <circle cx="570" cy="70" r="44" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="570" y="65" text-anchor="middle" class="svg-ink" font-weight="700">Verbunden</text>
+              <text x="570" y="82" text-anchor="middle" class="svg-soft" font-size="11">(Client)</text>
+
+              <!-- Übergänge Client -->
+              <!-- Idle → SYN-Sent -->
+              <line x1="106" y1="70" x2="264" y2="70" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrZb)"/>
+              <text x="185" y="60" text-anchor="middle" fill="#2f6df6" font-size="11" font-weight="700">sende SYN / —</text>
+
+              <!-- SYN-Sent → Verbunden -->
+              <line x1="356" y1="70" x2="526" y2="70" stroke="#12b28c" stroke-width="2" marker-end="url(#arrZg)"/>
+              <text x="441" y="56" text-anchor="middle" fill="#12b28c" font-size="11" font-weight="700">SYN-ACK / sende ACK</text>
+
+              <!-- Startzustand-Punkt -->
+              <circle cx="20" cy="70" r="7" fill="#8a94a6"/>
+              <line x1="27" y1="70" x2="34" y2="70" stroke="#8a94a6" stroke-width="2" marker-end="url(#arrZb)"/>
+
+              <!-- ====== TRENNLINIE ====== -->
+              <line x1="20" y1="145" x2="640" y2="145" stroke="#8a94a6" stroke-width="1" stroke-dasharray="5 4"/>
+              <text x="330" y="158" text-anchor="middle" class="svg-soft" font-size="11">— — — — — — — — — — — — — — —</text>
+
+              <!-- ====== SERVER (unten) ====== -->
+              <text x="330" y="180" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Server</text>
+
+              <!-- Zustand: Listen -->
+              <circle cx="70"  cy="260" r="36" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="2"/>
+              <text x="70"  y="256" text-anchor="middle" class="svg-ink" font-weight="700">Listen</text>
+              <text x="70"  y="272" text-anchor="middle" class="svg-soft" font-size="11">(wartet)</text>
+
+              <!-- Zustand: SYN-Received -->
+              <circle cx="310" cy="260" r="50" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="310" y="256" text-anchor="middle" class="svg-ink" font-weight="700">SYN-Received</text>
+              <text x="310" y="273" text-anchor="middle" class="svg-soft" font-size="11">(wartet auf ACK)</text>
+
+              <!-- Zustand: Verbunden Server -->
+              <circle cx="570" cy="260" r="44" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="570" y="255" text-anchor="middle" class="svg-ink" font-weight="700">Verbunden</text>
+              <text x="570" y="272" text-anchor="middle" class="svg-soft" font-size="11">(Server)</text>
+
+              <!-- Übergänge Server -->
+              <!-- Listen → SYN-Received -->
+              <line x1="106" y1="260" x2="260" y2="260" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrZp)"/>
+              <text x="183" y="248" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="700">SYN / sende SYN-ACK</text>
+
+              <!-- SYN-Received → Verbunden -->
+              <line x1="360" y1="260" x2="526" y2="260" stroke="#12b28c" stroke-width="2" marker-end="url(#arrZg)"/>
+              <text x="443" y="246" text-anchor="middle" fill="#12b28c" font-size="11" font-weight="700">ACK empfangen / —</text>
+
+              <!-- Startzustand-Punkt Server -->
+              <circle cx="20" cy="260" r="7" fill="#8a94a6"/>
+              <line x1="27" y1="260" x2="34" y2="260" stroke="#8a94a6" stroke-width="2" marker-end="url(#arrZb)"/>
+
+              <!-- Legende Notation -->
+              <rect x="200" y="328" width="260" height="44" rx="8" fill="#8a94a6" fill-opacity="0.10" stroke="#8a94a6"/>
+              <text x="330" y="347" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">Notation der Übergänge</text>
+              <text x="330" y="364" text-anchor="middle" class="svg-soft" font-size="11">Trigger / Aktion  (— = keine Aktion)</text>
+            </g>
+          </svg>
+          <figcaption>Client und Server durchlaufen verschiedene Zustände. Jeder Pfeil zeigt den Trigger (was empfangen wurde) und die Aktion (was gesendet wird). Beide landen schließlich in „Verbunden".</figcaption>
+        </figure>
+
+        <h3>Verbindungsabbau</h3>
+        <p>Auch das Ende einer Verbindung wird ordentlich ausgehandelt. Beim vereinfachten 3-Wege-Abbau schickt der Client ein <em>FIN</em>, der Server antwortet mit <em>ACK + FIN</em>, und der Client bestätigt mit einem letzten <em>ACK</em>. Im echten TCP wird jede Richtung separat geschlossen (4-Wege-Abbau: FIN, ACK, FIN, ACK).</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Das Two-Generals-Problem</div>
+          <p>Kein Handshake kann <strong>mathematisch garantieren</strong>, dass beide Seiten im gleichen Zustand sind. Der Grund: die letzte Nachricht kann immer verloren gehen — und der Sender weiß nicht, ob sie ankam. Man nennt das das <strong>Two-Generals-Problem</strong>: Zwei Armeen auf zwei Hügeln müssen sich auf einen Angriffszeitpunkt einigen. Jeder Bote kann abgefangen werden. Egal wie viele Boten man schickt — es gibt <em>keinen Beweis, dass der letzte ankam</em>.</p>
+          <p>Trotzdem ist der 3-Wege-Handschlag in der Praxis ausreichend, weil Verluste selten sind, Timeouts und Wiederholungen fast alle Probleme lösen, und die Anwendungsschicht zusätzlich absichern kann.</p>
+        </div>
+
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>Handshake Schritt für Schritt</h2>
+        <p>So gehst du vor, wenn du in der Klausur ein Zustandsdiagramm oder eine Fehlerszenario-Analyse zeichnen sollst:</p>
+
+        <h3>Zustandsdiagramm zeichnen</h3>
+        <ol class="steps">
+          <li><strong>Zustände identifizieren:</strong> Für den Client z.&nbsp;B. Idle → SYN-Sent → Verbunden → Closed. Für den Server: Listen → SYN-Received → Verbunden → Closed.</li>
+          <li><strong>Übergänge bestimmen:</strong> Jeder Übergang hat die Form <em>Trigger / Aktion</em>. Beispiel: <code>SYN-ACK empfangen / sende ACK</code>.</li>
+          <li><strong>Diagramm zeichnen:</strong> Startzustand mit ausgefülltem Kreis ●, Zustände als Oval/Kreis, Endzustand mit Doppelkreis ◉. Pfeile beschriften.</li>
+          <li><strong>Beide Seiten getrennt:</strong> Client und Server haben je ein eigenes Zustandsdiagramm — nicht vermischen!</li>
+        </ol>
+
+        <h3>Fehlerszenario analysieren</h3>
+        <ol class="steps">
+          <li><strong>Welche Nachricht geht verloren?</strong> Im Sequenzdiagramm: welcher Pfeil wird unterbrochen?</li>
+          <li><strong>In welchem Zustand ist jede Seite nach dem Verlust?</strong> Schreibe für Client und Server den aktuellen Zustand auf.</li>
+          <li><strong>Gibt es eine Inkonsistenz?</strong> Wenn Client und Server in verschiedenen Zuständen sind → halboffene Verbindung.</li>
+          <li><strong>Wie wird das gelöst?</strong> Timeout beim wartenden Client → CONN_REQ erneut senden. Server: abhängig vom Protokoll entweder Verbindung neu akzeptieren oder bestehende verwenden.</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Übergangs-Notation</div>
+          <span class="formula">Trigger / Aktion</span>
+          <p><strong>Trigger</strong> = was empfangen wurde (auslösendes Ereignis). <strong>Aktion</strong> = was daraufhin gesendet wird. Ein Strich — bedeutet „keine Aktion". Beispiel: <code>ACK empfangen / —</code> heißt: ACK kommt an, nichts wird zurückgesendet, Zustandswechsel trotzdem.</p>
+        </div>
+
+        <h3>Typische Aufgabentypen in der Klausur</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Aufgabentyp</th><th>Was du tust</th></tr></thead>
+          <tbody>
+            <tr><td>Verbindungslos vs. -orientiert erklären</td><td>Tabelle mit Overhead, Reihenfolge, Verluste, Beispiele</td></tr>
+            <tr><td>Zustandsdiagramm 2-Wege oder 3-Wege zeichnen</td><td>Zustände + Übergänge (Trigger/Aktion) für Client und Server getrennt</td></tr>
+            <tr><td>Fehlerszenario analysieren</td><td>Verlust lokalisieren → Zustand nach Verlust → Inkonsistenz?</td></tr>
+            <tr><td>Warum kein Handshake garantiert ist</td><td>Two-Generals-Problem: letzte Nachricht immer verlierbar</td></tr>
+            <tr><td>Warum 3-Wege trotzdem reicht</td><td>Verluste selten, Timeouts + Wiederholungen, Praxis genügt</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Verbindungsorientiert bedeutet immer TCP.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Verbindungsorientiert ist ein <strong>Konzept</strong> — TCP ist nur eine Implementierung. Auch ATM, X.25 und andere Protokolle sind verbindungsorientiert.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Verbindungslos ist dasselbe wie unzuverlässig.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Verbindungslos und Zuverlässigkeit sind <strong>orthogonal</strong> — ein verbindungsloses Protokoll könnte Zuverlässigkeit bieten (z.&nbsp;B. QUIC). Die meisten tun es aus Performance-Gründen nicht.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der 2-Wege-Handschlag ist sicher, weil der Server antwortet.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Server weiß nicht, ob seine CONN_ACK ankam. Geht sie verloren, ist der Server „verbunden", der Client wartet noch → <strong>halboffene Verbindung</strong>. Erst der 3. Schritt löst das.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der 3-Wege-Handschlag garantiert eine fehlerfreie Verbindung.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das Two-Generals-Problem beweist: <strong>kein Handshake gibt eine 100%-Garantie</strong>. Die letzte Nachricht kann immer verloren gehen. 3-Wege ist nur in der Praxis ausreichend.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Zustandsdiagramm und Sequenzdiagramm sind dasselbe.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein <strong>Sequenzdiagramm</strong> zeigt Nachrichten über die Zeit (Pfeile zwischen zwei Seiten). Ein <strong>Zustandsdiagramm</strong> zeigt Zustände + Übergänge einer Seite (Kreise + Pfeile mit Trigger/Aktion). Immer genau lesen, was gefragt ist!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>SYN ist eine eigene Nachricht (ein eigenes Paket).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>SYN ist ein <strong>Flag (Bit) in einer TCP-PDU</strong> — das Segment kann zusätzlich Daten enthalten. SYN ist kein eigenständiger Nachrichtentyp, sondern ein Steuerbit.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Verbindungslos vs. verbindungsorientiert</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Eigenschaft</th><th>Verbindungslos</th><th>Verbindungsorientiert</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Aufbau</strong></td><td>Nein</td><td>Ja (Handshake)</td></tr>
+              <tr><td><strong>Reihenfolge</strong></td><td>Nicht garantiert</td><td>Garantiert</td></tr>
+              <tr><td><strong>Verluste</strong></td><td>Nicht erkannt</td><td>Erkannt + behoben</td></tr>
+              <tr><td><strong>Latenz</strong></td><td>Niedrig (kein Aufbau)</td><td>Höher</td></tr>
+              <tr><td><strong>Beispiele</strong></td><td>UDP, IP, DNS</td><td>TCP, HTTP, SSH</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Handshake-Vergleich</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Handshake</th><th>Nachrichten</th><th>Problem</th></tr></thead>
+            <tbody>
+              <tr><td><strong>2-Wege</strong></td><td>CONN_REQ, CONN_ACK</td><td>Halboffene Verbindung bei Verlust der 2. Nachricht</td></tr>
+              <tr><td><strong>3-Wege</strong></td><td>SYN, SYN-ACK, ACK</td><td>Two-Generals-Problem (nie 100% garantiert) — aber praxistauglich</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Wichtige Begriffe</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Halboffene Verbindung</strong></td><td>Eine Seite hält Verbindung für offen, die andere nicht</td></tr>
+              <tr><td><strong>Verspätetes Duplikat</strong></td><td>Alter CONN_REQ kommt zu spät an, Server nimmt neue Verbindung an</td></tr>
+              <tr><td><strong>Two Generals' Problem</strong></td><td>Beweis: Konsens über unzuverlässiges Medium nie 100% garantiert</td></tr>
+              <tr><td><strong>SYN / FIN</strong></td><td>TCP-Flags für Verbindungsaufbau / -abbau (keine eigenen Pakete!)</td></tr>
+              <tr><td><strong>Trigger / Aktion</strong></td><td>Notation im Zustandsdiagramm: auslösendes Ereignis / gesendete Antwort</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Zustandsdiagramm-Stichworte</h4>
+          <div class="factgrid">
+            <div class="fact"><b>● Startzustand</b><span>ausgefüllter Kreis</span></div>
+            <div class="fact"><b>◯ Zustand</b><span>Kreis/Oval mit Name</span></div>
+            <div class="fact"><b>→ Übergang</b><span>Trigger / Aktion</span></div>
+            <div class="fact"><b>◉ Endzustand</b><span>Doppelkreis</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Prev/Next -->
+      <nav class="prev-next">
+        <a class="prev" href="05-verzoegerung.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Verzögerungszeiten &amp; Vermittlungsarten</div>
+        </a>
+        <a class="next" href="07-sliding-window.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Sequenznummern &amp; Sliding Window</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

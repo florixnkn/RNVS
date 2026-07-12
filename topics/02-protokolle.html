@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Protokolle &amp; das Pizzadienst-Modell · RNVS</title>
+<meta name="description" content="Was ist ein Protokoll? Erklärt an einer ganz normalen Pizzabestellung: Syntax, Semantik, Steuer- vs. Nutzdaten, Sequenzdiagramme und das Schichtungsprinzip – für Einsteiger." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 02</div>
+    <span class="th-icon">🍕</span>
+    <h1>Protokolle &amp; das Pizzadienst-Modell</h1>
+    <div class="th-meta">
+      <span class="stars">★☆☆</span>
+      <span class="badge badge-blatt">Blatt 2</span>
+      <span class="badge badge-soft">Grundlagen</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Was ist ein Protokoll?</a></li>
+        <li><a href="#daten">Steuer- vs. Nutzdaten</a></li>
+        <li><a href="#schichten">Das Schichtungsprinzip</a></li>
+        <li><a href="#schritt">Sequenzdiagramm zeichnen</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Zwei Computer, die miteinander reden wollen, stehen vor demselben Problem wie zwei Menschen
+          am Telefon: Sie müssen sich auf <strong>feste Regeln</strong> einigen — wer zuerst spricht, in welcher
+          Reihenfolge, was welche Nachricht bedeutet. Genau diese Regeln nennt man ein <strong>Protokoll</strong>.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du bestellst eine Pizza am Telefon. Ohne dass es dir bewusst ist, folgt ihr beide einem festen
+            Ablauf: „Hallo" → „Pizzeria Bella, was darf's sein?" → Name → Adresse → Bestellung → „Kommt in 30 Minuten"
+            → „Tschüss". Kein Wort zu früh, keins zu spät. <strong>Dieser Ablauf ist ein Protokoll.</strong>
+            Computer machen es im Prinzip genauso — nur schneller und mit Bits statt Worten.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Was ist ein Protokoll?</h2>
+        <p>Ein <strong>Protokoll</strong> ist eine <em>Spezifikation von Vorschriften zum Informationsaustausch</em>
+          zwischen zwei kommunizierenden Instanzen. Damit die Kommunikation klappt, muss ein Protokoll vier Dinge
+          festlegen (nach ISO 9545):</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Bestandteil</th><th>Legt fest …</th><th>Pizza-Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Syntax</strong></td><td>Format &amp; Struktur der Nachrichten</td><td>Erst Name, dann Adresse, dann Bestellung</td></tr>
+            <tr><td><strong>Semantik</strong></td><td>Bedeutung der Nachrichten</td><td>„Salami" heißt: diese Pizza will ich</td></tr>
+            <tr><td><strong>Zeitl. Reihenfolge</strong></td><td>Wann darf wer was senden?</td><td>Kunde antwortet erst, wenn er gefragt wird</td></tr>
+            <tr><td><strong>Aktionen</strong></td><td>Wie reagiert man auf Empfang/Fehler?</td><td>Nicht verstanden → nachfragen</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Zwei Sorten von Protokollen</h3>
+        <p>Man unterscheidet grob, ob vorher eine „Leitung aufgebaut" wird oder nicht:</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Verbindungslos vs. verbindungsorientiert</div>
+          <svg viewBox="0 0 640 210" width="640" role="img" aria-label="Vergleich verbindungslos und verbindungsorientiert">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- links: verbindungslos -->
+              <rect x="20" y="20" width="280" height="170" rx="10" fill="#f5810b" fill-opacity="0.10" stroke="#f5810b"/>
+              <text x="160" y="44" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15">Verbindungslos</text>
+              <text x="160" y="64" text-anchor="middle" class="svg-soft">wie eine Postkarte 📮</text>
+              <rect x="45" y="82" width="80" height="34" rx="6" fill="#f5810b" fill-opacity="0.2" stroke="#f5810b"/>
+              <text x="85" y="104" text-anchor="middle" class="svg-ink">Nachricht</text>
+              <line x1="128" y1="99" x2="270" y2="99" stroke="#f5810b" stroke-width="2" marker-end="url(#arrO)"/>
+              <text x="160" y="150" text-anchor="middle" class="svg-soft">Einfach abschicken —</text>
+              <text x="160" y="168" text-anchor="middle" class="svg-soft">kein „Hallo" vorher. (UDP, IP)</text>
+
+              <!-- rechts: verbindungsorientiert -->
+              <rect x="340" y="20" width="280" height="170" rx="10" fill="#2f6df6" fill-opacity="0.10" stroke="#2f6df6"/>
+              <text x="480" y="44" text-anchor="middle" class="svg-ink" font-weight="700" font-size="15">Verbindungsorientiert</text>
+              <text x="480" y="64" text-anchor="middle" class="svg-soft">wie ein Telefonanruf ☎️</text>
+              <line x1="380" y1="86" x2="580" y2="86" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB)"/>
+              <text x="480" y="82" text-anchor="middle" class="svg-soft">1. Aufbau („Hallo?")</text>
+              <line x1="580" y1="116" x2="380" y2="116" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB)"/>
+              <text x="480" y="112" text-anchor="middle" class="svg-soft">2. Reden (Daten)</text>
+              <line x1="380" y1="146" x2="580" y2="146" stroke="#2f6df6" stroke-width="2" marker-end="url(#arrB)"/>
+              <text x="480" y="142" text-anchor="middle" class="svg-soft">3. Abbau („Tschüss")</text>
+              <text x="480" y="176" text-anchor="middle" class="svg-soft">Erst Verbindung, dann Daten. (TCP)</text>
+            </g>
+            <defs>
+              <marker id="arrO" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/></marker>
+              <marker id="arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+          </svg>
+          <figcaption>Verbindungslos: einfach abschicken. Verbindungsorientiert: erst „anrufen", dann reden, dann auflegen.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== STEUER VS NUTZ ===== -->
+      <section id="daten" class="reveal">
+        <h2>Steuerdaten vs. Nutzdaten</h2>
+        <p>In jeder Kommunikation gibt es zwei Sorten von Informationen: das, <em>was</em> übertragen werden soll
+          (der eigentliche Inhalt), und das Drumherum, das die Übertragung <em>steuert</em>.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Der Brief-Vergleich: Umschlag = Steuerdaten, Inhalt = Nutzdaten</div>
+          <svg viewBox="0 0 520 220" width="520" role="img" aria-label="Umschlag mit Steuerdaten außen und Nutzdaten innen">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="60" y="40" width="400" height="150" rx="12" fill="#12b28c" fill-opacity="0.10" stroke="#12b28c" stroke-width="2"/>
+              <!-- Umschlagklappe -->
+              <path d="M60,52 L260,150 L460,52" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="260" y="30" text-anchor="middle" class="svg-ink" font-weight="700">Ein „Paket" im Netzwerk</text>
+              <!-- Steuerdaten Label -->
+              <rect x="80" y="60" width="150" height="26" rx="6" fill="#2f6df6" fill-opacity="0.85"/>
+              <text x="155" y="78" text-anchor="middle" fill="#fff" font-weight="700">Steuerdaten</text>
+              <text x="155" y="105" text-anchor="middle" class="svg-soft">„Hallo", Adresse,</text>
+              <text x="155" y="122" text-anchor="middle" class="svg-soft">„Wie ist Ihr Name?"</text>
+              <!-- Nutzdaten Label -->
+              <rect x="290" y="120" width="150" height="26" rx="6" fill="#f5810b" fill-opacity="0.9"/>
+              <text x="365" y="138" text-anchor="middle" fill="#fff" font-weight="700">Nutzdaten</text>
+              <text x="365" y="165" text-anchor="middle" class="svg-soft">„1× Salami-Pizza"</text>
+            </g>
+          </svg>
+          <figcaption>Nutzdaten = <strong>was</strong> übertragen wird. Steuerdaten = <strong>wie</strong> die Übertragung abläuft.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p><strong>Nutzdaten = WAS</strong> wird übertragen (der Inhalt). <strong>Steuerdaten = WIE</strong> die
+            Übertragung läuft (Begrüßung, Adressen, Reihenfolge-Infos). Im echten Netzwerk stecken die Steuerdaten
+            im <em>Header</em> jedes Pakets.</p>
+        </div>
+      </section>
+
+      <!-- ===== SCHICHTEN ===== -->
+      <section id="schichten" class="reveal">
+        <h2>Das Schichtungsprinzip</h2>
+        <p>Ein komplettes Kommunikationssystem ist zu kompliziert, um es in einem Stück zu bauen. Die Lösung:
+          man zerlegt es in <strong>Schichten</strong>, die aufeinander aufbauen. Jede Schicht nutzt die Dienste
+          der Schicht <em>darunter</em> und bietet Dienste für die Schicht <em>darüber</em> an.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Pizza-Bestellung als 2-Schichten-Modell</div>
+          <svg viewBox="0 0 620 260" width="620" role="img" aria-label="Zwei Schichten: Pizza-Protokoll oben, Telefonnetz unten, mit logischer und physischer Verbindung">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Kunde -->
+              <rect x="30" y="40" width="200" height="52" rx="10" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="130" y="62" text-anchor="middle" class="svg-ink" font-weight="700">Pizza-Protokoll</text>
+              <text x="130" y="80" text-anchor="middle" class="svg-soft">(Kunde)</text>
+              <rect x="30" y="150" width="200" height="52" rx="10" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="130" y="172" text-anchor="middle" class="svg-ink" font-weight="700">Telefonnetz</text>
+              <text x="130" y="190" text-anchor="middle" class="svg-soft">(Leitung)</text>
+              <!-- Pizzeria -->
+              <rect x="390" y="40" width="200" height="52" rx="10" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="490" y="62" text-anchor="middle" class="svg-ink" font-weight="700">Pizza-Protokoll</text>
+              <text x="490" y="80" text-anchor="middle" class="svg-soft">(Pizzeria)</text>
+              <rect x="390" y="150" width="200" height="52" rx="10" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="490" y="172" text-anchor="middle" class="svg-ink" font-weight="700">Telefonnetz</text>
+              <text x="490" y="190" text-anchor="middle" class="svg-soft">(Leitung)</text>
+              <!-- logische Verbindung (gestrichelt) -->
+              <line x1="230" y1="66" x2="390" y2="66" stroke="#12b28c" stroke-width="2" stroke-dasharray="6 5"/>
+              <text x="310" y="56" text-anchor="middle" class="svg-soft">logisch: „reden" 🗨️</text>
+              <!-- physische Verbindung -->
+              <line x1="130" y1="92" x2="130" y2="150" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="490" y1="92" x2="490" y2="150" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="230" y1="176" x2="390" y2="176" stroke="#2f6df6" stroke-width="2"/>
+              <text x="310" y="166" text-anchor="middle" class="svg-soft">physisch: Sprache über Kabel</text>
+              <text x="310" y="234" text-anchor="middle" class="svg-soft" font-size="12">Die obere Schicht „glaubt", sie rede direkt mit der Gegenstelle — in Wahrheit läuft alles unten durch.</text>
+            </g>
+          </svg>
+          <figcaption>Das Pizza-Protokoll nutzt das Telefonnetz als Transport. Tauscht man Telefon gegen Messenger, bleibt das Pizza-Protokoll fast gleich — das ist der Sinn von Schichten.</figcaption>
+        </figure>
+
+        <div class="factgrid">
+          <div class="fact"><b>Modularität</b><span>Schichten austauschbar</span></div>
+          <div class="fact"><b>Weniger Komplexität</b><span>ein Problem pro Schicht</span></div>
+          <div class="fact"><b>Wiederverwendbar</b><span>eine Schicht, viele Apps</span></div>
+          <div class="fact"><b>Preis: Overhead</b><span>Header in jeder Schicht</span></div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gut zu wissen: Peer-Kommunikation</div>
+          <p>Gleiche Schichten auf beiden Seiten (z.&nbsp;B. „Pizza-Protokoll" ↔ „Pizza-Protokoll") reden
+            <em>logisch</em> miteinander. <strong>Physikalisch</strong> läuft aber jede Nachricht komplett nach
+            unten durch alle Schichten, über die Leitung und auf der anderen Seite wieder hoch.</p>
+        </div>
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>Sequenzdiagramm zeichnen — Schritt für Schritt</h2>
+        <p>Ein <strong>Sequenzdiagramm</strong> zeigt, welche Nachrichten in welcher Reihenfolge fließen. Die Zeit
+          läuft dabei von <em>oben nach unten</em>. So gehst du vor:</p>
+
+        <ol class="steps">
+          <li><strong>Teilnehmer als senkrechte Linien:</strong> Kunde links, Pizzeria rechts. Jede Linie ist eine „Lebenslinie".</li>
+          <li><strong>Phasen einteilen:</strong> Aufbau → Anfrage → Datenübermittlung → Bestätigung → Abbau.</li>
+          <li><strong>Nachrichten als Pfeile:</strong> immer nach rechts <em>oder</em> links, nie beides gleichzeitig. Beschrifte jeden Pfeil.</li>
+          <li><strong>Reihenfolge einhalten:</strong> Der Kunde liefert Infos nur, wenn er gefragt wird — streng synchron.</li>
+          <li><strong>Trennlinien</strong> zwischen den Phasen einziehen, damit die Struktur sichtbar ist.</li>
+        </ol>
+
+        <figure class="diagram">
+          <div class="diagram-title">Sequenzdiagramm: eine Pizza-Bestellung</div>
+          <svg viewBox="0 0 520 380" width="520" role="img" aria-label="Sequenzdiagramm einer Pizzabestellung zwischen Kunde und Pizzeria">
+            <defs>
+              <marker id="arrG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <text x="90"  y="24" text-anchor="middle" class="svg-ink" font-weight="700">Kunde</text>
+              <text x="430" y="24" text-anchor="middle" class="svg-ink" font-weight="700">Pizzeria</text>
+              <line x1="90"  y1="32" x2="90"  y2="360" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="430" y1="32" x2="430" y2="360" stroke="#8a94a6" stroke-width="2"/>
+
+              <!-- Phase Aufbau -->
+              <text x="260" y="48" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">— Verbindungsaufbau —</text>
+              <line x1="90"  y1="62"  x2="430" y2="70"  stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="58"  text-anchor="middle" class="svg-soft">„Hallo"</text>
+              <line x1="430" y1="86"  x2="90"  y2="94"  stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="82"  text-anchor="middle" class="svg-soft">„Pizzeria Bella, was darf's sein?"</text>
+
+              <!-- Phase Daten -->
+              <text x="260" y="116" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">— Bestellung (Datenphase) —</text>
+              <line x1="430" y1="130" x2="90"  y2="138" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="126" text-anchor="middle" class="svg-soft">„Wie ist Ihr Name?"</text>
+              <line x1="90"  y1="154" x2="430" y2="162" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="150" text-anchor="middle" class="svg-soft">„Florian"</text>
+              <line x1="430" y1="178" x2="90"  y2="186" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="174" text-anchor="middle" class="svg-soft">„Ihre Adresse?"</text>
+              <line x1="90"  y1="202" x2="430" y2="210" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="198" text-anchor="middle" class="svg-soft">„Hauptstr. 5"</text>
+              <line x1="430" y1="226" x2="90"  y2="234" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="222" text-anchor="middle" class="svg-soft">„Was möchten Sie?"</text>
+              <line x1="90"  y1="250" x2="430" y2="258" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="246" text-anchor="middle" class="svg-soft">„1× Salami"</text>
+
+              <!-- Phase Bestätigung/Abbau -->
+              <text x="260" y="288" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">— Bestätigung &amp; Abbau —</text>
+              <line x1="430" y1="302" x2="90"  y2="310" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="298" text-anchor="middle" class="svg-soft">„Danke, in 30 Min. da"</text>
+              <line x1="90"  y1="326" x2="430" y2="334" stroke="#12b28c" stroke-width="2" marker-end="url(#arrG)"/>
+              <text x="255" y="322" text-anchor="middle" class="svg-soft">„Tschüss"</text>
+            </g>
+          </svg>
+          <figcaption>Zeit läuft nach unten. Jeder Pfeil ist genau eine Nachricht. Der Kunde antwortet immer erst auf eine Frage — das ist die „zeitliche Reihenfolge" des Protokolls.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Salami-Pizza" sind Steuerdaten.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>„Salami-Pizza" ist der Inhalt → <strong>Nutzdaten</strong>. Steuerdaten sind „Hallo", „Ihre Adresse?" usw.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Im Sequenzdiagramm läuft ein Pfeil in beide Richtungen gleichzeitig.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Jeder Pfeil geht nur in <strong>eine</strong> Richtung. Die Zeit läuft senkrecht nach unten.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Anwendungsschicht redet direkt mit der Anwendungsschicht der Gegenseite.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das ist nur die <strong>logische</strong> Sicht. Physikalisch läuft alles durch die unteren Schichten.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Kunde nennt Name, Adresse und Wunsch einfach alle auf einmal.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein Protokoll hat eine <strong>feste Reihenfolge</strong> — Infos kommen nur auf Aufforderung.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Protokoll</strong></td><td>Regeln für den Informationsaustausch</td></tr>
+              <tr><td><strong>Syntax</strong></td><td>Format der Nachrichten</td></tr>
+              <tr><td><strong>Semantik</strong></td><td>Bedeutung der Nachrichten</td></tr>
+              <tr><td><strong>Peer-Entity</strong></td><td>Gegenstelle auf gleicher Schicht</td></tr>
+              <tr><td><strong>Steuerdaten</strong></td><td>Metadaten / Header (das WIE)</td></tr>
+              <tr><td><strong>Nutzdaten</strong></td><td>eigentlicher Inhalt / Payload (das WAS)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Schichtungsprinzip in einem Satz</h4>
+          <p>Jede Schicht <strong>nutzt</strong> die Dienste darunter und <strong>bietet</strong> Dienste darüber an —
+            dadurch kann man einzelne Schichten austauschen, ohne den Rest anzufassen.</p>
+
+          <h4>Vor- und Nachteile</h4>
+          <div class="fr">
+            <div class="right"><span class="fr-tag">✅ Vorteile</span>Modularität, Wiederverwendbarkeit, weniger Komplexität, klare Zuständigkeiten.</div>
+            <div class="wrong"><span class="fr-tag">⚠️ Nachteile</span>Header-Overhead, Performance-Verlust durch Indirektion, manchmal zu starr.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="01-grundlagen.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Graphen, Bäume &amp; Adressierung</div>
+        </a>
+        <a class="next" href="03-netze-tools.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Netz vs. Verteiltes System &amp; Tools</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
