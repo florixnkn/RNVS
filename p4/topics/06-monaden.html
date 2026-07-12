@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Monaden · P4 Haskell</title>
+<meta name="description" content="Monaden in Haskell bildlich erklärt: Maybe, List, IO, Result-Monad, do-Notation, Desugaring, Typklassen-Hierarchie Functor→Applicative→Monad. Task 5 Klausurvorbereitung." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238b5cf6'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>λ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">λ</span>
+      <span>P4 · Prog&amp;Mod<small>Haskell, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../../index.html">Lernhub</a> › <a href="../index.html">P4 Haskell</a> › Thema 06</div>
+    <span class="th-icon">🪄</span>
+    <h1>Monaden</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausurrelevant</span><span class="badge badge-blatt">Task 5 (18 P.)</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Typklassen-Hierarchie</a></li>
+        <li><a href="#instanzen">Monad-Instanzen</a></li>
+        <li><a href="#schritt">Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Eine <strong>Monade</strong> ist eine Berechnung, die <em>mit einem Kontext</em> läuft — zum Beispiel
+          „könnte fehlschlagen" (<code>Maybe</code>), „liefert mehrere Ergebnisse" (<code>[]</code>), „macht Seiteneffekte"
+          (<code>IO</code>) oder „trägt einen eigenen Fehlertyp" (<code>Result</code>). Monaden erlauben es, solche
+          Berechnungen <strong>sauber hintereinander zu schalten</strong>, ohne bei jedem Schritt selbst den Kontext zu prüfen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du bestellt Pakete über eine Lieferkette. Jedes Paket steckt in einem <strong>Karton</strong> (dem Kontext).
+            Der Karton kann leer sein (Nothing), mehrere Inhalte haben ([1,2,3]) oder eine Quittung enthalten, die man
+            erst unterschreiben muss (IO). Eine Monade ist wie ein Förderband, das den Karton automatisch weiterreicht:
+            Ist ein Karton leer (<code>Nothing</code>), läuft das ganze Förderband weiter, ohne die leere Schachtel zu
+            öffnen — das Ergebnis bleibt leer. Öffnest du dagegen einen <code>Just 5</code>-Karton, bekommst du die
+            <strong>5</strong> heraus und kannst sie direkt weiterverarbeiten.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Typklassen-Hierarchie</h2>
+        <p>Monad baut auf zwei Vorstufen auf. Jede Stufe fügt eine neue Fähigkeit hinzu:</p>
+
+        <!-- SVG 1: Treppe Functor → Applicative → Monad -->
+        <figure class="diagram">
+          <div class="diagram-title">Die drei Stufen: Functor → Applicative → Monad</div>
+          <svg viewBox="0 0 700 310" width="700" role="img" aria-label="Treppe der Typklassen: Functor, Applicative, Monad mit je einer Kurzsignatur">
+            <defs>
+              <marker id="ar-hier" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="14">
+              <!-- Functor -->
+              <rect x="20" y="200" width="650" height="85" rx="10" fill="#2f6df6" fill-opacity="0.13" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="40" y="228" fill="#2f6df6" font-weight="700" font-size="16">Functor</text>
+              <text x="40" y="250" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">fmap :: (a -&gt; b) -&gt; f a -&gt; f b</text>
+              <text x="40" y="270" class="svg-soft" font-size="12">Wert im Kontext transformieren — Kontext bleibt unverändert</text>
+              <!-- Applicative -->
+              <rect x="20" y="105" width="650" height="85" rx="10" fill="#8b5cf6" fill-opacity="0.13" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="40" y="133" fill="#8b5cf6" font-weight="700" font-size="16">Applicative  <tspan class="svg-soft" font-size="12" font-weight="400">⊃ Functor</tspan></text>
+              <text x="40" y="155" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">pure  :: a -&gt; f a</text>
+              <text x="40" y="173" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">(&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b</text>
+              <!-- Monad -->
+              <rect x="20" y="10" width="650" height="85" rx="10" fill="#12b28c" fill-opacity="0.13" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="40" y="38" fill="#12b28c" font-weight="700" font-size="16">Monad  <tspan class="svg-soft" font-size="12" font-weight="400">⊃ Applicative ⊃ Functor</tspan></text>
+              <text x="40" y="60" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">return :: a -&gt; m a        -- = pure</text>
+              <text x="40" y="78" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">(&gt;&gt;=)  :: m a -&gt; (a -&gt; m b) -&gt; m b   -- bind</text>
+              <!-- Pfeile -->
+              <line x1="350" y1="193" x2="350" y2="98" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#ar-hier)"/>
+              <text x="360" y="155" class="svg-soft" font-size="11">erweitert</text>
+              <line x1="350" y1="98" x2="350" y2="97" stroke="#8b5cf6" stroke-width="0"/>
+              <line x1="350" y1="98" x2="350" y2="5" stroke="#12b28c" stroke-width="2.5" marker-end="url(#ar-hier)"/>
+              <text x="360" y="60" class="svg-soft" font-size="11">erweitert</text>
+            </g>
+          </svg>
+          <figcaption>Monad ist die stärkste Stufe: Sie erlaubt Sequenzierung mit Abhängigkeit — die Ausgabe einer Berechnung steuert die nächste.</figcaption>
+        </figure>
+
+        <h3>Functor — der Grundbaustein</h3>
+        <p><code>fmap</code> wendet eine normale Funktion auf den Wert <em>innerhalb</em> des Kontexts an. Der Kontext selbst
+          (z.&nbsp;B. <code>Just</code>, <code>Nothing</code>, oder eine Liste) bleibt erhalten:</p>
+        <pre class="code hs">fmap (+1) (Just 5)  =  Just 6    -- Kontext bleibt Just
+fmap (+1) Nothing   =  Nothing   -- Kontext bleibt Nothing
+fmap (*2) [1,2,3]   =  [2,4,6]   -- Kontext bleibt Liste</pre>
+
+        <h3>Applicative — Funktion im Kontext</h3>
+        <p><code>pure</code> verpackt einen Wert in den Kontext. <code>(&lt;*&gt;)</code> wendet eine <em>im Kontext steckende
+          Funktion</em> auf einen <em>im Kontext steckenden Wert</em> an:</p>
+        <pre class="code hs">pure 5          :: Maybe Int  =  Just 5
+
+Just (+1) &lt;*&gt; Just 5    =  Just 6
+Nothing   &lt;*&gt; Just 5    =  Nothing
+Just (+1) &lt;*&gt; Nothing   =  Nothing
+
+[(*2), (*3)] &lt;*&gt; [1,2]  =  [2,4,3,6]  -- alle Kombinationen</pre>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gut zu wissen: Warum reicht Applicative nicht?</div>
+          <p>Applicative kann Werte <em>unabhängig</em> kombinieren — aber es kann die zweite Berechnung <strong>nicht</strong>
+            vom <em>Ergebnis</em> der ersten abhängig machen. Beim Typecheck von <code>Equal e1 e2</code> musst du erst
+            <code>e1</code> prüfen, und dann — abhängig davon — <code>e2</code> vergleichen. Das ist
+            <strong>sequenzierte Abhängigkeit</strong> → genau das kann nur <code>(&gt;&gt;=)</code>.</p>
+        </div>
+
+        <h3>Monad — Bind und do-Notation</h3>
+        <p>Der <strong>Bind-Operator <code>(&gt;&gt;=)</code></strong> nimmt einen Wert aus dem Kontext heraus und steckt
+          das Ergebnis der Folgefunktion in einen neuen Kontext. Die <strong>do-Notation</strong> ist nur
+          syntaktischer Zucker dafür:</p>
+
+        <!-- SVG 2: >>= Pipeline mit Schachteln -->
+        <figure class="diagram">
+          <div class="diagram-title">&gt;&gt;= Pipeline: Wert aus der Schachtel, Funktion steckt in neue Schachtel</div>
+          <svg viewBox="0 0 700 200" width="700" role="img" aria-label="Bind-Pipeline: Just 5 wird ausgepackt, Funktion addiert 1, Ergebnis Just 6">
+            <defs>
+              <marker id="ar-bind" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/>
+              </marker>
+              <marker id="ar-green" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Just 5 Schachtel -->
+              <rect x="20" y="60" width="110" height="80" rx="10" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="75" y="93" text-anchor="middle" class="svg-soft" font-size="11">Schachtel</text>
+              <text x="75" y="115" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" class="svg-ink" font-weight="700">Just 5</text>
+              <!-- Auspacken Pfeil -->
+              <line x1="130" y1="100" x2="195" y2="100" stroke="#f5810b" stroke-width="2.5" marker-end="url(#ar-bind)"/>
+              <text x="160" y="92" text-anchor="middle" class="svg-soft" font-size="11">&gt;&gt;=</text>
+              <text x="160" y="118" text-anchor="middle" class="svg-soft" font-size="11">auspacken</text>
+              <!-- Funktion -->
+              <rect x="200" y="60" width="190" height="80" rx="10" fill="#f5810b" fill-opacity="0.13" stroke="#f5810b" stroke-width="2"/>
+              <text x="295" y="88" text-anchor="middle" class="svg-soft" font-size="11">Funktion</text>
+              <text x="295" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">(\x -&gt; Just (x+1))</text>
+              <text x="295" y="130" text-anchor="middle" class="svg-soft" font-size="11">x = 5 → 5+1 = 6</text>
+              <!-- Einpacken Pfeil -->
+              <line x1="390" y1="100" x2="455" y2="100" stroke="#12b28c" stroke-width="2.5" marker-end="url(#ar-green)"/>
+              <text x="422" y="92" text-anchor="middle" class="svg-soft" font-size="11">ergibt</text>
+              <text x="422" y="118" text-anchor="middle" class="svg-soft" font-size="11">neue Schachtel</text>
+              <!-- Ergebnis Schachtel -->
+              <rect x="460" y="60" width="120" height="80" rx="10" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c" stroke-width="2"/>
+              <text x="520" y="93" text-anchor="middle" class="svg-soft" font-size="11">Schachtel</text>
+              <text x="520" y="115" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" class="svg-ink" font-weight="700">Just 6</text>
+              <!-- Legende -->
+              <text x="350" y="175" text-anchor="middle" class="svg-soft" font-size="12">Just 5  &gt;&gt;=  (\x -&gt; Just (x+1))  =  Just 6</text>
+            </g>
+          </svg>
+          <figcaption><code>&gt;&gt;=</code> (bind) packt den Wert aus der Schachtel aus, übergibt ihn der Funktion — und die Funktion entscheidet selbst, in welche neue Schachtel das Ergebnis kommt.</figcaption>
+        </figure>
+
+        <!-- SVG 3: do-Block neben >>=-Desugaring -->
+        <figure class="diagram">
+          <div class="diagram-title">do-Notation = syntaktischer Zucker für &gt;&gt;=</div>
+          <svg viewBox="0 0 700 260" width="700" role="img" aria-label="do-Block links, >>= Desugaring rechts, Pfeile zeigen Entsprechungen">
+            <defs>
+              <marker id="ar-desugar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- do-Block links -->
+              <rect x="10" y="10" width="280" height="230" rx="10" fill="#2f6df6" fill-opacity="0.08" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="150" y="36" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="14">do-Notation</text>
+              <text x="30" y="65"  font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">do</text>
+              <text x="50" y="95"  font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">x &lt;- m1</text>
+              <text x="50" y="130" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">y &lt;- m2</text>
+              <text x="50" y="165" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">return (x, y)</text>
+              <text x="30" y="225" class="svg-soft" font-size="11">← bedeutet „auspacken, an x binden"</text>
+              <!-- Trennlinie -->
+              <text x="350" y="140" text-anchor="middle" class="svg-soft" font-size="22">⇔</text>
+              <!-- >>= rechts -->
+              <rect x="410" y="10" width="280" height="230" rx="10" fill="#12b28c" fill-opacity="0.08" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="550" y="36" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="14">Desugared (&gt;&gt;=)</text>
+              <text x="425" y="75"  font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">m1 &gt;&gt;= \x -&gt;</text>
+              <text x="445" y="105" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">m2 &gt;&gt;= \y -&gt;</text>
+              <text x="465" y="135" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">return (x, y)</text>
+              <text x="425" y="195" class="svg-soft" font-size="11">x ist der ausgepackte Wert aus m1</text>
+              <text x="425" y="215" class="svg-soft" font-size="11">y ist der ausgepackte Wert aus m2</text>
+              <!-- Verbindungs-Pfeile -->
+              <line x1="292" y1="95"  x2="408" y2="75"  stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ar-desugar)"/>
+              <line x1="292" y1="130" x2="408" y2="105" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ar-desugar)"/>
+              <line x1="292" y1="165" x2="408" y2="135" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ar-desugar)"/>
+            </g>
+          </svg>
+          <figcaption>Jede Zeile mit <code>&lt;-</code> im do-Block wird zu einem <code>&gt;&gt;=</code> mit Lambda-Funktion. Der Compiler macht das automatisch.</figcaption>
+        </figure>
+
+        <h3>Signaturen auf einen Blick</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Typklasse</th><th>Neue Signatur</th><th>Intuition</th></tr></thead>
+          <tbody>
+            <tr><td><code>Functor</code></td><td><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code></td><td>Funktion in Kontext anwenden</td></tr>
+            <tr><td><code>Applicative</code></td><td><code>pure :: a -&gt; f a</code></td><td>Wert in Kontext einpacken</td></tr>
+            <tr><td><code>Applicative</code></td><td><code>(&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b</code></td><td>Funktion im Kontext anwenden</td></tr>
+            <tr><td><code>Monad</code></td><td><code>return :: a -&gt; m a</code></td><td>= pure</td></tr>
+            <tr><td><code>Monad</code></td><td><code>(&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b</code></td><td>Auspacken + Funktion → neue Schachtel</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== INSTANZEN ===== -->
+      <section id="instanzen" class="reveal">
+        <h2>Monad-Instanzen</h2>
+
+        <h3>Maybe-Monad — Fehler elegant weitergeben</h3>
+        <p>Sobald irgendwo <code>Nothing</code> auftaucht, fließt es still durch alle weiteren Schritte durch — wie ein
+          Domino-Effekt. Du musst nirgends manuell prüfen:</p>
+        <pre class="code hs">instance Monad Maybe where
+  return x         = Just x
+  Nothing  &gt;&gt;= _  = Nothing   -- Fehler propagiert sofort
+  (Just x) &gt;&gt;= f  = f x       -- Wert auspacken, Funktion aufrufen
+
+-- Beispiel mit do:
+do { x &lt;- Just 5; y &lt;- Just 3; return (x + y) }  =  Just 8
+
+do { x &lt;- Just 5; y &lt;- Nothing; return (x + y) }  =  Nothing
+--                      ^--- ein Nothing → alles Nothing</pre>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: &lt;- bedeutet nicht =</div>
+          <p><code>x &lt;- Just 5</code> bedeutet: <strong>„Pack den Wert aus der Schachtel aus und nenne ihn x"</strong>.
+            <code>x</code> ist danach <code>5</code> (eine Zahl), <em>nicht</em> <code>Just 5</code> (die Schachtel).
+            Genau das ist der Unterschied zu <code>let x = Just 5</code>.</p>
+        </div>
+
+        <h3>List-Monad — alle Kombinationen</h3>
+        <p>Bei Listen bedeutet <code>&gt;&gt;=</code>: jeden Wert der Liste durch die Funktion jagen und alle Ergebnisse
+          zusammenkleben — <code>concat . map</code>:</p>
+        <pre class="code hs">instance Monad [] where
+  return x   = [x]                   -- Wert in Einzel-Liste
+  xs &gt;&gt;= f   = concat (map f xs)     -- alle Ergebnisse zusammenkleben
+
+-- Alle Paare aus [1,2] × [3,4]:
+do { x &lt;- [1,2]; y &lt;- [3,4]; return (x,y) }
+= [1,2] &gt;&gt;= \x -&gt; [3,4] &gt;&gt;= \y -&gt; return (x,y)
+= [(1,3),(1,4),(2,3),(2,4)]</pre>
+
+        <!-- SVG 4: Maybe-Kette Nothing kippt alles -->
+        <figure class="diagram">
+          <div class="diagram-title">Maybe-Kette: Ein Nothing macht alles Nothing</div>
+          <svg viewBox="0 0 700 170" width="700" role="img" aria-label="Kette von drei Maybe-Werten: Just 5, Nothing, Just 3. Ab Nothing alles Nothing.">
+            <defs>
+              <marker id="ar-chain" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+              <marker id="ar-red" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#e0483d"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Schritt 1: Just 5 -->
+              <rect x="10" y="50" width="110" height="70" rx="10" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c" stroke-width="2"/>
+              <text x="65" y="78" text-anchor="middle" class="svg-soft" font-size="11">Schritt 1</text>
+              <text x="65" y="101" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" class="svg-ink" font-weight="700">Just 5</text>
+              <line x1="120" y1="85" x2="178" y2="85" stroke="#2f6df6" stroke-width="2.5" marker-end="url(#ar-chain)"/>
+              <text x="149" y="78" text-anchor="middle" class="svg-soft" font-size="11">&gt;&gt;=</text>
+              <!-- Schritt 2: Nothing -->
+              <rect x="183" y="50" width="120" height="70" rx="10" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d" stroke-width="2.5"/>
+              <text x="243" y="78" text-anchor="middle" class="svg-soft" font-size="11">Schritt 2</text>
+              <text x="243" y="101" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#e0483d" font-weight="700">Nothing</text>
+              <line x1="303" y1="85" x2="360" y2="85" stroke="#e0483d" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#ar-red)"/>
+              <text x="332" y="78" text-anchor="middle" fill="#e0483d" font-size="11">&gt;&gt;=</text>
+              <!-- Schritt 3: Nothing (propagiert) -->
+              <rect x="365" y="50" width="140" height="70" rx="10" fill="#e0483d" fill-opacity="0.08" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="6,3"/>
+              <text x="435" y="78" text-anchor="middle" class="svg-soft" font-size="11">Schritt 3 (ignoriert)</text>
+              <text x="435" y="101" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#e0483d" font-weight="700">Nothing</text>
+              <line x1="505" y1="85" x2="562" y2="85" stroke="#e0483d" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#ar-red)"/>
+              <!-- Ergebnis -->
+              <rect x="567" y="50" width="120" height="70" rx="10" fill="#e0483d" fill-opacity="0.15" stroke="#e0483d" stroke-width="2.5"/>
+              <text x="627" y="78" text-anchor="middle" class="svg-soft" font-size="11">Ergebnis</text>
+              <text x="627" y="101" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#e0483d" font-weight="700">Nothing</text>
+              <text x="350" y="148" text-anchor="middle" class="svg-soft" font-size="12">Just 5 &gt;&gt;= (\_ -&gt; Nothing) &gt;&gt;= (\_ -&gt; Just 3) = Nothing</text>
+            </g>
+          </svg>
+          <figcaption>Ein <code>Nothing</code> in der Kette schaltet alle weiteren Schritte aus — wie eine Sicherung, die durchbrennt.</figcaption>
+        </figure>
+
+        <h3>Result-Monad — eigener Fehlertyp</h3>
+        <p>Statt <code>Nothing</code> ohne Erklärung kann <code>Result</code> einen Fehlertext mitliefern:</p>
+        <pre class="code hs">data Result a = Success a | Failure String
+
+instance Functor Result where
+  fmap f (Success a) = Success (f a)
+  fmap _ (Failure e) = Failure e         -- Fehler unverändert durchleiten
+
+instance Applicative Result where
+  pure = Success
+  (Failure e) &lt;*&gt; _           = Failure e
+  _           &lt;*&gt; (Failure e) = Failure e
+  (Success f) &lt;*&gt; (Success a) = Success (f a)
+
+instance Monad Result where
+  return = Success
+  (Failure e) &gt;&gt;= _ = Failure e         -- Fehler propagiert
+  (Success a) &gt;&gt;= f = f a               -- Weiter mit dem Wert</pre>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Achtung: Reihenfolge der Instanzen</div>
+          <p>Du kannst <code>Monad Result</code> erst definieren, wenn <strong>sowohl <code>Functor Result</code>
+            als auch <code>Applicative Result</code></strong> bereits definiert sind. Haskell erzwingt die Hierarchie.</p>
+        </div>
+
+        <h3>Monad-Gesetze</h3>
+        <p>Jede korrekte Monad-Instanz muss drei Gesetze erfüllen:</p>
+        <pre class="code hs">-- 1. Left Identity: return dann bind = direkt die Funktion
+return x &gt;&gt;= f   =  f x
+
+-- 2. Right Identity: bind mit return = keine Änderung
+m &gt;&gt;= return      =  m
+
+-- 3. Assoziativität: Klammerung spielt keine Rolle
+(m &gt;&gt;= f) &gt;&gt;= g  =  m &gt;&gt;= (\x -&gt; f x &gt;&gt;= g)</pre>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Signatur von bind</div>
+          <span class="formula">(&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b</span>
+          <p><code>m a</code> = Wert im Kontext · <code>(a -&gt; m b)</code> = Funktion, die Wert nimmt und neuen Kontext liefert · <code>m b</code> = Ergebnis im Kontext.</p>
+        </div>
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>Schritt für Schritt: Typecheck mit do-Notation</h2>
+        <p>Das Klausurbeispiel aus ProMo'24 (Task 5): <code>Equal e1 e2</code> soll typgeprüft werden.
+          Zuerst den Typ von <code>e1</code> bestimmen, dann abhängig davon den Typ von <code>e2</code> prüfen
+          und vergleichen — genau das braucht eine Monade:</p>
+
+        <div class="code-title">// typecheck-equal.hs</div>
+        <pre class="code hs">typecheck :: Expr -&gt; Maybe Type
+typecheck (Equal e1 e2) = do
+  t1 &lt;- typecheck e1    -- Typ von e1 auspacken (oder Nothing)
+  t2 &lt;- typecheck e2    -- Typ von e2 auspacken (oder Nothing)
+  if t1 == t2
+    then Just TBool     -- gleiche Typen → Bool
+    else Nothing        -- verschiedene Typen → Fehler</pre>
+
+        <ol class="steps">
+          <li><strong>Schritt 1 — t1 auspacken:</strong> <code>typecheck e1</code> liefert z.&nbsp;B. <code>Just TInt</code>.
+            Das <code>&lt;-</code> packt aus: <code>t1 = TInt</code>.</li>
+          <li><strong>Schritt 2 — t2 auspacken:</strong> <code>typecheck e2</code> liefert <code>Just TInt</code>.
+            <code>t2 = TInt</code>.</li>
+          <li><strong>Schritt 3 — vergleichen:</strong> <code>t1 == t2</code> ist <code>True</code> → Ergebnis <code>Just TBool</code>.</li>
+          <li><strong>Wenn ein Schritt Nothing liefert:</strong> Die Monade leitet es durch — alle weiteren Schritte werden übersprungen.</li>
+        </ol>
+
+        <div class="evalstep">typecheck (Equal (ConstI 1) (ConstI 2))  <span class="arrow">→</span>  do { t1 &lt;- Just TInt; t2 &lt;- Just TInt; … }</div>
+        <div class="evalstep">  <span class="arrow">→</span>  Just TInt &gt;&gt;= \t1 -&gt; Just TInt &gt;&gt;= \t2 -&gt; if TInt==TInt then Just TBool else Nothing</div>
+        <div class="evalstep">  <span class="arrow">→</span>  if True then Just TBool else Nothing  <span class="arrow">→</span>  <strong>Just TBool</strong></div>
+
+        <h3>Desugaring im Detail</h3>
+        <p>Der Compiler wandelt das <code>do</code> mechanisch um:</p>
+        <pre class="code hs">-- do-Block:
+do
+  t1 &lt;- typecheck e1
+  t2 &lt;- typecheck e2
+  if t1 == t2 then Just TBool else Nothing
+
+-- desugars zu:
+typecheck e1 &gt;&gt;= \t1 -&gt;
+  typecheck e2 &gt;&gt;= \t2 -&gt;
+    if t1 == t2 then Just TBool else Nothing</pre>
+
+        <div class="callout callout-info">
+          <div class="c-title">Warum hier kein Applicative?</div>
+          <p>Mit <code>liftA2</code> (Applicative) könnte man <code>t1</code> und <code>t2</code>
+            <em>unabhängig</em> berechnen. Aber der Vergleich <code>if t1 == t2</code> hängt vom
+            <em>Ergebnis</em> beider ab — das ist eine <strong>Abhängigkeit zwischen Berechnungen</strong>.
+            Nur <code>(&gt;&gt;=)</code> kann das ausdrücken, weil seine zweite Eingabe eine Funktion
+            <code>a -&gt; m b</code> ist (sie sieht den Wert <code>a</code>).</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen (Klausur!)</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span><code>&lt;-</code> wie eine Gleichung lesen — <code>x</code> ist die Schachtel:
+            <pre class="code hs">do
+  x &lt;- Just 5
+  return x        -- x wäre dann Just 5?!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><code>&lt;-</code> bedeutet „auspacken": <code>x</code> ist der Inhalt, nicht die Schachtel:
+            <pre class="code hs">-- x ist 5 (eine Zahl), nicht Just 5
+-- return (x+1) = return 6 = Just 6</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Monad-Instanz ohne Functor/Applicative definieren:
+            <pre class="code hs">instance Monad Result where
+  return = Success
+  (Failure e) &gt;&gt;= _ = Failure e
+  (Success a) &gt;&gt;= f = f a
+-- Compilerfehler: Functor und Applicative fehlen!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Immer alle drei Instanzen in der richtigen Reihenfolge:
+            <pre class="code hs">instance Functor Result where ...
+instance Applicative Result where ...
+instance Monad Result where ...</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Fehler in bind nicht weiterleiten — <code>Failure</code> geht verloren:
+            <pre class="code hs">instance Monad Result where
+  (Failure e) &gt;&gt;= f = f undefined  -- FALSCH!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Fehler immer mit dem Unterstrich-Pattern still durchleiten:
+            <pre class="code hs">instance Monad Result where
+  (Failure e) &gt;&gt;= _ = Failure e   -- Fehler propagiert
+  (Success a) &gt;&gt;= f = f a</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Equal-Typecheck mit Applicative versuchen — geht nicht, da abhängig:
+            <pre class="code hs">-- liftA2 kann t1 == t2 NICHT prüfen!
+typecheck (Equal e1 e2) =
+  liftA2 (==) (typecheck e1) (typecheck e2)</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Abhängige Sequenzierung → Monad / do-Notation:
+            <pre class="code hs">typecheck (Equal e1 e2) = do
+  t1 &lt;- typecheck e1
+  t2 &lt;- typecheck e2
+  if t1 == t2 then Just TBool else Nothing</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>List-Monad-Ergebnis falsch abschätzen — nicht summieren, sondern Paare zählen:
+            <pre class="code hs">-- [1,2] × [3,4] = 2+2 = 4? Oder 2·2 = 4?
+-- Egal: nicht alle addieren!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>List-Monad erzeugt das kartesische Produkt — alle Kombinationen:
+            <pre class="code hs">do { x &lt;- [1,2]; y &lt;- [3,4]; return (x,y) }
+= [(1,3),(1,4),(2,3),(2,4)]   -- 2 × 2 = 4 Paare</pre></div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Konzept</th><th>Signatur / Regel</th><th>Beispiel / Merkhilfe</th></tr></thead>
+            <tbody>
+              <tr><td><code>fmap</code> (Functor)</td><td><code>(a -&gt; b) -&gt; f a -&gt; f b</code></td><td><code>fmap (+1) (Just 5) = Just 6</code></td></tr>
+              <tr><td><code>pure</code> (Applicative)</td><td><code>a -&gt; f a</code></td><td><code>pure 5 :: Maybe Int = Just 5</code></td></tr>
+              <tr><td><code>(&lt;*&gt;)</code> (Applicative)</td><td><code>f (a -&gt; b) -&gt; f a -&gt; f b</code></td><td><code>Just (+1) &lt;*&gt; Just 5 = Just 6</code></td></tr>
+              <tr><td><code>return</code> (Monad)</td><td><code>a -&gt; m a</code></td><td>= <code>pure</code></td></tr>
+              <tr><td><code>(&gt;&gt;=)</code> / bind (Monad)</td><td><code>m a -&gt; (a -&gt; m b) -&gt; m b</code></td><td><code>Just 5 &gt;&gt;= (\x -&gt; Just (x+1)) = Just 6</code></td></tr>
+              <tr><td>Maybe bind</td><td><code>Nothing &gt;&gt;= _ = Nothing</code></td><td>Fehler propagiert still</td></tr>
+              <tr><td>List bind</td><td><code>xs &gt;&gt;= f = concat (map f xs)</code></td><td>kartesisches Produkt</td></tr>
+              <tr><td>Left Identity</td><td><code>return x &gt;&gt;= f = f x</code></td><td>Monad-Gesetz</td></tr>
+              <tr><td>Right Identity</td><td><code>m &gt;&gt;= return = m</code></td><td>Monad-Gesetz</td></tr>
+              <tr><td>Assoziativität</td><td><code>(m &gt;&gt;= f) &gt;&gt;= g = m &gt;&gt;= (\x -&gt; f x &gt;&gt;= g)</code></td><td>Monad-Gesetz</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3 style="margin-top:1.2rem">do-Desugaring (auswendig lernen!)</h3>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>do-Notation</th><th>desugared zu</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><pre class="code hs" style="margin:0">do
+  x &lt;- m1
+  y &lt;- m2
+  return (x, y)</pre></td>
+                <td><pre class="code hs" style="margin:0">m1 &gt;&gt;= \x -&gt;
+  m2 &gt;&gt;= \y -&gt;
+    return (x, y)</pre></td>
+              </tr>
+            </tbody>
+          </table></div>
+
+          <div class="factgrid" style="margin-top:1rem">
+            <div class="fact"><b>Maybe</b><span>Kontext: „könnte fehlschlagen"</span></div>
+            <div class="fact"><b>[]</b><span>Kontext: „mehrere Ergebnisse"</span></div>
+            <div class="fact"><b>IO</b><span>Kontext: „Seiteneffekte"</span></div>
+            <div class="fact"><b>Result</b><span>Kontext: „eigener Fehlertyp"</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p>Drei kurze Fragen — tippe deine Antwort ein oder klick die richtige Option. Grün = richtig.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="text" data-answer="Just 8|Just(8)|Just (8)">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was ergibt <code>do { x &lt;- Just 5; y &lt;- Just 3; return (x + y) }</code>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Beide Werte sind <code>Just</code>, also wird ausgepackt: <code>5 + 3 = 8</code> → <code>Just 8</code>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welche Signatur gehört zu <code>(&gt;&gt;=)</code> (bind)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>m a -&gt; (a -&gt; m b) -&gt; m b</button>
+              <button class="quiz-choice" type="button">(a -&gt; b) -&gt; f a -&gt; f b</button>
+              <button class="quiz-choice" type="button">f (a -&gt; b) -&gt; f a -&gt; f b</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist <code>bind</code>. Die zweite Signatur ist <code>fmap</code> (Functor), die dritte ist <code>(&lt;*&gt;)</code> (Applicative).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">3.</span>List-Monade: Wie viele Paare enthält <code>do { x &lt;- [1,2]; y &lt;- [3,4]; return (x, y) }</code>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Alle Kombinationen: <code>(1,3),(1,4),(2,3),(2,4)</code> → 4 Paare.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Prev/Next -->
+      <nav class="prev-next">
+        <a class="prev" href="05-auswertung.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Auswertung &amp; Evaluation</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Übersicht</div>
+          <div class="pn-title">Zurück zur P4-Übersicht</div>
+        </a>
+      </nav>
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>P 4 · Programmierung &amp; Modellierung (Haskell · LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

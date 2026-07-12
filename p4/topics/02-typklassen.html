@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Polymorphie &amp; Typklassen · P4 Haskell</title>
+<meta name="description" content="Polymorphie und Typklassen in Haskell bildlich erklärt: Functor, Foldable, Applicative, Monad, Ord, Typklassen-Hierarchie, fmap, foldMap. Für Einsteiger ohne Vorwissen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238b5cf6'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>λ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">λ</span>
+      <span>P4 · Prog&amp;Mod<small>Haskell, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../../index.html">Lernhub</a> › <a href="../index.html">P4 Haskell</a> › Thema 02</div>
+    <span class="th-icon">🧬</span>
+    <h1>Polymorphie &amp; Typklassen</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausurrelevant</span>
+      <span class="badge badge-blatt">Task 2</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Typklassen-Hierarchie</a></li>
+        <li><a href="#instanzen">Instanzen schreiben</a></li>
+        <li><a href="#schritt">Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+<!-- ============= SEKTION #worum ============= -->
+<section id="worum" class="reveal">
+  <h2>Worum geht's?</h2>
+  <p class="lead-in">Polymorphie ist das Zauberwort: <em>eine Definition, die für viele Typen passt</em>. Statt für jeden Typ (Int, String, Bool) separate Funktionen zu schreiben, schreibst du <em>generische</em> Funktionen. Typklassen sind die Schnittstelle, die Verträge — sie sagen dem Compiler: „Dieser Typ verspricht, diese Methoden bereitzustellen."</p>
+
+  <p>Parametrische Polymorphie kennst du schon aus Rekursion:</p>
+  <pre class="code hs">data Box a = Box a              -- eine Box für jeden Typ
+data Pair a b = Pair a b       -- ein Paar: zwei verschiedene Typen
+data WTree a = Empty | Node (WTree a) a Int (WTree a)   -- ein gewichteter Baum</pre>
+
+  <p>Der Parameter <code>a</code> (oder <code>b</code>) ist <em>Typvariabel</em> — sie wird erst beim Verwenden konkret. So kannst du <code>Box Int</code>, <code>Box String</code>, <code>Box (Maybe Double)</code> haben, alle mit demselben Code.</p>
+
+  <div class="analogy">
+    <div class="a-title">Stell dir vor …</div>
+    <p>… eine Schnittstellen-Beschreibung wie ein Steckdosen-Formular: Jeder Typ, der das Formular ausfüllt, bekommt automatisch alle Methoden. <code>Functor</code> = „ich kann meine Werte transformieren lassen" (wie eine Maschine, die in eine Kiste greift). <code>Monad</code> = „ich kann nacheinander Schritte ausführen, die alle meinen Kontext kennen" (wie ein Rezept, das jeden Schritt versteht, ob es regnet oder nicht).</p>
+  </div>
+
+  <p><strong>Warum Typklassen?</strong> Weil Haskell <em>sichere</em> generische Programmierung will. Nicht „alle Typen können alles", sondern „dieser Typ verspricht diese Operationen".</p>
+</section>
+
+<!-- ============= SEKTION #theorie ============= -->
+<section id="theorie" class="reveal">
+  <h2>Typklassen-Hierarchie</h2>
+
+  <p>Die wichtigsten Typklassen bauen aufeinander auf:</p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 720 320" width="720" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowdown" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#8a94a6" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- Functor → Applicative → Monad Strang (links) -->
+      <g id="functor-strand">
+        <rect x="20" y="20" width="120" height="50" fill="#12b28c" fill-opacity="0.15" rx="8" stroke="#12b28c" stroke-width="2"/>
+        <text x="80" y="35" font-size="14" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Functor</text>
+        <text x="80" y="53" font-size="11" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace">fmap</text>
+
+        <line x1="80" y1="70" x2="80" y2="110" stroke="#8a94a6" stroke-width="2" marker-end="url(#arrowdown)"/>
+
+        <rect x="20" y="110" width="120" height="50" fill="#2f6df6" fill-opacity="0.15" rx="8" stroke="#2f6df6" stroke-width="2"/>
+        <text x="80" y="125" font-size="14" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Applicative</text>
+        <text x="80" y="143" font-size="11" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace">&lt;*&gt;</text>
+
+        <line x1="80" y1="160" x2="80" y2="200" stroke="#8a94a6" stroke-width="2" marker-end="url(#arrowdown)"/>
+
+        <rect x="20" y="200" width="120" height="50" fill="#8b5cf6" fill-opacity="0.15" rx="8" stroke="#8b5cf6" stroke-width="2"/>
+        <text x="80" y="215" font-size="14" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Monad</text>
+        <text x="80" y="233" font-size="11" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace">&gt;&gt;=</text>
+      </g>
+
+      <!-- Eq → Ord Strang (rechts) -->
+      <g id="eq-strand">
+        <rect x="300" y="20" width="120" height="50" fill="#f5810b" fill-opacity="0.15" rx="8" stroke="#f5810b" stroke-width="2"/>
+        <text x="360" y="35" font-size="14" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Eq</text>
+        <text x="360" y="53" font-size="11" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace">==, /=</text>
+
+        <line x1="360" y1="70" x2="360" y2="110" stroke="#8a94a6" stroke-width="2" marker-end="url(#arrowdown)"/>
+
+        <rect x="300" y="110" width="120" height="50" fill="#e0483d" fill-opacity="0.15" rx="8" stroke="#e0483d" stroke-width="2"/>
+        <text x="360" y="125" font-size="14" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Ord</text>
+        <text x="360" y="143" font-size="11" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace">&lt;=, compare</text>
+      </g>
+
+      <!-- Foldable (unabhängig, mittig-rechts) -->
+      <rect x="560" y="110" width="120" height="50" fill="#8a94a6" fill-opacity="0.15" rx="8" stroke="#8a94a6" stroke-width="2"/>
+      <text x="620" y="125" font-size="14" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Foldable</text>
+      <text x="620" y="143" font-size="11" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace">fold, foldMap</text>
+
+      <!-- Legende -->
+      <text x="20" y="290" font-size="12" class="svg-ink" font-family="Segoe UI, sans-serif">Pfeile zeigen Abhängigkeit (unten erfordert oben). Foldable ist unabhängig.</text>
+    </svg>
+    <div class="diagram-title">Typklassen-Hierarchie: Wer baut auf wem?</div>
+    <figcaption>Functor → Applicative → Monad bilden eine Kette. Eq → Ord ebenfalls. Foldable steht allein.</figcaption>
+  </figure>
+
+  <h3>Parametrische Polymorphie — der Anfang</h3>
+  <p>Alle fünf Typklassen arbeiten mit generischen Datentypen:</p>
+  <pre class="code hs">-- Einfach: eine Schachtel für jeden Typ
+data Box a = Box a
+
+-- Zwei Typen: Pair a b = Pair a b
+
+-- Rekursiv: ein gewichteter Baum
+data WTree a = Empty | Node (WTree a) a Int (WTree a)
+  -- Struktur: linker Unterbaum, Wert vom Typ a, Gewicht (Int), rechts</pre>
+
+  <p>Der Punkt: Eine Definition, unendlich viele Typen (Box Int, Box String, WTree Bool, etc.).</p>
+
+  <h3>Functor — Die Transformations-Schnittstelle</h3>
+  <p>„Ich habe einen Wert in einem Kontext (einer Box, einer Liste, einem Baum). Lass mich die Werte transformieren, ohne den Kontext zu zerstören."</p>
+  <pre class="code hs">class Functor f where
+  fmap :: (a -&gt; b) -&gt; f a -&gt; f b
+  -- fmap nimmt eine Funktion und eine Container-Struktur
+  -- und wendet die Funktion auf alle inneren Werte an</pre>
+
+  <p><strong>Beispiele:</strong></p>
+  <pre class="code hs">instance Functor Maybe where
+  fmap f Nothing  = Nothing
+  fmap f (Just x) = Just (f x)
+
+instance Functor [] where
+  fmap = map
+
+instance Functor (Pair a) where
+  fmap f (Pair x y) = Pair x (f y)  -- nur der letzte Parameter!</pre>
+
+  <p><strong>Gesetze</strong> (die jede Instanz erfüllen muss):</p>
+  <div class="callout-formula">
+    <p><code>fmap id x == x</code> — Identity (nichts zu tun = nichts ändert sich)</p>
+    <p><code>fmap (f . g) x == fmap f (fmap g x)</code> — Komposition (Reihenfolge egal)</p>
+  </div>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 720 200" width="720" xmlns="http://www.w3.org/2000/svg">
+      <!-- Links: Just 5 -->
+      <g id="just5">
+        <rect x="30" y="50" width="70" height="60" fill="#2f6df6" fill-opacity="0.2" rx="8" stroke="#2f6df6" stroke-width="2"/>
+        <text x="65" y="62" font-size="12" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Just</text>
+        <text x="65" y="95" font-size="16" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">5</text>
+      </g>
+
+      <!-- Funktion in der Mitte -->
+      <g id="function">
+        <circle cx="175" cy="80" r="30" fill="#f5810b" fill-opacity="0.2" stroke="#f5810b" stroke-width="2"/>
+        <text x="175" y="86" font-size="11" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">(+1)</text>
+      </g>
+
+      <!-- Pfeil -->
+      <line x1="110" y1="80" x2="145" y2="80" stroke="#8a94a6" stroke-width="2" marker-end="url(#arrowdown)"/>
+
+      <!-- Rechts: Just 6 -->
+      <g id="just6">
+        <rect x="220" y="50" width="70" height="60" fill="#2f6df6" fill-opacity="0.2" rx="8" stroke="#2f6df6" stroke-width="2"/>
+        <text x="255" y="62" font-size="12" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="Segoe UI, sans-serif">Just</text>
+        <text x="255" y="95" font-size="16" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">6</text>
+      </g>
+
+      <!-- Formel darunter -->
+      <text x="175" y="150" font-size="12" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">fmap (+1) (Just 5) = Just 6</text>
+
+      <!-- Nothing Spezialfall -->
+      <g id="nothing">
+        <text x="450" y="90" font-size="12" class="svg-ink" font-family="Segoe UI, sans-serif">Spezialfall:</text>
+        <line x1="450" y1="100" x2="550" y2="100" stroke="#e0483d" stroke-width="2" stroke-dasharray="4"/>
+        <text x="500" y="115" font-size="11" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">fmap f Nothing = Nothing</text>
+        <text x="500" y="130" font-size="10" text-anchor="middle" class="svg-soft" font-family="Segoe UI, sans-serif">(kein Wert → nichts zu tun)</text>
+      </g>
+    </svg>
+    <div class="diagram-title">fmap: Die Transformation in der Box</div>
+    <figcaption>Die Funktion greift in die Box, transformiert den Wert und hinterlässt die Box intakt. Nothing bleibt Nothing.</figcaption>
+  </figure>
+
+  <h3>Foldable — Die Zusammenfassungs-Schnittstelle</h3>
+  <p>„Ich habe viele Werte in einer Struktur. Lass mich sie zu einem Ergebnis zusammenfalten."</p>
+  <pre class="code hs">class Foldable t where
+  fold   :: Monoid m =&gt; t m -&gt; m
+  foldMap :: Monoid m =&gt; (a -&gt; m) -&gt; t a -&gt; m
+  -- foldMap: Wende f auf jeden Wert an, kombiniere Ergebnisse mit &lt;&gt;</pre>
+
+  <p><strong>Beispiel:</strong></p>
+  <pre class="code hs">instance Foldable [] where
+  foldMap f []     = mempty
+  foldMap f (x:xs) = f x &lt;&gt; foldMap f xs
+
+instance Foldable Maybe where
+  foldMap f Nothing  = mempty
+  foldMap f (Just x) = f x</pre>
+
+  <h3>Applicative — Effekte kombinieren</h3>
+  <p>„Ich habe zwei Boxen: eine mit einer Funktion, eine mit einem Wert. Ich will sie kombinieren."</p>
+  <pre class="code hs">class Functor f =&gt; Applicative f where
+  pure  :: a -&gt; f a          -- Wert in die Box packen
+  (&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b  -- Funktion-Box &lt;*&gt; Wert-Box</pre>
+
+  <p><strong>Beispiel:</strong></p>
+  <pre class="code hs">instance Applicative Maybe where
+  pure x = Just x
+  Nothing   &lt;*&gt; _ = Nothing
+  _         &lt;*&gt; Nothing = Nothing
+  (Just f)  &lt;*&gt; (Just x) = Just (f x)</pre>
+
+  <h3>Monad — Die Kontextstepperei</h3>
+  <p>„Ich führe Schritte aus, die jeweils den Kontext kennen. Jeder Schritt kann vom Ergebnis des vorherigen abhängen."</p>
+  <pre class="code hs">class Applicative m =&gt; Monad m where
+  return :: a -&gt; m a
+  (&gt;&gt;=)  :: m a -&gt; (a -&gt; m b) -&gt; m b
+  -- &gt;&gt;= spricht: „Gib mir ein m a, eine Funktion (a -&gt; m b),
+  --              und ich kombiniere alles zu m b"</pre>
+
+  <p><strong>Beispiel:</strong></p>
+  <pre class="code hs">instance Monad Maybe where
+  return = Just
+  Nothing  &gt;&gt;= f = Nothing
+  (Just x) &gt;&gt;= f = f x
+  -- Wenn x existiert, wende f an. Sonst: Nothing bleibt Nothing.</pre>
+
+  <h3>Ord — Die Ordnungs-Schnittstelle</h3>
+  <p>„Meine Werte sind vergleichbar: kleiner, gleich, größer."</p>
+  <pre class="code hs">class Eq a =&gt; Ord a where
+  compare :: a -&gt; a -&gt; Ordering  -- LT | EQ | GT
+  (&lt;=) :: a -&gt; a -&gt; Bool
+  -- und weitere Operatoren</pre>
+
+  <div class="table-wrap"><table class="data">
+      <thead>
+        <tr>
+          <th>Typklasse</th>
+          <th>Signatur (gekürzt)</th>
+          <th>Intuition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Functor f</code></td>
+          <td><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code></td>
+          <td>Werte in einem Kontext transformieren</td>
+        </tr>
+        <tr>
+          <td><code>Foldable t</code></td>
+          <td><code>foldMap :: Monoid m =&gt; (a -&gt; m) -&gt; t a -&gt; m</code></td>
+          <td>Alle Werte zusammenfalten</td>
+        </tr>
+        <tr>
+          <td><code>Applicative f</code></td>
+          <td><code>(&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b</code></td>
+          <td>Funktions- und Wert-Box kombinieren</td>
+        </tr>
+        <tr>
+          <td><code>Monad m</code></td>
+          <td><code>(&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b</code></td>
+          <td>Kontextabhängige Schritte sequenzen</td>
+        </tr>
+        <tr>
+          <td><code>Ord a</code></td>
+          <td><code>compare :: a -&gt; a -&gt; Ordering</code></td>
+          <td>Werte vergleichen und sortieren</td>
+        </tr>
+      </tbody>
+    </table></div>
+
+  <div class="factgrid">
+    <div class="fact">
+      <strong>Polymorphe Datentypen sind nicht automatisch Functor.</strong> Du musst eine Instanz schreiben und die Gesetze beweisen.
+    </div>
+    <div class="fact">
+      <strong>fmap transformiert immer nur den letzten Typ-Parameter.</strong> Bei <code>Pair a b</code> wird nur <code>b</code> transformiert, nicht <code>a</code>.
+    </div>
+    <div class="fact">
+      <strong>foldMap braucht ein Monoid:</strong> Ein Typ mit <code>mempty</code> (neutral) und <code>&lt;&gt;</code> (kombinieren).
+    </div>
+    <div class="fact">
+      <strong>Monad = Applicative + Abhängigkeiten.</strong> Mit <code>&gt;&gt;=</code> kann ein Schritt vom vorherigen Ergebnis abhängen.
+    </div>
+  </div>
+</section>
+
+<!-- ============= SEKTION #instanzen ============= -->
+<section id="instanzen" class="reveal">
+  <h2>Instanzen schreiben</h2>
+
+  <p>Jetzt ein echtes Beispiel: Wir schreiben Instanzen für unseren gewichteten Baum.</p>
+
+  <h3>WTree: Foldable mit Gewicht-Filter</h3>
+  <p>Der Baum hat <code>Empty</code> (Blatt) und <code>Node</code> (innerer Knoten mit Gewicht). Wir wollen nur Knoten mit Gewicht <code>&gt; 0</code> falten:</p>
+
+  <pre class="code hs">data WTree a = Empty | Node (WTree a) a Int (WTree a)
+
+instance Foldable WTree where
+  foldMap f Empty = mempty
+  foldMap f (Node l x w r)
+    | w &gt; 0    = foldMap f l &lt;&gt; f x &lt;&gt; foldMap f r
+    | otherwise = mempty  -- Knoten mit w &lt;= 0 überspringen</pre>
+
+  <p><strong>Was passiert hier?</strong></p>
+  <ul>
+    <li><code>Empty</code> → <code>mempty</code> (neutrales Element)</li>
+    <li><code>Node</code> mit <code>w &gt; 0</code> → falte rekursiv linken und rechten Unterbaum, kombiniere mit <code>f x</code> mittels <code>&lt;&gt;</code></li>
+    <li><code>Node</code> mit <code>w &lt;= 0</code> → überspringe den Knoten, liefere <code>mempty</code></li>
+  </ul>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 720 300" width="720" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowfold" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#12b28c" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- Baum-Struktur -->
+      <!-- Root: A, w=3 -->
+      <circle cx="360" cy="40" r="18" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="2"/>
+      <text x="360" y="47" font-size="12" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">A</text>
+
+      <!-- Linker Unterbaum: B, w=5 -->
+      <circle cx="240" cy="120" r="18" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="2"/>
+      <text x="240" y="127" font-size="12" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">B</text>
+      <line x1="345" y1="55" x2="255" y2="105" stroke="#8a94a6" stroke-width="2"/>
+
+      <!-- Rechter Unterbaum: C, w=2 -->
+      <circle cx="480" cy="120" r="18" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="2"/>
+      <text x="480" y="127" font-size="12" font-weight="bold" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace">C</text>
+      <line x1="375" y1="55" x2="465" y2="105" stroke="#8a94a6" stroke-width="2"/>
+
+      <!-- Linke Blätter -->
+      <circle cx="170" cy="200" r="15" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="2"/>
+      <text x="170" y="206" font-size="10" text-anchor="middle" class="svg-soft" font-family="Segoe UI, sans-serif">∅</text>
+      <line x1="228" y1="135" x2="180" y2="190" stroke="#8a94a6" stroke-width="2"/>
+
+      <circle cx="310" cy="200" r="15" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="2"/>
+      <text x="310" y="206" font-size="10" text-anchor="middle" class="svg-soft" font-family="Segoe UI, sans-serif">∅</text>
+      <line x1="252" y1="135" x2="300" y2="190" stroke="#8a94a6" stroke-width="2"/>
+
+      <!-- Rechte Blätter -->
+      <circle cx="450" cy="200" r="15" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="2"/>
+      <text x="450" y="206" font-size="10" text-anchor="middle" class="svg-soft" font-family="Segoe UI, sans-serif">∅</text>
+      <line x1="468" y1="135" x2="460" y2="190" stroke="#8a94a6" stroke-width="2"/>
+
+      <circle cx="540" cy="200" r="15" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="2"/>
+      <text x="540" y="206" font-size="10" text-anchor="middle" class="svg-soft" font-family="Segoe UI, sans-serif">∅</text>
+      <line x1="492" y1="135" x2="530" y2="190" stroke="#8a94a6" stroke-width="2"/>
+
+      <!-- Gewichte rechts neben den Knoten -->
+      <text x="390" y="47" font-size="11" class="svg-soft" font-family="JetBrains Mono, monospace">w=3</text>
+      <text x="270" y="127" font-size="11" class="svg-soft" font-family="JetBrains Mono, monospace">w=5</text>
+      <text x="510" y="127" font-size="11" class="svg-soft" font-family="JetBrains Mono, monospace">w=2</text>
+
+      <!-- foldMap-Ablauf unten -->
+      <text x="20" y="270" font-size="12" class="svg-ink" font-family="Segoe UI, sans-serif"><strong>foldMap f:</strong></text>
+      <text x="20" y="290" font-size="11" class="svg-ink" font-family="JetBrains Mono, monospace">f(A) &lt;&gt; (f(B) &lt;&gt; f(C))</text>
+      <text x="450" y="290" font-size="10" class="svg-soft" font-family="Segoe UI, sans-serif">(alle w &gt; 0 erfüllt)</text>
+    </svg>
+    <div class="diagram-title">foldMap über einen gewichteten Baum</div>
+    <figcaption>Drei Knoten mit Gewichten. foldMap kombiniert die Funktionsergebnisse mittels Monoid-Operation <code>&lt;&gt;</code>.</figcaption>
+  </figure>
+
+  <h3>Traversal-Ordnungen: Preorder, Inorder, Postorder</h3>
+  <p>Die <em>Ordnung</em>, in der wir den Baum durchlaufen, ist entscheidend:</p>
+
+  <pre class="code hs">-- Preorder: Knoten, dann links, dann rechts
+preorder :: WTree a -&gt; [a]
+preorder Empty = []
+preorder (Node l x w r) = [x] ++ preorder l ++ preorder r
+
+-- Inorder: Links, Knoten, rechts
+inorder :: WTree a -&gt; [a]
+inorder Empty = []
+inorder (Node l x w r) = inorder l ++ [x] ++ inorder r
+
+-- Postorder: Links, rechts, dann Knoten
+postorder :: WTree a -&gt; [a]
+postorder Empty = []
+postorder (Node l x w r) = postorder l ++ postorder r ++ [x]</pre>
+
+  <p><strong>Beispiel:</strong> Baum mit Knoten A(links→B, rechts→C):</p>
+  <ul>
+    <li><strong>Preorder:</strong> A, B, C (Vater zuerst)</li>
+    <li><strong>Inorder:</strong> B, A, C (Vater in der Mitte)</li>
+    <li><strong>Postorder:</strong> B, C, A (Vater zuletzt)</li>
+  </ul>
+
+  <h3>Zipper: Functor &amp; Foldable</h3>
+  <p>Ein Zipper ist ein Baum mit „Fokus" — ein Knoten ist markiert:</p>
+
+  <pre class="code hs">data Zipper a = Zipper (WTree a) (WTree a)  -- (Fokus, Rest)
+
+instance Functor Zipper where
+  fmap f (Zipper focus rest) = Zipper (fmap f focus) (fmap f rest)
+
+instance Foldable Zipper where
+  foldMap f (Zipper focus rest) = foldMap f focus &lt;&gt; foldMap f rest</pre>
+
+  <h3>Peano: Ord-Instanz</h3>
+  <p>Natürliche Zahlen nach Peano können wir ordnen:</p>
+
+  <pre class="code hs">data Peano = Zero | Succ Peano
+
+instance Eq Peano where
+  Zero == Zero = True
+  (Succ a) == (Succ b) = a == b
+  _ == _ = False
+
+instance Ord Peano where
+  compare Zero Zero = EQ
+  compare Zero (Succ _) = LT
+  compare (Succ _) Zero = GT
+  compare (Succ a) (Succ b) = compare a b</pre>
+
+  <div class="callout callout-tip">
+    <div class="c-title">Instanz-Checkliste</div>
+    <ul>
+      <li>Alle Methoden der Typklasse implementiert?</li>
+      <li>Alle Gesetze erfüllt? (z.B. Functor-Gesetze für <code>fmap</code>)</li>
+      <li>Rekursion auf alle Unterbäume angewandt?</li>
+      <li>Spezialfälle behandelt? (<code>Empty</code>, <code>Nothing</code>, <code>Zero</code>, etc.)</li>
+      <li>Hierarchie beachtet? (z.B. <code>Functor</code> vor <code>Applicative</code> vor <code>Monad</code>)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============= SEKTION #schritt ============= -->
+<section id="schritt" class="reveal">
+  <h2>Schritt für Schritt</h2>
+
+  <h3>Beispiel 1: <code>fmap (+1) (Just 5)</code></h3>
+  <p>Wie wertet Haskell diesen Ausdruck aus? Wir folgen der <code>Maybe</code>-Instanz von <code>Functor</code>:</p>
+
+  <ol class="steps">
+    <li><strong>Ausdruck:</strong> <code>fmap (+1) (Just 5)</code> — Funktor-Instanz für <code>Maybe</code> wird gesucht.</li>
+    <li><strong>Passendes Muster:</strong> <code>fmap f (Just x) = Just (f x)</code> — hier ist <code>f = (+1)</code>, <code>x = 5</code>.</li>
+    <li><strong>Substitution:</strong> <code>Just ((+1) 5)</code> — die Funktion wird auf den Wert im Kontext angewandt.</li>
+    <li><strong>Arithmetik:</strong> <code>Just 6</code> — fertig! Die Kiste bleibt zu, ihr Inhalt wurde transformiert.</li>
+  </ol>
+
+  <div class="evalstep">fmap (+1) (Just 5)  <span class="arrow">→</span>  Just ((+1) 5)  <span class="arrow">→</span>  Just 6</div>
+  <div class="evalstep">fmap (+1) Nothing  <span class="arrow">→</span>  Nothing  <span class="arrow">(kein Wert, nichts zu tun)</span></div>
+
+  <h3>Beispiel 2: <code>foldMap Sum [1,2,3]</code></h3>
+  <p>Eine Liste wird mit dem Monoid <code>Sum</code> gefaltet. <code>Sum</code> hat <code>mempty = Sum 0</code> und <code>Sum a &lt;&gt; Sum b = Sum (a+b)</code>:</p>
+
+  <ol class="steps">
+    <li><strong>Start:</strong> <code>foldMap Sum [1,2,3]</code> — wandle jeden Wert mit <code>Sum</code> um, kombiniere.</li>
+    <li><strong>Aufrollen:</strong> <code>Sum 1 &lt;&gt; foldMap Sum [2,3]</code> — erstes Element wird direkt verarbeitet.</li>
+    <li><strong>Rekursion:</strong> <code>Sum 1 &lt;&gt; (Sum 2 &lt;&gt; (Sum 3 &lt;&gt; mempty))</code> — alle Elemente ausgerollt.</li>
+    <li><strong>Kombination:</strong> <code>Sum 1 &lt;&gt; Sum 2 = Sum 3</code>, dann <code>Sum 3 &lt;&gt; Sum 3 = Sum 6</code>.</li>
+    <li><strong>Ergebnis:</strong> <code>Sum 6</code> — die Summe aller Elemente.</li>
+  </ol>
+
+  <div class="evalstep">foldMap Sum [1,2,3]  <span class="arrow">→</span>  Sum 1 &lt;&gt; Sum 2 &lt;&gt; Sum 3 &lt;&gt; mempty  <span class="arrow">→</span>  Sum 6</div>
+
+  <h3>Beispiel 3: <code>foldMap</code> mit Gewichts-Filter (WTree)</h3>
+  <p>Baum: <code>Node Empty 'A' 3 Empty</code> — einzelner Knoten, Gewicht 3:</p>
+
+  <div class="evalstep">foldMap f (Node Empty 'A' 3 Empty)  <span class="arrow">→</span>  (w=3 &gt; 0, also falten)</div>
+  <div class="evalstep"><span class="arrow">→</span>  foldMap f Empty &lt;&gt; f 'A' &lt;&gt; foldMap f Empty  <span class="arrow">→</span>  mempty &lt;&gt; f 'A' &lt;&gt; mempty  <span class="arrow">→</span>  f 'A'</div>
+
+  <div class="callout callout-tip">
+    <div class="c-title">Merksatz</div>
+    <p><code>fmap</code> = Kiste bleibt zu, Inhalt wird transformiert. <code>foldMap</code> = alle Elemente werden zu einem Monoid-Wert kombiniert. Beide nutzen rekursive Instanzen.</p>
+  </div>
+</section>
+
+<!-- ============= SEKTION #fallen ============= -->
+<section id="fallen" class="reveal">
+  <h2>Typische Fallen (Klausur!)</h2>
+
+  <div class="fr">
+    <div class="wrong"><span class="fr-tag">❌ Falsch</span>Functor-Instanz für <code>Pair a</code> — beide Felder transformieren:
+      <pre class="code hs">instance Functor (Pair a) where
+  fmap f (Pair x y) = Pair (f x) (f y)  -- BEIDE!</pre>
+    </div>
+    <div class="right"><span class="fr-tag">✅ Richtig</span>Functor transformiert <em>immer nur den letzten Typ-Parameter</em>. Bei <code>Pair a b</code> ist das <code>b</code>:
+      <pre class="code hs">instance Functor (Pair a) where
+  fmap f (Pair x y) = Pair x (f y)  -- nur y!</pre>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="wrong"><span class="fr-tag">❌ Falsch</span>Foldable: <code>[]</code> statt <code>mempty</code> für leere Struktur:
+      <pre class="code hs">instance Foldable WTree where
+  foldMap f Empty = []  -- Falscher Typ!</pre>
+    </div>
+    <div class="right"><span class="fr-tag">✅ Richtig</span><code>mempty</code> ist das neutrale Element des <em>jeweiligen</em> Monoids (<code>Sum 0</code>, <code>""</code>, <code>[]</code>…):
+      <pre class="code hs">instance Foldable WTree where
+  foldMap f Empty = mempty</pre>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="wrong"><span class="fr-tag">❌ Falsch</span>Applicative ohne Functor-Instanz — der Compiler verweigert das:
+      <pre class="code hs">-- Vergessen: instance Functor (Pair a) where ...
+
+instance Applicative (Pair a) where
+  pure x = Pair undefined x
+  (Pair f g) &lt;*&gt; (Pair x y) = Pair x (g y)</pre>
+    </div>
+    <div class="right"><span class="fr-tag">✅ Richtig</span>Functor-Instanz zuerst schreiben, dann Applicative aufbauen:
+      <pre class="code hs">instance Functor (Pair a) where
+  fmap f (Pair x y) = Pair x (f y)
+
+instance Applicative (Pair a) where
+  pure x = Pair undefined x
+  (Pair f g) &lt;*&gt; (Pair x y) = Pair x (g y)</pre>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ord mit zirkulärer Implementation — <code>compare</code> ist nirgends definiert:
+      <pre class="code hs">instance Ord Peano where
+  a &lt;= b = compare a b == LT  -- compare existiert nicht!</pre>
+    </div>
+    <div class="right"><span class="fr-tag">✅ Richtig</span><code>compare</code> direkt definieren — alle anderen Operatoren folgen daraus:
+      <pre class="code hs">instance Ord Peano where
+  compare Zero Zero     = EQ
+  compare Zero (Succ _) = LT
+  compare (Succ _) Zero = GT
+  compare (Succ a) (Succ b) = compare a b</pre>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="wrong"><span class="fr-tag">❌ Falsch</span>Foldable WTree: Gewicht <code>w</code> ignorieren — alle Knoten werden gefaltet:
+      <pre class="code hs">instance Foldable WTree where
+  foldMap f Empty = mempty
+  foldMap f (Node l x w r)
+    = foldMap f l &lt;&gt; f x &lt;&gt; foldMap f r  -- w ignoriert!</pre>
+    </div>
+    <div class="right"><span class="fr-tag">✅ Richtig</span>Guard <code>| w &gt; 0</code> prüft das Gewicht — nur positive Knoten werden berücksichtigt:
+      <pre class="code hs">instance Foldable WTree where
+  foldMap f Empty = mempty
+  foldMap f (Node l x w r)
+    | w &gt; 0     = foldMap f l &lt;&gt; f x &lt;&gt; foldMap f r
+    | otherwise = foldMap f l &lt;&gt; foldMap f r</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============= SEKTION #quickref ============= -->
+<section id="quickref" class="reveal">
+  <div class="quickref">
+    <h3>🎯 Quick-Reference für die Klausur</h3>
+
+    <div class="table-wrap"><table class="data">
+      <thead>
+        <tr>
+          <th>Typklasse</th>
+          <th>Haupt-Methode(n)</th>
+          <th>Minimal-Implementation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Functor</code></td>
+          <td><code>fmap</code></td>
+          <td><pre class="code hs">instance Functor Box where
+  fmap f (Box x) = Box (f x)</pre></td>
+        </tr>
+        <tr>
+          <td><code>Foldable</code></td>
+          <td><code>foldMap</code></td>
+          <td><pre class="code hs">instance Foldable Box where
+  foldMap f (Box x) = f x</pre></td>
+        </tr>
+        <tr>
+          <td><code>Applicative</code></td>
+          <td><code>pure, (&lt;*&gt;)</code></td>
+          <td><pre class="code hs">instance Applicative Box where
+  pure x = Box x
+  (Box f) &lt;*&gt; (Box x) = Box (f x)</pre></td>
+        </tr>
+        <tr>
+          <td><code>Monad</code></td>
+          <td><code>return, (&gt;&gt;=)</code></td>
+          <td><pre class="code hs">instance Monad Box where
+  return x = Box x
+  (Box x) &gt;&gt;= f = f x</pre></td>
+        </tr>
+        <tr>
+          <td><code>Ord</code></td>
+          <td><code>compare</code></td>
+          <td><pre class="code hs">instance Ord Int where
+  compare a b | a &lt; b = LT
+              | a &gt; b = GT
+              | otherwise = EQ</pre></td>
+        </tr>
+      </tbody>
+    </table></div>
+
+    <h4>Checkliste vor der Klausur</h4>
+    <ul>
+      <li>✓ <strong>Hierarchie merken:</strong> Functor &lt; Applicative &lt; Monad; Eq &lt; Ord; Foldable unabhängig</li>
+      <li>✓ <strong>fmap:</strong> transformiert nur letzten Parameter</li>
+      <li>✓ <strong>foldMap:</strong> braucht Monoid, <code>mempty</code> für leere Struktur</li>
+      <li>✓ <strong>&lt;*&gt;:</strong> kombiniert Funktion-Box mit Wert-Box</li>
+      <li>✓ <strong>&gt;&gt;=:</strong> rechte Seite hängt vom linken Ergebnis ab</li>
+      <li>✓ <strong>compare:</strong> ist die Basis für alle Ordnungs-Operatoren</li>
+      <li>✓ <strong>Gewichte prüfen:</strong> Guards (<code>|</code>) nutzen!</li>
+      <li>✓ <strong>HTML-Escape:</strong> &lt;, &gt;, &amp;, =&gt; in Code-Blöcken</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============= SEKTION #check ============= -->
+<section id="check" class="reveal">
+  <h2>🧩 Wissenscheck</h2>
+  <p>Drei kurze Fragen — tippe deine Antwort ein oder klick die richtige Option. Grün = richtig.</p>
+  <div class="quiz">
+
+    <div class="quiz-q" data-type="choice">
+      <p class="quiz-prompt"><span class="q-no">1.</span>Bei <code>instance Functor (Pair a)</code> mit <code>data Pair a b = Pair a b</code> — welcher Wert wird von <code>fmap</code> transformiert?</p>
+      <div class="quiz-choices">
+        <button class="quiz-choice" type="button">Beide (x und y)</button>
+        <button class="quiz-choice" type="button" data-correct>Nur der letzte Typ-Parameter (das zweite Feld)</button>
+        <button class="quiz-choice" type="button">Nur der erste (x)</button>
+      </div>
+      <div class="quiz-feedback" aria-live="polite"></div>
+      <div class="quiz-explain" hidden>Functor transformiert immer nur den letzten Typ-Parameter: <code>fmap f (Pair x y) = Pair x (f y)</code>.</div>
+    </div>
+
+    <div class="quiz-q" data-type="text" data-answer="Just 6|Just(6)|Just (6)">
+      <p class="quiz-prompt"><span class="q-no">2.</span>Was ergibt <code>fmap (+1) (Just 5)</code>?</p>
+      <div class="quiz-input-row">
+        <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+        <button class="quiz-check" type="button">Prüfen</button>
+        <button class="quiz-reveal" type="button">Lösung</button>
+      </div>
+      <div class="quiz-feedback" aria-live="polite"></div>
+      <div class="quiz-explain" hidden><code>fmap</code> wendet die Funktion auf den Wert im Kontext an: <code>Just (5+1) = Just 6</code>.</div>
+    </div>
+
+    <div class="quiz-q" data-type="choice">
+      <p class="quiz-prompt"><span class="q-no">3.</span>Was liefert <code>foldMap f Empty</code> für eine leere Struktur?</p>
+      <div class="quiz-choices">
+        <button class="quiz-choice" type="button" data-correct>mempty</button>
+        <button class="quiz-choice" type="button">[]</button>
+        <button class="quiz-choice" type="button">0</button>
+      </div>
+      <div class="quiz-feedback" aria-live="polite"></div>
+      <div class="quiz-explain" hidden><code>mempty</code> ist das neutrale Element des jeweiligen Monoids — nicht fest <code>[]</code> oder <code>0</code>.</div>
+    </div>
+
+  </div>
+</section>
+
+      <nav class="prev-next">
+        <a class="prev" href="01-rekursion.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Rekursion</div>
+        </a>
+        <a class="next" href="03-datentypen.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Datentypen modellieren (ADTs)</div>
+        </a>
+      </nav>
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>P 4 · Programmierung &amp; Modellierung (Haskell · LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

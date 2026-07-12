@@ -1,49 +1,67 @@
-# RNVS — Rechnernetze & Verteilte Systeme, bildlich erklärt
+# Lernhub — meine Vorlesungen, bildlich erklärt
 
-Eine statische Lern-Website zum LMU-Modul **P 11 – Rechnernetze und Verteilte Systeme** (SoSe 2026).
-Jedes Thema hat eine eigene Seite, verwaltet über eine Homepage, von der aus man zu jedem Thema
-springen kann. Erklärt **detailliert und vor allem bildlich** — für Leute, die davon noch kaum Ahnung haben.
+Ein persönlicher **Lernhub** für das Informatik-Studium an der LMU. Eine Übersichtsseite führt zu
+allen Modulen; jedes Modul hat eine eigene Kurs-Startseite und pro Thema eine eigene Seite —
+**detailliert und vor allem bildlich**, für Leute, die davon noch kaum Ahnung haben. Mit inline-SVG-
+Diagrammen, Alltags-Vergleichen, typischen Klausur-Fallen und interaktiven **Wissenschecks**.
+
+> Hinweis: Das Repository heißt aus historischen Gründen noch `RNVS`, ist inzwischen aber der
+> übergreifende Lernhub für mehrere Vorlesungen.
 
 ## 🌐 Live ansehen
-Sobald GitHub Pages aktiv ist: **https://florixnkn.github.io/RNVS/**
+**https://florixnkn.github.io/RNVS/**
 
-## 📚 Die 10 Themen (in Lernreihenfolge)
+## 📚 Module
 
-| # | Thema | Phase |
-|---|-------|-------|
-| 01 | Graphen, Bäume & Adressierung | Grundlagen |
-| 02 | Protokolle & das Pizzadienst-Modell | Grundlagen |
-| 03 | Rechnernetz vs. Verteiltes System & Linux-Tools | Grundlagen |
-| 04 | OSI- & Internet-Referenzmodell (PDU/SDU) 🚨 | Grundlagen |
-| 05 | Verzögerungszeiten & Vermittlungsarten 🧮 | Vermittlung & Verbindung |
-| 06 | Verbindungsmanagement: Handshakes | Vermittlung & Verbindung |
-| 07 | Sequenznummern & Sliding Window 🚨🚨 | Zuverlässige Übertragung |
-| 08 | UDP & RFC 768 | Transportschicht |
-| 09 | TCP: Verbindung, Sequenznummern & SACK 🚨🚨 | Transportschicht |
-| 10 | TCP Congestion Control: Slow-Start, Tahoe & Reno 🚨🚨🚨 | Transportschicht |
+| Modul | Status | Themen |
+|-------|--------|--------|
+| **P4 – Programmierung & Modellierung** (Haskell) | ✅ fertig | 6 |
+| **P11 – Rechnernetze & Verteilte Systeme** | ✅ fertig | 10 |
+| P7 – Logik & Diskrete Strukturen | 🕓 geplant | — |
+| P10 – Formale Sprachen & Komplexität | 🕓 geplant | — |
+| P12 – Stochastik & Statistik | 🕓 geplant | — |
+| WP – Maschinelles Lernen | 🕓 geplant | — |
+| WP – Quantencomputing | 🕓 geplant | — |
+| VWL-P2 – Makroökonomie | 🕓 geplant | — |
+| VWL-P4 – Finanzwissenschaft | 🕓 geplant | — |
+
+### P4 – Programmierung & Modellierung (Haskell)
+01 Rekursion · 02 Polymorphie & Typklassen · 03 Datentypen modellieren (ADTs) ·
+04 Higher-Order Functions & Folds · 05 Auswertung & Evaluation · 06 Monaden
+
+### P11 – Rechnernetze & Verteilte Systeme
+01 Graphen/Adressierung · 02 Protokolle · 03 Netze & Tools · 04 OSI-Modell ·
+05 Verzögerungen · 06 Handshakes · 07 Sliding Window · 08 UDP · 09 TCP · 10 Congestion Control
 
 ## 🧩 Aufbau
 
 ```
-index.html            → Homepage / Themen-Hub (nach Lernphasen gruppiert)
-topics/NN-*.html      → je eine Seite pro Thema
-css/style.css         → gemeinsames Designsystem (Light/Dark)
-js/main.js            → Theme-Umschalter, aktives Inhaltsverzeichnis, Scroll-Fortschritt
-BUILD_SPEC.md         → Bau-Spezifikation (interne Vorlage, nicht Teil der Website)
+index.html            → Portal: Übersicht über ALLE Vorlesungen
+css/style.css         → gemeinsames Designsystem (Light/Dark), von allen Seiten genutzt
+js/main.js            → Theme-Umschalter, aktives Inhaltsverzeichnis, Scroll-Fortschritt, Quiz-Logik
+
+rnvs/index.html       → Kurs-Startseite Rechnernetze (P11)
+rnvs/topics/NN-*.html → je eine Seite pro RNVS-Thema
+
+p4/index.html         → Kurs-Startseite Programmierung & Modellierung (P4, Haskell)
+p4/topics/NN-*.html   → je eine Seite pro P4-Thema
+
+BUILD_SPEC.md         → Bau-Spezifikation der RNVS-Seiten (interne Vorlage)
+BUILD_SPEC_P4.md      → Bau-Spezifikation der P4/Haskell-Seiten (interne Vorlage)
 ```
 
 Jede Themen-Seite folgt derselben Struktur: **Worum geht's?** (mit Alltags-Vergleich) → **Theorie**
-(mit inline-SVG-Diagrammen) → **Schritt für Schritt / Rechnen** → **Typische Fallen** (Falsch/Richtig)
-→ **Quick-Reference** für die Klausur.
+(mit inline-SVG-Diagrammen) → **Schritt für Schritt** → **Typische Fallen** (Falsch/Richtig) →
+**Quick-Reference** für die Klausur → **🧩 Wissenscheck** (interaktive Aufgaben mit Sofort-Feedback).
 
 ## 🛠️ Technik
 Reines HTML/CSS/JS, keine Build-Tools, keine externen Abhängigkeiten. Alle Diagramme sind inline-SVG
 und funktionieren offline. Einfach `index.html` im Browser öffnen.
 
 ## 🎨 Wie es gebaut wurde
-Ein Multiagenten-Ansatz: Das Designsystem, die Homepage und eine Referenzseite wurden zentral gebaut,
-die 10 Themenseiten dann von mehreren spezialisierten Agenten (Haiku für einfachere, Sonnet für
-diagramm- und rechenlastige Themen) parallel nach einer verbindlichen Spezifikation erstellt.
+Ein Multiagenten-Ansatz: Das Designsystem, die Portal- und Kurs-Startseiten sowie je eine Referenzseite
+wurden zentral gebaut; die übrigen Themenseiten dann von mehreren spezialisierten Agenten (Haiku/Sonnet)
+parallel nach einer verbindlichen Spezifikation erstellt.
 
 ---
-*Inhalte basieren auf eigenen Lernnotizen zum Modul P 11 (LMU).*
+*Inhalte basieren auf eigenen Lernnotizen (LMU München).*

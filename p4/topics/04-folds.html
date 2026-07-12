@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Higher-Order Functions &amp; Folds · P4 Haskell</title>
+<meta name="description" content="Higher-Order Functions und Folds in Haskell bildlich erklärt: foldr vs. foldl, Klammer-Bäume, Fließband-Metapher, foldMap, foldlM und typische Klausur-Fallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238b5cf6'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>λ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">λ</span>
+      <span>P4 · Prog&amp;Mod<small>Haskell, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../../index.html">Lernhub</a> › <a href="../index.html">P4 Haskell</a> › Thema 04</div>
+    <span class="th-icon">🪗</span>
+    <h1>Higher-Order Functions &amp; Folds</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span><span class="badge badge-blatt">Task 1c·5c</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie: HOF &amp; Folds</a></li>
+        <li><a href="#schritt">Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">In Haskell sind Funktionen <strong>vollwertige Werte</strong> — du kannst sie wie Zahlen oder Strings an andere Funktionen übergeben oder als Ergebnis zurückgeben. Solche Funktionen heißen <strong>Higher-Order Functions (HOF)</strong>. Und <strong>Folds</strong> sind die mächtigen Werkzeuge, mit denen du eine Liste Schritt für Schritt zu einem einzigen Wert zusammenfasst — von Summen über Listen-Umkehrung bis hin zu eigenen Datenstrukturen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du stehst an einem <strong>Akkordeon</strong> 🪗. Jede Taste ist ein Element der Liste. Wenn du das Akkordeon von <em>rechts</em> zusammendrückst (<code>foldr</code>), verbindest du zuerst die letzte Taste mit dem Akkumulator, dann die vorletzte, … bis du ganz links ankommst. Drückst du von <em>links</em> (<code>foldl</code>), fängst du beim ersten Element an und schiebst das Zwischenergebnis immer weiter nach rechts. Beide Arten verdichten die Tasten zu einem einzigen Klang — aber die Reihenfolge der Verbindungen ist anders.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie: Higher-Order Functions &amp; Folds</h2>
+
+        <h3>Higher-Order Functions</h3>
+        <p>Eine Funktion ist <em>higher-order</em>, wenn sie mindestens eine Funktion als Parameter entgegennimmt <em>oder</em> eine Funktion zurückgibt. Die wichtigsten Beispiele aus dem Prelude:</p>
+
+        <pre class="code hs">-- Nimmt Funktion als Parameter:
+map    :: (a -&gt; b) -&gt; [a] -&gt; [b]
+filter :: (a -&gt; Bool) -&gt; [a] -&gt; [a]
+
+-- Gibt Funktion zurück (Komposition):
+(.) :: (b -&gt; c) -&gt; (a -&gt; b) -&gt; (a -&gt; c)
+f . g = \x -&gt; f (g x)    -- "f nach g"</pre>
+
+        <div class="callout callout-info">
+          <div class="c-title">Komposition lesen</div>
+          <p><code>f . g</code> bedeutet: <em>erst g anwenden, dann f</em>. Lese von rechts nach links. <code>product . filter (/= 0)</code> heißt: erst Nullen entfernen, dann multiplizieren.</p>
+        </div>
+
+        <h3>foldr — Fold Right (rechts-assoziativ, lazy)</h3>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Signatur</div>
+          <span class="formula">foldr :: (a -&gt; b -&gt; b) -&gt; b -&gt; [a] -&gt; b</span>
+          <p><strong>f</strong> = Kombinierfunktion (aktuelles Element, Akkumulator → neuer Akkumulator) · <strong>acc</strong> = Startwert · <strong>[a]</strong> = Eingabeliste.</p>
+        </div>
+
+        <pre class="code hs">foldr f acc []     = acc
+foldr f acc (x:xs) = f x (foldr f acc xs)
+
+-- Struktur: f x₁ (f x₂ (f x₃ acc))
+-- Beispiele:
+foldr (+)  0  [1,2,3] = 1 + (2 + (3 + 0))  = 6
+foldr (:)  [] [1,2,3] = 1 : (2 : (3 : []))  = [1,2,3]   -- Identität!
+foldr (-)  0  [1,2,3] = 1 - (2 - (3 - 0))  = 2          -- Achtung: rechts-assoziativ!</pre>
+
+        <!-- SVG 1: Klammer-Bäume foldr vs foldl -->
+        <figure class="diagram">
+          <div class="diagram-title">Klammer-Baum: foldr (rechts) vs. foldl (links)</div>
+          <svg viewBox="0 0 720 310" width="720" role="img" aria-label="Vergleich der Assoziativität: foldr baut Baum von rechts, foldl von links">
+            <defs>
+              <marker id="ar-tree" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8b5cf6"/></marker>
+              <marker id="ar-tree2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- LEFT TREE: foldr -->
+              <text x="160" y="22" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">foldr (+) 0 [1,2,3]</text>
+              <!-- root -->
+              <rect x="110" y="35" width="100" height="32" rx="7" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6"/>
+              <text x="160" y="56" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">1 + …</text>
+              <!-- level 2 -->
+              <rect x="160" y="95" width="100" height="32" rx="7" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6"/>
+              <text x="210" y="116" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">2 + …</text>
+              <!-- level 3 -->
+              <rect x="185" y="155" width="100" height="32" rx="7" fill="#8b5cf6" fill-opacity="0.08" stroke="#8b5cf6"/>
+              <text x="235" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">3 + …</text>
+              <!-- acc -->
+              <rect x="210" y="215" width="60" height="32" rx="7" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c"/>
+              <text x="240" y="236" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">0</text>
+              <!-- connectors -->
+              <line x1="210" y1="67" x2="210" y2="93" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#ar-tree)"/>
+              <line x1="235" y1="127" x2="235" y2="153" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#ar-tree)"/>
+              <line x1="240" y1="187" x2="240" y2="213" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#ar-tree)"/>
+              <!-- result -->
+              <text x="160" y="270" text-anchor="middle" class="svg-soft" font-size="12">= 1+(2+(3+0)) = 6</text>
+              <text x="160" y="290" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="700">rechts-assoziativ · lazy</text>
+
+              <!-- DIVIDER -->
+              <line x1="370" y1="20" x2="370" y2="300" stroke="#8a94a6" stroke-width="1" stroke-dasharray="4 4"/>
+
+              <!-- RIGHT TREE: foldl -->
+              <text x="560" y="22" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">foldl (+) 0 [1,2,3]</text>
+              <!-- acc first -->
+              <rect x="510" y="35" width="60" height="32" rx="7" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c"/>
+              <text x="540" y="56" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">0</text>
+              <!-- level 2 -->
+              <rect x="470" y="95" width="100" height="32" rx="7" fill="#2f6df6" fill-opacity="0.08" stroke="#2f6df6"/>
+              <text x="520" y="116" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">… + 1</text>
+              <!-- level 3 -->
+              <rect x="450" y="155" width="100" height="32" rx="7" fill="#2f6df6" fill-opacity="0.12" stroke="#2f6df6"/>
+              <text x="500" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">… + 2</text>
+              <!-- level 4 -->
+              <rect x="425" y="215" width="100" height="32" rx="7" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="475" y="236" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">… + 3</text>
+              <!-- connectors -->
+              <line x1="520" y1="67" x2="510" y2="93" stroke="#2f6df6" stroke-width="1.5" marker-end="url(#ar-tree2)"/>
+              <line x1="500" y1="127" x2="495" y2="153" stroke="#2f6df6" stroke-width="1.5" marker-end="url(#ar-tree2)"/>
+              <line x1="490" y1="187" x2="480" y2="213" stroke="#2f6df6" stroke-width="1.5" marker-end="url(#ar-tree2)"/>
+              <!-- result -->
+              <text x="560" y="270" text-anchor="middle" class="svg-soft" font-size="12">= ((0+1)+2)+3 = 6</text>
+              <text x="560" y="290" text-anchor="middle" fill="#2f6df6" font-size="11" font-weight="700">links-assoziativ · strict</text>
+            </g>
+          </svg>
+          <figcaption>Links: <code>foldr</code> baut die Klammern von rechts auf — der Akkumulator sitzt ganz innen. Rechts: <code>foldl</code> schichtet von links — der Akkumulator wächst nach außen.</figcaption>
+        </figure>
+
+        <h3>foldl — Fold Left (links-assoziativ, strict)</h3>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Signatur</div>
+          <span class="formula">foldl :: (b -&gt; a -&gt; b) -&gt; b -&gt; [a] -&gt; b</span>
+          <p>Beachte: Bei <code>foldl</code> kommt der Akkumulator (<code>b</code>) im Kombinierfunktions-Parameter <em>zuerst</em>, bei <code>foldr</code> zuletzt.</p>
+        </div>
+
+        <pre class="code hs">foldl f acc []     = acc
+foldl f acc (x:xs) = foldl f (f acc x) xs
+
+-- Struktur: f (f (f acc x₁) x₂) x₃
+-- Beispiel:
+foldl (+) 0 [1,2,3]
+  = foldl (+) (0+1) [2,3]
+  = foldl (+) (1+2) [3]
+  = foldl (+) (3+3) []
+  = 6</pre>
+
+        <!-- SVG 2: Fließband-Metapher -->
+        <figure class="diagram">
+          <div class="diagram-title">foldl als Fließband — der Akkumulator wandert durch</div>
+          <svg viewBox="0 0 720 160" width="720" role="img" aria-label="foldl verarbeitet Listenelemente von links nach rechts auf einem Fließband">
+            <defs>
+              <marker id="ar-belt" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Belt -->
+              <rect x="10" y="95" width="700" height="30" rx="6" fill="#8a94a6" fill-opacity="0.12" stroke="#8a94a6" stroke-dasharray="6 3"/>
+              <!-- Acc box -->
+              <rect x="10" y="50" width="72" height="36" rx="7" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c"/>
+              <text x="46" y="73" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">acc=0</text>
+              <!-- Step 1 -->
+              <rect x="130" y="30" width="44" height="30" rx="7" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b"/>
+              <text x="152" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">1</text>
+              <rect x="130" y="50" width="72" height="36" rx="7" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="166" y="73" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">acc=1</text>
+              <!-- Step 2 -->
+              <rect x="260" y="30" width="44" height="30" rx="7" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b"/>
+              <text x="282" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">2</text>
+              <rect x="255" y="50" width="72" height="36" rx="7" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="291" y="73" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">acc=3</text>
+              <!-- Step 3 -->
+              <rect x="390" y="30" width="44" height="30" rx="7" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b"/>
+              <text x="412" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" class="svg-ink">3</text>
+              <rect x="380" y="50" width="72" height="36" rx="7" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="416" y="73" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">acc=6</text>
+              <!-- Result -->
+              <rect x="620" y="50" width="82" height="36" rx="7" fill="#12b28c" fill-opacity="0.35" stroke="#12b28c"/>
+              <text x="661" y="73" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#12b28c" font-weight="700">6 ✓</text>
+              <!-- Arrows -->
+              <line x1="82" y1="68" x2="127" y2="68" stroke="#2f6df6" stroke-width="2" marker-end="url(#ar-belt)"/>
+              <line x1="202" y1="68" x2="252" y2="68" stroke="#2f6df6" stroke-width="2" marker-end="url(#ar-belt)"/>
+              <line x1="327" y1="68" x2="377" y2="68" stroke="#2f6df6" stroke-width="2" marker-end="url(#ar-belt)"/>
+              <line x1="452" y1="68" x2="617" y2="68" stroke="#12b28c" stroke-width="2" marker-end="url(#ar-belt)"/>
+              <!-- Labels -->
+              <text x="360" y="145" text-anchor="middle" class="svg-soft" font-size="11">foldl (+) 0 [1,2,3] — jede Station kombiniert Akkumulator + aktuelles Element</text>
+            </g>
+          </svg>
+          <figcaption>Das Fließband läuft von links nach rechts. An jeder Station wird der Akkumulator mit dem nächsten Element verknüpft — am Ende kommt das Ergebnis heraus.</figcaption>
+        </figure>
+
+        <h3>Nützliche Folds in der Praxis</h3>
+        <pre class="code hs">-- all / any via foldr (bricht lazy ab)
+all p = foldr (\x acc -&gt; p x &amp;&amp; acc) True
+any p = foldr (\x acc -&gt; p x || acc) False
+
+-- concat via foldr
+concat = foldr (++) []
+
+-- reverse via foldl
+reverse = foldl (flip (:)) []
+
+-- fromList' aus der Klausur (Task 5):
+fromList' :: [Action] -&gt; Commands
+fromList' = foldr Then Done
+-- foldr Then Done [North, East]
+--   = Then North (Then East Done)</pre>
+
+        <h3>foldMap — Folds mit Monoid</h3>
+        <pre class="code hs">foldMap :: Monoid m =&gt; (a -&gt; m) -&gt; [a] -&gt; m
+
+-- Kombiniert Fold mit Monoid-&lt;&gt;-Operation:
+foldMap Sum     [1,2,3] = Sum 6      -- Sum ist Monoid mit (+)
+foldMap Product [1,2,3] = Product 6  -- Product mit (*)
+foldMap (:[])   [1,2,3] = [1,2,3]    -- Listen-Monoid</pre>
+
+        <h3>foldlM — monadischer Fold</h3>
+        <pre class="code hs">foldlM :: Monad m =&gt; (b -&gt; a -&gt; m b) -&gt; b -&gt; [a] -&gt; m b
+foldlM f acc []     = return acc
+foldlM f acc (x:xs) = f acc x &gt;&gt;= \newAcc -&gt; foldlM f newAcc xs
+
+-- Beispiel mit Maybe (bricht bei Nothing ab):
+foldlM (\acc x -&gt; if x &gt; 0 then Just (acc + x) else Nothing) 0 [1,2,3]
+  = Just 6
+foldlM (\acc x -&gt; if x &gt; 0 then Just (acc + x) else Nothing) 0 [1,-2,3]
+  = Nothing   -- -2 bricht den ganzen Fold ab</pre>
+
+        <!-- SVG 3: foldr (-) Schritt-Visualisierung -->
+        <figure class="diagram">
+          <div class="diagram-title">foldr (−) 0 [1,2,3] — rechts-assoziative Klammerung Schritt für Schritt</div>
+          <svg viewBox="0 0 720 200" width="720" role="img" aria-label="foldr minus Auswertung: 1 minus (2 minus (3 minus 0)) ergibt 2">
+            <defs>
+              <marker id="ar-eval" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e0483d"/></marker>
+            </defs>
+            <g font-family="JetBrains Mono, monospace" font-size="13">
+              <!-- Step boxes -->
+              <rect x="10" y="40" width="195" height="38" rx="7" fill="#e0483d" fill-opacity="0.10" stroke="#e0483d"/>
+              <text x="20" y="64" class="svg-ink">foldr (-) 0 [1,2,3]</text>
+
+              <rect x="10" y="100" width="220" height="38" rx="7" fill="#e0483d" fill-opacity="0.10" stroke="#e0483d"/>
+              <text x="20" y="124" class="svg-ink">1-(2-(3-0))</text>
+
+              <rect x="250" y="100" width="170" height="38" rx="7" fill="#e0483d" fill-opacity="0.14" stroke="#e0483d"/>
+              <text x="260" y="124" class="svg-ink">1-(2-3)</text>
+
+              <rect x="440" y="100" width="150" height="38" rx="7" fill="#e0483d" fill-opacity="0.18" stroke="#e0483d"/>
+              <text x="450" y="124" class="svg-ink">1-(-1)</text>
+
+              <rect x="610" y="100" width="80" height="38" rx="7" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c"/>
+              <text x="650" y="124" text-anchor="middle" fill="#12b28c" font-weight="700">2</text>
+
+              <!-- Arrows horizontal -->
+              <line x1="230" y1="119" x2="247" y2="119" stroke="#e0483d" stroke-width="2" marker-end="url(#ar-eval)"/>
+              <line x1="420" y1="119" x2="437" y2="119" stroke="#e0483d" stroke-width="2" marker-end="url(#ar-eval)"/>
+              <line x1="590" y1="119" x2="607" y2="119" stroke="#12b28c" stroke-width="2" marker-end="url(#ar-eval)"/>
+
+              <!-- Arrow down from first box -->
+              <line x1="107" y1="78" x2="107" y2="97" stroke="#e0483d" stroke-width="2" marker-end="url(#ar-eval)"/>
+
+              <!-- Annotations -->
+              <text x="107" y="170" text-anchor="middle" font-family="Segoe UI, sans-serif" class="svg-soft" font-size="11">rechts-assoziativ: erst (3-0), dann (2-3), dann (1-(-1))</text>
+              <text x="650" y="170" text-anchor="middle" font-family="Segoe UI, sans-serif" fill="#12b28c" font-size="12" font-weight="700">= 2</text>
+            </g>
+          </svg>
+          <figcaption><code>foldr (-) 0 [1,2,3]</code> klammert von rechts: zuerst <code>3-0=3</code>, dann <code>2-3=-1</code>, dann <code>1-(-1)=2</code>. Das Ergebnis ist <strong>2</strong>, nicht 0!</figcaption>
+        </figure>
+
+        <h3>Vergleichstabelle: foldr vs. foldl</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Eigenschaft</th><th>foldr</th><th>foldl</th></tr></thead>
+          <tbody>
+            <tr><td>Assoziativität</td><td>rechts: <code>f x (f y (f z acc))</code></td><td>links: <code>f (f (f acc x) y) z</code></td></tr>
+            <tr><td>Lazy / Strict</td><td>lazy</td><td>strict (baut thunks auf)</td></tr>
+            <tr><td>Unendliche Listen</td><td>✓ (mit <code>take</code>)</td><td>✗ (läuft endlos)</td></tr>
+            <tr><td>Akkumulator-Position in f</td><td>zweites Argument: <code>(a -&gt; b -&gt; b)</code></td><td>erstes Argument: <code>(b -&gt; a -&gt; b)</code></td></tr>
+            <tr><td>Typischer Einsatz</td><td>Listen aufbauen, lazy Auswertung</td><td>Zahlen akkumulieren, reverse</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p><strong>foldr</strong> = <em>rechts</em>, <em>lazy</em>, kann <em>unendliche</em> Listen. <strong>foldl</strong> = <em>links</em>, <em>strict</em>, nur <em>endliche</em> Listen. Für Performance auf endlichen Listen: <code>foldl'</code> aus <code>Data.List</code> (streng ausgewertet, kein Speicherleck).</p>
+        </div>
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>Schritt für Schritt: <code>foldr (+) 0 [1,2,3]</code> und <code>foldr (-) 0 [1,2,3]</code></h2>
+        <p>Lass uns beide Beispiele vollständig durchrechnen — genau so, wie du es in der Klausur zeigen sollst.</p>
+
+        <h3>Beispiel 1: <code>foldr (+) 0 [1,2,3]</code></h3>
+        <ol class="steps">
+          <li><strong>Starte von rechts:</strong> <code>foldr</code> wendet <code>f</code> zuerst auf das <em>letzte</em> Element an: <code>3 + 0 = 3</code>.</li>
+          <li><strong>Weiter nach links:</strong> Das Ergebnis wird Akkumulator für das nächste Element: <code>2 + 3 = 5</code>.</li>
+          <li><strong>Ganz links:</strong> <code>1 + 5 = 6</code>.</li>
+          <li><strong>Ergebnis:</strong> <code>6</code>.</li>
+        </ol>
+
+        <div class="evalstep">foldr (+) 0 [1,2,3]  <span class="arrow">→</span>  1 + (foldr (+) 0 [2,3])</div>
+        <div class="evalstep"><span class="arrow">→</span>  1 + (2 + (foldr (+) 0 [3]))</div>
+        <div class="evalstep"><span class="arrow">→</span>  1 + (2 + (3 + (foldr (+) 0 [])))</div>
+        <div class="evalstep"><span class="arrow">→</span>  1 + (2 + (3 + 0))  <span class="arrow">→</span>  1 + (2 + 3)  <span class="arrow">→</span>  1 + 5  <span class="arrow">→</span>  <strong>6</strong></div>
+
+        <h3>Beispiel 2: <code>foldr (-) 0 [1,2,3]</code> — Achtung: rechts-assoziativ!</h3>
+        <ol class="steps">
+          <li><strong>Innerste Klammer zuerst:</strong> <code>3 - 0 = 3</code>.</li>
+          <li><strong>Nächste Ebene:</strong> <code>2 - 3 = -1</code>.</li>
+          <li><strong>Äußerste Ebene:</strong> <code>1 - (-1) = 2</code>.</li>
+          <li><strong>Ergebnis: 2</strong> — nicht 0, nicht -2!</li>
+        </ol>
+
+        <div class="evalstep">foldr (-) 0 [1,2,3]  <span class="arrow">→</span>  1 - (2 - (3 - 0))</div>
+        <div class="evalstep"><span class="arrow">→</span>  1 - (2 - 3)  <span class="arrow">→</span>  1 - (-1)  <span class="arrow">→</span>  <strong>2</strong></div>
+
+        <h3>Beispiel 3: <code>fromList' [North, East]</code> mit <code>foldr Then Done</code></h3>
+        <ol class="steps">
+          <li><strong>Signatur:</strong> <code>fromList' = foldr Then Done</code> — <code>Then</code> ist die Kombinierfunktion, <code>Done</code> der Akkumulator.</li>
+          <li><strong>Schritt 1:</strong> <code>Then East Done</code> (das letzte Element wird mit <code>Done</code> verknüpft).</li>
+          <li><strong>Schritt 2:</strong> <code>Then North (Then East Done)</code> — der Rest wird von rechts aufgebaut.</li>
+        </ol>
+
+        <div class="evalstep">foldr Then Done [North, East]  <span class="arrow">→</span>  Then North (foldr Then Done [East])</div>
+        <div class="evalstep"><span class="arrow">→</span>  Then North (Then East (foldr Then Done []))</div>
+        <div class="evalstep"><span class="arrow">→</span>  Then North (Then East Done)</div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz für die Klausur</div>
+          <p>Bei <code>foldr f acc [x₁, x₂, …, xₙ]</code>: ersetze jedes <code>:</code> in der Liste durch <code>f</code> und das abschließende <code>[]</code> durch <code>acc</code>. So entsteht die vollständig geklammerte Form sofort.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen (Klausur!)</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Argument-Reihenfolge bei <code>foldl</code> vertauscht — Akkumulator ans Ende gesetzt:
+            <pre class="code hs">foldl f [1,2,3] 0   -- ❌ Liste zuerst, dann Akkumulator?</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Akkumulator kommt <em>immer vor</em> der Liste:
+            <pre class="code hs">foldl (+) 0 [1,2,3]  -- ✓ f · acc · Liste</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span><code>foldl</code> auf unendlicher Liste — es gibt kein Ende, Haskell hängt:
+            <pre class="code hs">take 3 (foldl (flip (:)) [] [1..])  -- ❌ hängt endlos</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Für unendliche Listen immer <code>foldr</code> benutzen:
+            <pre class="code hs">take 3 (foldr (:) [] [1..])  -- ✓ = [1,2,3]</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span><code>foldr (-)</code> Ergebnis unterschätzt — viele denken links-assoziativ:
+            <pre class="code hs">foldr (-) 0 [1,2,3]
+-- ❌ Gedacht: (1-2)-3 = -4  NEIN!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Rechts-assoziativ klammern: innerste Klammer zuerst auflösen:
+            <pre class="code hs">foldr (-) 0 [1,2,3]
+-- ✓ = 1-(2-(3-0)) = 1-(2-3) = 1-(-1) = 2</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Kombinierfunktions-Signatur bei <code>foldr</code> und <code>foldl</code> verwechselt:
+            <pre class="code hs">-- ❌ foldl mit (a -&gt; b -&gt; b)-Funktion schreiben
+foldl (\x acc -&gt; x : acc) [] [1,2,3]  -- falsche Reihenfolge!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bei <code>foldl</code>: Akkumulator kommt <em>zuerst</em> in den Lambda:
+            <pre class="code hs">-- ✓ foldl: (b -&gt; a -&gt; b) — acc zuerst
+foldl (\acc x -&gt; x : acc) [] [1,2,3]  -- = [3,2,1]
+
+-- ✓ foldr: (a -&gt; b -&gt; b) — element zuerst
+foldr (\x acc -&gt; x : acc) [] [1,2,3]  -- = [1,2,3]</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Pointfree-Reihenfolge bei <code>foldr</code>-basierten Definitionen umgedreht:
+            <pre class="code hs">fromList' = Done `Then` foldr  -- ❌ Unsinn</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><code>foldr</code> direkt pointfree mit Kombinierfunktion und Akkumulator:
+            <pre class="code hs">fromList' = foldr Then Done  -- ✓ klar und idiomatisch</pre></div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Funktion</th><th>Signatur</th><th>Lazy?</th><th>Unendlich?</th></tr></thead>
+            <tbody>
+              <tr><td><code>foldr</code></td><td><code>(a-&gt;b-&gt;b) -&gt; b -&gt; [a] -&gt; b</code></td><td>✓ lazy</td><td>✓ (mit <code>take</code>)</td></tr>
+              <tr><td><code>foldl</code></td><td><code>(b-&gt;a-&gt;b) -&gt; b -&gt; [a] -&gt; b</code></td><td>✗ strict</td><td>✗</td></tr>
+              <tr><td><code>foldMap</code></td><td><code>Monoid m =&gt; (a-&gt;m) -&gt; [a] -&gt; m</code></td><td>—</td><td>—</td></tr>
+              <tr><td><code>foldlM</code></td><td><code>Monad m =&gt; (b-&gt;a-&gt;m b) -&gt; b -&gt; [a] -&gt; m b</code></td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Klausur-Muster</th><th>Lösung</th></tr></thead>
+            <tbody>
+              <tr><td>Summe / Produkt einer Liste</td><td><code>foldr (+) 0</code> oder <code>sum</code></td></tr>
+              <tr><td>Liste umkehren</td><td><code>foldl (flip (:)) []</code></td></tr>
+              <tr><td>Listenidentität</td><td><code>foldr (:) [] = id</code></td></tr>
+              <tr><td>ADT aus Liste aufbauen</td><td><code>foldr Then Done</code> o.ä.</td></tr>
+              <tr><td>Abbruch bei Fehler</td><td><code>foldlM</code> mit <code>Maybe</code></td></tr>
+              <tr><td><code>foldr (-) 0</code> auf [a,b,c]</td><td><code>a-(b-(c-0))</code> rechts klammern!</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="factgrid">
+            <div class="fact"><b>foldr</b><span>lazy · rechts · unendlich</span></div>
+            <div class="fact"><b>foldl</b><span>strict · links · nur endlich</span></div>
+            <div class="fact"><b>foldMap</b><span>Monoid · &lt;&gt; statt f</span></div>
+            <div class="fact"><b>foldlM</b><span>monadisch · Fehler-Propagation</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p>Drei kurze Fragen — tippe deine Antwort ein oder klick die richtige Option. Grün = richtig.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was ergibt <code>foldr (+) 0 [1,2,3]</code>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><code>1 + (2 + (3 + 0)) = 6</code>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Was ergibt <code>foldr (-) 0 [1,2,3]</code>? (Achtung: rechts-assoziativ!)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><code>1 - (2 - (3 - 0)) = 1 - (2 - 3) = 1 - (-1) = 2</code>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Welcher Fold ist <em>lazy</em> und kann unendliche Listen verarbeiten (z.B. mit <code>take</code>)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>foldr</button>
+              <button class="quiz-choice" type="button">foldl</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><code>foldr</code> ist rechts-assoziativ &amp; lazy; <code>foldl</code> ist strict und läuft bei unendlichen Listen endlos.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Prev/Next -->
+      <nav class="prev-next">
+        <a class="prev" href="03-datentypen.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Datentypen modellieren (ADTs)</div>
+        </a>
+        <a class="next" href="05-auswertung.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Auswertung &amp; Evaluation</div>
+        </a>
+      </nav>
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>P 4 · Programmierung &amp; Modellierung (Haskell · LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

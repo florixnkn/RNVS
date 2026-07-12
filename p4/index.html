@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P4 – Programmierung &amp; Modellierung (Haskell), bildlich erklärt</title>
+<meta name="description" content="Funktionale Programmierung in Haskell verständlich und visuell erklärt – von Rekursion über Typklassen, Folds und Auswertung bis zu Monaden. Für Einsteiger ohne Vorwissen." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238b5cf6'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>λ</text></svg>" />
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <span class="logo">λ</span>
+      <span>P4 · Prog&amp;Mod<small>Haskell, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Vorlesungen</a>
+      <a href="#phase-1">Funktionen</a>
+      <a href="#phase-2">Daten &amp; Folds</a>
+      <a href="#phase-3">Monaden</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <h1>Programmierung &amp; Modellierung,<br><span class="grad">endlich bildlich erklärt.</span></h1>
+    <p class="lead">Haskell wirkt am Anfang wie eine Geheimsprache — ist aber verblüffend logisch, wenn man es
+      <strong>bildlich</strong> sieht. Vom ersten <code>foldr</code> bis zur <code>do</code>-Notation: jedes Thema auf
+      einer eigenen Seite, mit Diagrammen, Alltags-Vergleichen und Schritt-für-Schritt-Auswertungen. Für alle, die
+      <strong>noch kaum Ahnung</strong> von funktionaler Programmierung haben.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#phase-1">🚀 Bei der Rekursion starten</a>
+      <a class="btn btn-ghost" href="topics/06-monaden.html">🪄 Direkt zu den Monaden</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>6</b><span>Themen-Seiten</span></div>
+      <div class="stat"><b>3</b><span>Lernphasen</span></div>
+      <div class="stat"><b>0</b><span>Vorwissen nötig</span></div>
+      <div class="stat"><b>6</b><span>ECTS im Modul P 4</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- ===== PHASE 1 ===== -->
+  <section class="phase" id="phase-1">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat3)">1</div>
+      <div><h2>Funktionen &amp; Polymorphie</h2><p>Wie man in Haskell Funktionen baut, die sich selbst aufrufen — und Typklassen, die für viele Typen gleichzeitig funktionieren.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/01-rekursion.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🔁</span><span class="tc-no">01</span></div>
+        <h3>Rekursion</h3>
+        <p>Funktionen, die sich selbst aufrufen — mit Base Case, Tail-Rekursion (Akkumulator) und Pointfree-Style.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Task 1</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/02-typklassen.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🧬</span><span class="tc-no">02</span></div>
+        <h3>Polymorphie &amp; Typklassen</h3>
+        <p>Functor, Foldable, Applicative, Monad &amp; Ord — eine Funktion, die für viele verschiedene Typen passt.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Task 2</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 2 ===== -->
+  <section class="phase" id="phase-2">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat2)">2</div>
+      <div><h2>Datentypen modellieren &amp; Falten</h2><p>Eigene Datentypen entwerfen (ADTs) und Listen elegant zu einem Ergebnis „zusammenfalten".</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/03-datentypen.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🧱</span><span class="tc-no">03</span></div>
+        <h3>Datentypen modellieren (ADTs)</h3>
+        <p>Sum- &amp; Product-Types, rekursive Typen: Zipper, Peano-Zahlen, Commands &amp; Result — selbst gebaut.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Task 3</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/04-folds.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🪗</span><span class="tc-no">04</span></div>
+        <h3>Higher-Order Functions &amp; Folds</h3>
+        <p>Funktionen als Argumente — plus <code>foldr</code> (lazy) vs. <code>foldl</code> (strict) und <code>foldMap</code>.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-blatt">Task 1c·5c</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 3 ===== -->
+  <section class="phase" id="phase-3">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat4)">3</div>
+      <div><h2>Auswertung &amp; Monaden</h2><p>Wann rechnet Haskell eigentlich? Und was steckt hinter dem geheimnisvollen Wort „Monade"?</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/05-auswertung.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">⏳</span><span class="tc-no">05</span></div>
+        <h3>Auswertung &amp; Evaluation</h3>
+        <p>Call-by-Value vs. Call-by-Name, Lazy Evaluation und wie man beweist, dass eine Funktion terminiert.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Task 4·6</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/06-monaden.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🪄</span><span class="tc-no">06</span></div>
+        <h3>Monaden</h3>
+        <p>Die Kette Functor → Applicative → Monad, Maybe/List/Result und die <code>do</code>-Notation — Schritt für Schritt.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Task 5 (18 P.)</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Lernpfad-Hinweis -->
+  <div class="callout callout-tip reveal" style="margin: 40px 0;">
+    <div class="c-title">So nutzt du diese Seite am besten</div>
+    <p>Arbeite die Themen <strong>der Reihe nach</strong> durch (01 → 06) — jedes baut auf dem vorherigen auf.
+      Jede Seite beginnt mit einem <strong>Alltags-Vergleich</strong>, erklärt dann die Idee mit Bildern und
+      durchgespielten Code-Beispielen, zeigt <strong>typische Fallen</strong> aus der Klausur und endet mit einem
+      interaktiven <strong>Wissenscheck</strong>. Oben rechts kannst du zwischen hellem und dunklem Design wechseln.</p>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>P 4 · Programmierung &amp; Modellierung (Haskell · LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zu allen Vorlesungen</a> · © <span data-year>2026</span></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

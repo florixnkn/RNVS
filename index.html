@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RNVS – Rechnernetze & Verteilte Systeme, bildlich erklärt</title>
-<meta name="description" content="Rechnernetze und Verteilte Systeme verständlich und visuell erklärt – von Graphen über OSI-Modell bis TCP Congestion Control. Für Einsteiger ohne Vorwissen." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
+<title>Lernhub · Meine Vorlesungen, bildlich erklärt</title>
+<meta name="description" content="Persönlicher Lernhub für alle Vorlesungen des Informatik-Studiums an der LMU – jedes Modul verständlich und visuell erklärt, mit Diagrammen und interaktiven Wissenschecks." />
 <link rel="stylesheet" href="css/style.css" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='80' font-size='78' text-anchor='middle'>📚</text></svg>" />
 </head>
 <body>
 <div id="progress-bar"></div>
@@ -15,15 +14,14 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="index.html">
-      <span class="logo">RN</span>
-      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+      <span class="logo">L</span>
+      <span>Lernhub<small>LMU · alle Vorlesungen, bildlich erklärt</small></span>
     </a>
     <span class="nav-spacer"></span>
     <nav class="nav-links">
-      <a href="#phase-1">Grundlagen</a>
-      <a href="#phase-2">Vermittlung</a>
-      <a href="#phase-3">Übertragung</a>
-      <a href="#phase-4">Transport</a>
+      <a href="#informatik">Informatik</a>
+      <a href="#wahlpflicht">Wahlpflicht</a>
+      <a href="#vwl">VWL</a>
     </nav>
     <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
   </div>
@@ -32,153 +30,140 @@
 <!-- ============ HERO ============ -->
 <section class="hero">
   <div class="container">
-    <h1>Rechnernetze &amp; Verteilte Systeme,<br><span class="grad">endlich bildlich erklärt.</span></h1>
-    <p class="lead">Vom ersten Bit bis zum kompletten TCP-Verbindungsaufbau — jedes Thema auf einer eigenen Seite,
-      mit Diagrammen, Alltags-Vergleichen und Schritt-für-Schritt-Rechnungen. Gemacht für alle, die
-      <strong>noch kaum Ahnung</strong> davon haben.</p>
+    <h1>Deine Vorlesungen,<br><span class="grad">endlich bildlich erklärt.</span></h1>
+    <p class="lead">Ein Ort für dein ganzes Semester: jedes Modul auf eigenen Seiten, mit Diagrammen,
+      Alltags-Vergleichen, durchgerechneten Beispielen und interaktiven <strong>Wissenschecks</strong>.
+      Gemacht für alle, die den Stoff <strong>wirklich verstehen</strong> wollen — nicht nur auswendig lernen.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="#phase-1">🚀 Beim ersten Thema starten</a>
-      <a class="btn btn-ghost" href="topics/04-osi-modell.html">🏛️ Direkt zum OSI-Modell</a>
+      <a class="btn btn-primary" href="rnvs/index.html">🌐 Rechnernetze (RNVS) öffnen</a>
+      <a class="btn btn-ghost" href="p4/index.html">λ Programmierung &amp; Modellierung</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><b>10</b><span>Themen-Seiten</span></div>
-      <div class="stat"><b>4</b><span>Lernphasen</span></div>
+      <div class="stat"><b>9</b><span>Module im Studium</span></div>
+      <div class="stat"><b>2</b><span>schon bildlich erklärt</span></div>
+      <div class="stat"><b>16</b><span>Themen-Seiten</span></div>
       <div class="stat"><b>0</b><span>Vorwissen nötig</span></div>
-      <div class="stat"><b>6</b><span>ECTS im Modul P 11</span></div>
     </div>
   </div>
 </section>
 
 <main class="container">
 
-  <!-- ===== PHASE 1 ===== -->
-  <section class="phase" id="phase-1">
-    <div class="phase-head">
-      <div class="phase-num" style="background:var(--c-cat1)">1</div>
-      <div><h2>Grundlagen</h2><p>Die Bausteine: Graphen, Protokolle, Werkzeuge und das Schichtenmodell.</p></div>
+  <!-- ===== INFORMATIK PFLICHT ===== -->
+  <section id="informatik">
+    <div class="area-head" style="--cat:var(--c-cat2)">
+      <span class="area-dot"></span>
+      <h2>Informatik · Pflichtmodule</h2>
+      <span class="area-sub">Bachelor Informatik (Nebenfach BWL) · LMU</span>
     </div>
     <div class="topic-grid">
 
-      <a class="topic-card reveal" href="topics/01-grundlagen.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
-        <div class="tc-top"><span class="tc-icon">🌳</span><span class="tc-no">01</span></div>
-        <h3>Graphen, Bäume &amp; Adressierung</h3>
-        <p>Knoten, Kanten, Binärbäume — und wie aus Nullen und Einsen eine IP-Adresse wie 192.168.0.1 wird.</p>
-        <div class="tc-meta"><span class="stars">★☆☆</span><span class="badge badge-blatt">Blatt 1</span></div>
+      <a class="topic-card reveal" href="p4/index.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">λ</span><span class="tc-no">P4</span></div>
+        <h3>Programmierung &amp; Modellierung</h3>
+        <p>Funktionale Programmierung in <strong>Haskell</strong>: Rekursion, Typklassen, Higher-Order-Funktionen, Folds und Monaden.</p>
+        <div class="tc-meta"><span class="badge badge-live">✓ Verfügbar</span><span class="badge badge-soft">6 Themen</span></div>
+        <div class="tc-foot"><span>Prof. Dr. J. Kinder</span><span>·</span><span class="badge badge-ects">6 ECTS</span></div>
       </a>
 
-      <a class="topic-card reveal" href="topics/02-protokolle.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
-        <div class="tc-top"><span class="tc-icon">🍕</span><span class="tc-no">02</span></div>
-        <h3>Protokolle &amp; der Pizzadienst</h3>
-        <p>Was ist ein „Protokoll"? Erklärt an einer ganz normalen Pizzabestellung am Telefon.</p>
-        <div class="tc-meta"><span class="stars">★☆☆</span><span class="badge badge-blatt">Blatt 2</span></div>
+      <a class="topic-card reveal" href="rnvs/index.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🌐</span><span class="tc-no">P11</span></div>
+        <h3>Rechnernetze &amp; Verteilte Systeme</h3>
+        <p>Von Graphen &amp; Adressierung über das OSI-Modell bis zu TCP-Handshake, Sliding Window und Congestion Control.</p>
+        <div class="tc-meta"><span class="badge badge-live">✓ Verfügbar</span><span class="badge badge-soft">10 Themen</span></div>
+        <div class="tc-foot"><span>SoSe 2026</span><span>·</span><span class="badge badge-ects">6 ECTS</span></div>
       </a>
 
-      <a class="topic-card reveal" href="topics/03-netze-tools.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
-        <div class="tc-top"><span class="tc-icon">🛠️</span><span class="tc-no">03</span></div>
-        <h3>Netz vs. Verteiltes System &amp; Tools</h3>
-        <p>Der Unterschied einfach erklärt — plus <code>ping</code> und <code>traceroute</code> zum selbst Ausprobieren.</p>
-        <div class="tc-meta"><span class="stars">★☆☆</span><span class="badge badge-blatt">Blatt 2</span></div>
-      </a>
+      <div class="topic-card soon reveal" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🧮</span><span class="tc-no">P7</span></div>
+        <h3>Logik &amp; Diskrete Strukturen</h3>
+        <p>Aussagen- &amp; Prädikatenlogik, formale Beweise, Mengen, Relationen und Kombinatorik.</p>
+        <div class="tc-meta"><span class="badge badge-soon">Bald verfügbar</span></div>
+      </div>
 
-      <a class="topic-card reveal" href="topics/04-osi-modell.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
-        <div class="tc-top"><span class="tc-icon">🏛️</span><span class="tc-no">04</span></div>
-        <h3>OSI- &amp; Internet-Modell</h3>
-        <p>Die 7 Schichten als Stapel plus PDU/SDU — das Herzstück, das in der Klausur immer drankommt.</p>
-        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Blatt 3</span></div>
-      </a>
+      <div class="topic-card soon reveal" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🤖</span><span class="tc-no">P10</span></div>
+        <h3>Formale Sprachen &amp; Komplexität</h3>
+        <p>Automaten, Grammatiken, Turing-Maschinen, Berechenbarkeit und die Frage P vs. NP.</p>
+        <div class="tc-meta"><span class="badge badge-soon">Bald verfügbar</span></div>
+      </div>
+
+      <div class="topic-card soon reveal" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🎲</span><span class="tc-no">P12</span></div>
+        <h3>Stochastik &amp; Statistik</h3>
+        <p>Wahrscheinlichkeit, Zufallsvariablen, Verteilungen sowie Schätzer und statistische Tests.</p>
+        <div class="tc-meta"><span class="badge badge-soon">Bald verfügbar</span></div>
+      </div>
 
     </div>
   </section>
 
-  <!-- ===== PHASE 2 ===== -->
-  <section class="phase" id="phase-2">
-    <div class="phase-head">
-      <div class="phase-num" style="background:var(--c-cat2)">2</div>
-      <div><h2>Vermittlung &amp; Verbindung</h2><p>Wie Daten den Weg finden und wie zwei Rechner eine Verbindung aufbauen.</p></div>
+  <!-- ===== WAHLPFLICHT INFORMATIK ===== -->
+  <section id="wahlpflicht">
+    <div class="area-head" style="--cat:var(--c-cat3)">
+      <span class="area-dot"></span>
+      <h2>Informatik · Wahlpflicht</h2>
+      <span class="area-sub">Vertiefungen nach Wahl</span>
     </div>
     <div class="topic-grid">
 
-      <a class="topic-card reveal" href="topics/05-verzoegerung.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
-        <div class="tc-top"><span class="tc-icon">⏱️</span><span class="tc-no">05</span></div>
-        <h3>Verzögerungen &amp; Vermittlungsarten</h3>
-        <p>Warum dauert Datenübertragung überhaupt? Die 4 Verzögerungen — zum Selber-Ausrechnen.</p>
-        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🧮 Rechnen</span><span class="badge badge-blatt">Blatt 7</span></div>
-      </a>
+      <div class="topic-card soon reveal" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🧠</span><span class="tc-no">WP</span></div>
+        <h3>Maschinelles Lernen</h3>
+        <p>Von linearer Regression über Entscheidungsbäume und neuronale Netze bis zur Modellbewertung.</p>
+        <div class="tc-meta"><span class="badge badge-soon">Bald verfügbar</span></div>
+      </div>
 
-      <a class="topic-card reveal" href="topics/06-handshakes.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
-        <div class="tc-top"><span class="tc-icon">🤝</span><span class="tc-no">06</span></div>
-        <h3>Verbindungsmanagement: Handshakes</h3>
-        <p>Wie zwei Computer sich „die Hand geben": der 2-Wege- und der 3-Wege-Handschlag.</p>
-        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-blatt">Blatt 4</span></div>
-      </a>
+      <div class="topic-card soon reveal" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">⚛️</span><span class="tc-no">WP</span></div>
+        <h3>Quantencomputing</h3>
+        <p>Qubits, Superposition, Verschränkung, Quantengatter und erste Quantenalgorithmen.</p>
+        <div class="tc-meta"><span class="badge badge-soon">Bald verfügbar</span></div>
+      </div>
 
     </div>
   </section>
 
-  <!-- ===== PHASE 3 ===== -->
-  <section class="phase" id="phase-3">
-    <div class="phase-head">
-      <div class="phase-num" style="background:var(--c-cat3)">3</div>
-      <div><h2>Zuverlässige Übertragung</h2><p>Wie man aus einer unzuverlässigen Leitung eine zuverlässige macht.</p></div>
+  <!-- ===== NEBENFACH VWL ===== -->
+  <section id="vwl">
+    <div class="area-head" style="--cat:var(--c-cat4)">
+      <span class="area-dot"></span>
+      <h2>Nebenfach · VWL / Wirtschaft</h2>
+      <span class="area-sub">Anwendungsfach</span>
     </div>
     <div class="topic-grid">
 
-      <a class="topic-card reveal" href="topics/07-sliding-window.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
-        <div class="tc-top"><span class="tc-icon">🪟</span><span class="tc-no">07</span></div>
-        <h3>Sequenznummern &amp; Sliding Window</h3>
-        <p>Wie man viele Pakete gleichzeitig verschickt, ohne den Überblick zu verlieren — mit Rechnung.</p>
-        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 4·5·7</span></div>
-      </a>
+      <div class="topic-card soon reveal" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">📈</span><span class="tc-no">P2</span></div>
+        <h3>Makroökonomie</h3>
+        <p>BIP, Inflation, Arbeitsmarkt, Geld- &amp; Fiskalpolitik und Konjunkturzyklen.</p>
+        <div class="tc-meta"><span class="badge badge-soon">Bald verfügbar</span></div>
+      </div>
+
+      <div class="topic-card soon reveal" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🏛️</span><span class="tc-no">P4</span></div>
+        <h3>Finanzwissenschaft</h3>
+        <p>Staatliche Einnahmen &amp; Ausgaben, Steuern, öffentliche Güter und Marktversagen.</p>
+        <div class="tc-meta"><span class="badge badge-soon">Bald verfügbar</span></div>
+      </div>
 
     </div>
   </section>
 
-  <!-- ===== PHASE 4 ===== -->
-  <section class="phase" id="phase-4">
-    <div class="phase-head">
-      <div class="phase-num" style="background:var(--c-cat4)">4</div>
-      <div><h2>Transportschicht</h2><p>Die beiden Stars: UDP (schnell &amp; einfach) und TCP (zuverlässig &amp; clever).</p></div>
-    </div>
-    <div class="topic-grid">
-
-      <a class="topic-card reveal" href="topics/08-udp.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
-        <div class="tc-top"><span class="tc-icon">📮</span><span class="tc-no">08</span></div>
-        <h3>UDP &amp; RFC 768</h3>
-        <p>Das schnelle „Postkarten"-Protokoll: winziger Header, kein Aufbau, keine Garantie — aber blitzschnell.</p>
-        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-blatt">Blatt 2·5</span></div>
-      </a>
-
-      <a class="topic-card reveal" href="topics/09-tcp.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
-        <div class="tc-top"><span class="tc-icon">🔗</span><span class="tc-no">09</span></div>
-        <h3>TCP: Verbindung, SeqNr &amp; SACK</h3>
-        <p>Das zuverlässige Arbeitspferd des Internets: Handshake, Sequenznummern und selektive Quittungen.</p>
-        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 5·6</span></div>
-      </a>
-
-      <a class="topic-card reveal" href="topics/10-congestion-control.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
-        <div class="tc-top"><span class="tc-icon">📈</span><span class="tc-no">10</span></div>
-        <h3>TCP Congestion Control</h3>
-        <p>Wie TCP Vollgas gibt und rechtzeitig bremst — Slow-Start, Tahoe &amp; Reno, damit das Netz nicht kollabiert.</p>
-        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 6·7</span></div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- Lernpfad-Hinweis -->
-  <div class="callout callout-tip reveal" style="margin: 40px 0;">
-    <div class="c-title">So nutzt du diese Seite am besten</div>
-    <p>Arbeite die Themen <strong>der Reihe nach</strong> durch (01 → 10) — jedes baut auf dem vorherigen auf.
-      Jede Seite beginnt mit einem <strong>Alltags-Vergleich</strong>, erklärt dann die Theorie mit Bildern und
-      endet mit einer <strong>Quick-Reference</strong> für die Klausur. Oben rechts kannst du zwischen hellem und
-      dunklem Design wechseln.</p>
+  <!-- Hinweis -->
+  <div class="callout callout-tip reveal" style="margin: 44px 0;">
+    <div class="c-title">Wie dieser Lernhub wächst</div>
+    <p>Jedes Modul wird nach demselben Prinzip aufgebaut: eine <strong>Übersichtsseite</strong> und pro Thema eine
+      eigene, bildliche Seite mit Diagrammen, typischen Fallen und einem interaktiven <strong>Wissenscheck</strong>.
+      <strong>Rechnernetze</strong> und <strong>Programmierung &amp; Modellierung</strong> sind fertig — die übrigen
+      Module folgen nach und nach. Oben rechts kannst du zwischen hellem und dunklem Design wechseln.</p>
   </div>
 
 </main>
 
 <footer class="site-footer">
   <div class="container">
-    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span>Lernhub · alle Vorlesungen (LMU München) · bildlich &amp; interaktiv erklärt</span>
     <span>Lernprojekt © <span data-year>2026</span> · Inhalte aus eigenen Lernnotizen</span>
   </div>
 </footer>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Auswertung &amp; Evaluation · P4 Haskell</title>
+<meta name="description" content="Auswertungsstrategien in Haskell bildlich erklärt: Call-by-Value, Call-by-Name, Lazy Evaluation (Call-by-Need), unendliche Listen und Terminationsbeweise. Für Einsteiger ohne Vorwissen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238b5cf6'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>λ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">λ</span>
+      <span>P4 · Prog&amp;Mod<small>Haskell, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../../index.html">Lernhub</a> › <a href="../index.html">P4 Haskell</a> › Thema 05</div>
+    <span class="th-icon">⏳</span>
+    <h1>Auswertung &amp; Evaluation</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausurrelevant</span><span class="badge badge-blatt">Task 4·6</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Auswertungsstrategien</a></li>
+        <li><a href="#schritt">Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Wenn du eine Funktion mit einem Argument aufrufst, stellt sich die Frage: <strong>Wann wird das Argument berechnet?</strong>
+          Sofort, bevor die Funktion startet? Oder erst, wenn die Funktion es wirklich braucht? Oder gar nie, falls es ungenutzt bleibt?
+          Diese Entscheidung nennt sich <strong>Auswertungsstrategie</strong> — und Haskell trifft sie anders als Python oder Java.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du bestellst beim Bäcker ein Frühstück. Der Bäcker kann das so angehen:</p>
+          <ul>
+            <li><strong>Call-by-Value (CBV):</strong> Der Bäcker backt erst alle Brötchen frisch — egal ob du sie alle essen wirst — und bringt dann das fertige Tablett. <em>(Python, Java, C++)</em></li>
+            <li><strong>Call-by-Name (CBN):</strong> Der Bäcker bringt rohe Teiglinge. Du backst jedes Brötchen selbst, wenn du es essen willst — und falls du ein Brötchen zweimal isst, backst du es auch zweimal.</li>
+            <li><strong>Call-by-Need / Lazy (Haskell):</strong> Wie CBN, aber der Bäcker merkt sich das Backergebnis. Jedes Brötchen wird nur <em>einmal</em> gebacken — und nur, wenn du es wirklich willst. <em>Unendliche Tablettreihen</em> sind kein Problem, solange du nur ein paar nimmst.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Auswertungsstrategien</h2>
+        <p>Alle drei Strategien beschreiben dasselbe: Wie geht Haskell (oder eine andere Sprache) mit Argumenten um, bevor eine Funktion startet?</p>
+
+        <!-- SVG 1: CBV vs CBN Vergleich -->
+        <figure class="diagram">
+          <div class="diagram-title">CBV vs. CBN — dieselbe Expression, zwei verschiedene Wege</div>
+          <svg viewBox="0 0 720 320" width="720" role="img" aria-label="Vergleich von Call-by-Value und Call-by-Name anhand der Expression lambda y, if y kleiner gleich 1 then y mal y else y, (1-1)">
+            <defs>
+              <marker id="ar-cbv" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="ar-cbn" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Header CBV -->
+              <rect x="10" y="10" width="340" height="36" rx="8" fill="#2f6df6" fill-opacity="0.85"/>
+              <text x="180" y="34" text-anchor="middle" fill="#fff" font-weight="700" font-size="15">Call-by-Value (CBV)</text>
+              <!-- Header CBN -->
+              <rect x="370" y="10" width="340" height="36" rx="8" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="540" y="34" text-anchor="middle" fill="#fff" font-weight="700" font-size="15">Call-by-Name (CBN)</text>
+
+              <!-- Schritt 0: Ausgangsausdruck -->
+              <text x="180" y="68" text-anchor="middle" class="svg-soft" font-size="12">Ausgangsausdruck:</text>
+              <text x="540" y="68" text-anchor="middle" class="svg-soft" font-size="12">Ausgangsausdruck:</text>
+              <rect x="20" y="74" width="320" height="34" rx="6" fill="#2f6df6" fill-opacity="0.10" stroke="#2f6df6"/>
+              <text x="30" y="96" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">(\y -&gt; if y&lt;=1 then y*y else y) (1-1)</text>
+              <rect x="380" y="74" width="320" height="34" rx="6" fill="#f5810b" fill-opacity="0.10" stroke="#f5810b"/>
+              <text x="390" y="96" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">(\y -&gt; if y&lt;=1 then y*y else y) (1-1)</text>
+
+              <!-- CBV Pfeil 1 -->
+              <line x1="180" y1="108" x2="180" y2="124" stroke="#2f6df6" stroke-width="2" marker-end="url(#ar-cbv)"/>
+              <text x="185" y="120" class="svg-soft" font-size="11">① Argument zuerst auswerten</text>
+
+              <!-- CBV Schritt 1 -->
+              <rect x="20" y="126" width="320" height="34" rx="6" fill="#2f6df6" fill-opacity="0.10" stroke="#2f6df6"/>
+              <text x="30" y="148" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">(\y -&gt; if y&lt;=1 then y*y else y) 0</text>
+
+              <!-- CBV Pfeil 2 -->
+              <line x1="180" y1="160" x2="180" y2="176" stroke="#2f6df6" stroke-width="2" marker-end="url(#ar-cbv)"/>
+              <text x="185" y="172" class="svg-soft" font-size="11">② einsetzen</text>
+
+              <!-- CBV Schritt 2 -->
+              <rect x="20" y="178" width="320" height="34" rx="6" fill="#2f6df6" fill-opacity="0.10" stroke="#2f6df6"/>
+              <text x="30" y="200" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">if 0&lt;=1 then 0*0 else 0</text>
+
+              <!-- CBV Pfeil 3 -->
+              <line x1="180" y1="212" x2="180" y2="228" stroke="#2f6df6" stroke-width="2" marker-end="url(#ar-cbv)"/>
+              <rect x="20" y="230" width="320" height="34" rx="6" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="30" y="252" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">0</text>
+              <text x="80" y="252" class="svg-soft" font-size="12">✔ Ergebnis</text>
+
+              <!-- CBN Pfeil 1 -->
+              <line x1="540" y1="108" x2="540" y2="124" stroke="#f5810b" stroke-width="2" marker-end="url(#ar-cbn)"/>
+              <text x="545" y="120" class="svg-soft" font-size="11">① Argument NICHT auswerten</text>
+
+              <!-- CBN Schritt 1 -->
+              <rect x="380" y="126" width="320" height="34" rx="6" fill="#f5810b" fill-opacity="0.10" stroke="#f5810b"/>
+              <text x="390" y="148" font-family="JetBrains Mono, monospace" font-size="11" class="svg-ink">if (1-1)&lt;=1 then (1-1)*(1-1) else (1-1)</text>
+
+              <!-- CBN Pfeil 2 -->
+              <line x1="540" y1="160" x2="540" y2="176" stroke="#f5810b" stroke-width="2" marker-end="url(#ar-cbn)"/>
+              <text x="545" y="172" class="svg-soft" font-size="11">② Bedingung auswerten</text>
+
+              <!-- CBN Schritt 2 -->
+              <rect x="380" y="178" width="320" height="34" rx="6" fill="#f5810b" fill-opacity="0.10" stroke="#f5810b"/>
+              <text x="390" y="200" font-family="JetBrains Mono, monospace" font-size="11" class="svg-ink">if True then (1-1)*(1-1) else (1-1)</text>
+
+              <!-- CBN Pfeil 3 -->
+              <line x1="540" y1="212" x2="540" y2="228" stroke="#f5810b" stroke-width="2" marker-end="url(#ar-cbn)"/>
+              <rect x="380" y="230" width="320" height="34" rx="6" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c"/>
+              <text x="390" y="252" font-family="JetBrains Mono, monospace" font-size="12" class="svg-ink">0 * 0  →  0</text>
+              <text x="490" y="252" class="svg-soft" font-size="12">✔ Ergebnis</text>
+
+              <!-- Divider -->
+              <line x1="360" y1="10" x2="360" y2="290" stroke="#8a94a6" stroke-width="1" stroke-dasharray="6,4"/>
+
+              <!-- Hinweis CBN doppelt rechnet -->
+              <text x="540" y="290" text-anchor="middle" fill="#e0483d" font-size="11" font-family="Segoe UI, sans-serif">(1-1) wird hier 3× berechnet!</text>
+            </g>
+          </svg>
+          <figcaption>CBV wertet das Argument <em>zuerst</em> aus (blau, links). CBN setzt es unausgewertet ein und rechnet dann bei Bedarf (orange, rechts) — kann dasselbe Argument mehrfach berechnen.</figcaption>
+        </figure>
+
+        <h3>Call-by-Value (CBV)</h3>
+        <p>In Sprachen wie Python, Java und C++ werden Argumente <strong>vor</strong> dem Funktionsaufruf komplett ausgewertet. Das ist vertraut und einfach vorherzusagen.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">CBV-Eigenschaft</div>
+          <p>Jedes Argument <strong>muss terminieren</strong>. Wenn das Argument in einer Endlosschleife hängt, hängt auch der Aufruf — selbst wenn die Funktion es gar nicht benutzt.</p>
+        </div>
+
+        <pre class="code hs">-- CBV-Beispiel: f ([1,2] ++ [3,4])
+-- mit f xs = head xs + length xs
+
+-- Schritt 1: Argument auswerten:  [1,2] ++ [3,4]  =&gt;  [1,2,3,4]
+-- Schritt 2: f [1,2,3,4]
+-- Schritt 3: head [1,2,3,4] + length [1,2,3,4]
+-- Schritt 4: 1 + 4  =&gt;  5</pre>
+
+        <h3>Call-by-Name (CBN)</h3>
+        <p>Das Argument wird <strong>unausgewertet</strong> wie ein Textbaustein in die Funktion eingesetzt. Erst wenn die Funktion den Wert wirklich braucht, wird gerechnet. Nachteil: Falls das Argument mehrfach benutzt wird, rechnet man es auch mehrfach.</p>
+
+        <pre class="code hs">-- CBN-Beispiel: (\y -&gt; if y&lt;=1 then y*y else y) (1-1)
+
+-- Schritt 1: (1-1) NICHT auswerten, direkt einsetzen:
+--   if (1-1)&lt;=1 then (1-1)*(1-1) else (1-1)
+-- Schritt 2: Bedingung auswerten:  (1-1)&lt;=1  =&gt;  0&lt;=1  =&gt;  True
+-- Schritt 3: then-Branch: (1-1)*(1-1)  =&gt;  0*0  =&gt;  0</pre>
+
+        <h3>Call-by-Need = Lazy Evaluation (Haskell)</h3>
+        <p>Haskell verwendet <strong>Lazy Evaluation</strong>: wie CBN, aber mit einem entscheidenden Unterschied — jedes Argument wird <strong>nur einmal berechnet</strong> und das Ergebnis gecacht (gespeichert). Das vermeidet die Mehrfach-Berechnung von CBN.</p>
+
+        <div class="factgrid">
+          <div class="fact"><b>CBV</b><span>Argument sofort ausgewertet · muss terminieren</span></div>
+          <div class="fact"><b>CBN</b><span>Argument verzögert · evtl. mehrfach berechnet</span></div>
+          <div class="fact"><b>Lazy (Haskell)</b><span>CBN + Caching · jedes Argument max. 1× gerechnet</span></div>
+        </div>
+
+        <!-- Vergleichstabelle -->
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Strategie</th><th>Wann ausgewertet?</th><th>Mehrfach-Berechnung?</th><th>Sprachen</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Call-by-Value</strong></td><td>Vor dem Aufruf</td><td>—</td><td>Python, Java, C++</td></tr>
+            <tr><td><strong>Call-by-Name</strong></td><td>Bei Bedarf (unkomprimiert)</td><td>Ja, evtl.</td><td>ALGOL 60</td></tr>
+            <tr><td><strong>Call-by-Need (Lazy)</strong></td><td>Bei Bedarf + gecacht</td><td>Nein</td><td>Haskell</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Unendliche Listen dank Lazy Evaluation</h3>
+        <p>Weil Haskell nur das berechnet, was tatsächlich gebraucht wird, kannst du mit <strong>unendlichen Listen</strong> arbeiten — solange du nur einen endlichen Ausschnitt anforderst.</p>
+
+        <pre class="code hs">-- Unendliche Liste der natürlichen Zahlen
+take 5 [1..]        -- =&gt; [1,2,3,4,5]
+
+-- Unendliche Liste von Einsen
+take 3 (repeat 1)   -- =&gt; [1,1,1]
+
+-- Unendliche Fibonacci-Folge
+fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
+take 5 fibs         -- =&gt; [0,1,1,2,3]</pre>
+
+        <!-- SVG 2: Zeitachse wann wird gerechnet -->
+        <figure class="diagram">
+          <div class="diagram-title">Zeitachse: Wann wird ein Argument berechnet?</div>
+          <svg viewBox="0 0 700 200" width="700" role="img" aria-label="Zeitachse zeigt, wann CBV, CBN und Lazy das Argument auswerten">
+            <defs>
+              <marker id="ar-time" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Zeitachse -->
+              <line x1="40" y1="170" x2="680" y2="170" stroke="#8a94a6" stroke-width="2" marker-end="url(#ar-time)"/>
+              <text x="685" y="175" class="svg-soft" font-size="12">Zeit</text>
+              <!-- Markierungen auf Achse -->
+              <line x1="120" y1="165" x2="120" y2="175" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="120" y="188" text-anchor="middle" class="svg-soft" font-size="11">Aufruf</text>
+              <line x1="360" y1="165" x2="360" y2="175" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="360" y="188" text-anchor="middle" class="svg-soft" font-size="11">Wert gebraucht</text>
+              <line x1="580" y1="165" x2="580" y2="175" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="580" y="188" text-anchor="middle" class="svg-soft" font-size="11">Fertig</text>
+
+              <!-- CBV Zeile -->
+              <text x="44" y="42" class="svg-ink" font-weight="700">CBV</text>
+              <rect x="80" y="28" width="100" height="26" rx="6" fill="#2f6df6" fill-opacity="0.85"/>
+              <text x="130" y="46" text-anchor="middle" fill="#fff" font-size="12">auswerten</text>
+              <line x1="180" y1="41" x2="358" y2="41" stroke="#2f6df6" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <rect x="360" y="28" width="100" height="26" rx="6" fill="#2f6df6" fill-opacity="0.30" stroke="#2f6df6"/>
+              <text x="410" y="46" text-anchor="middle" class="svg-ink" font-size="12">Wert da ✓</text>
+
+              <!-- CBN Zeile -->
+              <text x="44" y="90" class="svg-ink" font-weight="700">CBN</text>
+              <rect x="80" y="76" width="100" height="26" rx="6" fill="#8a94a6" fill-opacity="0.20" stroke="#8a94a6"/>
+              <text x="130" y="94" text-anchor="middle" class="svg-soft" font-size="12">wartet…</text>
+              <line x1="180" y1="89" x2="358" y2="89" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <rect x="360" y="76" width="100" height="26" rx="6" fill="#f5810b" fill-opacity="0.85"/>
+              <text x="410" y="94" text-anchor="middle" fill="#fff" font-size="12">auswerten</text>
+
+              <!-- Lazy Zeile -->
+              <text x="44" y="138" class="svg-ink" font-weight="700">Lazy</text>
+              <rect x="80" y="124" width="100" height="26" rx="6" fill="#8a94a6" fill-opacity="0.20" stroke="#8a94a6"/>
+              <text x="130" y="142" text-anchor="middle" class="svg-soft" font-size="12">wartet…</text>
+              <line x1="180" y1="137" x2="358" y2="137" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <rect x="360" y="124" width="100" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.85"/>
+              <text x="410" y="142" text-anchor="middle" fill="#fff" font-size="12">auswerten</text>
+              <rect x="476" y="124" width="100" height="26" rx="6" fill="#12b28c" fill-opacity="0.85"/>
+              <text x="526" y="142" text-anchor="middle" fill="#fff" font-size="12">gecacht ♻</text>
+            </g>
+          </svg>
+          <figcaption>CBV (blau) rechnet das Argument sofort beim Aufruf. CBN und Lazy warten bis der Wert gebraucht wird — Lazy speichert das Ergebnis zusätzlich.</figcaption>
+        </figure>
+
+        <h3>Terminationsbeweise</h3>
+        <p>Wie beweist man, dass eine rekursive Funktion für alle erlaubten Eingaben <strong>irgendwann aufhört</strong>? Dafür gibt es drei Schritte:</p>
+
+        <ol class="steps">
+          <li><strong>Abgeschlossenheit:</strong> Die Eingaben bleiben innerhalb der erlaubten Domain (z.B. <code>n-1 ≥ 0</code> wenn <code>n ≥ 1</code>).</li>
+          <li><strong>Definiertheit:</strong> Jede Eingabe hat einen Weg zum Base Case — keine „Lücken".</li>
+          <li><strong>Abstiegsfunktion φ:</strong> Eine Funktion auf den Argumenten, die bei jedem rekursiven Aufruf streng kleiner wird und ein Minimum hat (z.B. <code>φ(n) = n</code> mit Minimum 0).</li>
+        </ol>
+
+        <pre class="code hs">-- Beispiel: power x n (n &gt;= 0)
+power :: Integer -&gt; Integer -&gt; Integer
+power _ 0 = 1
+power x n = x * power x (n - 1)
+
+-- φ(n) = n
+-- power x n ruft power x (n-1) auf  →  φ(n) = n &gt; n-1 = φ(n-1)  ✓
+-- Minimum: φ(0) = 0  →  Base Case  ✓</pre>
+
+        <pre class="code hs">-- Beispiel: odds xs (Liste von Int)
+odds :: [Int] -&gt; [Int]
+odds []     = []
+odds (x:xs)
+  | x `mod` 2 == 0 = odds xs
+  | otherwise       = x : odds xs
+
+-- φ(xs) = length xs
+-- odds (x:xs) ruft odds xs auf  →  length xs &lt; length (x:xs)  ✓
+-- Minimum: φ([]) = 0  →  Base Case  ✓</pre>
+
+        <!-- SVG 3: Abstiegsfunktion als Treppe -->
+        <figure class="diagram">
+          <div class="diagram-title">Abstiegsfunktion φ(n) = n als absteigende Treppe</div>
+          <svg viewBox="0 0 640 260" width="640" role="img" aria-label="Absteigende Treppe zeigt wie phi(n) bei jedem Aufruf kleiner wird bis zum Base Case 0">
+            <defs>
+              <marker id="ar-step" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Treppentufen von oben nach unten -->
+              <!-- Stufe n=4 -->
+              <rect x="40" y="30" width="110" height="36" rx="7" fill="#8b5cf6" fill-opacity="0.80"/>
+              <text x="95" y="53" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">φ(4) = 4</text>
+              <text x="160" y="53" class="svg-soft">power x 4</text>
+
+              <!-- Pfeil -->
+              <line x1="95" y1="66" x2="95" y2="83" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#ar-step)"/>
+              <text x="104" y="79" class="svg-soft" font-size="11">n-1</text>
+
+              <!-- Stufe n=3 -->
+              <rect x="40" y="86" width="110" height="36" rx="7" fill="#8b5cf6" fill-opacity="0.65"/>
+              <text x="95" y="109" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">φ(3) = 3</text>
+              <text x="160" y="109" class="svg-soft">power x 3</text>
+
+              <!-- Pfeil -->
+              <line x1="95" y1="122" x2="95" y2="139" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#ar-step)"/>
+
+              <!-- Stufe n=2 -->
+              <rect x="40" y="142" width="110" height="36" rx="7" fill="#8b5cf6" fill-opacity="0.48"/>
+              <text x="95" y="165" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">φ(2) = 2</text>
+              <text x="160" y="165" class="svg-soft">power x 2</text>
+
+              <!-- Pfeil -->
+              <line x1="95" y1="178" x2="95" y2="195" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#ar-step)"/>
+
+              <!-- Stufe n=1 -->
+              <rect x="40" y="198" width="110" height="36" rx="7" fill="#8b5cf6" fill-opacity="0.32"/>
+              <text x="95" y="221" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">φ(1) = 1</text>
+              <text x="160" y="221" class="svg-soft">power x 1</text>
+
+              <!-- Pfeil -->
+              <line x1="95" y1="234" x2="95" y2="248" stroke="#12b28c" stroke-width="2.5" marker-end="url(#ar-step)"/>
+
+              <!-- Base Case n=0 -->
+              <rect x="40" y="250" width="110" height="2" rx="0" fill="#12b28c"/>
+              <text x="95" y="248" text-anchor="middle" class="svg-ink" font-size="12"></text>
+              <!-- Gezeichnet als Boden -->
+              <rect x="10" y="252" width="170" height="6" rx="3" fill="#12b28c" fill-opacity="0.7"/>
+              <text x="195" y="260" class="svg-soft" fill="#12b28c" font-weight="700">φ(0) = 0 → Base Case!</text>
+
+              <!-- Beschriftung rechts -->
+              <text x="410" y="60" class="svg-soft">φ nimmt bei jedem Aufruf</text>
+              <text x="410" y="80" class="svg-soft">streng ab: φ(n) &gt; φ(n-1)</text>
+              <text x="410" y="110" class="svg-soft">Hat ein Minimum (0):</text>
+              <text x="410" y="130" fill="#12b28c" font-weight="700">→ Terminiert!</text>
+              <text x="410" y="165" class="svg-soft">Ohne Minimum wäre</text>
+              <text x="410" y="185" class="svg-soft">Endlos-Rekursion möglich.</text>
+            </g>
+          </svg>
+          <figcaption>Die Abstiegsfunktion φ(n) = n sinkt bei jedem Aufruf um 1. Da 0 das Minimum ist und dort der Base Case liegt, terminiert <code>power</code> garantiert.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: Lazy erlaubt Unendlichkeit</div>
+          <p>Nur weil Haskell <strong>lazy</strong> ist, kann <code>take 5 [1..]</code> funktionieren. Eine unendliche Liste wird nie vollständig erzeugt — nur so viele Elemente wie <code>take</code> anfordert. Mit CBV würde <code>[1..]</code> ewig laufen.</p>
+        </div>
+      </section>
+
+      <!-- ===== SCHRITT ===== -->
+      <section id="schritt" class="reveal">
+        <h2>Schritt für Schritt: CBV-Auswertung von <code>f ([1,2]++[3,4])</code></h2>
+        <p>Rechnen wir das Klausur-Beispiel komplett durch — genau so, wie es in der Klausur erwartet wird (Call-by-Value):</p>
+
+        <pre class="code hs">f :: [Int] -&gt; Int
+f xs = head xs + length xs</pre>
+
+        <ol class="steps">
+          <li><strong>Ausgangspunkt:</strong> <code>f ([1,2] ++ [3,4])</code> — das Argument ist noch unausgewertet.</li>
+          <li><strong>Argument zuerst auswerten (CBV!):</strong> <code>[1,2] ++ [3,4]</code> ergibt <code>[1,2,3,4]</code>.</li>
+          <li><strong>Funktion aufrufen:</strong> <code>f [1,2,3,4]</code> — jetzt erst tritt die Funktion in Kraft.</li>
+          <li><strong>Body einsetzen:</strong> <code>head [1,2,3,4] + length [1,2,3,4]</code>.</li>
+          <li><strong>Beide Seiten auswerten:</strong> <code>head [1,2,3,4] = 1</code> und <code>length [1,2,3,4] = 4</code>.</li>
+          <li><strong>Ergebnis:</strong> <code>1 + 4 = 5</code>.</li>
+        </ol>
+
+        <div class="evalstep">f ([1,2] ++ [3,4])  <span class="arrow">→</span>  f [1,2,3,4]  <span class="arrow">→</span>  head [1,2,3,4] + length [1,2,3,4]</div>
+        <div class="evalstep">  <span class="arrow">→</span>  1 + 4  <span class="arrow">→</span>  <strong>5</strong></div>
+
+        <h3>Zum Vergleich: CBN-Auswertung des Lambda-Ausdrucks</h3>
+        <p>Jetzt schauen wir uns an, wie CBN mit demselben Prinzip umgeht — das Argument wird <em>eingesetzt ohne ausgewertet zu werden</em>:</p>
+
+        <pre class="code hs">-- Ziel: (\y -&gt; if y &lt;= 1 then y*y else y) (1-1)
+-- mit Call-by-Name</pre>
+
+        <ol class="steps">
+          <li><strong>Argument NICHT auswerten:</strong> <code>(1-1)</code> bleibt wie es ist.</li>
+          <li><strong>Direkt einsetzen:</strong> <code>y</code> wird überall durch <code>(1-1)</code> ersetzt.</li>
+          <li><strong>Bedingung auswerten:</strong> <code>(1-1) &lt;= 1</code> → <code>0 &lt;= 1</code> → <code>True</code>.</li>
+          <li><strong>Then-Branch wählen:</strong> <code>(1-1) * (1-1)</code>.</li>
+          <li><strong>Ausmultiplizieren:</strong> <code>0 * 0 = 0</code>.</li>
+        </ol>
+
+        <div class="evalstep">(\y -&gt; if y&lt;=1 then y*y else y) (1-1)  <span class="arrow">→</span>  if (1-1)&lt;=1 then (1-1)*(1-1) else (1-1)</div>
+        <div class="evalstep">  <span class="arrow">→</span>  if True then (1-1)*(1-1) else (1-1)  <span class="arrow">→</span>  (1-1)*(1-1)  <span class="arrow">→</span>  0*0  <span class="arrow">→</span>  <strong>0</strong></div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Merke: In der Klausur</div>
+          <p>Bei <strong>CBV</strong>: Als <em>ersten Schritt</em> immer das Argument auswerten, dann aufrufen. Bei <strong>CBN</strong>: Als <em>ersten Schritt</em> das Argument unausgewertet einsetzen (textuell ersetzen). Punkte gibt es oft genau für diesen ersten Schritt!</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen (Klausur!)</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei CBV das Argument nicht zuerst auswerten:
+            <pre class="code hs">-- Falsche Reihenfolge:
+f ([1,2] ++ [3,4])
+= head ([1,2] ++ [3,4]) + length ([1,2] ++ [3,4])
+  -- Argument wurde übersprungen!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Argument ZUERST auswerten, dann erst die Funktion einsetzen:
+            <pre class="code hs">f ([1,2] ++ [3,4])
+-- Schritt 1: [1,2] ++ [3,4]  =&gt;  [1,2,3,4]
+= f [1,2,3,4]
+= head [1,2,3,4] + length [1,2,3,4]
+= 1 + 4  =&gt;  5</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei CBN das Argument trotzdem zuerst auswerten:
+            <pre class="code hs">-- Falsch: so wie CBV
+(\y -&gt; if y&lt;=1 then y*y else y) (1-1)
+-- Schritt 1: (1-1)  =&gt;  0   &lt;-- NEIN! Das ist CBV!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bei CBN das Argument unausgewertet einsetzen:
+            <pre class="code hs">(\y -&gt; if y&lt;=1 then y*y else y) (1-1)
+-- Schritt 1: y durch (1-1) ersetzen:
+if (1-1)&lt;=1 then (1-1)*(1-1) else (1-1)</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span><code>foldl</code> statt <code>foldl'</code> bei großen Listen — Speicherleck durch aufgestaute Auswertung:
+            <pre class="code hs">-- Kann Speicher-Überlauf verursachen:
+foldl (+) 0 [1..1000000]</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><code>foldl'</code> aus <code>Data.List</code> erzwingt strenge Auswertung und braucht konstant Speicher:
+            <pre class="code hs">import Data.List (foldl')
+foldl' (+) 0 [1..1000000]  -- O(1) Speicher</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Kein Minimum für die Abstiegsfunktion φ — dann ist kein Terminationsbeweis möglich:
+            <pre class="code hs">-- φ(n) = n ohne Bedingung n &gt;= 0:
+-- n kann negativ werden → kein Minimum → endlose Rekursion!
+power x n = x * power x (n - 1)
+-- ohne Base Case für n=0 oder n&lt;0</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Abstiegsfunktion φ muss streng fallen UND ein Minimum besitzen:
+            <pre class="code hs">power _ 0 = 1              -- Base Case: φ(0)=0 ist Minimum
+power x n = x * power x (n - 1)
+-- φ(n) = n &gt; n-1 = φ(n-1)  (streng absteigend)
+-- φ(0) = 0  (Minimum erreicht  =&gt;  terminiert)</pre></div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Strategie</th><th>Argument</th><th>Mehrfach-Berechnung</th><th>Unendliche Listen</th></tr></thead>
+            <tbody>
+              <tr><td><strong>CBV</strong></td><td>Sofort auswerten</td><td>Nein</td><td>❌ Hängt sich auf</td></tr>
+              <tr><td><strong>CBN</strong></td><td>Einsetzen, dann bei Bedarf</td><td>Ja, evtl.</td><td>✅ Möglich</td></tr>
+              <tr><td><strong>Lazy (Haskell)</strong></td><td>Einsetzen, dann 1× bei Bedarf</td><td>Nein (gecacht)</td><td>✅ Möglich</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Termination — 3 Schritte</h3>
+          <ol>
+            <li><strong>Abgeschlossenheit:</strong> Rekursive Aufrufe bleiben in der Domain (z.B. <code>n-1 ≥ 0</code> wenn <code>n ≥ 1</code>).</li>
+            <li><strong>Definiertheit:</strong> Jede Eingabe hat einen Weg zum Base Case (kein „toter Winkel").</li>
+            <li><strong>Abstiegsfunktion φ:</strong> φ sinkt streng bei jedem Aufruf und hat ein Minimum (→ Base Case).</li>
+          </ol>
+
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Funktion</th><th>φ</th><th>Minimum</th><th>Terminiert?</th></tr></thead>
+            <tbody>
+              <tr><td><code>power x n</code></td><td><code>φ(n) = n</code></td><td>0 (Base Case)</td><td>✅ Ja (n ≥ 0)</td></tr>
+              <tr><td><code>odds xs</code></td><td><code>φ(xs) = length xs</code></td><td>0 (leere Liste)</td><td>✅ Ja</td></tr>
+            </tbody>
+          </table></div>
+
+          <p style="margin-bottom:0"><strong>Klausur-Tipps:</strong> ① CBV → Argument in Schritt 1 auswerten · ② CBN → Argument in Schritt 1 einsetzen (nicht auswerten) · ③ Lazy = CBN + Caching · ④ Speicherleck-Falle: <code>foldl</code> → <code>foldl'</code> · ⑤ Terminationsbeweis: φ, Minimum, 3 Schritte.</p>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p>Drei kurze Fragen — tippe deine Antwort ein oder klick die richtige Option. Grün = richtig.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="5">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Call-by-Value: Was ergibt <code>f ([1,2] ++ [3,4])</code> mit <code>f xs = head xs + length xs</code>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Zuerst das Argument: <code>[1,2]++[3,4] = [1,2,3,4]</code>, dann <code>head=1 + length=4 = 5</code>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Was wertet Haskell mit Lazy Evaluation (Call-by-Name) NICHT unbedingt aus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Argumente, die gar nicht benutzt werden</button>
+              <button class="quiz-choice" type="button">Den Funktionsnamen</button>
+              <button class="quiz-choice" type="button">Die Typsignatur</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Lazy heißt: ein Ausdruck wird nur berechnet, wenn sein Wert wirklich gebraucht wird — ungenutzte Argumente bleiben unausgewertet.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie viele Einsen liefert <code>take 3 (repeat 1)</code>? (<code>repeat 1</code> ist unendlich — dank Lazy Evaluation kein Problem.)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><code>take 3</code> zieht nur 3 Elemente aus der unendlichen Liste: <code>[1,1,1]</code> → 3 Einsen.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Prev/Next -->
+      <nav class="prev-next">
+        <a class="prev" href="04-folds.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Higher-Order Functions &amp; Folds</div>
+        </a>
+        <a class="next" href="06-monaden.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Monaden</div>
+        </a>
+      </nav>
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>P 4 · Programmierung &amp; Modellierung (Haskell · LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

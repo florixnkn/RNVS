@@ -395,6 +395,49 @@ html[data-theme="dark"] pre.code { background:#0a1120; }
   font-size:.92rem; color:var(--c-text-soft);
 }
 
+/* ---------- Portal / Vorlesungs-Übersicht ---------- */
+/* Nav-Button "Zurück" bleibt auch mobil sichtbar (siehe Media-Query unten). */
+.nav-cta {
+  background: var(--c-surface-2); color: var(--c-text) !important; font-weight: 700 !important;
+  border: 1px solid var(--c-border);
+}
+.nav-cta:hover { background: var(--c-primary-soft); }
+
+/* Status-Badges auf Kurskacheln */
+.badge-live { background: var(--c-tip-bg); color: var(--c-tip); }
+.badge-soon { background: var(--c-surface-2); color: var(--c-text-mute); }
+.badge-ects { background: var(--c-surface-2); color: var(--c-text-soft); }
+
+/* Nicht-verlinkte "bald verfügbar"-Kachel */
+.topic-card.soon { opacity: .58; box-shadow: none; cursor: default; }
+.topic-card.soon:hover { transform: none; box-shadow: none; }
+
+/* Kleiner Semester-/Bereichs-Kopf im Portal */
+.area-head { display:flex; align-items:center; gap:12px; margin: 40px 0 16px; }
+.area-head .area-dot { width: 14px; height: 14px; border-radius: 4px; flex:none; background: var(--cat, var(--c-primary)); }
+.area-head h2 { margin: 0; font-size: 1.35rem; }
+.area-head .area-sub { color: var(--c-text-mute); font-size: .9rem; margin-left: auto; }
+
+/* Kurskachel-Fußzeile (Prof/Umfang) */
+.tc-foot { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--c-border);
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap; color: var(--c-text-mute); font-size:.82rem; }
+
+/* ---------- Haskell / Code-lastige Inhalte ---------- */
+/* Inline-Code im Fließtext lesbarer machen (nur im Artikel-/Content-Bereich). */
+.content :not(pre) > code, .analogy code, .callout :not(pre) > code, .fr :not(pre) > code {
+  background: var(--c-surface-2); padding: 1px 6px; border-radius: 5px; font-size: .9em;
+}
+/* Haskell-Codeblock: violetter Akzent + optionale Titelzeile */
+pre.code.hs { border-left: 3px solid var(--c-cat3); }
+.code-title { font-family: var(--mono); font-size: .78rem; font-weight:700; letter-spacing:.02em;
+  color: var(--c-text-mute); text-transform: uppercase; margin: 18px 0 -8px; }
+/* Auswertungs-/Reduktionsschritt (zeigt "→ Ergebnis") */
+.evalstep { font-family: var(--mono); font-size: .9rem; background: var(--c-surface); border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-cat4); border-radius: var(--radius-s); padding: 10px 14px; margin: 8px 0; overflow-x:auto; }
+.evalstep .arrow { color: var(--c-cat4); font-weight: 800; }
+/* Falsch/Richtig-Paare mit Codeblöcken sollen die dunklen Blöcke sauber umschließen */
+.fr pre.code { margin: 6px 0 0; font-size: .8rem; }
+
 /* Scroll-progress bar */
 #progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 60;
   background: linear-gradient(90deg, var(--c-cat1), var(--c-cat2), var(--c-cat3), var(--c-cat4)); transition: width .1s; }
