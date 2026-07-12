@@ -48,7 +48,13 @@ p4/topics/NN-*.html   → je eine Seite pro P4-Thema
 
 BUILD_SPEC.md         → Bau-Spezifikation der RNVS-Seiten (interne Vorlage)
 BUILD_SPEC_P4.md      → Bau-Spezifikation der P4/Haskell-Seiten (interne Vorlage)
+ANLEITUNG-NEUES-MODUL.md → Schritt-für-Schritt-Playbook, um weitere Module (P7, P10, …) zu ergänzen
 ```
+
+## ➕ Weitere Module ergänzen
+Wie man ein zusätzliches Fach im gleichen Stil hinzufügt, steht ausführlich in
+**[ANLEITUNG-NEUES-MODUL.md](ANLEITUNG-NEUES-MODUL.md)** (Pfad-Regeln, Portal-Kachel live schalten, Kurs-Hub,
+Spec ableiten, Referenzseite, Delegation an Subagenten, Verifikation, Push).
 
 Jede Themen-Seite folgt derselben Struktur: **Worum geht's?** (mit Alltags-Vergleich) → **Theorie**
 (mit inline-SVG-Diagrammen) → **Schritt für Schritt** → **Typische Fallen** (Falsch/Richtig) →
