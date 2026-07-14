@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mengen &amp; Kardinalitäten · LDS</title>
+<meta name="description" content="Mengenoperationen (∪, ∩, \, △), Kartesisches Produkt und Potenzmenge bildlich erklärt – mit Venn-Diagrammen, durchgerechneten Beispielen und der kompletten Original-Klausuraufgabe 1 (SoSe 2025) zu Mengen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Operationen</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">LDS-Kursübersicht</a> › Thema 01</div>
+    <span class="th-icon">🧺</span>
+    <h1>Mengen &amp; Kardinalitäten</h1>
+    <div class="th-meta">
+      <span class="stars">★☆☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 1</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Operationen &amp; Kardinalität</a></li>
+        <li><a href="#rechnen">Beispiele &amp; Klausuraufgabe</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Eine <strong>Menge</strong> ist erstmal nichts Kompliziertes: eine Kiste mit Dingen drin,
+          bei der es <strong>keine Duplikate</strong> gibt und <strong>keine Reihenfolge</strong> zählt.
+          {1,2,3} und {3,1,2} sind dieselbe Menge. Die eigentliche Arbeit in der Klausur besteht darin, mehrere
+          solche Kisten sauber zu <strong>kombinieren</strong> — und dabei nicht durcheinanderzukommen, welche
+          Operation was genau tut.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du und deine WG-Mitbewohnerin schreiben je eine <strong>Gästeliste</strong> für eine gemeinsame Party.
+            Deine Liste ist A = {Lena, Tom, Sara}, ihre ist B = {Tom, Sara, Nils}.<br>
+            <strong>Vereinigung (A ∪ B):</strong> alle, die auf mindestens einer Liste stehen — Doppelnennungen
+            zählen nur einmal.<br>
+            <strong>Schnitt (A ∩ B):</strong> alle, die auf <em>beiden</em> Listen stehen (Tom, Sara).<br>
+            <strong>Differenz (A \ B):</strong> alle, die nur auf <em>deiner</em> Liste stehen (Lena).<br>
+            <strong>Symmetrische Differenz (A △ B):</strong> alle, die auf <em>genau einer</em> der beiden Listen
+            stehen — Tom und Sara (auf beiden) fallen raus, Lena und Nils bleiben.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Mengenoperationen &amp; Kardinalität im Bild</h2>
+        <p>Nehmen wir ein konkretes Beispiel und schauen uns alle vier Grundoperationen als Venn-Diagramm an:
+          <strong>A = {1,2,3}</strong>, <strong>B = {2,3,4}</strong>.</p>
+
+        <!-- SVG 1: Venn-Diagramme für ∪ ∩ \ △ -->
+        <figure class="diagram">
+          <div class="diagram-title">Vier Operationen, vier Regionen — A = {1,2,3}, B = {2,3,4}</div>
+          <svg viewBox="0 0 700 230" width="700" role="img" aria-label="Vier Venn-Diagramme: Vereinigung, Schnitt, Differenz und symmetrische Differenz von A und B">
+            <defs>
+              <clipPath id="m1clipA1"><circle cx="234" cy="120" r="42"/></clipPath>
+              <clipPath id="m1clipA3"><circle cx="578" cy="120" r="42"/></clipPath>
+              <mask id="m1maskDiff">
+                <circle cx="406" cy="120" r="42" fill="#fff"/>
+                <circle cx="454" cy="120" r="42" fill="#000"/>
+              </mask>
+              <mask id="m1maskSym">
+                <circle cx="578" cy="120" r="42" fill="#fff"/>
+                <circle cx="626" cy="120" r="42" fill="#fff"/>
+                <circle cx="626" cy="120" r="42" fill="#000" clip-path="url(#m1clipA3)"/>
+              </mask>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Panel 1: Vereinigung -->
+              <text x="86" y="30" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="14">A ∪ B</text>
+              <circle cx="62" cy="120" r="42" fill="#2f6df6" fill-opacity="0.45"/>
+              <circle cx="110" cy="120" r="42" fill="#2f6df6" fill-opacity="0.45"/>
+              <circle cx="62" cy="120" r="42" fill="none" stroke="#2f6df6" stroke-width="1.5"/>
+              <circle cx="110" cy="120" r="42" fill="none" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="40" y="80" class="svg-soft">A</text>
+              <text x="128" y="80" class="svg-soft">B</text>
+              <text x="86" y="203" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">{1,2,3,4}</text>
+
+              <!-- Panel 2: Schnitt -->
+              <text x="258" y="30" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="14">A ∩ B</text>
+              <circle cx="282" cy="120" r="42" fill="#8b5cf6" fill-opacity="0.55" clip-path="url(#m1clipA1)"/>
+              <circle cx="234" cy="120" r="42" fill="none" stroke="#8b5cf6" stroke-width="1.5"/>
+              <circle cx="282" cy="120" r="42" fill="none" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="212" y="80" class="svg-soft">A</text>
+              <text x="300" y="80" class="svg-soft">B</text>
+              <text x="258" y="203" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">{2,3}</text>
+
+              <!-- Panel 3: Differenz -->
+              <text x="430" y="30" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="14">A \ B</text>
+              <circle cx="406" cy="120" r="42" fill="#f5810b" fill-opacity="0.55" mask="url(#m1maskDiff)"/>
+              <circle cx="406" cy="120" r="42" fill="none" stroke="#f5810b" stroke-width="1.5"/>
+              <circle cx="454" cy="120" r="42" fill="none" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="384" y="80" class="svg-soft">A</text>
+              <text x="472" y="80" class="svg-soft">B</text>
+              <text x="430" y="203" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">{1}</text>
+
+              <!-- Panel 4: Symmetrische Differenz -->
+              <text x="602" y="30" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="14">A △ B</text>
+              <circle cx="578" cy="120" r="42" fill="#e0483d" fill-opacity="0.55" mask="url(#m1maskSym)"/>
+              <circle cx="626" cy="120" r="42" fill="#e0483d" fill-opacity="0.55" mask="url(#m1maskSym)"/>
+              <circle cx="578" cy="120" r="42" fill="none" stroke="#e0483d" stroke-width="1.5"/>
+              <circle cx="626" cy="120" r="42" fill="none" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="556" y="80" class="svg-soft">A</text>
+              <text x="644" y="80" class="svg-soft">B</text>
+              <text x="602" y="203" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">{1,4}</text>
+            </g>
+          </svg>
+          <figcaption>Die eingefärbte Fläche zeigt genau die Elemente, die zur jeweiligen Operation gehören. Bei △ bleibt nur übrig, was NICHT in beiden Kreisen gleichzeitig liegt.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Operation</th><th>Symbol</th><th>Definition</th><th>Beispiel (A={1,2,3}, B={2,3,4})</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Vereinigung</strong></td><td>A ∪ B</td><td>Elemente aus A oder B</td><td>{1,2,3,4}</td></tr>
+            <tr><td><strong>Schnitt</strong></td><td>A ∩ B</td><td>Elemente in A und B</td><td>{2,3}</td></tr>
+            <tr><td><strong>Differenz</strong></td><td>A \ B</td><td>Elemente in A, nicht in B</td><td>{1}</td></tr>
+            <tr><td><strong>Symm. Differenz</strong></td><td>A △ B</td><td>In genau einer der beiden Mengen</td><td>{1,4}</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Kartesisches Produkt: alle Paare bilden</h3>
+        <p>A × B enthält <strong>alle geordneten Paare</strong> (a,b) mit a ∈ A und b ∈ B — wie ein Gitter aus
+          Koordinaten:</p>
+
+        <!-- SVG 2: Kartesisches Produkt als Gitter -->
+        <figure class="diagram">
+          <div class="diagram-title">{1,2,3} × {a,b} — jede Kombination ein Punkt im Gitter</div>
+          <svg viewBox="0 0 380 250" width="380" role="img" aria-label="Gitter-Diagramm des kartesischen Produkts von {1,2,3} und {a,b}">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="90" y="30" text-anchor="middle" fill="#12b28c" font-weight="800">a</text>
+              <text x="180" y="30" text-anchor="middle" fill="#12b28c" font-weight="800">b</text>
+              <text x="30" y="74" class="svg-ink" font-weight="800">1</text>
+              <text x="30" y="134" class="svg-ink" font-weight="800">2</text>
+              <text x="30" y="194" class="svg-ink" font-weight="800">3</text>
+              <line x1="60" y1="45" x2="60" y2="215" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="60" y1="45" x2="220" y2="45" stroke="#8a94a6" stroke-width="1"/>
+
+              <g fill="#2f6df6">
+                <circle cx="90" cy="70" r="7"/><circle cx="180" cy="70" r="7"/>
+                <circle cx="90" cy="130" r="7"/><circle cx="180" cy="130" r="7"/>
+                <circle cx="90" cy="190" r="7"/><circle cx="180" cy="190" r="7"/>
+              </g>
+              <g class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11">
+                <text x="90" y="95" text-anchor="middle">(1,a)</text><text x="180" y="95" text-anchor="middle">(1,b)</text>
+                <text x="90" y="155" text-anchor="middle">(2,a)</text><text x="180" y="155" text-anchor="middle">(2,b)</text>
+                <text x="90" y="215" text-anchor="middle">(3,a)</text><text x="180" y="215" text-anchor="middle">(3,b)</text>
+              </g>
+              <text x="300" y="130" class="svg-ink" font-size="13">|A × B|</text>
+              <text x="300" y="150" fill="#2f6df6" font-weight="800" font-size="16">= 3 · 2 = 6</text>
+            </g>
+          </svg>
+          <figcaption>3 Zeilen × 2 Spalten = 6 Punkte. Reihenfolge zählt: (1,a) ≠ (a,1) — deshalb ist × nicht kommutativ.</figcaption>
+        </figure>
+
+        <h3>Potenzmenge: alle Teilmengen auf einmal</h3>
+        <p>P(A) ist die Menge <strong>aller</strong> Teilmengen von A — inklusive ∅ und A selbst. Für A = {a,b,c}
+          ergibt das ein kleines Netz aus 8 Kisten, sortiert nach Größe:</p>
+
+        <!-- SVG 3: Potenzmengen-Pyramide -->
+        <figure class="diagram">
+          <div class="diagram-title">P({a,b,c}) — 2³ = 8 Teilmengen</div>
+          <svg viewBox="0 0 420 260" width="420" role="img" aria-label="Potenzmenge von {a,b,c} als Pyramide aus 8 Knoten, sortiert nach Größe der Teilmenge">
+            <g font-family="JetBrains Mono, monospace" font-size="11.5">
+              <!-- Kanten -->
+              <g stroke="#8a94a6" stroke-width="1.3">
+                <line x1="210" y1="40" x2="90" y2="105"/>
+                <line x1="210" y1="40" x2="210" y2="105"/>
+                <line x1="210" y1="40" x2="330" y2="105"/>
+                <line x1="90" y1="105" x2="90" y2="170"/>
+                <line x1="90" y1="105" x2="210" y2="170"/>
+                <line x1="210" y1="105" x2="90" y2="170"/>
+                <line x1="210" y1="105" x2="330" y2="170"/>
+                <line x1="330" y1="105" x2="210" y2="170"/>
+                <line x1="330" y1="105" x2="330" y2="170"/>
+                <line x1="90" y1="170" x2="210" y2="230"/>
+                <line x1="210" y1="170" x2="210" y2="230"/>
+                <line x1="330" y1="170" x2="210" y2="230"/>
+              </g>
+              <!-- Knoten -->
+              <g>
+                <rect x="188" y="24" width="44" height="26" rx="6" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c"/>
+                <text x="210" y="41" text-anchor="middle" class="svg-ink">∅</text>
+
+                <rect x="66" y="89" width="48" height="26" rx="6" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6"/>
+                <text x="90" y="106" text-anchor="middle" class="svg-ink">{a}</text>
+                <rect x="186" y="89" width="48" height="26" rx="6" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6"/>
+                <text x="210" y="106" text-anchor="middle" class="svg-ink">{b}</text>
+                <rect x="306" y="89" width="48" height="26" rx="6" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6"/>
+                <text x="330" y="106" text-anchor="middle" class="svg-ink">{c}</text>
+
+                <rect x="60" y="154" width="60" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6"/>
+                <text x="90" y="171" text-anchor="middle" class="svg-ink">{a,b}</text>
+                <rect x="180" y="154" width="60" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6"/>
+                <text x="210" y="171" text-anchor="middle" class="svg-ink">{a,c}</text>
+                <rect x="300" y="154" width="60" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6"/>
+                <text x="330" y="171" text-anchor="middle" class="svg-ink">{b,c}</text>
+
+                <rect x="178" y="217" width="64" height="26" rx="6" fill="#f5810b" fill-opacity="0.2" stroke="#f5810b"/>
+                <text x="210" y="234" text-anchor="middle" class="svg-ink">{a,b,c}</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>4 Ebenen (0, 1, 2, 3 Elemente) mit 1+3+3+1 = 8 Knoten. Das ist zufällig bereits ein Hasse-Diagramm — mehr dazu in Thema 3 und 4!</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Potenzmenge &amp; Kartesisches Produkt</div>
+          <span class="formula">|P(A)| = 2^|A|         |A × B| = |A| · |B|</span>
+          <p>P(A) enthält <strong>Mengen als Elemente</strong>, nicht die ursprünglichen Elemente selbst!
+            A × B ist <strong>nicht kommutativ</strong>: (1,a) ≠ (a,1).</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>|∅| = 0</b><span>leere Menge, 0 Elemente</span></div>
+          <div class="fact"><b>|{∅}| = 1</b><span>Menge mit einem Element: ∅</span></div>
+          <div class="fact"><b>|P(∅)| = 1</b><span>nämlich {∅}</span></div>
+          <div class="fact"><b>2^n</b><span>Größe von P(A) bei |A|=n</span></div>
+        </div>
+
+        <h3>Kardinalitätsformeln im Überblick</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Situation</th><th>Kardinalität</th></tr></thead>
+          <tbody>
+            <tr><td>A ∪ B (disjunkt, A∩B=∅)</td><td>|A| + |B|</td></tr>
+            <tr><td>A ∪ B (allgemein)</td><td>|A| + |B| − |A∩B|</td></tr>
+            <tr><td>A × B</td><td>|A| · |B|</td></tr>
+            <tr><td>P(A)</td><td>2^|A|</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele &amp; Original-Klausuraufgabe</h2>
+
+        <h3>Eigenes Beispiel: Symmetrische Differenz</h3>
+        <p>Berechne {1,2,3} △ {2,3,4} über den Umweg Vereinigung/Schnitt:</p>
+        <ol class="steps">
+          <li><strong>Vereinigung bilden:</strong> {1,2,3} ∪ {2,3,4} = {1,2,3,4}</li>
+          <li><strong>Schnitt bilden:</strong> {1,2,3} ∩ {2,3,4} = {2,3}</li>
+          <li><strong>Vereinigung minus Schnitt:</strong> {1,2,3,4} \ {2,3} = <strong>{1,4}</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Abkürzung</div>
+          <p>Du musst nicht immer über ∪ und ∩ gehen: Schau direkt, welche Elemente <strong>nur in einer</strong>
+            der beiden Mengen vorkommen. 1 ist nur in A, 4 ist nur in B, 2 und 3 sind in beiden (fallen raus)
+            → {1,4}.</p>
+        </div>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2025, Aufgabe 1 — Mengen, 12 Punkte)</h3>
+        <p>Diese Aufgabe kam am 5.8.2025 exakt so dran. Wir rechnen alle Teile durch:</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Teil (a): Konkrete Mengen berechnen</div>
+          <p>
+            (a)i &nbsp; ({a,b,c} ∪ {c,d,e}) ∩ ({a,b,c} ∪ {c,e,e,f}) = ?<br>
+            (a)ii &nbsp; {1,2} × { {3,4,5,6} ∩ {3,4,5} ∩ {4,5,6} } = ?<br>
+            (a)iii &nbsp; P({1,2,3} \ ({4,5,6} ∪ {7,8,9})) = ? Wie viele Elemente?
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>(a)i — Vereinigungen zuerst, dann Schnitt:</strong><br>
+            {a,b,c} ∪ {c,d,e} = {a,b,c,d,e} &nbsp;·&nbsp;
+            {a,b,c} ∪ {c,e,e,f} = {a,b,c,e,f} <em>(das doppelte e zählt nur einmal!)</em><br>
+            Schnitt: {a,b,c,d,e} ∩ {a,b,c,e,f} = <strong>{a,b,c,e}</strong>
+          </li>
+          <li><strong>(a)ii — Achtung, Falle: eine Menge als EIN Element!</strong><br>
+            Erst der innere Schnitt: {3,4,5,6} ∩ {3,4,5} ∩ {4,5,6} = <strong>{4,5}</strong>
+            (dieses Ergebnis ist <em>eine einzige Menge</em>, kein Paar Elemente!)<br>
+            Also: {1,2} × {{4,5}} = <strong>{(1,{4,5}), (2,{4,5})}</strong> — nur 2 Paare, nicht 2×2=4!
+          </li>
+          <li><strong>(a)iii — Differenz zuerst, dann Potenzmenge:</strong><br>
+            {4,5,6} ∪ {7,8,9} = {4,5,6,7,8,9} — davon ist nichts in {1,2,3} enthalten<br>
+            {1,2,3} \ {4,5,6,7,8,9} = {1,2,3} (unverändert!)<br>
+            P({1,2,3}) hat <strong>2³ = 8</strong> Elemente.
+          </li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">Teil (b): Kardinalitäten berechnen (nur die Größe zählt)</div>
+          <p>
+            (b)i &nbsp; |{1,2,3,4} × {5,6,7,8}| = ?<br>
+            (b)ii &nbsp; |P({a,b,c,d,e,f,g,h})| = ?<br>
+            (b)iii &nbsp; |P(A) \ P(∅)| in Termen von |A| = ?<br>
+            (b)iv &nbsp; |{(x,y) ∈ ℕ×ℕ; x&lt;y ∧ y&lt;4}| = ?
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>(b)i:</strong> |A|·|B| = 4 · 4 = <strong>16</strong></li>
+          <li><strong>(b)ii:</strong> 8 Elemente in der Grundmenge → 2⁸ = <strong>256</strong></li>
+          <li><strong>(b)iii:</strong> P(∅) = {∅} hat genau 1 Element (nämlich ∅, das immer auch in P(A)
+            steckt). Also bleiben alle Teilmengen außer ∅ übrig: <strong>2^|A| − 1</strong></li>
+          <li><strong>(b)iv — Achtung, Falle: ℕ enthält in dieser Vorlesung die 0!</strong><br>
+            Gesucht: Paare (x,y) mit x&lt;y und y&lt;4, also y ∈ {1,2,3} (y=0 geht nicht, da x&lt;y ein
+            kleineres x bräuchte). Für y=1: x=0 (1 Paar). Für y=2: x∈{0,1} (2 Paare). Für y=3: x∈{0,1,2}
+            (3 Paare). Summe: 1+2+3 = <strong>6</strong></li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Teil (c): Beweis (A\B)\C = (A\C)\(B\C)</div>
+          <p>Mengengleichheit zeigt man elementweise, in beide Richtungen gleichzeitig über eine Äquivalenzkette:</p>
+          <span class="formula">x ∈ (A\B)\C
+⇔ x∈A ∧ x∉B ∧ x∉C            (Definition \, zweimal angewendet)
+⇔ x∈A ∧ x∉C ∧ x∉B            (Reihenfolge der UND-Bedingungen ist egal)
+⇔ x ∈ (A\C)\(B\C)             (denn x∉C schon erfüllt, x∈(A\C) und x∉(B\C) sind dann äquivalent zu x∉B)</span>
+          <p>Da beide Seiten für dieselben x gelten, sind die Mengen gleich. <strong>Kein Gegenbeispiel nötig,
+            keine Skizze — nur die Definitionen sauber einsetzen.</strong></p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>{1,2,2,3} hat 4 Elemente.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>{1,2,2,3} = {1,2,3} — Mengen haben
+            <strong>keine Duplikate</strong>. Kardinalität = 3.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P({1,2}) = {1,2}</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P({1,2}) = {∅, {1}, {2}, {1,2}} —
+            <strong>P(A) enthält Mengen, nicht die einzelnen Elemente!</strong></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>|P(∅)| = 0</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>|P(∅)| = <strong>1</strong>, nämlich {∅}
+            — die leere Menge ist ein Element ihrer eigenen Potenzmenge!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>|{∅}| = 0, weil "da ja nichts drin ist".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>|{∅}| = <strong>1</strong> (eine Menge mit
+            einem Element, nämlich ∅). Aber |∅| = <strong>0</strong>. Zwei verschiedene Dinge!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>{1,2} × {a,b} = {a,b} × {1,2}</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Kartesisches Produkt ist <strong>nicht
+            kommutativ</strong>: (1,a) ≠ (a,1), also sind die beiden Produktmengen verschieden.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>{1,2} × ({3,4,5,6} ∩ {3,4,5} ∩ {4,5,6})
+            = 2 × 2 = 4 Paare, weil der Schnitt 2 Elemente hat.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Berechne <strong>erst</strong> den Schnitt:
+            {4,5}. Das ist <strong>eine</strong> Menge — sie zählt als <strong>ein</strong> Element im Produkt.
+            Ergebnis: nur 2 Paare, {(1,{4,5}), (2,{4,5})}.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Operationen — schnell nachschlagen (A={1,2,3}, B={2,3,4})</h4>
+          <pre class="code">∪  Vereinigung     → {1,2,3,4}   (alles zusammen)
+∩  Schnitt         → {2,3}       (nur gemeinsame)
+\  Differenz       → {1}         (nur A, nicht B)
+△  Symm. Differenz → {1,4}       (nur eins von beiden)
+×  Kartesisch      → {(1,2),(1,3),(1,4),(2,2),...}   |A×B| = |A|·|B|
+P  Potenzmenge     → 2^|A| Elemente (Mengen als Elemente!)</pre>
+
+          <h4>Kardinalitäts-Formeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>A ∪ B (disjunkt)</td><td>|A| + |B|</td></tr>
+              <tr><td>A ∪ B (allgemein)</td><td>|A| + |B| − |A∩B|</td></tr>
+              <tr><td>A × B</td><td>|A| · |B|</td></tr>
+              <tr><td>P(A)</td><td>2^|A|</td></tr>
+              <tr><td>P(A) \ P(∅)</td><td>2^|A| − 1</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Mengen haben keine Duplikate</strong> — {1,1,2} = {1,2}</li>
+            <li><strong>P(A) enthält Mengen</strong>, nicht Elemente — immer eine Ebene höher denken</li>
+            <li><strong>|P(∅)| = 1</strong>, aber <strong>|∅| = 0</strong> — nicht verwechseln</li>
+            <li><strong>× ist nicht kommutativ</strong> — Reihenfolge der Faktoren zählt</li>
+            <li>Wenn eine Mengen-Operation <em>innerhalb</em> eines Kreuzprodukts steht: <strong>zuerst
+              berechnen</strong>, das Ergebnis zählt als EIN Element</li>
+            <li>In dieser Vorlesung gilt: <strong>0 ∈ ℕ</strong> — bei Bedingungen wie x&lt;y immer dran denken</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wie groß ist die Kardinalität von {1,2,2,3}?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Elemente</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Mengen haben keine Duplikate: {1,2,2,3} = {1,2,3} →
+              <strong>3</strong> Elemente.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>{1,2,3} △ {2,3,4} = ?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>{1,4}</button>
+              <button class="quiz-choice" type="button">{1,2,3,4}</button>
+              <button class="quiz-choice" type="button">{2,3}</button>
+              <button class="quiz-choice" type="button">{} (leere Menge)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Union {1,2,3,4} minus Schnitt {2,3} = <strong>{1,4}</strong>
+              — nur die Elemente, die in genau einer Menge liegen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie groß ist |P(∅)|?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">0</button>
+              <button class="quiz-choice" type="button" data-correct>1</button>
+              <button class="quiz-choice" type="button">2</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(∅) = {∅} — eine Menge mit genau einem Element. Also
+              |P(∅)| = <strong>1</strong>, obwohl |∅| = 0 ist.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="256">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2025: Wie groß ist
+              |P({a,b,c,d,e,f,g,h})| (Aufgabe 1b·ii)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Elemente</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>8 Elemente in der Grundmenge → 2⁸ = <strong>256</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="16">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: |{1,2,3,4} × {5,6,7,8}|
+              (Aufgabe 1b·i)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>|A|·|B| = 4 · 4 = <strong>16</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2025: |{(x,y) ∈ ℕ×ℕ; x&lt;y ∧ y&lt;4}|
+              (Aufgabe 1b·iv)? Achtung: ℕ enthält hier die 0!</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Paare</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>y=1→x=0 (1) · y=2→x∈{0,1} (2) · y=3→x∈{0,1,2} (3).
+              1+2+3 = <strong>6</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🎓 Klausur 2025: ({a,b,c} ∪ {c,d,e}) ∩
+              ({a,b,c} ∪ {c,e,e,f}) = ? (Aufgabe 1a·i)</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>{a,b,c,e}</button>
+              <button class="quiz-choice" type="button">{a,b,c,d,e,f}</button>
+              <button class="quiz-choice" type="button">{c,e}</button>
+              <button class="quiz-choice" type="button">{a,b,c,d,e}</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>{a,b,c}∪{c,d,e}={a,b,c,d,e} und {a,b,c}∪{c,e,e,f}
+              ={a,b,c,e,f} (Duplikat e zählt einmal). Schnitt: <strong>{a,b,c,e}</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="../index.html">
+          <div class="pn-label">← Übersicht</div>
+          <div class="pn-title">Zur LDS-Kursübersicht</div>
+        </a>
+        <a class="next" href="02-relationen-funktionen.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Relationen &amp; Funktionen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

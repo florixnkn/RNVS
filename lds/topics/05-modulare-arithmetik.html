@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Modulare Arithmetik &amp; Homomorphismen · LDS</title>
+<meta name="description" content="Rechnen im Uhren-Universum ℤₙ: Modulare Arithmetik, schnelle Exponentiation Schritt für Schritt, Homomorphismen &amp; Isomorphismen erkennen – inklusive der echten LDS-Klausuraufgabe zu Homomorphismen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#modulo">Modulo</a>
+      <a href="#exponentiation">Exponentiation</a>
+      <a href="#homo">Homomorphismen</a>
+      <a href="#klausur">🎓 Klausur</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P7 · Logik &amp; DS</a> › Thema 05</div>
+    <span class="th-icon">🔄</span>
+    <h1>Modulare Arithmetik &amp; Homomorphismen</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 5</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#modulo">Das Uhren-Universum ℤₙ</a></li>
+        <li><a href="#exponentiation">Schnelle Exponentiation</a></li>
+        <li><a href="#homo">Homomorphismen &amp; Isomorphismen</a></li>
+        <li><a href="#klausur">🎓 Klausuraufgabe: Homomorphismen</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Wenn du <strong>15 Uhr</strong> sagst, meinst du eigentlich 3 Uhr nachmittags — du rechnest
+          automatisch <code>15 mod 12 = 3</code>. Genau das ist <strong>modulare Arithmetik</strong>: Zahlen, die sich
+          nach einer festen Größe <em>n</em> "im Kreis" wiederholen. Darauf bauen zwei Klausur-Dauerbrenner auf:
+          extrem große Potenzen <em>mod n</em> schnell berechnen — und erkennen, wann eine Funktion die Struktur
+          einer algebraischen Welt erhält (<strong>Homomorphismus</strong>).</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… eine <strong>Uhr mit n Stunden</strong> statt 12. Du zählst los bei 0, und sobald du bei n ankommst,
+            fängst du wieder bei 0 an. <code>15 mod 12 = 3</code> heißt: Wenn du von 0 aus 15 Schritte im Kreis gehst,
+            landest du an derselben Stelle wie nach nur 3 Schritten — <strong>einmal ganz rum plus Rest 3</strong>.
+            Alles, was in diesem Uhren-Universum ℤₙ passiert, folgt eigenen Regeln — mit denen du blitzschnell riesige
+            Potenzen berechnen und sogar prüfen kannst, ob zwei verschiedene "Welten" im Grunde dieselbe Struktur haben.</p>
+        </div>
+      </section>
+
+      <!-- ===== MODULO ===== -->
+      <section id="modulo" class="reveal">
+        <h2>Das Uhren-Universum ℤₙ</h2>
+        <p><strong>Definition:</strong> a ≡ b (mod n) bedeutet: n teilt (a − b) — a und b landen beim "Im-Kreis-Zählen"
+          auf demselben Feld.</p>
+
+        <!-- SVG 1: Uhr / Modulo-Kreis -->
+        <figure class="diagram">
+          <div class="diagram-title">15 mod 12 = 3 — einmal ganz rum, dann Rest 3</div>
+          <svg viewBox="0 0 340 320" width="340" role="img" aria-label="Uhrenkreis mit 12 Positionen: von 0 aus einmal ganz herum (gestrichelt) plus 3 weitere Schritte landet auf 3">
+            <defs>
+              <marker id="arr-m1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <circle cx="170" cy="160" r="115" fill="none" stroke="#8a94a6" stroke-opacity="0.35" stroke-width="1.5"/>
+              <circle cx="170" cy="160" r="100" fill="none" stroke="#8a94a6" stroke-opacity="0.25" stroke-dasharray="4 5"/>
+              <!-- 12 Positionsmarken 0..11 -->
+              <g class="svg-ink" font-weight="700">
+                <circle cx="170" cy="55" r="15" fill="#2f6df6" fill-opacity="0.85"/><text x="170" y="60" text-anchor="middle" fill="#fff">0</text>
+                <circle cx="222" cy="70" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="222" y="75" text-anchor="middle" class="svg-ink">1</text>
+                <circle cx="258" cy="106" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="258" y="111" text-anchor="middle" class="svg-ink">2</text>
+                <circle cx="272" cy="160" r="15" fill="#12b28c" fill-opacity="0.9"/><text x="272" y="165" text-anchor="middle" fill="#fff">3</text>
+                <circle cx="258" cy="214" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="258" y="219" text-anchor="middle" class="svg-ink">4</text>
+                <circle cx="222" cy="250" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="222" y="255" text-anchor="middle" class="svg-ink">5</text>
+                <circle cx="170" cy="265" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="170" y="270" text-anchor="middle" class="svg-ink">6</text>
+                <circle cx="118" cy="250" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="118" y="255" text-anchor="middle" class="svg-ink">7</text>
+                <circle cx="82" cy="214" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="82" y="219" text-anchor="middle" class="svg-ink">8</text>
+                <circle cx="68" cy="160" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="68" y="165" text-anchor="middle" class="svg-ink">9</text>
+                <circle cx="82" cy="106" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="82" y="111" text-anchor="middle" class="svg-ink">10</text>
+                <circle cx="118" cy="70" r="13" fill="#8a94a6" fill-opacity="0.25"/><text x="118" y="75" text-anchor="middle" class="svg-ink">11</text>
+              </g>
+              <!-- Pfeil von 0 nach 3 (kurzer Weg) -->
+              <path d="M 170,55 A 115,115 0 0,1 272,160" fill="none" stroke="#12b28c" stroke-width="3" marker-end="url(#arr-m1)"/>
+              <text x="170" y="300" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">15 = 1·12 + 3 → 15 mod 12 = 3</text>
+              <text x="170" y="20" text-anchor="middle" class="svg-soft" font-size="11">äußerer Kreis gestrichelt = "einmal ganz rum" (+12)</text>
+            </g>
+          </svg>
+          <figcaption>Modulare Arithmetik ist Rechnen auf einem Kreis mit n Positionen: Zahlen, die sich nur um Vielfache von n unterscheiden, landen auf demselben Feld.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Eigenschaft</th><th>Bedeutet</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Reflexiv</strong></td><td>a ≡ a (mod n) — jede Zahl ist zu sich selbst kongruent</td></tr>
+            <tr><td><strong>Symmetrisch</strong></td><td>a ≡ b ⟹ b ≡ a</td></tr>
+            <tr><td><strong>Transitiv</strong></td><td>a ≡ b und b ≡ c ⟹ a ≡ c</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Kongruenz modulo n</div>
+          <span class="formula">a ≡ b (mod n) ⟺ n | (a − b)</span>
+          <p>Da alle drei Eigenschaften gelten, ist ≡ (mod n) eine <strong>Äquivalenzrelation</strong>. Sie teilt
+            ℤ in genau <strong>n Restklassen</strong> ℤₙ = {0, 1, …, n−1} ein — jede ganze Zahl landet in genau einer.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>Äquivalenzrelation</b><span>reflexiv + symmetrisch + transitiv</span></div>
+          <div class="fact"><b>n Restklassen</b><span>ℤₙ = {0, …, n−1}</span></div>
+          <div class="fact"><b>+, − , ·</b><span>funktionieren "wie gewohnt", nur mit Modulo am Ende</span></div>
+        </div>
+      </section>
+
+      <!-- ===== EXPONENTIATION ===== -->
+      <section id="exponentiation" class="reveal">
+        <h2>Schnelle Exponentiation</h2>
+        <p>Willst du a<sup>n</sup> mod m ausrechnen und n ist riesig (z. B. 468), kannst du <strong>nicht</strong>
+          468-mal multiplizieren — die Zahlen würden explodieren. Der Trick: <strong>quadrieren statt malnehmen</strong>,
+          gesteuert durch die Binärdarstellung von n.</p>
+
+        <ol class="steps">
+          <li><strong>n in Binärform schreiben.</strong><br>Beispiel: 468 = 256+128+64+16+4 = 111010100₂</li>
+          <li><strong>a¹, a², a⁴, a⁸, … wiederholt quadrieren</strong> (jede Potenz ist das Quadrat der vorherigen).</li>
+          <li><strong>Nach JEDEM Quadrieren sofort modulo m rechnen</strong> — nie mit den vollen Zahlen weiterrechnen.</li>
+          <li><strong>Nur die Potenzen multiplizieren, deren Bit in der Binärdarstellung 1 ist.</strong></li>
+        </ol>
+
+        <!-- SVG 2: Binär-Zerlegung + Quadrierkette -->
+        <figure class="diagram">
+          <div class="diagram-title">9⁴⁶⁸ mod 11 — Binärzerlegung 468 = 111010100₂</div>
+          <svg viewBox="0 0 780 210" width="780" role="img" aria-label="Neun Boxen für die Zweierpotenzen 256 bis 1 mit Bitwert und quadriertem Wert 9 hoch Zweierpotenz mod 11; die Bits mit 1 sind hervorgehoben und tragen zum Endprodukt bei">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Boxen: 256,128,64,32,16,8,4,2,1 / bit 1,1,1,0,1,0,1,0,0 / val 9,3,5,4,9,3,5,4,9 -->
+              <g>
+                <!-- 256 -->
+                <rect x="10" y="40" width="76" height="60" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+                <text x="48" y="58" text-anchor="middle" class="svg-ink" font-weight="700">9²⁵⁶</text>
+                <text x="48" y="76" text-anchor="middle" fill="#12b28c" font-weight="700">≡ 9</text>
+                <text x="48" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 1</text>
+                <!-- 128 -->
+                <rect x="94" y="40" width="76" height="60" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+                <text x="132" y="58" text-anchor="middle" class="svg-ink" font-weight="700">9¹²⁸</text>
+                <text x="132" y="76" text-anchor="middle" fill="#12b28c" font-weight="700">≡ 3</text>
+                <text x="132" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 1</text>
+                <!-- 64 -->
+                <rect x="178" y="40" width="76" height="60" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+                <text x="216" y="58" text-anchor="middle" class="svg-ink" font-weight="700">9⁶⁴</text>
+                <text x="216" y="76" text-anchor="middle" fill="#12b28c" font-weight="700">≡ 5</text>
+                <text x="216" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 1</text>
+                <!-- 32 (0) -->
+                <rect x="262" y="40" width="76" height="60" rx="8" fill="#8a94a6" fill-opacity="0.10" stroke="#8a94a6"/>
+                <text x="300" y="58" text-anchor="middle" class="svg-soft" font-weight="700">9³²</text>
+                <text x="300" y="76" text-anchor="middle" class="svg-soft">≡ 4</text>
+                <text x="300" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 0</text>
+                <!-- 16 -->
+                <rect x="346" y="40" width="76" height="60" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+                <text x="384" y="58" text-anchor="middle" class="svg-ink" font-weight="700">9¹⁶</text>
+                <text x="384" y="76" text-anchor="middle" fill="#12b28c" font-weight="700">≡ 9</text>
+                <text x="384" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 1</text>
+                <!-- 8 (0) -->
+                <rect x="430" y="40" width="76" height="60" rx="8" fill="#8a94a6" fill-opacity="0.10" stroke="#8a94a6"/>
+                <text x="468" y="58" text-anchor="middle" class="svg-soft" font-weight="700">9⁸</text>
+                <text x="468" y="76" text-anchor="middle" class="svg-soft">≡ 3</text>
+                <text x="468" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 0</text>
+                <!-- 4 -->
+                <rect x="514" y="40" width="76" height="60" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+                <text x="552" y="58" text-anchor="middle" class="svg-ink" font-weight="700">9⁴</text>
+                <text x="552" y="76" text-anchor="middle" fill="#12b28c" font-weight="700">≡ 5</text>
+                <text x="552" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 1</text>
+                <!-- 2 (0) -->
+                <rect x="598" y="40" width="76" height="60" rx="8" fill="#8a94a6" fill-opacity="0.10" stroke="#8a94a6"/>
+                <text x="636" y="58" text-anchor="middle" class="svg-soft" font-weight="700">9²</text>
+                <text x="636" y="76" text-anchor="middle" class="svg-soft">≡ 4</text>
+                <text x="636" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 0</text>
+                <!-- 1 (0) -->
+                <rect x="682" y="40" width="76" height="60" rx="8" fill="#8a94a6" fill-opacity="0.10" stroke="#8a94a6"/>
+                <text x="720" y="58" text-anchor="middle" class="svg-soft" font-weight="700">9¹</text>
+                <text x="720" y="76" text-anchor="middle" class="svg-soft">≡ 9</text>
+                <text x="720" y="92" text-anchor="middle" class="svg-soft" font-size="10">Bit: 0</text>
+              </g>
+              <text x="390" y="130" text-anchor="middle" class="svg-ink" font-size="13">Nur die grünen (Bit = 1) werden multipliziert:</text>
+              <rect x="120" y="145" width="540" height="42" rx="8" fill="#12b28c" fill-opacity="0.12" stroke="#12b28c" stroke-opacity="0.4"/>
+              <text x="390" y="171" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="14">9²⁵⁶·9¹²⁸·9⁶⁴·9¹⁶·9⁴ ≡ 9·3·5·9·5 ≡ 3 (mod 11)</text>
+            </g>
+          </svg>
+          <figcaption>Jede Zweierpotenz von 468 entspricht einer Spalte. Nur die Spalten mit Bit = 1 (grün) fließen ins Endprodukt ein — Rest wird ignoriert.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p>Nach <strong>jedem</strong> Quadrieren sofort modulo rechnen! <code>11⁴ ≠ 14641</code> weiterrechnen,
+            sondern <code>11⁴ ≡ 121² ≡ 49² ≡ 49 (mod 72)</code> — die Zahlen bleiben so immer klein.</p>
+        </div>
+      </section>
+
+      <!-- ===== HOMOMORPHISMEN ===== -->
+      <section id="homo" class="reveal">
+        <h2>Homomorphismen &amp; Isomorphismen</h2>
+        <p><strong>Homomorphismus:</strong> Eine Funktion f zwischen zwei Strukturen (A,⊙) und (B,⊕), die die
+          Verknüpfung "durchreicht": f(a ⊙ b) = f(a) ⊕ f(b) für alle a, b.</p>
+
+        <!-- SVG 3: Kommutatives Diagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Das kommutative Diagramm eines Homomorphismus</div>
+          <svg viewBox="0 0 480 260" width="480" role="img" aria-label="Kommutatives Diagramm: a und b in A werden verknüpft zu a-Kreis-b, oder erst einzeln über f nach B abgebildet und dort mit Kreis-plus verknüpft — beide Wege führen zum gleichen Ergebnis">
+            <defs>
+              <marker id="arr-h1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+              <marker id="arr-h2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 Z" fill="#8b5cf6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- TL -->
+              <rect x="20" y="20" width="150" height="50" rx="8" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6" stroke-width="2"/>
+              <text x="95" y="50" text-anchor="middle" class="svg-ink" font-weight="700">a, b ∈ A</text>
+              <!-- TR -->
+              <rect x="300" y="20" width="160" height="50" rx="8" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6" stroke-width="2"/>
+              <text x="380" y="50" text-anchor="middle" class="svg-ink" font-weight="700">a ⊙ b ∈ A</text>
+              <!-- BL -->
+              <rect x="20" y="190" width="150" height="50" rx="8" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="95" y="220" text-anchor="middle" class="svg-ink" font-weight="700">f(a), f(b) ∈ B</text>
+              <!-- BR -->
+              <rect x="290" y="190" width="180" height="50" rx="8" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="380" y="212" text-anchor="middle" class="svg-ink" font-weight="700">f(a) ⊕ f(b)</text>
+              <text x="380" y="230" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="12">= f(a ⊙ b) ✓</text>
+              <!-- Pfeile -->
+              <line x1="170" y1="45" x2="296" y2="45" stroke="#2f6df6" stroke-width="2" marker-end="url(#arr-h1)"/>
+              <text x="233" y="35" text-anchor="middle" fill="#2f6df6" font-size="11">⊙ (Verknüpfung in A)</text>
+
+              <line x1="95" y1="70" x2="95" y2="186" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arr-h2)"/>
+              <text x="60" y="130" fill="#8b5cf6" font-size="12" transform="rotate(-90,60,130)">f</text>
+
+              <line x1="380" y1="70" x2="380" y2="186" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arr-h2)"/>
+              <text x="415" y="130" fill="#8b5cf6" font-size="12" transform="rotate(-90,415,130)">f</text>
+
+              <line x1="170" y1="215" x2="284" y2="215" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arr-h2)"/>
+              <text x="227" y="253" text-anchor="middle" fill="#8b5cf6" font-size="11">⊕ (Verknüpfung in B)</text>
+            </g>
+          </svg>
+          <figcaption>Egal ob du a,b zuerst in A verknüpfst und dann abbildest, oder zuerst abbildest und dann in B verknüpfst — bei einem Homomorphismus kommt beide Male dasselbe heraus.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p><strong>Homomorphismus</strong> = Struktur bleibt erhalten (die Funktion "respektiert" die Verknüpfung).<br>
+            <strong>Isomorphismus</strong> = bijektiver Homomorphismus — die beiden Strukturen sind "im Grunde dasselbe",
+            nur umbenannt. Für Isomorphismus brauchst du <strong>zusätzlich</strong> Injektivität und Surjektivität!</p>
+        </div>
+
+        <h3>Beispiel: f(n) = 2n auf (ℤ, +)</h3>
+        <ol class="steps">
+          <li><strong>Homomorphismus-Test:</strong> f(a+b) = 2(a+b) = 2a+2b = f(a)+f(b) ✓ — <strong>ist Homomorphismus.</strong></li>
+          <li><strong>Injektiv?</strong> f(a)=f(b) ⟹ 2a=2b ⟹ a=b ✓</li>
+          <li><strong>Surjektiv?</strong> Jede gerade Zahl wird getroffen, aber <strong>keine ungerade</strong> ✗</li>
+          <li><strong>Ergebnis:</strong> f ist Homomorphismus, aber <strong>kein Isomorphismus</strong> (nicht bijektiv).</li>
+        </ol>
+      </section>
+
+      <!-- ===== KLAUSUR ===== -->
+      <section id="klausur" class="reveal">
+        <h2>🎓 Klausuraufgabe: Homomorphismen prüfen</h2>
+        <p class="lead-in"><strong>Klausur SoSe 2025, Aufgabe 3 (8 Punkte).</strong> Betrachtet wird die Struktur
+          (L, ∘) — Listen ganzer Zahlen mit <strong>Konkatenation</strong> (Aneinanderhängen) als Verknüpfung. Prüfe
+          zwei Funktionen auf Homomorphismus- und Isomorphismus-Eigenschaft.</p>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Teil a) s = "sortiere absteigend"</div>
+          <p>Ist s: (L,∘) → (L,∘) ein Homomorphismus? Test: s(a∘b) = s(a)∘s(b)?</p>
+        </div>
+
+        <!-- SVG 4: Gegenbeispiel visualisiert -->
+        <figure class="diagram">
+          <div class="diagram-title">Das Gegenbeispiel: s([0]) ∘ s([1]) ≠ s([0] ∘ [1])</div>
+          <svg viewBox="0 0 640 200" width="640" role="img" aria-label="Zwei Wege: erst sortieren dann verketten ergibt [0,1], erst verketten dann sortieren ergibt [1,0] — beide Ergebnisse sind unterschiedlich">
+            <defs>
+              <marker id="arr-k3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 Z" fill="#f5810b"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Weg 1: s(a)∘s(b) -->
+              <text x="20" y="24" fill="#2f6df6" font-weight="700">Weg 1: s([0]) ∘ s([1])</text>
+              <rect x="20" y="34" width="50" height="34" rx="6" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="45" y="56" text-anchor="middle" class="svg-ink">[0]</text>
+              <text x="78" y="56" class="svg-soft">∘</text>
+              <rect x="95" y="34" width="50" height="34" rx="6" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6"/>
+              <text x="120" y="56" text-anchor="middle" class="svg-ink">[1]</text>
+              <line x1="155" y1="51" x2="200" y2="51" stroke="#8a94a6" stroke-width="1.5" marker-end="url(#arr-k3)"/>
+              <rect x="205" y="34" width="60" height="34" rx="6" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="235" y="56" text-anchor="middle" class="svg-ink" font-weight="700">[0,1]</text>
+
+              <!-- Weg 2: s(a∘b) -->
+              <text x="20" y="104" fill="#8b5cf6" font-weight="700">Weg 2: s([0] ∘ [1])</text>
+              <rect x="20" y="114" width="50" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6"/>
+              <text x="45" y="136" text-anchor="middle" class="svg-ink">[0]</text>
+              <text x="78" y="136" class="svg-soft">∘</text>
+              <rect x="95" y="114" width="50" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6"/>
+              <text x="120" y="136" text-anchor="middle" class="svg-ink">[1]</text>
+              <text x="160" y="136" class="svg-soft">=</text>
+              <rect x="175" y="114" width="60" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6"/>
+              <text x="205" y="136" text-anchor="middle" class="svg-ink">[0,1]</text>
+              <text x="245" y="136" class="svg-soft">→ sortieren →</text>
+              <rect x="335" y="114" width="60" height="34" rx="6" fill="#e0483d" fill-opacity="0.20" stroke="#e0483d" stroke-width="2"/>
+              <text x="365" y="136" text-anchor="middle" fill="#e0483d" font-weight="700">[1,0]</text>
+
+              <text x="320" y="180" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="14">[0,1] ≠ [1,0] → KEIN Homomorphismus!</text>
+            </g>
+          </svg>
+          <figcaption>Ein einziges Gegenbeispiel genügt, um zu widerlegen: sortiere-dann-verkette liefert ein anderes Ergebnis als verkette-dann-sortiere.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Ergebnis Teil a)</div>
+          <p><strong>s ist KEIN Homomorphismus</strong> — und damit automatisch auch <strong>kein Isomorphismus</strong>
+            (jeder Isomorphismus ist ein Homomorphismus; ist die Grundbedingung schon verletzt, erübrigt sich die
+            Bijektivitätsprüfung).</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Teil b) g = "addiere 2 auf jedes Element"</div>
+          <p>g([x₁,…,xₖ]) = [x₁+2, …, xₖ+2]. Test: g(a∘b) = g(a)∘g(b)?<br>
+            Konkatenation verändert nur die <strong>Reihenfolge</strong> der Listen, nicht die Werte — und g addiert
+            +2 auf jedes Element unabhängig von seiner Position. Also ist es egal, ob du erst verkettest und dann
+            +2 auf alles addierst, oder erst auf beide Teillisten +2 addierst und dann verkettest: <strong>das Ergebnis
+            ist identisch.</strong> → <strong>g ist Homomorphismus.</strong></p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Ergebnis Teil b): auch Isomorphismus!</div>
+          <p><strong>Injektiv:</strong> g(a)=g(b) ⟹ jedes Element +2 gleich ⟹ a=b ✓<br>
+            <strong>Surjektiv:</strong> Jede Liste ist Ziel von g, nämlich von "sich selbst minus 2 auf jedem Element" ✓<br>
+            <strong>Umkehrfunktion:</strong> g⁻¹ = "subtrahiere 2 von jedem Element" ✓<br>
+            → g ist <strong>bijektiv und Homomorphismus</strong>, also ein <strong>Isomorphismus</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>11⁶³ direkt "63-mal multiplizieren".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Binärzerlegung nutzen und quadrieren: 63 = 32+16+8+4+2+1 — nur 6 Quadrierschritte statt 62 Multiplikationen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>11⁴ = 14641, erst am Ende modulo rechnen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nach JEDEM Rechenschritt sofort modulo: 11² ≡ 49, 11⁴ ≡ 49² ≡ 49 (mod 72) — Zahlen bleiben klein.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"f(a⊙b) = f(a)⊕f(b) für EIN Beispiel reicht, um Homomorphismus zu zeigen."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Für den <strong>Beweis</strong> brauchst du alle a, b (allgemeiner Nachweis). Für die <strong>Widerlegung</strong> reicht dagegen ein einziges Gegenbeispiel!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"Homomorphismus ⟹ automatisch Isomorphismus."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Isomorphismus braucht zusätzlich <strong>Bijektivität</strong> (injektiv + surjektiv) — siehe f(n)=2n: Homomorphismus, aber nicht surjektiv, also kein Isomorphismus.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei Widerlegung eines Isomorphismus zuerst mühsam Injektivität/Surjektivität prüfen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ist die Funktion bereits <strong>kein Homomorphismus</strong>, kann sie erst recht kein Isomorphismus sein — Bijektivitätsprüfung entfällt.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Schnelle Exponentiation — Rezept</h4>
+          <pre class="code">1. n in Binärform schreiben (n = Summe von Zweierpotenzen)
+2. a¹, a², a⁴, a⁸, ... wiederholt quadrieren
+3. Nach JEDEM Schritt sofort modulo m rechnen!
+4. Nur die Potenzen multiplizieren, deren Bit = 1 ist</pre>
+
+          <h4>Homomorphismus-Test</h4>
+          <pre class="code">f: (A,⊙) → (B,⊕) ist Homomorphismus wenn:
+☐ f(a⊙b) = f(a)⊕f(b) für ALLE a,b ∈ A
+
+Isomorphismus zusätzlich:
+☐ f ist injektiv (f(a)=f(b) ⟹ a=b)
+☐ f ist surjektiv (jedes b ∈ B wird getroffen)
+
+Widerlegen: EIN Gegenbeispiel reicht!</pre>
+
+          <h4>Klausur-Ergebnis im Überblick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Funktion</th><th>Homomorphismus?</th><th>Isomorphismus?</th></tr></thead>
+            <tbody>
+              <tr><td>s (absteigend sortieren)</td><td>❌ Nein</td><td>❌ Nein</td></tr>
+              <tr><td>g (+2 auf jedes Element)</td><td>✅ Ja</td><td>✅ Ja</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>a ≡ b (mod n)</strong> ⟺ n teilt (a−b) — eine Äquivalenzrelation</li>
+            <li><strong>Schnelle Exponentiation:</strong> Binärzerlegung + Quadrieren + sofort modulo</li>
+            <li><strong>Homomorphismus:</strong> Struktur bleibt erhalten — f(a⊙b) = f(a)⊕f(b)</li>
+            <li><strong>Isomorphismus</strong> = Homomorphismus + bijektiv</li>
+            <li>Zum Widerlegen: ein Gegenbeispiel genügt. Zum Beweisen: alle a,b allgemein zeigen.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Berechne 25 mod 7.</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>25 = 3·7 + 4, also 25 mod 7 = <strong>4</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Berechne 5³ mod 11 (per Hand: 5³ = 125).</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>125 = 11·11 + 4 → 125 mod 11 = <strong>4</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Ist f(n) = n² auf (ℤ, +) ein Homomorphismus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, immer</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — f(a+b) ≠ f(a)+f(b) im Allgemeinen</button>
+              <button class="quiz-choice" type="button">Nur für gerade a, b</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>f(a+b) = (a+b)² = a²+2ab+b², aber f(a)+f(b) = a²+b². Die beiden sind nur gleich, wenn 2ab = 0 gilt — nicht für alle a,b. Also <strong>kein Homomorphismus</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2025: Ist s = "sortiere Liste absteigend" auf (L,∘) mit Konkatenation ein Homomorphismus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja</button>
+              <button class="quiz-choice" type="button" data-correct>Nein</button>
+              <button class="quiz-choice" type="button">Nur für einelementige Listen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Gegenbeispiel: s([0])∘s([1]) = [0,1], aber s([0]∘[1]) = s([0,1]) = [1,0]. Da [0,1] ≠ [1,0], ist s <strong>kein Homomorphismus</strong> (und damit auch kein Isomorphismus).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: Ist g = "addiere 2 auf jedes Element" auf (L,∘) ein Isomorphismus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja — Homomorphismus UND bijektiv</button>
+              <button class="quiz-choice" type="button">Nein — nur Homomorphismus</button>
+              <button class="quiz-choice" type="button">Nein — gar kein Homomorphismus</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>g respektiert die Verknüpfung (Homomorphismus), ist injektiv und surjektiv mit Umkehrfunktion "−2 auf jedes Element" — also ein <strong>Isomorphismus</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="x-2|-2+x|x - 2">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie lautet die Umkehrfunktion g⁻¹(x) von g(x) = x + 2?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="z. B. x-2" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Um g rückgängig zu machen, musst du subtrahieren statt addieren: g⁻¹(x) = <strong>x − 2</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Berechne mit schneller Exponentiation: 9⁴⁶⁸ mod 11 (Ergebnis aus dem Beispiel oben).</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>468 = 256+128+64+16+4. 9²⁵⁶·9¹²⁸·9⁶⁴·9¹⁶·9⁴ ≡ 9·3·5·9·5 ≡ <strong>3</strong> (mod 11).</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="04-verbaende.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Verbände &amp; Ordnungsstrukturen</div>
+        </a>
+        <a class="next" href="06-gruppen-ringe.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Gruppen &amp; Ringe</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

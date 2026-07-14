@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prädikatenlogik: Syntax, Terme &amp; freie/gebundene Variablen · LDS</title>
+<meta name="description" content="Terme, Formeln, Arität, freie und gebundene Variablen, geschlossene Formeln und Substitution mit Variable-Capture — Schritt für Schritt und mit Beispielen erklärt. Der klausur-kritische Einstieg in die Prädikatenlogik." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#terme">Terme &amp; Formeln</a>
+      <a href="#variablen">Frei &amp; gebunden</a>
+      <a href="#substitution">Substitution</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#check">Wissenscheck</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 13</div>
+    <span class="th-icon">✍️</span>
+    <h1>Prädikatenlogik: Syntax</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 12</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#terme">Terme &amp; Formeln</a></li>
+        <li><a href="#variablen">Freie &amp; gebundene Variablen</a></li>
+        <li><a href="#rechnen">Schritt-für-Schritt: Variablen bestimmen</a></li>
+        <li><a href="#substitution">Substitution &amp; Variable-Capture</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">In der Aussagenlogik (Themen 9–12) waren P, Q, R ganze, unteilbare Sätze — entweder wahr
+          oder falsch, fertig. Die <strong>Prädikatenlogik macht das Fass auf</strong>: Sie schaut ins Innere eines
+          Satzes. Wer tut was mit wem? Und gilt das für <strong>ALLE</strong> oder nur für <strong>EINIGE</strong>?
+          Das ist der Stoff von Blatt 12 — und laut den Übungsleitern der zuverlässigste Fehlerquell-Punkt in der
+          gesamten Klausur, wenn man's nicht sauber übt.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du schreibst einen <strong>Serienbrief</strong> mit Platzhaltern: „Lieber ___, du hast am ___
+            Geburtstag." Der Platzhalter <code>___</code> ist wie eine <strong>Variable</strong> x. Jetzt kannst du
+            zwei Dinge damit tun:<br>
+            <strong>(1) Ausfüllen</strong> — du setzt einen konkreten Namen ein: „Lieber Paul, …". Das ist eine
+            <strong>Substitution</strong> x:=Paul.<br>
+            <strong>(2) Quantifizieren</strong> — du machst eine Aussage ÜBER den Platzhalter, ohne ihn auszufüllen:
+            „<strong>Für alle</strong> ___ in meiner Kontaktliste gilt: …" (∀x) oder „<strong>Es gibt</strong> ein
+            ___, für das gilt: …" (∃x). Sobald ein Quantor über einer Variable steht, ist sie <strong>gebunden</strong>
+            — sie gehört zum Quantor, du darfst sie nicht mehr frei ausfüllen. Variablen ohne Quantor darüber sind
+            <strong>frei</strong> — offene Lücken, die noch auf eine Bedeutung von außen warten.</p>
+        </div>
+      </section>
+
+      <!-- ===== TERME ===== -->
+      <section id="terme" class="reveal">
+        <h2>Terme &amp; Formeln</h2>
+        <p>Bevor du Quantoren jonglierst, brauchst du ein festes Vokabular für „was darf überhaupt in einer Formel
+          stehen". Es gibt genau zwei Bausteinarten:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Baustein</th><th>Was ist das?</th><th>Beispiele</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Terme</strong></td>
+              <td>Bezeichnen <em>Objekte</em> — Dinge, über die man redet</td>
+              <td>Variablen x, y, z &nbsp;·&nbsp; Konstanten a, b, c &nbsp;·&nbsp; Funktionsterme f(t₁,…,tₙ)</td>
+            </tr>
+            <tr>
+              <td><strong>Formeln</strong></td>
+              <td>Sind <em>wahr oder falsch</em> — Aussagen über Objekte</td>
+              <td>Atome P(t₁,…,tₙ) &nbsp;·&nbsp; Konnektive ¬F, F∧G, F∨G, F→G, F↔G &nbsp;·&nbsp; Quantoren ∀xF, ∃xF</td>
+            </tr>
+          </tbody>
+        </table></div>
+
+        <p>Der wichtigste Stolperstein: <strong>jedes Funktions- und Prädikatsymbol hat eine feste Stelligkeit
+          (Arität)</strong> — eine feste Anzahl an Argumenten, die es erwartet. Ein <em>einstelliges</em> f nimmt
+          genau EIN Argument, niemals zwei.</p>
+
+        <!-- SVG 1: Arität-Check -->
+        <figure class="diagram">
+          <div class="diagram-title">Arität-Check: Passt die Anzahl der Argumente?</div>
+          <svg viewBox="0 0 680 200" width="680" role="img" aria-label="Arität-Check: f(c,x) ist nicht wohlgeformt, f(f(c)) ist wohlgeformt, da f einstellig ist">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="20" y="24" class="svg-soft" font-size="12">Gegeben: f ist ein <tspan font-weight="700" fill="#f5810b">einstelliges</tspan> Funktionssymbol (genau 1 Argument erwartet)</text>
+
+              <rect x="20" y="48" width="290" height="128" rx="10" fill="#e0483d" fill-opacity="0.08" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="165" y="82" text-anchor="middle" font-size="22" font-family="Consolas, monospace" class="svg-ink">f(c, x)</text>
+              <text x="165" y="110" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="13">❌ 2 Argumente</text>
+              <text x="165" y="130" text-anchor="middle" class="svg-soft" font-size="11">f erwartet aber nur 1</text>
+              <text x="165" y="155" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="13">NICHT wohlgeformt</text>
+
+              <rect x="370" y="48" width="290" height="128" rx="10" fill="#12a150" fill-opacity="0.08" stroke="#12a150" stroke-width="1.5"/>
+              <text x="515" y="82" text-anchor="middle" font-size="22" font-family="Consolas, monospace" class="svg-ink">f(f(c))</text>
+              <text x="515" y="110" text-anchor="middle" fill="#12a150" font-weight="700" font-size="13">✅ je 1 Argument</text>
+              <text x="515" y="130" text-anchor="middle" class="svg-soft" font-size="11">außen f(…), innen f(c)</text>
+              <text x="515" y="155" text-anchor="middle" fill="#12a150" font-weight="800" font-size="13">wohlgeformter Term</text>
+            </g>
+          </svg>
+          <figcaption>f(c,x) scheitert, weil f nur ein Argument nimmt. f(f(c)) funktioniert, weil beide Vorkommen von f genau ein Argument bekommen — die Arität muss bei JEDEM Vorkommen stimmen.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Klassischer Wohlgeformtheits-Check</div>
+          <p>Sprache: f einstellig, P einstellig, Q zweistellig.<br>
+          <strong>f(c, x)</strong> — f bekommt hier 2 Argumente, ist aber einstellig → <strong>NICHT wohlgeformt</strong>.<br>
+          <strong>Q(x, x) ∧ ∃x(Q(c, x))</strong> — Q ist zweistellig und bekommt überall genau 2 Argumente → wohlgeformt ✓
+          (und hat sogar eine freie Variable — siehe nächster Abschnitt).</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>Terme</b><span>bezeichnen Objekte</span></div>
+          <div class="fact"><b>Formeln</b><span>sind wahr / falsch</span></div>
+          <div class="fact"><b>Arität</b><span>fest pro Symbol!</span></div>
+          <div class="fact"><b>∀ / ∃</b><span>binden eine Variable</span></div>
+        </div>
+      </section>
+
+      <!-- ===== VARIABLEN ===== -->
+      <section id="variablen" class="reveal">
+        <h2>Freie &amp; gebundene Variablen</h2>
+        <p>Das ist DER Skill dieses Themas: Für jedes einzelne Vorkommen jeder Variable musst du entscheiden — steht
+          ein Quantor „drüber" (gebunden) oder nicht (frei)? Das Tückische: <strong>dieselbe Variable kann in
+          derselben Formel an einer Stelle gebunden und an einer anderen Stelle frei sein!</strong></p>
+
+        <!-- SVG 2: Bound/Free Scope-Diagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Reichweiten (Scopes) der Quantoren — wer ist gebunden, wer frei?</div>
+          <svg viewBox="0 0 700 260" width="700" role="img" aria-label="Formel (∀x(P(x)) ∨ ∃y(Q(y,z))) ∧ R(x): x in P ist gebunden durch ∀x, y in Q ist gebunden durch ∃y, z ist frei, das zweite x in R liegt außerhalb der ∀x-Reichweite und ist frei">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="20" y="24" class="svg-ink" font-family="Consolas, monospace" font-size="15">F = (∀x(P(x)) ∨ ∃y(Q(y,z))) ∧ R(x)</text>
+
+              <!-- Reichweite ∀x -->
+              <rect x="20" y="46" width="170" height="70" rx="10" fill="#2f6df6" fill-opacity="0.12" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="105" y="66" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">Reichweite von ∀x</text>
+              <text x="105" y="88" text-anchor="middle" class="svg-ink" font-family="Consolas, monospace" font-size="13">x₁ in P(x)</text>
+              <text x="105" y="106" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="11">→ gebunden ✓</text>
+
+              <!-- Reichweite ∃y -->
+              <rect x="220" y="46" width="230" height="70" rx="10" fill="#12a150" fill-opacity="0.12" stroke="#12a150" stroke-width="1.5"/>
+              <text x="335" y="66" text-anchor="middle" fill="#12a150" font-weight="700" font-size="12">Reichweite von ∃y</text>
+              <text x="335" y="88" text-anchor="middle" class="svg-ink" font-family="Consolas, monospace" font-size="13">y in Q(y,z) &nbsp;·&nbsp; z in Q(y,z)</text>
+              <text x="290" y="106" text-anchor="middle" fill="#12a150" font-weight="700" font-size="11">y: gebunden ✓</text>
+              <text x="390" y="106" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="11">z: frei! (kein Quantor)</text>
+
+              <!-- Außerhalb: zweites x -->
+              <rect x="490" y="46" width="180" height="70" rx="10" fill="#e0483d" fill-opacity="0.10" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <text x="580" y="66" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="12">Außerhalb jeder Reichweite</text>
+              <text x="580" y="88" text-anchor="middle" class="svg-ink" font-family="Consolas, monospace" font-size="13">x₂ in R(x)</text>
+              <text x="580" y="106" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="11">→ frei! (∀x „sieht" es nicht mehr)</text>
+
+              <!-- Ergebnis -->
+              <rect x="20" y="150" width="650" height="90" rx="10" fill="#7c4dff" fill-opacity="0.08" stroke="#7c4dff" stroke-width="1.5"/>
+              <text x="345" y="178" text-anchor="middle" fill="#7c4dff" font-weight="800" font-size="14">Freie Variablen von F: { x, z }</text>
+              <text x="345" y="202" text-anchor="middle" class="svg-ink" font-size="12">x taucht sowohl gebunden (x₁, in P) als auch frei (x₂, in R) auf — das ist erlaubt!</text>
+              <text x="345" y="222" text-anchor="middle" class="svg-soft" font-size="11">Deshalb: jedes Vorkommen einzeln bewerten, nicht „die Variable x" pauschal.</text>
+            </g>
+          </svg>
+          <figcaption>Die Reichweite eines Quantors ist genau die Klammer, die direkt zu ihm gehört. Variablen-Vorkommen außerhalb dieser Klammer sind frei — auch wenn woanders ein Quantor mit demselben Namen existiert.</figcaption>
+        </figure>
+
+        <div class="callout callout-info">
+          <div class="c-title">Das Standardbeispiel, das jeder in der ersten Runde falsch macht</div>
+          <p>F = (∀x(P(x)) ∨ ∃y(Q(y,z))) ∧ R(x)</p>
+          <p>
+            ① x in P(x) — <strong>gebunden</strong> durch ∀x (Reichweite: die Klammer direkt danach)<br>
+            ② y in Q(y,z) — <strong>gebunden</strong> durch ∃y<br>
+            ③ z in Q(y,z) — <strong>frei</strong> (kein Quantor über z, nirgendwo in F)<br>
+            ④ x in R(x) — <strong>frei!</strong> Dieses zweite x liegt AUSSERHALB der Klammer von ∀x — der Quantor
+            „sieht" es nicht mehr.
+          </p>
+          <p><strong>Freie Variablen von F: {x, z}</strong> — x kommt sowohl gebunden (①) als auch frei (④) vor.
+            Genau diese Kombination ist in Klausuraufgaben beliebt.</p>
+        </div>
+
+        <h3>Geschlossene Formeln</h3>
+        <p>Eine Formel ohne freie Variablen heißt <strong>geschlossen</strong> (auch: Satz / Sentence). Nur
+          geschlossene Formeln haben — unabhängig von einer Variablenbelegung — einen festen Wahrheitswert.</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Formel</th><th>Freie Variablen</th><th>Geschlossen?</th></tr></thead>
+          <tbody>
+            <tr><td>∀x ∃y P(x,y)</td><td>keine</td><td>✅ ja</td></tr>
+            <tr><td>∀x P(x,y)</td><td>{y}</td><td>❌ nein — y ist frei</td></tr>
+            <tr><td>(∀x(P(x)) ∨ ∃y(Q(y,z))) ∧ R(x)</td><td>{x, z}</td><td>❌ nein</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Variablen bestimmen</h2>
+        <p>Die zuverlässige Methode, damit dir unter Zeitdruck kein Vorkommen durchrutscht: <strong>von links nach
+          rechts lesen und pro Variablen-Vorkommen einzeln entscheiden.</strong></p>
+
+        <ol class="steps">
+          <li>
+            <strong>Formel von links nach rechts lesen</strong>, jedes Vorkommen jeder Variable einzeln markieren
+            — nicht „die Variable x" als Ganzes behandeln, sondern jedes einzelne Auftreten!
+          </li>
+          <li>
+            <strong>Bei jedem Quantor (∀x oder ∃x):</strong> ab hier ist x „aktiv gebunden" — für den Rest seiner
+            Reichweite.
+          </li>
+          <li>
+            <strong>Reichweite eines Quantors bestimmen:</strong> Sie reicht genau bis zur schließenden Klammer,
+            die direkt zum Quantor gehört. Im Zweifel: IMMER Klammern konsequent mitlesen.
+          </li>
+          <li>
+            <strong>Für jedes Vorkommen prüfen:</strong> Liegt es innerhalb der Reichweite eines Quantors über
+            genau dieser Variable? Ja → gebunden. Nein → frei.
+          </li>
+          <li>
+            <strong>Freie Variablen von F sammeln</strong> = Menge aller frei vorkommenden Variablen. Ist die Menge
+            leer → F ist geschlossen.
+          </li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Angewendet auf F = (∀x(P(x)) ∨ ∃y(Q(y,z))) ∧ R(x)</div>
+          <p>
+            Schritt 1+2: markiere alle 4 Vorkommen: x₁ (in P), y (in Q), z (in Q), x₂ (in R)<br>
+            Schritt 3: Reichweite von ∀x ist genau „(P(x))" &nbsp;·&nbsp; Reichweite von ∃y ist genau „(Q(y,z))"<br>
+            Schritt 4: x₁ ∈ Reichweite von ∀x → gebunden &nbsp;·&nbsp; y ∈ Reichweite von ∃y → gebunden &nbsp;·&nbsp;
+            z ∈ keiner Reichweite → frei &nbsp;·&nbsp; x₂ liegt nach der schließenden Klammer von ∀x, also außerhalb
+            → frei<br>
+            Schritt 5: <strong>Freie Variablen = {x, z}</strong> — F ist NICHT geschlossen.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== SUBSTITUTION ===== -->
+      <section id="substitution" class="reveal">
+        <h2>Substitution &amp; Variable-Capture</h2>
+        <p>Substitution F[x:=t] bedeutet: „ersetze jedes freie Vorkommen von x in F durch den Term t". Klingt
+          harmlos — bis t selbst eine Variable ist, die in F schon von einem Quantor „belegt" wird. Dann droht
+          <strong>Variable-Capture</strong>: Die eingesetzte Variable wird versehentlich mit-gebunden und verliert
+          ihre eigentliche Bedeutung.</p>
+
+        <!-- SVG 3: Variable-Capture -->
+        <figure class="diagram">
+          <div class="diagram-title">Variable-Capture: naiv vs. korrekt</div>
+          <svg viewBox="0 0 700 230" width="700" role="img" aria-label="Naive Substitution von F=∀y P(x,y) mit x:=y führt zu ∀y P(y,y), was falsch ist. Korrekt: erst umbenennen zu ∀w P(x,w), dann substituieren zu ∀w P(y,w)">
+            <defs>
+              <marker id="arr-sub" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="20" y="22" class="svg-ink" font-size="13">Start: F = ∀y P(x,y) &nbsp;&nbsp;— gesucht: F[x:=y]</text>
+
+              <!-- Naiv -->
+              <rect x="20" y="40" width="300" height="80" rx="10" fill="#e0483d" fill-opacity="0.08" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="170" y="62" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="12">❌ Naiv: blind ersetzen</text>
+              <text x="170" y="86" text-anchor="middle" font-family="Consolas, monospace" font-size="15" class="svg-ink">∀y P(y,y)</text>
+              <text x="170" y="108" text-anchor="middle" fill="#e0483d" font-size="11">y wird vom ∀y „eingefangen"!</text>
+
+              <!-- Korrekt -->
+              <rect x="380" y="20" width="300" height="45" rx="8" fill="#12a150" fill-opacity="0.10" stroke="#12a150"/>
+              <text x="530" y="34" text-anchor="middle" font-family="Consolas, monospace" font-size="13" class="svg-ink">1) Umbenennen: ∀y P(x,y) → ∀w P(x,w)</text>
+              <text x="530" y="50" text-anchor="middle" fill="#12a150" font-size="10">Quantor bekommt neuen Namen w</text>
+
+              <rect x="380" y="75" width="300" height="45" rx="8" fill="#12a150" fill-opacity="0.10" stroke="#12a150"/>
+              <text x="530" y="89" text-anchor="middle" font-family="Consolas, monospace" font-size="13" class="svg-ink">2) Substituieren: → ∀w P(y,w)</text>
+              <text x="530" y="105" text-anchor="middle" fill="#12a150" font-weight="700" font-size="11">✅ y bleibt frei &amp; unabhängig</text>
+
+              <!-- Vergleich -->
+              <rect x="20" y="140" width="660" height="70" rx="10" fill="#7c4dff" fill-opacity="0.08" stroke="#7c4dff" stroke-width="1.5"/>
+              <text x="350" y="164" text-anchor="middle" class="svg-ink" font-size="12">„für jedes y gilt: x und y stehen in Beziehung P" wird bei naiver Substitution fälschlich zu</text>
+              <text x="350" y="184" text-anchor="middle" class="svg-ink" font-size="12">„für jedes y gilt: y und y stehen in Beziehung P" — eine ganz andere, viel schwächere Aussage!</text>
+            </g>
+          </svg>
+          <figcaption>Naive Substitution lässt die eingesetzte Variable versehentlich vom Quantor einfangen. Die Lösung: den Quantor konsequent umbenennen, bevor du substituierst.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Variable-Capture am Beispiel</div>
+          <p>F = ∀y P(x,y) — gesucht: F[x:=y]<br>
+          <strong>Naiv (FALSCH):</strong> ∀y P(y,y) — das „neue" y wird vom ∀y-Quantor eingefangen!<br>
+          <strong>Korrekt:</strong> Zuerst die gebundene Variable umbenennen (der Quantor „heißt" ja nur zufällig y):
+          ∀y P(x,y) → ∀w P(x,w). Erst DANN substituieren: ∀w P(y,w). Das neue y bleibt frei und unabhängig, wie
+          gewollt.</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merkregel</div>
+          <p>Bevor du F[x:=t] bildest: prüfe, ob t eine Variable enthält, die in F von einem Quantor gebunden wird.
+          Falls ja → benenne den Quantor (und alle seine gebundenen Vorkommen) zuerst konsequent um, erst dann
+          substituieren.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>∀x P(x) hat eine freie Variable x.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>x ist durch ∀ <strong>gebunden</strong>! Freie
+            Variablen sind nur solche OHNE Quantor-Bindung.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>∀x ∃x P(x) bindet x zweimal unabhängig
+            voneinander.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der innere ∃x „shadowed" den äußeren ∀x — die
+            Variablen sind <strong>nicht</strong> unabhängig. ∀x ∃x P(x) heißt „für alle x, es existiert ein x' mit
+            P(x')".</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei Substitution blind ersetzen, ohne auf
+            Variable-Capture zu prüfen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Wenn die Ziel-Variable im Term t bereits im
+            Kontext gebunden wird, MUSS zuerst umbenannt werden. F = ∀y P(x,y), F[x:=y] muss ∀w P(y,w) sein, nicht
+            ∀y P(y,y)!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>f(a,b) ist ein gültiger Term, wenn f einstellig
+            ist.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Jedes Symbol hat eine <strong>feste
+            Arität</strong>. Einstellig heißt f(a) — niemals f(a,b).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>∀x P(x) ∧ Q(x) — x ist auf beiden Seiten von ∧
+            gebunden.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ohne Klammern reicht die Reichweite von ∀x nur
+            bis P(x). Das x in Q(x) ist <strong>frei</strong>! Erst ∀x(P(x) ∧ Q(x)) deckt beide Seiten.</div>
+        </div>
+
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Syntax-Checkliste</h4>
+          <pre class="code">☐ Wohlgeformt? Arität jedes Prädikats / jeder Funktion korrekt?
+☐ Terme: nur Variablen, Konstanten, Funktionsterme?
+☐ Formeln: Atome oder Kombination mit ¬ ∧ ∨ → ↔ ∀ ∃?
+☐ Freie Variablen: kein Quantor drüber?
+☐ Gebundene Variablen: ∀ oder ∃ direkt drüber, innerhalb der Reichweite?
+☐ Geschlossen: Menge der freien Variablen leer?</pre>
+
+          <h4>Variable-Tracking beim Lesen (links → rechts)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Du liest …</th><th>Was passiert</th></tr></thead>
+            <tbody>
+              <tr><td>∀x oder ∃x</td><td>x wird ab jetzt (bis Ende der Reichweite) gebunden</td></tr>
+              <tr><td>x (ohne aktiven Quantor)</td><td>x ist an dieser Stelle frei</td></tr>
+              <tr><td>schließende Klammer des Quantors</td><td>Reichweite endet — x danach wieder „frei" möglich</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Substitution</h4>
+          <pre class="code">F[x:=t]  = "ersetze jedes freie x in F durch t"
+
+Vor dem Ersetzen prüfen:
+  Kommt eine Variable aus t in F gebunden vor?
+  → JA:  Quantor umbenennen, DANN substituieren (Capture vermeiden!)
+  → NEIN: direkt ersetzen</pre>
+
+          <h4>Häufige Fehler</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Fehler</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>Gebunden mit Frei verwechselt</td><td>Jeder Quantor bindet — pro Vorkommen einzeln prüfen!</td></tr>
+              <tr><td>Variable-Capture ignoriert</td><td>Umbenennen, wenn Ziel-Variable gebunden würde</td></tr>
+              <tr><td>Arität falsch</td><td>Funktionen &amp; Prädikate: Argumentzahl checken</td></tr>
+              <tr><td>Quantor-Scope ignoriert</td><td>∀x und ∃x binden nur innerhalb ihrer eigenen Klammer</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wie viele freie Variablen hat die Formel
+              (∀x(P(x)) ∨ ∃y(Q(y,z))) ∧ R(x)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Frei sind z (nie gebunden) und das zweite x in R(x) (liegt außerhalb
+              der ∀x-Reichweite). Macht <strong>2</strong> freie Variablen: {x, z}.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="x">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welche Variable kommt in F = (∀x(P(x)) ∨ ∃y(Q(y,z)))
+              ∧ R(x) sowohl gebunden als auch frei vor (an verschiedenen Stellen)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Variable …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>x</strong> — in P(x) ist es durch ∀x gebunden, in R(x) liegt
+              es außerhalb der Reichweite von ∀x und ist frei.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Sprache: f ist einstellig. Welcher Term ist
+              wohlgeformt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">f(c, x)</button>
+              <button class="quiz-choice" type="button" data-correct>f(f(c))</button>
+              <button class="quiz-choice" type="button">f(a, b)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>f(f(c)) ist korrekt: außen bekommt f genau ein Argument (f(c)), innen
+              bekommt f ebenfalls genau ein Argument (c). Die anderen beiden geben f zwei Argumente — verboten bei
+              einstelligem f.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>F = ∀y P(x,y). Was ist F[x:=y] korrekt (nach nötigem
+              Umbenennen)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">∀y P(y,y)</button>
+              <button class="quiz-choice" type="button" data-correct>∀w P(y,w)</button>
+              <button class="quiz-choice" type="button">∀y P(x,y) (unverändert)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>∀y P(y,y) wäre Variable-Capture. Korrekt: erst ∀y P(x,y) → ∀w P(x,w)
+              umbenennen, dann x:=y einsetzen → ∀w P(y,w).</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="geschlossen|geschlossene formel|satz|sentence">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie nennt man eine Formel ohne freie Variablen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Eine solche Formel heißt <strong>geschlossen</strong> (oder Satz /
+              Sentence). Nur geschlossene Formeln haben unabhängig von einer Belegung einen festen Wahrheitswert.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2025: Sprache mit P zweistellig, Q
+              einstellig. Formel: ∃x(P(x,y)) ∧ ∀z(Q(z)). Wie viele verschiedene freie Variablen hat diese Formel
+              insgesamt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>∃x(P(x,y)): x ist gebunden, y ist frei. ∀z(Q(z)): z ist gebunden.
+              Einzige freie Variable: <strong>y</strong> → Antwort <strong>1</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🎓 Klausur 2025: Sei F = P(x) ∧ ∃x Q(x). Ist die
+              erste Variable x (in P(x)) durch das ∃x gebunden?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, weil beide x heißen</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — sie liegt außerhalb der Reichweite von ∃x</button>
+              <button class="quiz-choice" type="button">Nur wenn Klammern fehlen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Reichweite von ∃x ist nur „Q(x)". Das x in P(x) steht davor und
+              außerhalb dieser Reichweite — es bleibt <strong>frei</strong>, obwohl weiter rechts ein Quantor mit
+              demselben Namen existiert.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="12-resolution-tseitin.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Resolution &amp; Tseitin</div>
+        </a>
+        <a class="next" href="14-modelle-praenex.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Modelle &amp; Pränex-Normalform</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resolution &amp; Tseitin · P7 LDS</title>
+<meta name="description" content="Unerfüllbarkeit beweisen wie ein SAT-Solver: die Resolutionsregel an Klauseln als Mengen von Literalen, die komplette Klausuraufgabe SoSe 2025 (Aufgabe 6b, 7 Klauseln bis zur leeren Klausel) durchgerechnet, plus die Tseitin-Transformation gegen exponentielle KNF-Blowups." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Resolutionsregel</a>
+      <a href="#rechnen">Klausuraufgabe</a>
+      <a href="#tseitin">Tseitin</a>
+      <a href="#check">Wissenscheck</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Kursübersicht</a> › Thema 12</div>
+    <span class="th-icon">🧩</span>
+    <h1>Resolution &amp; Tseitin</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 11</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Die Resolutionsregel</a></li>
+        <li><a href="#rechnen">Klausuraufgabe: 7 Klauseln, 5 Schritte</a></li>
+        <li><a href="#tseitin">Tseitin-Transformation</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Du hast eine Formel in <strong>KNF</strong> (eine UND-Verknüpfung von Klauseln, jede
+           Klausel eine ODER-Verknüpfung von Literalen) und willst zeigen: <strong>Das geht nie gleichzeitig alles
+           auf — die Formel ist unerfüllbar.</strong> Die Resolution ist dafür ein einziges, stur wiederholbares
+           Werkzeug: Du kombinierst immer wieder zwei Klauseln, die sich in genau einem Punkt widersprechen, zu
+           einer neuen, kürzeren Klausel. Landest du irgendwann bei der <strong>leeren Klausel</strong> — einer
+           Klausel ganz ohne Literale, die also niemals wahr sein kann — hast du deinen Widerspruch bewiesen.
+           Und weil Resolution nur auf Klauseln funktioniert, brauchst du für <em>beliebige</em> Formeln vorher
+           noch ein zweites Werkzeug: die <strong>Tseitin-Transformation</strong>, die jede Formel platzsparend in
+           Klauselform bringt.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du ermittelst in einem Kriminalfall und sammelst Hinweiszettel. Jeder Zettel ist eine
+             <strong>Klausel</strong>: eine Liste von Verdächtigen, verbunden mit ODER — <em>mindestens einer</em>
+             davon war's. Zettel 1: „Es war <strong>Anna</strong> ODER <strong>Ben</strong>." Zettel 2: „Es war
+             <strong>NICHT Anna</strong> ODER es war <strong>Clara</strong>." Was folgt daraus, ganz ohne dass du
+             weißt, ob Anna es nun war oder nicht? War es Anna nicht — dann sagt Zettel 1: Ben war's. War es Anna
+             doch — dann sagt Zettel 2: Clara war's. <strong>In jedem Fall gilt: „Es war Ben ODER Clara."</strong>
+             Genau das ist eine Resolution: Zwei Zettel mit einem direkten Widerspruch (Anna / NICHT Anna)
+             verschmelzen zu einem neuen, kürzeren Zettel. Sammelst du genug solcher Zettel und landest irgendwann
+             bei einem <strong>komplett leeren Zettel</strong> (kein Verdächtiger mehr übrig, aber trotzdem „einer
+             davon war's" behauptet) — dann können deine ursprünglichen Annahmen unmöglich alle gleichzeitig
+             stimmen. Genau das bedeutet <strong>unerfüllbar</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die Resolutionsregel</h2>
+
+        <div class="callout callout-info">
+          <div class="c-title">Begriffe: Literal, Klausel, Klauselmenge</div>
+          <p>Ein <strong>Literal</strong> ist eine Variable oder ihre Negation: <code>x</code> oder <code>¬x</code>.
+             Eine <strong>Klausel</strong> ist eine ODER-Verknüpfung von Literalen, geschrieben als
+             <strong>Menge</strong> von Literalen: <code>{a, ¬d}</code> steht für <code>a ∨ ¬d</code>. Eine Formel
+             in <strong>KNF</strong> ist dann eine UND-Verknüpfung solcher Klauseln — man schreibt sie einfach als
+             <strong>Menge von Klauseln</strong>. Weil Klauseln Mengen sind, gilt: Reihenfolge egal, und Duplikate
+             fallen automatisch weg (<code>a∨a∨b</code> ist dieselbe Klausel wie <code>a∨b</code>).</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Die Resolutionsregel</div>
+          <span class="formula">(C ∨ a) &nbsp;,&nbsp; (D ∨ ¬a) &nbsp;⊢&nbsp; (C ∨ D)</span>
+          <p><strong>C</strong> und <strong>D</strong> stehen für beliebige (auch leere) Rest-Klauseln,
+             <strong>a</strong> ist ein einzelnes Literal. Enthalten zwei Klauseln ein <strong>komplementäres
+             Literalpaar</strong> (a und ¬a), werden beide gestrichen und die restlichen Literale beider Klauseln
+             zur neuen Klausel — der <strong>Resolvente</strong> — vereinigt (als Menge, Duplikate verschmelzen).</p>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Nicht verwechseln: C/D (Rest-Klausel) vs. das Literal „d"</div>
+          <p>In der Regel oben sind <strong>C</strong> und <strong>D</strong> Platzhalter für beliebige
+             Rest-Klauseln (großgeschrieben, mit Klammern). Im Klausurbeispiel weiter unten heißt zufällig
+             <em>eine der Variablen</em> ebenfalls „d" (kleingeschrieben, ein einzelnes Literal) — das hat
+             begrifflich nichts miteinander zu tun. Buchstaben sind hier einfach knapp.</p>
+        </div>
+
+        <!-- SVG 1: Resolutionsregel abstrakt + Mini-Beispiel -->
+        <figure class="diagram">
+          <div class="diagram-title">Wie zwei Klauseln zu einer Resolvente verschmelzen</div>
+          <svg viewBox="0 0 700 300" width="700" role="img" aria-label="Oben: abstrakte Resolutionsregel C-oder-a und D-oder-nicht-a ergeben C-oder-D. Unten: konkretes Beispiel p-oder-q und nicht-p-oder-r ergeben q-oder-r.">
+            <defs>
+              <marker id="arr-res1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+
+              <!-- Abstrakt -->
+              <text x="20" y="24" class="svg-soft" font-size="11" font-weight="700">Allgemein:</text>
+              <rect x="40" y="34" width="150" height="46" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="115" y="55" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">C ∨ a</text>
+              <text x="115" y="70" text-anchor="middle" fill="#e0483d" font-size="11">a wird gestrichen</text>
+
+              <rect x="510" y="34" width="150" height="46" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="585" y="55" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">D ∨ ¬a</text>
+              <text x="585" y="70" text-anchor="middle" fill="#e0483d" font-size="11">¬a wird gestrichen</text>
+
+              <text x="350" y="60" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="16">✕</text>
+              <line x1="190" y1="57" x2="330" y2="57" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <line x1="370" y1="57" x2="510" y2="57" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+              <line x1="115" y1="80" x2="290" y2="130" stroke="#12b28c" stroke-width="1.5" marker-end="url(#arr-res1)"/>
+              <line x1="585" y1="80" x2="410" y2="130" stroke="#12b28c" stroke-width="1.5" marker-end="url(#arr-res1)"/>
+
+              <rect x="280" y="132" width="140" height="42" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="350" y="158" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="13">C ∨ D  (Resolvente)</text>
+
+              <!-- Trennlinie -->
+              <line x1="10" y1="192" x2="690" y2="192" stroke="#8a94a6" stroke-width="1" stroke-dasharray="6 5"/>
+
+              <!-- Konkret -->
+              <text x="20" y="212" class="svg-soft" font-size="11" font-weight="700">Konkretes Beispiel:</text>
+              <rect x="60" y="222" width="130" height="40" rx="8" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="2"/>
+              <text x="125" y="247" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">p ∨ q</text>
+
+              <rect x="490" y="222" width="150" height="40" rx="8" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="2"/>
+              <text x="565" y="247" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">¬p ∨ r</text>
+
+              <text x="350" y="248" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="14">p / ¬p ✕</text>
+
+              <line x1="125" y1="262" x2="300" y2="285" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arr-res1)"/>
+              <line x1="565" y1="262" x2="400" y2="285" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arr-res1)"/>
+
+              <rect x="290" y="284" width="120" height="14" rx="4" fill="none"/>
+              <text x="350" y="296" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="13">q ∨ r</text>
+            </g>
+          </svg>
+          <figcaption>Oben: die allgemeine Regel — a und ¬a heben sich auf, der Rest beider Klauseln bleibt übrig. Unten: dieselbe Regel an einem konkreten Beispiel, resolviert über p.</figcaption>
+        </figure>
+
+        <h3>Warum das korrekt ist</h3>
+        <p>Kurzer Beweis, warum <code>C∨D</code> aus <code>C∨a</code> und <code>D∨¬a</code> folgt: Entweder
+           <strong>a ist wahr</strong> — dann muss wegen <code>D∨¬a</code> (¬a ist ja falsch) <code>D</code> wahr
+           sein, also gilt erst recht <code>C∨D</code>. Oder <strong>a ist falsch</strong> — dann muss wegen
+           <code>C∨a</code> schon <code>C</code> wahr sein, also gilt wieder <code>C∨D</code>. In beiden Fällen
+           stimmt <code>C∨D</code> — die Resolvente ist eine <strong>logische Konsequenz</strong> der beiden
+           Ausgangsklauseln, egal welchen Wahrheitswert a hat.</p>
+
+        <div class="factgrid">
+          <div class="fact"><b>Klausel = Menge</b><span>von Literalen, ODER-verknüpft</span></div>
+          <div class="fact"><b>1 Variable</b><span>pro Resolutionsschritt</span></div>
+          <div class="fact"><b>Duplikate</b><span>verschmelzen automatisch</span></div>
+          <div class="fact"><b>Ziel: ⊥ (∅)</b><span>leere Klausel = Widerspruch</span></div>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Spezialfall: zwei Einheitsklauseln</div>
+          <p>Wenn <code>a</code> und <code>¬a</code> selbst schon als eigene Klauseln (Einheitsklauseln, nur ein
+             Literal) vorliegen, ist <code>C</code> und <code>D</code> jeweils leer — die Resolvente ist direkt
+             die <strong>leere Klausel ⊥</strong>. Genau so endet auch die Klausuraufgabe weiter unten: Der letzte
+             Schritt resolviert die Einheitsklauseln <code>a</code> und <code>¬a</code> direkt zu ⊥.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Klausuraufgabe: 7 Klauseln, 5 Schritte</h2>
+        <p class="lead-in">🎓 Klausur SoSe 2025, Aufgabe 6b (5 Punkte). Wir rechnen sie <strong>komplett
+           durch</strong> — genau so, wie du es in der Klausur zu Papier bringen würdest.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Zeige mithilfe der Resolutionsregel <code>(C∨a), (D∨¬a) ⊢ (C∨D)</code>, dass folgende Klauselmenge
+             <strong>unerfüllbar</strong> ist:</p>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Klausel</th><th>Inhalt</th></tr></thead>
+            <tbody>
+              <tr><td><strong>C1</strong></td><td>a ∨ d</td></tr>
+              <tr><td><strong>C2</strong></td><td>a ∨ b ∨ c ∨ d</td></tr>
+              <tr><td><strong>C3</strong></td><td>b ∨ ¬d</td></tr>
+              <tr><td><strong>C4</strong></td><td>¬b ∨ e</td></tr>
+              <tr><td><strong>C5</strong></td><td>¬b ∨ ¬e</td></tr>
+              <tr><td><strong>C6</strong></td><td>¬a ∨ f</td></tr>
+              <tr><td><strong>C7</strong></td><td>¬a ∨ ¬f</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <strong>Startpunkt suchen — welche Variable ist am einfachsten loszuwerden?</strong><br>
+            Zähle, wie oft jede Variable vorkommt: <code>d</code> nur in C1 &amp; C3, <code>e</code> nur in C4
+            &amp; C5, <code>f</code> nur in C6 &amp; C7. Das sind die einfachsten Startpunkte — dort gibt es
+            jeweils nur genau einen möglichen Resolutionspartner.
+          </li>
+          <li>
+            <strong>C8 = a ∨ b</strong> — Resolvente aus <strong>C1</strong> (a∨d) und <strong>C3</strong> (b∨¬d),
+            resolviert über <strong>d</strong>. d und ¬d fallen weg, a und b bleiben übrig.
+          </li>
+          <li>
+            <strong>C9 = ¬b</strong> — Resolvente aus <strong>C4</strong> (¬b∨e) und <strong>C5</strong> (¬b∨¬e),
+            resolviert über <strong>e</strong>. e und ¬e fallen weg, ¬b bleibt (aus beiden Klauseln, verschmilzt
+            zu einem einzigen ¬b).
+          </li>
+          <li>
+            <strong>C10 = a</strong> — Resolvente aus <strong>C8</strong> (a∨b) und <strong>C9</strong> (¬b),
+            resolviert über <strong>b</strong>. b und ¬b fallen weg, nur a bleibt übrig.
+          </li>
+          <li>
+            <strong>C11 = ¬a</strong> — Resolvente aus <strong>C6</strong> (¬a∨f) und <strong>C7</strong> (¬a∨¬f),
+            resolviert über <strong>f</strong>. f und ¬f fallen weg, ¬a bleibt (aus beiden Klauseln, verschmilzt).
+          </li>
+          <li>
+            <strong>C12 = ⊥</strong> — Resolvente aus <strong>C10</strong> (a) und <strong>C11</strong> (¬a),
+            resolviert über <strong>a</strong>. Beide Klauseln bestehen nur aus dem einen Literal — es bleibt
+            <strong>nichts</strong> übrig: die leere Klausel. <strong>Widerspruch gefunden — die Klauselmenge ist
+            unerfüllbar. ✅</strong>
+          </li>
+        </ol>
+
+        <!-- SVG 2: Resolutionsbaum -->
+        <figure class="diagram">
+          <div class="diagram-title">Der komplette Resolutionsbaum: von 7 Klauseln zur leeren Klausel</div>
+          <svg viewBox="0 0 900 400" width="900" role="img" aria-label="Baumdiagramm des Resolutionsbeweises: C1 bis C7 oben, darunter C8, C9, C11, dann C10, ganz unten C12 als leere Klausel">
+            <defs>
+              <marker id="arr-tree" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+
+              <!-- Row 0: gegebene Klauseln -->
+              <rect x="10" y="30" width="90" height="34" rx="6" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="55" y="52" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">C1: a∨d</text>
+
+              <rect x="112" y="30" width="90" height="34" rx="6" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="157" y="52" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">C3: b∨¬d</text>
+
+              <rect x="214" y="30" width="90" height="34" rx="6" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="259" y="52" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">C4: ¬b∨e</text>
+
+              <rect x="316" y="30" width="95" height="34" rx="6" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="363" y="52" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">C5: ¬b∨¬e</text>
+
+              <rect x="423" y="30" width="90" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="468" y="52" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">C6: ¬a∨f</text>
+
+              <rect x="525" y="30" width="95" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="572" y="52" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">C7: ¬a∨¬f</text>
+
+              <rect x="650" y="30" width="185" height="34" rx="6" fill="#8a94a6" fill-opacity="0.10" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <text x="742" y="47" text-anchor="middle" class="svg-soft" font-size="11">C2: a∨b∨c∨d</text>
+              <text x="742" y="60" text-anchor="middle" fill="#e0483d" font-size="10" font-weight="700">wird NICHT gebraucht!</text>
+
+              <!-- Row 1: C8, C9, C11 -->
+              <line x1="55" y1="64" x2="106" y2="130" stroke="#2f6df6" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <line x1="157" y1="64" x2="106" y2="130" stroke="#2f6df6" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <text x="106" y="102" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="11">über d</text>
+              <rect x="61" y="130" width="90" height="34" rx="6" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="106" y="152" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">C8: a∨b</text>
+
+              <line x1="259" y1="64" x2="311" y2="130" stroke="#12b28c" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <line x1="363" y1="64" x2="311" y2="130" stroke="#12b28c" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <text x="311" y="102" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="11">über e</text>
+              <rect x="266" y="130" width="90" height="34" rx="6" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="311" y="152" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="12">C9: ¬b</text>
+
+              <line x1="468" y1="64" x2="520" y2="130" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <line x1="572" y1="64" x2="520" y2="130" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <text x="520" y="102" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="11">über f</text>
+              <rect x="475" y="130" width="90" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.22" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="520" y="152" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="12">C11: ¬a</text>
+
+              <!-- Row 2: C10 -->
+              <line x1="106" y1="164" x2="208" y2="230" stroke="#f5810b" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <line x1="311" y1="164" x2="208" y2="230" stroke="#f5810b" stroke-width="1.5" marker-end="url(#arr-tree)"/>
+              <text x="208" y="202" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="11">über b</text>
+              <rect x="163" y="230" width="90" height="34" rx="6" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b" stroke-width="2"/>
+              <text x="208" y="252" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="12">C10: a</text>
+
+              <!-- Row 3: C12 -->
+              <line x1="208" y1="264" x2="364" y2="330" stroke="#e0483d" stroke-width="2" marker-end="url(#arr-tree)"/>
+              <line x1="520" y1="164" x2="364" y2="330" stroke="#e0483d" stroke-width="2" marker-end="url(#arr-tree)"/>
+              <text x="400" y="300" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="11">über a</text>
+              <rect x="319" y="330" width="90" height="38" rx="6" fill="#e0483d" fill-opacity="0.22" stroke="#e0483d" stroke-width="2.5"/>
+              <text x="364" y="354" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="13">C12 = ⊥</text>
+            </g>
+          </svg>
+          <figcaption>Der Beweis fächert von 7 gegebenen Klauseln zu zwei Zwischenklauseln (C8, C9, C11) auf, verschmilzt zu C10 = a, und trifft am Ende auf C11 = ¬a — der direkte Widerspruch C12 = ⊥. C2 bleibt komplett ungenutzt.</figcaption>
+        </figure>
+
+        <pre class="code">C8  = a∨b     (C1,C3 — Resolvent über d)
+C9  = ¬b      (C4,C5 — Resolvent über e)
+C10 = a       (C8,C9 — Resolvent über b)
+C11 = ¬a      (C6,C7 — Resolvent über f)
+C12 = ⊥       (C10,C11 — Resolvent über a)   →  Widerspruch, F unerfüllbar ✅</pre>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Die Strategie hinter dem Beweis</div>
+          <p>Die Reihenfolge ist kein Zufall: <code>d</code>, <code>e</code> und <code>f</code> kommen
+             <strong>jeweils nur in genau zwei Klauseln</strong> vor — dort gibt es keine Wahlmöglichkeit, welchen
+             Partner man nimmt. Erst wenn diese „einfachen" Variablen eliminiert sind, bleiben <code>a</code> und
+             <code>b</code> übrig, die auch in <code>C2</code> vorkommen — aber <code>C2</code> wird dafür gar
+             nicht gebraucht. Praktischer Tipp fürs Klausurschreiben: <strong>Zähle zuerst, wie oft jede Variable
+             vorkommt, und starte bei den seltensten.</strong></p>
+        </div>
+      </section>
+
+      <!-- ===== TSEITIN ===== -->
+      <section id="tseitin" class="reveal">
+        <h2>Tseitin-Transformation</h2>
+        <p class="lead-in">Resolution funktioniert nur auf Klauseln. Aber die meisten Formeln, die dir begegnen,
+           sind keine KNF — sie haben tief verschachtelte ∧, ∨ und ¬. Die klassische Methode, jede Formel per
+           Distributivgesetz auszumultiplizieren, kann dabei <strong>exponentiell aufblähen</strong>. Die
+           Tseitin-Transformation umgeht das, indem sie für jeden Teilausdruck eine neue Hilfsvariable einführt.</p>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Das Problem: naive KNF-Umformung kann explodieren</div>
+          <p>Bei tief verschachtelten Formeln (viele ODER über UND, oder umgekehrt) verdoppelt jede
+             Distributions-Anwendung im schlimmsten Fall die Anzahl der Klauseln. Für eine Formel mit n
+             verschachtelten Ebenen kann das zu <strong>2ⁿ Klauseln</strong> führen — für n=30 astronomisch groß,
+             obwohl die Ursprungsformel winzig war.</p>
+        </div>
+
+        <h3>Das Rezept</h3>
+        <ol class="steps">
+          <li><strong>Formelbaum zeichnen:</strong> Blätter sind die ursprünglichen Variablen, innere Knoten sind
+              die Operatoren (∧, ∨, ¬).</li>
+          <li><strong>Neue Variable pro innerem Knoten:</strong> Für jeden Teilausdruck (jeden inneren Knoten)
+              führst du eine frische Hilfsvariable <code>y₁, y₂, …</code> ein, die „diesen Teilbaum ersetzt".</li>
+          <li><strong>Äquivalenz als Klauseln:</strong> Für jede Hilfsvariable schreibst du <code>y ↔ (Teilformel)</code>
+              als 2–3 Klauseln auf (Tabelle unten).</li>
+          <li><strong>Zusammensetzen:</strong> Die Ergebnisformel ist die Konjunktion aus „die Top-Variable ist
+              wahr" und allen Äquivalenz-Klauseln — das ist bereits KNF, fertig für die Resolution.</li>
+          <li><strong>Größe:</strong> Jeder Knoten bringt konstant viele, konstant lange Klauseln — die
+              Gesamtgröße wächst nur <strong>linear</strong> mit der Formelgröße.</li>
+        </ol>
+
+        <h3>Baukasten: Äquivalenz → Klauseln</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Hilfsvariable steht für …</th><th>… wird zu diesen Klauseln</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>y ↔ ¬a</code></td>
+              <td><code>(y ∨ a) ∧ (¬y ∨ ¬a)</code></td>
+            </tr>
+            <tr>
+              <td><code>y ↔ (a ∧ b)</code></td>
+              <td><code>(¬y ∨ a) ∧ (¬y ∨ b) ∧ (y ∨ ¬a ∨ ¬b)</code></td>
+            </tr>
+            <tr>
+              <td><code>y ↔ (a ∨ b)</code></td>
+              <td><code>(¬y ∨ a ∨ b) ∧ (y ∨ ¬a) ∧ (y ∨ ¬b)</code></td>
+            </tr>
+          </tbody>
+        </table></div>
+        <p><small>Jede Zeile hat höchstens 3 Literale — egal wie groß die Gesamtformel ist. Das ist der Trick
+           gegen den exponentiellen Blowup.</small></p>
+
+        <h3>Eigenes Beispiel: F = (p ∧ q) ∨ ¬r</h3>
+
+        <!-- SVG 3: Tseitin-Baum -->
+        <figure class="diagram">
+          <div class="diagram-title">Formelbaum mit Hilfsvariablen für F = (p∧q) ∨ ¬r</div>
+          <svg viewBox="0 0 560 240" width="560" role="img" aria-label="Baumdiagramm: Wurzel y3 (Oder-Verknuepfung) hat zwei Kinder, y1 (Und-Verknuepfung von p und q) und y2 (Negation von r)">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="220" y="16" width="120" height="38" rx="8" fill="#e0483d" fill-opacity="0.18" stroke="#e0483d" stroke-width="2"/>
+              <text x="280" y="35" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="12">y3 ↔ (y1∨y2)</text>
+              <text x="280" y="48" text-anchor="middle" class="svg-soft" font-size="10">Top: y3 wird als wahr gefordert</text>
+
+              <line x1="250" y1="54" x2="140" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="310" y1="54" x2="420" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <rect x="80" y="110" width="120" height="38" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="140" y="129" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">y1 ↔ (p∧q)</text>
+              <text x="140" y="142" text-anchor="middle" class="svg-soft" font-size="10">∧-Knoten</text>
+
+              <rect x="360" y="110" width="120" height="38" rx="8" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="2"/>
+              <text x="420" y="129" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="12">y2 ↔ ¬r</text>
+              <text x="420" y="142" text-anchor="middle" class="svg-soft" font-size="10">¬-Knoten</text>
+
+              <line x1="115" y1="148" x2="90" y2="190" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="165" y1="148" x2="190" y2="190" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="420" y1="148" x2="420" y2="190" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <circle cx="90" cy="205" r="20" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6"/>
+              <text x="90" y="210" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">p</text>
+
+              <circle cx="190" cy="205" r="20" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6"/>
+              <text x="190" y="210" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">q</text>
+
+              <circle cx="420" cy="205" r="20" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6"/>
+              <text x="420" y="210" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">r</text>
+            </g>
+          </svg>
+          <figcaption>Drei innere Knoten (∧, ¬, ∨) → drei Hilfsvariablen y1, y2, y3. Jede bekommt ihre eigene Äquivalenz-Klauselgruppe aus dem Baukasten oben.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Vollständige Transformation</div>
+          <p>
+            Teilformeln: <code>t1 = p∧q</code>, &nbsp; <code>t2 = ¬r</code>, &nbsp; <code>t3 = t1∨t2 = F</code>
+            (Top-Knoten)<br>
+            Neue Variablen: <code>y1</code> für t1, <code>y2</code> für t2, <code>y3</code> für t3<br><br>
+            <code>y1 ↔ (p∧q):</code> &nbsp; (¬y1∨p) ∧ (¬y1∨q) ∧ (y1∨¬p∨¬q)<br>
+            <code>y2 ↔ ¬r:</code> &nbsp;&nbsp;&nbsp;&nbsp; (y2∨r) ∧ (¬y2∨¬r)<br>
+            <code>y3 ↔ (y1∨y2):</code> (¬y3∨y1∨y2) ∧ (y3∨¬y1) ∧ (y3∨¬y2)<br><br>
+            <strong>Ergebnis (KNF):</strong> y3 ∧ (¬y1∨p) ∧ (¬y1∨q) ∧ (y1∨¬p∨¬q) ∧ (y2∨r) ∧ (¬y2∨¬r) ∧
+            (¬y3∨y1∨y2) ∧ (y3∨¬y1) ∧ (y3∨¬y2)
+          </p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">9 Klauseln statt exponentieller Blowup</div>
+          <p>Für eine Formel mit nur 3 Variablen und 3 Operatoren stehen hier 9 kleine Klauseln (jede ≤ 3
+             Literale) — bei ausmultiplizierter KNF wäre es hier noch überschaubar, aber bei tief verschachtelten
+             Formeln würde die direkte Methode explodieren, während Tseitin <strong>immer linear</strong> bleibt:
+             ein konstanter Klausel-Block pro Knoten im Formelbaum.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man darf auf einer Variablen resolvieren, auch wenn sie nur versteckt in einer Konjunktion auftaucht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Resolution funktioniert nur auf <strong>vollständigen Literalen innerhalb von Klauseln</strong> (Disjunktionen). (x∨y) und (¬x∨z) resolvieren zu (y∨z) — aber (x∧y) ist gar keine Klausel, da hilft nur vorherige Tseitin-Transformation.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Teilen zwei Klauseln mehrere komplementäre Literalpaare, resolviert man einfach auf allen gleichzeitig.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Pro Resolutionsschritt wird auf <strong>genau einer</strong> Variablen resolviert. Teilen sich zwei Klauseln mehrere komplementäre Paare (z. B. ¬x1∨¬x2 und x1∨x2), entsteht beim Resolvieren über nur eine Variable oft eine <strong>tautologische</strong> (nutzlose) Klausel — dann lieber einen anderen Partner wählen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Alle gegebenen Klauseln müssen im Beweis irgendwann verwendet werden.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nein — wie <strong>C2</strong> im Klausurbeispiel oben zeigt, können einzelne Klauseln komplett ungenutzt bleiben. Ein Resolutionsbeweis braucht nur <strong>einen</strong> gültigen Pfad zur leeren Klausel, nicht den Verbrauch aller Klauseln.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Resolvente kann doppelte Literale enthalten, z. B. (a∨a∨b).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Klauseln sind <strong>Mengen</strong> von Literalen — Duplikate verschmelzen automatisch. (a∨a∨b) ist exakt dieselbe Klausel wie (a∨b).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man sollte jede Formel sofort per Tseitin transformieren, bevor man überhaupt versucht, direkt KNF herzustellen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Für kleine, flache Formeln ist die direkte KNF-Umformung (De Morgan + Distributivgesetz) oft schneller und übersichtlicher. Tseitin lohnt sich erst, wenn die direkte Umformung exponentiell aufblähen würde (tief verschachtelte Formeln).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Tseitin-transformierte Formel F' hat exakt dieselben Modelle wie die Originalformel F.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>F' ist nur <strong>erfüllbarkeitsäquivalent</strong> zu F (equisatisfiable), nicht logisch äquivalent — F' lebt in einem größeren Variablenraum (inklusive der Hilfsvariablen y_i). Für die Resolution reicht das völlig: F ist erfüllbar genau dann, wenn F' erfüllbar ist.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Resolutionsregel</h4>
+          <pre class="code">(C ∨ a) ,  (D ∨ ¬a)  ⊢  (C ∨ D)
+
+Klauseln = Mengen von Literalen (Duplikate verschmelzen, Reihenfolge egal)
+Pro Schritt: genau EIN komplementäres Literalpaar (a, ¬a) streichen
+Ziel: leere Klausel ⊥ (= ∅) erreichen → Klauselmenge unerfüllbar
+Kein ⊥ mehr erreichbar → Klauselmenge erfüllbar</pre>
+
+          <h4>Resolutions-Rezept</h4>
+          <ul>
+            <li>☐ Klauseln als Mengen von Literalen notieren</li>
+            <li>☐ Variablen zählen — bei den seltensten (Einheitsklauseln zuerst!) starten</li>
+            <li>☐ Zwei Klauseln mit komplementärem Literalpaar suchen, darüber resolvieren</li>
+            <li>☐ Resolvente zur Klauselmenge hinzufügen, wiederholen</li>
+            <li>☐ Fertig, sobald ⊥ auftaucht — oder keine neuen Resolventen mehr möglich sind</li>
+          </ul>
+
+          <h4>Klausuraufgabe im Überblick (SoSe 2025, 6b)</h4>
+          <pre class="code">C1=a∨d   C2=a∨b∨c∨d(unbenutzt!)   C3=b∨¬d   C4=¬b∨e
+C5=¬b∨¬e   C6=¬a∨f   C7=¬a∨¬f
+
+C8=a∨b (C1,C3 üb. d)   C9=¬b (C4,C5 üb. e)   C11=¬a (C6,C7 üb. f)
+C10=a (C8,C9 üb. b)
+C12=⊥ (C10,C11 üb. a)  →  unerfüllbar ✅</pre>
+
+          <h4>Tseitin-Baukasten</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Äquivalenz</th><th>Klauseln</th></tr></thead>
+            <tbody>
+              <tr><td>y ↔ ¬a</td><td>(y∨a) ∧ (¬y∨¬a)</td></tr>
+              <tr><td>y ↔ (a∧b)</td><td>(¬y∨a) ∧ (¬y∨b) ∧ (y∨¬a∨¬b)</td></tr>
+              <tr><td>y ↔ (a∨b)</td><td>(¬y∨a∨b) ∧ (y∨¬a) ∧ (y∨¬b)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Resolution</strong> braucht Klauseln (Disjunktionen) — bei beliebigen Formeln erst Tseitin oder direkte KNF-Umformung</li>
+            <li><strong>1 Variable pro Schritt</strong> — nicht mehrere komplementäre Paare gleichzeitig streichen</li>
+            <li><strong>Nicht jede Klausel muss verwendet werden</strong> — Distraktoren sind erlaubt</li>
+            <li><strong>Tseitin = linear</strong>, aber nur erfüllbarkeitsäquivalent (nicht logisch äquivalent) zur Originalformel</li>
+            <li>Strategie: zuerst Variablen zählen, bei den seltensten (v. a. Einheitsklauseln) anfangen</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Welche Regel erlaubt es, aus den Klauseln (C∨a) und (D∨¬a) die neue Klausel (C∨D) abzuleiten?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Resolutionsregel</button>
+              <button class="quiz-choice" type="button">Modus Ponens</button>
+              <button class="quiz-choice" type="button">Tseitin-Transformation</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Resolutionsregel</strong>: Enthalten zwei Klauseln ein komplementäres Literalpaar (a und ¬a), werden beide gestrichen und die restlichen Literale zur neuen Klausel (Resolvente) vereinigt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="5">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🎓 Klausur 2025: Im Beweis der Unerfüllbarkeit von C1–C7 (Aufgabe 6b) werden die Klauseln C8 bis C12 hergeleitet. Wie viele Resolutionsschritte sind das insgesamt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>5</strong> Schritte: C8 (aus C1,C3), C9 (aus C4,C5), C10 (aus C8,C9), C11 (aus C6,C7), C12=⊥ (aus C10,C11). Jeder Schritt ist eine Anwendung der Resolutionsregel.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="d">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Über welche Variable werden C1=(a∨d) und C3=(b∨¬d) resolviert, um C8=(a∨b) zu erhalten?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>d</strong> kommt in C1 positiv und in C3 negativ vor — genau das komplementäre Paar. Die restlichen Literale a (aus C1) und b (aus C3) werden zur Resolvente C8 = a∨b vereinigt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2025: Welche der sieben gegebenen Klauseln C1–C7 wird im Unerfüllbarkeits-Beweis gar nicht benötigt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>C2 = a∨b∨c∨d</button>
+              <button class="quiz-choice" type="button">C5 = ¬b∨¬e</button>
+              <button class="quiz-choice" type="button">C6 = ¬a∨f</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>C2</strong> taucht in keinem der Resolutionsschritte C8–C12 auf — sie ist eine Distraktor-Klausel. Nicht jede gegebene Klausel muss im Beweis verwendet werden!</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">5.</span>In unserem Tseitin-Beispiel F = (p∧q) ∨ ¬r hat der Formelbaum 3 innere Knoten (∧, ¬, ∨). Wie viele neue Hilfsvariablen führt die Tseitin-Transformation ein?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>3</strong>: y1 für p∧q, y2 für ¬r, y3 für die gesamte Formel (y1∨y2). Pro innerem Knoten genau eine neue Variable.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Was bedeutet es, wenn eine Resolution bis zur leeren Klausel ⊥ (∅) führt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Die ursprüngliche Klauselmenge ist unerfüllbar</button>
+              <button class="quiz-choice" type="button">Die ursprüngliche Klauselmenge ist eine Tautologie</button>
+              <button class="quiz-choice" type="button">Es liegt zwangsläufig ein Rechenfehler vor</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die leere Klausel enthält keine Literale, kann also nie erfüllt werden. Wird sie aus der Klauselmenge hergeleitet, ist die gesamte Menge <strong>unerfüllbar</strong> (Widerspruch).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>In welcher Beziehung stehen die Tseitin-transformierte Formel F' und die Originalformel F?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">F' ist logisch äquivalent zu F (exakt dieselben Modelle)</button>
+              <button class="quiz-choice" type="button" data-correct>F' ist erfüllbarkeitsäquivalent zu F, aber nicht unbedingt logisch äquivalent</button>
+              <button class="quiz-choice" type="button">F' und F haben nichts miteinander zu tun</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F' enthält zusätzliche Hilfsvariablen y_i, die es in F nicht gibt — F und F' können also nicht dieselben Modelle über denselben Variablen haben. Aber: F ist genau dann erfüllbar, wenn F' erfüllbar ist (<strong>equisatisfiable</strong>) — für SAT-Solver reicht das völlig aus.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="11-sequenzenkalkuel-al.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Sequenzenkalkül (Aussagenlogik)</div>
+        </a>
+        <a class="next" href="13-praedikatenlogik-syntax.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Prädikatenlogik: Syntax</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

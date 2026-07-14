@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aussagenlogik: Grundlagen · P7 LDS</title>
+<meta name="description" content="Die 5 Junktoren (¬, ∧, ∨, →, ↔), Wahrheitstabellen sicher ausfüllen und entscheiden: erfüllbar, tautologisch oder unerfüllbar? Mit der Klausur-2025-Aufgabe 6a vollständig durchgerechnet." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Junktoren</a>
+      <a href="#eigenschaften">Erfüllbarkeit</a>
+      <a href="#rechnen">Klausuraufgabe</a>
+      <a href="#check">Wissenscheck</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Kursübersicht</a> › Thema 09</div>
+    <span class="th-icon">💡</span>
+    <h1>Aussagenlogik: Grundlagen</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 9</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Die 5 Junktoren</a></li>
+        <li><a href="#eigenschaften">Erfüllbar, Tautologie, unerfüllbar</a></li>
+        <li><a href="#rechnen">Klausuraufgabe 6a durchgerechnet</a></li>
+        <li><a href="#raetsel">Rätsel modellieren</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Aussagenlogik ist das Fundament von ganz P7: Ohne sie funktioniert weder die
+          Prädikatenlogik noch der Sequenzenkalkül. Zum Glück ist die Grundidee simpel — <strong>jede Aussage
+          ist entweder wahr (T/1) oder falsch (F/0)</strong>, nie beides, nie etwas dazwischen. Die Kunst besteht
+          darin, aus einfachen Aussagen (p, q, r, …) über <strong>Junktoren</strong> (¬, ∧, ∨, →, ↔) komplexe
+          Formeln zu bauen — und ihren Wahrheitswert korrekt zu berechnen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du machst ein <strong>Versprechen</strong>: „Wenn es regnet (p), nehme ich einen Schirm mit (q)."
+            Wann ist dieses Versprechen <strong>gebrochen</strong> (= falsch)? Nur in genau einem Fall: Es regnet
+            UND du nimmst keinen Schirm mit. Regnet es dagegen <em>nicht</em>, ist das Versprechen automatisch
+            gehalten — völlig egal, ob du einen Schirm dabei hast oder nicht! Genau das ist die Wahrheitstabelle
+            der Implikation p → q: sie ist nur falsch, wenn p wahr und q falsch ist. In allen anderen drei Fällen
+            ist sie wahr. Das ist die mit Abstand häufigste Fehlerquelle in der Klausur — merk dir dieses Bild.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die 5 Junktoren</h2>
+        <p>Aus einzelnen Aussagen p, q, r, … baust du mit fünf Verknüpfungen (Junktoren) neue Aussagen. Jede
+           hat eine feste Wahrheitstabelle, die du auswendig kennen musst:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>Symbol</th><th>Name</th><th>Wahrheitstabelle</th><th>Bedeutung</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>¬p</strong></td><td>Negation</td><td><code>¬T=F, ¬F=T</code></td><td>NICHT p</td></tr>
+            <tr><td><strong>p ∧ q</strong></td><td>Konjunktion</td><td><code>T∧T=T, sonst F</code></td><td>p UND q (beide müssen gelten)</td></tr>
+            <tr><td><strong>p ∨ q</strong></td><td>Disjunktion</td><td><code>F∨F=F, sonst T</code></td><td>p ODER q (mindestens eines)</td></tr>
+            <tr><td><strong>p → q</strong></td><td>Implikation</td><td><code>nur F wenn p=T,q=F</code></td><td>WENN p, DANN q</td></tr>
+            <tr><td><strong>p ↔ q</strong></td><td>Bikonditional</td><td><code>T wenn p=q</code></td><td>p GENAU DANN, WENN q</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG: Schaltkreis-Analogie für ∧ und ∨ -->
+        <figure class="diagram">
+          <div class="diagram-title">Schaltkreis-Bild: Warum ∧ „Reihenschaltung" und ∨ „Parallelschaltung" ist</div>
+          <svg viewBox="0 0 700 260" width="700" role="img" aria-label="Zwei Schaltkreise: Reihenschaltung mit zwei Schaltern für UND, Parallelschaltung mit zwei Schaltern für ODER">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- AND circuit -->
+              <rect x="10" y="10" width="320" height="230" rx="10" fill="#8b5cf6" fill-opacity="0.07" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="170" y="34" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="15">p ∧ q — Reihenschaltung</text>
+              <text x="170" y="50" text-anchor="middle" class="svg-soft" font-size="11">Lampe leuchtet nur, wenn BEIDE Schalter zu sind</text>
+
+              <circle cx="40" cy="120" r="6" fill="#8a94a6"/>
+              <line x1="40" y1="120" x2="90" y2="120" stroke="#12b28c" stroke-width="3"/>
+              <!-- switch p -->
+              <rect x="90" y="105" width="60" height="30" rx="6" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="2"/>
+              <text x="120" y="125" text-anchor="middle" fill="#12b28c" font-weight="700">p</text>
+              <line x1="150" y1="120" x2="190" y2="120" stroke="#12b28c" stroke-width="3"/>
+              <!-- switch q -->
+              <rect x="190" y="105" width="60" height="30" rx="6" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="2"/>
+              <text x="220" y="125" text-anchor="middle" fill="#12b28c" font-weight="700">q</text>
+              <line x1="250" y1="120" x2="290" y2="120" stroke="#12b28c" stroke-width="3"/>
+              <circle cx="300" cy="120" r="14" fill="#f5810b" fill-opacity="0.35" stroke="#f5810b" stroke-width="2"/>
+              <text x="300" y="124" text-anchor="middle" font-size="14">💡</text>
+              <text x="170" y="200" text-anchor="middle" class="svg-ink" font-size="12">Ein offener Schalter (p=F oder q=F) unterbricht den Strom sofort.</text>
+              <text x="170" y="218" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">→ nur T∧T = T</text>
+
+              <!-- OR circuit -->
+              <rect x="370" y="10" width="320" height="230" rx="10" fill="#2f6df6" fill-opacity="0.07" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="530" y="34" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="15">p ∨ q — Parallelschaltung</text>
+              <text x="530" y="50" text-anchor="middle" class="svg-soft" font-size="11">Lampe leuchtet, wenn MINDESTENS EIN Schalter zu ist</text>
+
+              <circle cx="400" cy="120" r="6" fill="#8a94a6"/>
+              <line x1="400" y1="120" x2="420" y2="120" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="420" y1="90" x2="420" y2="150" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="420" y1="95" x2="450" y2="95" stroke="#12b28c" stroke-width="3"/>
+              <rect x="450" y="80" width="55" height="28" rx="6" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="2"/>
+              <text x="477" y="99" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="12">p</text>
+              <line x1="505" y1="95" x2="540" y2="95" stroke="#12b28c" stroke-width="3"/>
+              <line x1="420" y1="145" x2="450" y2="145" stroke="#12b28c" stroke-width="3"/>
+              <rect x="450" y="131" width="55" height="28" rx="6" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="2"/>
+              <text x="477" y="150" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="12">q</text>
+              <line x1="505" y1="145" x2="540" y2="145" stroke="#12b28c" stroke-width="3"/>
+              <line x1="540" y1="95" x2="540" y2="145" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="540" y1="120" x2="560" y2="120" stroke="#8a94a6" stroke-width="2"/>
+              <circle cx="575" cy="120" r="14" fill="#f5810b" fill-opacity="0.35" stroke="#f5810b" stroke-width="2"/>
+              <text x="575" y="124" text-anchor="middle" font-size="14">💡</text>
+              <text x="530" y="200" text-anchor="middle" class="svg-ink" font-size="12">Der Strom findet einen Weg, sobald EIN Pfad geschlossen ist.</text>
+              <text x="530" y="218" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">→ nur F∨F = F</text>
+            </g>
+          </svg>
+          <figcaption>∧ verhält sich wie zwei Schalter in Reihe (beide müssen zu sein), ∨ wie zwei Schalter parallel (einer reicht).</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">De Morgansche Gesetze — Negation tauscht ∧ und ∨</div>
+          <span class="formula">¬(p ∧ q) ≡ ¬p ∨ ¬q &nbsp;&nbsp;|&nbsp;&nbsp; ¬(p ∨ q) ≡ ¬p ∧ ¬q</span>
+          <p>Merksatz: „Negation tauscht ∧ und ∨." Zusätzlich unverzichtbar: <strong>p → q ≡ ¬p ∨ q</strong>
+             (Implikation auflösen) — brauchst du auf jeder folgenden Seite dieses Kurses wieder.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>p→q</b><span>nur falsch bei T→F</span></div>
+          <div class="fact"><b>¬(p∧q)</b><span>= ¬p ∨ ¬q</span></div>
+          <div class="fact"><b>p→q</b><span>≡ ¬p ∨ q</span></div>
+          <div class="fact"><b>2ⁿ Zeilen</b><span>bei n Variablen</span></div>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz zur Implikation</div>
+          <p>„Aus Wahrem folgt nur Wahres." p → q ist wahr, außer wenn p wahr ist und q trotzdem falsch — dann
+             wurde das Versprechen gebrochen. Ist p schon falsch, ist die Implikation automatisch wahr
+             („<em>ex falso quodlibet</em>" — aus Falschem folgt Beliebiges).</p>
+        </div>
+      </section>
+
+      <!-- ===== EIGENSCHAFTEN ===== -->
+      <section id="eigenschaften" class="reveal">
+        <h2>Erfüllbar, Tautologie, unerfüllbar</h2>
+        <p>Jede Formel lässt sich anhand ihrer kompletten Wahrheitstabelle in genau eine von drei Kategorien
+           einordnen:</p>
+
+        <ul>
+          <li><strong>Erfüllbar:</strong> Es gibt <em>mindestens eine</em> Belegung, die die Formel wahr macht.</li>
+          <li><strong>Unerfüllbar (Kontradiktion):</strong> <em>Keine</em> Belegung macht sie wahr — immer F.</li>
+          <li><strong>Tautologie (allgemeingültig):</strong> <em>Jede</em> Belegung macht sie wahr — immer T.</li>
+        </ul>
+
+        <!-- SVG: Venn-artige Einordnung -->
+        <figure class="diagram">
+          <div class="diagram-title">Wie die drei Kategorien zusammenhängen</div>
+          <svg viewBox="0 0 620 260" width="620" role="img" aria-label="Rechteck aller Formeln, darin ein Kreis für erfüllbare Formeln mit einem kleineren Kreis für Tautologien darin, außerhalb der Bereich der unerfüllbaren Formeln">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="10" y="10" width="600" height="240" rx="12" fill="#8a94a6" fill-opacity="0.06" stroke="#8a94a6"/>
+              <text x="26" y="32" class="svg-soft" font-size="12" font-weight="700">Alle Formeln über p, q, r, …</text>
+
+              <circle cx="230" cy="150" r="105" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <text x="230" y="65" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="13">erfüllbar</text>
+              <text x="150" y="215" class="svg-ink" font-size="11">z. B. p ∨ q</text>
+
+              <circle cx="230" cy="165" r="46" fill="#f5810b" fill-opacity="0.28" stroke="#f5810b" stroke-width="2"/>
+              <text x="230" y="160" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="12">Tautologie</text>
+              <text x="230" y="176" text-anchor="middle" fill="#f5810b" font-size="11">p ∨ ¬p</text>
+
+              <text x="470" y="65" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="13">unerfüllbar</text>
+              <text x="470" y="150" text-anchor="middle" class="svg-ink" font-size="11">(Rest außerhalb</text>
+              <text x="470" y="168" text-anchor="middle" class="svg-ink" font-size="11">des grünen Kreises)</text>
+              <text x="470" y="200" text-anchor="middle" class="svg-ink" font-size="11">z. B. p ∧ ¬p</text>
+            </g>
+          </svg>
+          <figcaption>Tautologien sind ein Spezialfall der erfüllbaren Formeln (sie sind sogar IMMER erfüllt). Unerfüllbare Formeln liegen komplett außerhalb.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Formel</th><th>Kategorie</th><th>Warum</th></tr></thead>
+          <tbody>
+            <tr><td><code>p ∨ ¬p</code></td><td>Tautologie</td><td>Egal was p ist, eine der beiden Seiten ist immer T</td></tr>
+            <tr><td><code>p ∧ ¬p</code></td><td>Unerfüllbar</td><td>p und ¬p können nie gleichzeitig wahr sein</td></tr>
+            <tr><td><code>p ∨ q</code></td><td>Erfüllbar (aber keine Tautologie)</td><td>T bei p=T oder q=T, aber F bei p=F,q=F</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Erfüllbar bedeutet dasselbe wie Tautologie.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Erfüllbar</strong> = mindestens 1× wahr. <strong>Tautologie</strong> = IMMER wahr. p ∨ q ist erfüllbar, aber keine Tautologie!</div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Klausuraufgabe 6a durchgerechnet</h2>
+        <p class="lead-in">🎓 Klausur 2025: Diese Aufgabe zeigt alles, was auf dieser Seite zählt — Wahrheitstabelle
+           aufstellen, Teilformeln berechnen, und am Ende korrekt klassifizieren.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gegeben</div>
+          <p><span class="formula">φ = x1 ∨ (((x1 ∨ x4) → (x2 ∧ x3)) ↔ (¬x3))</span><br>
+             4 Variablen → 2⁴ = <strong>16 Zeilen</strong>. Bestimme: Ist φ erfüllbar? Tautologie? Unerfüllbar?</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">🎯 Klausur-Trick, bevor du überhaupt rechnest</div>
+          <p>φ hat die Form <code>x1 ∨ (…)</code>. Das äußerste Zeichen ist ein ∨ mit x1 als linkem Operand.
+             Sobald <strong>x1 = 1</strong>, ist φ wegen dieses ∨ sofort wahr — <strong>egal</strong> was der
+             Rest der Formel ergibt! Das schenkt dir die halbe Tabelle (alle 8 Zeilen mit x1=1) ohne eine
+             einzige Zwischenrechnung.</p>
+        </div>
+
+        <p>Für die restlichen 8 Zeilen (x1 = 0) musst du wirklich rechnen. Setze A = (x1∨x4) → (x2∧x3) und
+           B = ¬x3, dann ist φ = x1 ∨ (A ↔ B). Mit x1=0 vereinfacht sich das zu <strong>φ = A ↔ B</strong>.</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead>
+            <tr><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x1∨x4</th><th>x2∧x3</th><th>A</th><th>¬x3 (B)</th><th>A↔B</th><th>φ</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td><strong>1</strong></td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td><strong>0</strong></td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td><strong>1</strong></td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td><strong>1</strong></td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td><strong>0</strong></td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            <tr style="opacity:.6"><td>1</td><td>0</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+            <tr style="opacity:.6"><td>1</td><td>0</td><td>0</td><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+            <tr style="opacity:.6"><td>1</td><td>0</td><td>1</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+            <tr style="opacity:.6"><td>1</td><td>0</td><td>1</td><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+            <tr style="opacity:.6"><td>1</td><td>1</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+            <tr style="opacity:.6"><td>1</td><td>1</td><td>0</td><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+            <tr style="opacity:.6"><td>1</td><td>1</td><td>1</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+            <tr style="opacity:.6"><td>1</td><td>1</td><td>1</td><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>1</strong> (Trick!)</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Ergebnis der Klassifikation</div>
+          <p>Von 16 Zeilen sind <strong>11 wahr</strong> (die 8 x1=1-Zeilen + 3 x1=0-Zeilen) und
+             <strong>5 falsch</strong> (die restlichen x1=0-Zeilen). Da mindestens eine Zeile T ist:
+             <strong>erfüllbar</strong> ✓. Da mindestens eine Zeile F ist: <strong>keine Tautologie</strong> ✓.
+             Da nicht alle Zeilen F sind: <strong>nicht unerfüllbar</strong> ✓.</p>
+        </div>
+      </section>
+
+      <!-- ===== RAETSEL ===== -->
+      <section id="raetsel" class="reveal">
+        <h2>Rätsel modellieren: Ritter &amp; Schurken</h2>
+        <p>Eine typische Aufgabenform: Du bekommst eine Alltagsaussage und musst sie in Formeln übersetzen,
+           dann die passende Belegung finden.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Auf einer Insel gibt es Ritter (sagen <strong>immer</strong> die Wahrheit) und Schurken (lügen
+             <strong>immer</strong>). Alexandra sagt: „Wir (Alexandra und Christina) sind beide Schurken."
+             Was sind Alexandra und Christina wirklich?</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Variablen festlegen:</strong> a = „Alexandra ist Ritter" (T/F), c = „Christina ist Ritter" (T/F).</li>
+          <li><strong>Aussage übersetzen:</strong> Alexandras Satz bedeutet „a=F ∧ c=F" (beide Schurken).</li>
+          <li><strong>Fall a=T (Ritter) prüfen:</strong> Ritter sagen die Wahrheit, also müsste a=F ∧ c=F stimmen.
+              Aber a=T widerspricht a=F. <strong>Widerspruch — Fall ausgeschlossen.</strong></li>
+          <li><strong>Fall a=F (Schurke) prüfen:</strong> Schurken lügen, also ist die Aussage „a=F ∧ c=F" falsch.
+              Da a=F bereits stimmt, muss c=F falsch sein (sonst wäre die Konjunktion ja wahr) → c=T. <strong>Konsistent!</strong></li>
+          <li><strong>Lösung:</strong> Alexandra ist <strong>Schurke</strong> (a=F), Christina ist <strong>Ritter</strong> (c=T).</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz für Rätsel-Aufgaben</div>
+          <p>Gehe systematisch <strong>jeden Fall</strong> für jede Person durch (Ritter oder Schurke), prüfe
+             auf Widerspruch, und behalte nur die konsistenten Belegungen. Genau das ist Erfüllbarkeitsprüfung
+             per Hand!</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>p → q ist wahr, wenn p und q beide wahr sind (und sonst meistens falsch).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>p → q ist <strong>FALSCH nur</strong> wenn p=T und q=F. In allen drei anderen Fällen (auch F→F!) ist sie wahr.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>¬(p → q) ≡ ¬p → ¬q</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>¬(p → q) ≡ <strong>p ∧ ¬q</strong>. Beweis: p→q ist nur falsch bei p=T,q=F, also ist die Negation genau p∧¬q.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei 3 Variablen reicht es, ein paar „interessante" Zeilen zu prüfen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Immer alle 2ⁿ Zeilen!</strong> 3 Variablen → 2³ = 8 Zeilen, 4 Variablen → 16 Zeilen. Keine auslassen — außer ein Klausur-Trick wie oben erlaubt es explizit.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>¬(p ∧ q) ≡ ¬p ∧ ¬q</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>De Morgan tauscht den Junktor: ¬(p ∧ q) ≡ <strong>¬p ∨ ¬q</strong>. Merksatz: „Negation tauscht ∧ und ∨."</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Wenn F→G eine Tautologie ist, dann ist auch G→F eine Tautologie.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Implikation ist <strong>eine Richtung</strong>. F→G Tautologie sagt nichts über G→F aus. p→q ≠ q→p!</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Alle 5 Wahrheitstabellen auf einen Blick</h4>
+          <pre class="code">¬p:    T→F, F→T
+
+p∧q:   T T T     p∨q:   T T T     p→q:   T T T     p↔q:   T T T
+       T F F            T T F            T F F            T F F
+       F F T            F T T            F T T            F F T
+       F F F            F F F            F T F            F T F
+       (nur T∧T=T)      (nur F∨F=F)      (nur T→F=F)      (T wenn gleich)</pre>
+
+          <h4>Klassifikation</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Kategorie</th><th>Bedingung</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Erfüllbar</strong></td><td>mindestens eine Zeile = T</td></tr>
+              <tr><td><strong>Unerfüllbar</strong></td><td>alle Zeilen = F</td></tr>
+              <tr><td><strong>Tautologie</strong></td><td>alle Zeilen = T (Spezialfall von erfüllbar)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Klausurbeispiel: φ = x1 ∨ (((x1∨x4)→(x2∧x3)) ↔ ¬x3)</h4>
+          <pre class="code">x1=1 → φ=1 sofort (8 Zeilen geschenkt!)
+x1=0 → φ = ((x1∨x4)→(x2∧x3)) ↔ ¬x3  → 3× T, 5× F
+
+Ergebnis: erfüllbar, nicht Tautologie, nicht unerfüllbar
+(11 von 16 Zeilen sind T)</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>p → q</strong> ist nur falsch bei p=T, q=F — sonst immer wahr</li>
+            <li><strong>De Morgan:</strong> Negation tauscht ∧ ↔ ∨</li>
+            <li><strong>p → q ≡ ¬p ∨ q</strong> — brauchst du für Normalformen und Sequenzenkalkül wieder</li>
+            <li><strong>Erfüllbar</strong> ≠ <strong>Tautologie</strong> — Tautologie ist die stärkere Aussage</li>
+            <li>Suche nach <strong>Klausur-Tricks</strong> wie „äußeres ∨ mit x1" — spart massiv Rechenzeit</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wann ist p → q falsch?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">wenn p und q beide falsch sind</button>
+              <button class="quiz-choice" type="button" data-correct>wenn p wahr und q falsch ist</button>
+              <button class="quiz-choice" type="button">wenn p falsch und q wahr ist</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>p → q ist NUR falsch, wenn p=T und q=F — das „gebrochene Versprechen". In allen anderen drei Fällen ist p → q wahr.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="¬p ∨ ¬q|not p or not q|¬p∨¬q">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie lautet ¬(p ∧ q) nach De Morgan umgeformt? (Schreibe mit ¬, ∧/∨, z. B. „¬p ∨ ¬q")</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>¬(p ∧ q) ≡ <strong>¬p ∨ ¬q</strong>. De Morgan tauscht den Junktor: aus ∧ wird ∨ (und umgekehrt), und beide Literale werden negiert.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="16">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie viele Zeilen hat die vollständige Wahrheitstabelle einer Formel mit 4 Variablen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>2⁴ = <strong>16</strong> Zeilen. Für n Variablen gilt immer 2ⁿ Zeilen — alle müssen (in der Regel) geprüft werden.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Eine Formel ist erfüllbar, aber KEINE Tautologie. Was bedeutet das?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Die Formel ist bei jeder Belegung falsch</button>
+              <button class="quiz-choice" type="button" data-correct>Es gibt mindestens eine wahre UND mindestens eine falsche Zeile</button>
+              <button class="quiz-choice" type="button">Die Formel ist bei jeder Belegung wahr</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Erfüllbar = mindestens 1× T. Keine Tautologie = nicht ALLE Zeilen T, also gibt es mindestens eine F-Zeile. Beide zusammen: gemischte Tabelle mit T und F. Beispiel: p ∨ q.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="11">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: In Aufgabe 6a hat φ = x1 ∨ (((x1∨x4)→(x2∧x3)) ↔ ¬x3) bei wie vielen der 16 Zeilen den Wert 1 (wahr)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die 8 Zeilen mit x1=1 sind alle wahr (äußeres ∨), plus 3 weitere Zeilen bei x1=0 → <strong>11</strong> wahre Zeilen von 16, also 5 falsche.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2025: Ist φ aus Aufgabe 6a eine Tautologie?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, weil x1=1 immer φ=1 erzwingt</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, weil es bei x1=0 auch falsche Zeilen gibt</button>
+              <button class="quiz-choice" type="button">Nein, weil φ immer falsch ist</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Trick x1=1→φ=1 gilt nur für die HALBE Tabelle. Bei x1=0 gibt es 5 Zeilen mit φ=0 — also keine Tautologie, nur erfüllbar.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="schurke|schurkin|schurkin ist alexandra">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Im Ritter-und-Schurken-Rätsel: Was ist Alexandra, die sagt „Wir sind beide Schurken"?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Ritter oder Schurke?" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Alexandra ist <strong>Schurke</strong> (a=F). Wäre sie Ritter, müsste ihre wahre Aussage „beide Schurken" gelten — Widerspruch. Als Schurke lügt sie, also stimmt „beide Schurken" nicht, und da sie selbst Schurke ist, muss Christina Ritter sein.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="08-kombinatorik.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Kombinatorik &amp; Körpererweiterungen</div>
+        </a>
+        <a class="next" href="10-normalformen.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Normalformen: DNF &amp; KNF</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

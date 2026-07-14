@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Induktion &amp; Ordnungen · LDS</title>
+<meta name="description" content="Vollständige Induktion Schritt für Schritt (Induktion über, Induktionsanfang, Induktionsschritt, Induktionshypothese) und Ordnungen mit Hasse-Diagrammen – mit der kompletten Original-Klausuraufgabe 2 (SoSe 2025): Beweis |P(M)| = 2^|M|." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#induktion">Induktion</a>
+      <a href="#beweis">Beweis</a>
+      <a href="#ordnungen">Ordnungen</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">LDS-Kursübersicht</a> › Thema 03</div>
+    <span class="th-icon">🪜</span>
+    <h1>Induktion &amp; Ordnungen</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 3</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#induktion">Vollständige Induktion: das Schema</a></li>
+        <li><a href="#beweis">Schritt-für-Schritt: Klausuraufgabe</a></li>
+        <li><a href="#ordnungen">Ordnungen &amp; Hasse-Diagramme</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Wie beweist du eine Aussage für <strong>unendlich viele Zahlen gleichzeitig</strong> —
+          ohne sie einzeln durchzuprobieren? Genau dafür gibt es die <strong>vollständige Induktion</strong>: einen
+          Beweis-Baukasten mit nur zwei Bausteinen, der trotzdem für jedes n ∈ ℕ funktioniert. Danach schauen wir uns
+          <strong>Ordnungen</strong> an — Strukturen, in denen manche Dinge „kleiner" als andere sind, aber eben
+          nicht immer alle miteinander vergleichbar. Beide Themen kommen in der Klausur fast garantiert dran.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… eine <strong>endlose Reihe Dominosteine</strong>. Du willst zeigen: „Jeder Stein fällt irgendwann um."
+            Du musst dafür nicht jeden einzelnen Stein anstoßen — das wären unendlich viele Handgriffe. Es reichen
+            <strong>zwei Beobachtungen</strong>:<br>
+            <strong>(1) Der erste Stein fällt</strong> — du stößt ihn an. Das ist der <strong>Induktionsanfang</strong>.<br>
+            <strong>(2) Immer wenn irgendein Stein fällt, stößt er den nächsten um</strong> — das gilt für
+            <em>jeden</em> Stein in der Reihe, unabhängig davon, der wievielte er ist. Das ist der
+            <strong>Induktionsschritt</strong>.<br>
+            Aus diesen zwei endlichen Beobachtungen folgt: <strong>die ganze unendliche Reihe fällt</strong>. Genau
+            das ist die Beweisstruktur, die die Klausur von dir sehen will — mit exakt diesen Namen für die
+            einzelnen Teile.</p>
+        </div>
+      </section>
+
+      <!-- ===== INDUKTION ===== -->
+      <section id="induktion" class="reveal">
+        <h2>Vollständige Induktion: das Schema</h2>
+        <p>Die Klausur bewertet nicht nur, <em>ob</em> deine Rechnung stimmt, sondern auch, ob du das
+          <strong>Schema explizit benennst</strong>. Diese vier Teile gehören als eigene Zeilen in jeden
+          Induktionsbeweis:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Das Klausur-Schema — wortwörtlich so gliedern!</div>
+          <span class="formula">Induktion über: … (worüber wird induziert? z. B. n ∈ ℕ, oder |M| bei Mengen)
+Induktionsanfang (IA): Zeige A(kleinster Fall) ist wahr.
+Induktionsschritt (IS): Induktionshypothese (IH): Nimm an, A(n) gilt.
+                        Zeige damit: A(n) wahr ⇒ A(n+1) wahr.
+Fazit: Also gilt A(n) für alle n.</span>
+          <p>Diese vier Zeilen — <strong>Induktion über</strong>, <strong>IA</strong>, <strong>IS mit IH</strong>,
+            <strong>Fazit</strong> — sind kein Beiwerk. Sie sind die Punkte, die in der Korrektur einzeln bewertet
+            werden.</p>
+        </div>
+
+        <!-- SVG 1: Induktionskette -->
+        <figure class="diagram">
+          <div class="diagram-title">IA + IS zusammen erreichen jede Sprosse der Leiter</div>
+          <svg viewBox="0 0 720 210" width="720" role="img" aria-label="Zahlenkette 0,1,2,3,...,n,n+1 — IA erreicht die 0, IS überträgt jeweils von einer Sprosse zur nächsten">
+            <defs>
+              <marker id="i-arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="10" y="26" class="svg-soft" font-size="11" font-weight="700">Alle n ∈ ℕ, die A(n) erfüllen sollen →</text>
+
+              <circle cx="45" cy="90" r="24" fill="#12b28c" fill-opacity="0.28" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="45" y="95" text-anchor="middle" class="svg-ink" font-weight="800">0</text>
+              <text x="45" y="130" text-anchor="middle" fill="#12b28c" font-size="11" font-weight="700">IA</text>
+
+              <line x1="72" y1="90" x2="118" y2="90" stroke="#12b28c" stroke-width="2" marker-end="url(#i-arr)"/>
+              <text x="95" y="78" text-anchor="middle" fill="#12b28c" font-size="10" font-weight="700">IS</text>
+
+              <circle cx="145" cy="90" r="22" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="145" y="95" text-anchor="middle" class="svg-ink" font-weight="700">1</text>
+
+              <line x1="170" y1="90" x2="216" y2="90" stroke="#12b28c" stroke-width="2" marker-end="url(#i-arr)"/>
+              <text x="193" y="78" text-anchor="middle" fill="#12b28c" font-size="10" font-weight="700">IS</text>
+
+              <circle cx="243" cy="90" r="22" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="243" y="95" text-anchor="middle" class="svg-ink" font-weight="700">2</text>
+
+              <line x1="268" y1="90" x2="310" y2="90" stroke="#12b28c" stroke-width="2" marker-end="url(#i-arr)"/>
+
+              <text x="335" y="95" text-anchor="middle" class="svg-soft" font-size="16">…</text>
+
+              <line x1="358" y1="90" x2="400" y2="90" stroke="#12b28c" stroke-width="2" marker-end="url(#i-arr)"/>
+
+              <circle cx="440" cy="90" r="26" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b" stroke-width="2.5"/>
+              <text x="440" y="96" text-anchor="middle" class="svg-ink" font-weight="800">n</text>
+
+              <line x1="468" y1="90" x2="520" y2="90" stroke="#e0483d" stroke-width="2.5" marker-end="url(#i-arr)"/>
+              <text x="494" y="76" text-anchor="middle" fill="#e0483d" font-size="11" font-weight="800">IS: genau HIER wird bewiesen</text>
+
+              <circle cx="558" cy="90" r="26" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b" stroke-width="2.5"/>
+              <text x="558" y="96" text-anchor="middle" class="svg-ink" font-weight="800">n+1</text>
+
+              <line x1="586" y1="90" x2="628" y2="90" stroke="#12b28c" stroke-width="2" marker-end="url(#i-arr)"/>
+              <text x="655" y="95" text-anchor="middle" class="svg-soft" font-size="16">…</text>
+
+              <rect x="10" y="150" width="700" height="50" rx="8" fill="#8a94a6" fill-opacity="0.08"/>
+              <text x="360" y="170" text-anchor="middle" class="svg-ink" font-size="12">IA bringt dich auf Sprosse 0. IS zeigt: von JEDER erreichten Sprosse n kommst du zu n+1.</text>
+              <text x="360" y="188" text-anchor="middle" class="svg-ink" font-size="12">Zusammen: du erreichst jede einzelne Sprosse — auch wenn du nie „bei n=1000000" persönlich nachgesehen hast.</text>
+            </g>
+          </svg>
+          <figcaption>Der Induktionsschritt wird nur EINMAL bewiesen — aber allgemein für ein beliebiges n. Genau deshalb deckt er die ganze unendliche Kette ab.</figcaption>
+        </figure>
+
+        <h3>Durchgerechnet: ∑ i² = n(n+1)(2n+1)/6</h3>
+        <p>Ein klassisches Aufwärmbeispiel — dieselbe Gliederung wie oben, jetzt mit echten Formeln gefüllt:</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Zu zeigen</div>
+          <p>Für alle n ∈ ℕ gilt: <strong>∑ᵢ₌₀ⁿ i² = n(n+1)(2n+1)/6</strong></p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Induktion über:</strong> n ∈ ℕ.</li>
+          <li><strong>Induktionsanfang (IA), n = 0:</strong><br>
+            Linke Seite: ∑ᵢ₌₀⁰ i² = 0² = 0<br>
+            Rechte Seite: 0·(0+1)·(2·0+1)/6 = 0<br>
+            Beide Seiten stimmen überein. ✓
+          </li>
+          <li><strong>Induktionsschritt (IS), n → n+1:</strong><br>
+            <strong>Induktionshypothese (IH):</strong> Nimm an, es gilt bereits ∑ᵢ₌₀ⁿ i² = n(n+1)(2n+1)/6.<br>
+            <strong>Zu zeigen:</strong> ∑ᵢ₌₀ⁿ⁺¹ i² = (n+1)(n+2)(2n+3)/6
+          </li>
+          <li><strong>Beweis des Schritts — Summe aufspalten und IH einsetzen:</strong>
+            <pre class="code">∑ᵢ₌₀ⁿ⁺¹ i²  = ∑ᵢ₌₀ⁿ i²  +  (n+1)²
+            = n(n+1)(2n+1)/6 + (n+1)²          [nach IH]
+            = (n+1) · [ n(2n+1)/6 + (n+1) ]
+            = (n+1) · [ n(2n+1) + 6(n+1) ] / 6
+            = (n+1) · [ 2n² + 7n + 6 ] / 6
+            = (n+1)(n+2)(2n+3) / 6              [Faktorisierung]</pre>
+            Das ist genau die rechte Seite für n+1. ✓
+          </li>
+          <li><strong>Fazit:</strong> Also gilt ∑ᵢ₌₀ⁿ i² = n(n+1)(2n+1)/6 für alle n ∈ ℕ. ∎</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Der Trick beim Umformen</div>
+          <p>Du darfst im Induktionsschritt <strong>nur</strong> die IH einsetzen und danach ganz normal
+            algebraisch umformen (ausklammern, faktorisieren). Es gibt kein Zaubern — am Ende muss exakt die
+            Formel für n+1 herauskommen, die du am Anfang als Ziel hingeschrieben hast.</p>
+        </div>
+      </section>
+
+      <!-- ===== BEWEIS (KLAUSURAUFGABE) ===== -->
+      <section id="beweis" class="reveal">
+        <h2>🎓 Original-Klausuraufgabe (SoSe 2025, Aufgabe 2 — Induktion, 12 Punkte)</h2>
+        <p class="lead-in">Diese Aufgabe verlangt Induktion über eine <strong>Mengengröße</strong> statt über eine
+          einfache Zahl n — ein beliebter Klausur-Kniff. Die Gliederung bleibt exakt dieselbe.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Zu zeigen</div>
+          <p>Für jede <strong>endliche</strong> Menge M gilt: <strong>|P(M)| = 2^|M|</strong>
+            (die Potenzmenge von M hat 2 hoch „Anzahl Elemente von M" viele Elemente).</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Induktion über:</strong> |M| ∈ ℕ (die <em>Mächtigkeit</em> von M — nicht über M selbst,
+            und nicht über die konkreten Elemente!).
+          </li>
+          <li><strong>Induktionsanfang (IA), |M| = 0:</strong><br>
+            Die einzige Menge mit 0 Elementen ist die leere Menge: M = ∅.<br>
+            P(∅) = {∅} — die Potenzmenge der leeren Menge enthält genau ein Element, nämlich ∅ selbst.<br>
+            Also |P(M)| = |P(∅)| = 1 = 2⁰ = 2^|M|. ✓
+          </li>
+          <li><strong>Induktionsschritt (IS), |M| = n+1:</strong><br>
+            <strong>Induktionshypothese (IH):</strong> Für <em>jede</em> Menge M′ mit |M′| = n gilt bereits
+            |P(M′)| = 2ⁿ.<br>
+            <strong>Zu zeigen:</strong> Für M mit |M| = n+1 gilt |P(M)| = 2ⁿ⁺¹.
+          </li>
+          <li><strong>Konstruktion — ein Element „herausziehen":</strong><br>
+            Wähle ein beliebiges x ∈ M und setze <strong>M′ := M \ {x}</strong>. Dann hat M′ genau n Elemente,
+            die IH ist also auf M′ anwendbar.
+          </li>
+          <li><strong>P(M) disjunkt zerlegen — mit x und ohne x:</strong><br>
+            Jede Teilmenge N ⊆ M enthält x entweder oder nicht. Das zerlegt P(M) in genau zwei disjunkte Teile:<br>
+            &nbsp;&nbsp;· Teilmengen <strong>ohne</strong> x — das ist genau <strong>P(M′)</strong><br>
+            &nbsp;&nbsp;· Teilmengen <strong>mit</strong> x — das ist genau <strong>{N ∪ {x} ; N ∈ P(M′)}</strong>
+          </li>
+          <li><strong>Beide Teile sind gleich groß:</strong><br>
+            Die Abbildung N ↦ N ∪ {x} ist eine <strong>Bijektion</strong> zwischen P(M′) und dem zweiten Teil
+            (Umkehrabbildung: einfach x wieder entfernen). Also haben beide Teile gleich viele Elemente, nämlich
+            |P(M′)| = 2ⁿ (nach IH).
+          </li>
+          <li><strong>Addieren, weil disjunkt:</strong><br>
+            |P(M)| = |P(M′)| + |{N ∪ {x} ; N ∈ P(M′)}| = 2 · |P(M′)| =(IH) 2 · 2ⁿ = 2ⁿ⁺¹ = 2^|M|. ✓
+          </li>
+          <li><strong>Fazit:</strong> Also gilt |P(M)| = 2^|M| für alle endlichen Mengen M. ∎</li>
+        </ol>
+
+        <!-- SVG 2: Split von P(M) in ohne x / mit x -->
+        <figure class="diagram">
+          <div class="diagram-title">Konkret: M = {p,q}, x = q, M′ = {p} — P(M) zerfällt in zwei gleich große Hälften</div>
+          <svg viewBox="0 0 620 230" width="620" role="img" aria-label="P(M) zerfällt in Teilmengen ohne x (=P(M')) und Teilmengen mit x, verbunden durch die Bijektion N -> N vereinigt {x}">
+            <defs>
+              <marker id="b-arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="150" y="26" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="14">ohne x  =  P(M′)</text>
+              <text x="470" y="26" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="14">mit x  =  {N ∪ {x}}</text>
+
+              <rect x="40" y="45" width="220" height="42" rx="8" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6"/>
+              <text x="150" y="70" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">∅</text>
+
+              <rect x="40" y="100" width="220" height="42" rx="8" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6"/>
+              <text x="150" y="125" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">{p}</text>
+
+              <rect x="360" y="45" width="220" height="42" rx="8" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6"/>
+              <text x="470" y="70" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">{q}</text>
+
+              <rect x="360" y="100" width="220" height="42" rx="8" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6"/>
+              <text x="470" y="125" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">{p,q}</text>
+
+              <line x1="262" y1="66" x2="358" y2="66" stroke="#8b5cf6" stroke-width="2" marker-end="url(#b-arr)"/>
+              <line x1="262" y1="121" x2="358" y2="121" stroke="#8b5cf6" stroke-width="2" marker-end="url(#b-arr)"/>
+              <text x="310" y="58" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="700">∪{q}</text>
+              <text x="310" y="113" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="700">∪{q}</text>
+
+              <rect x="40" y="165" width="540" height="50" rx="8" fill="#8a94a6" fill-opacity="0.08"/>
+              <text x="310" y="186" text-anchor="middle" class="svg-ink" font-size="12">|P(M′)| = 2¹ = 2 links, 2 rechts (per Bijektion gleich viele) → zusammen |P(M)| = 4 = 2².</text>
+              <text x="310" y="203" text-anchor="middle" class="svg-soft" font-size="11">Genau dieses Verdopplungs-Argument steckt hinter jedem Induktionsschritt, egal wie groß M ist.</text>
+            </g>
+          </svg>
+          <figcaption>Jede Teilmenge N von M′ liefert genau zwei Teilmengen von M: N selbst (ohne x) und N∪{x} (mit x). Das verdoppelt die Anzahl bei jedem zusätzlichen Element.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Warum die Gliederung Punkte bringt</div>
+          <p>In der Korrektur werden „Induktion über …", „Induktionsanfang", „Induktionshypothese explizit benannt"
+            und „Induktionsschritt sauber hergeleitet" oft als <strong>eigene Teilpunkte</strong> vergeben — nicht
+            nur das nackte Endergebnis. Schreib diese vier Begriffe also wirklich als eigene Zeilen hin, auch wenn
+            dir der Beweis selbst offensichtlich erscheint.</p>
+        </div>
+      </section>
+
+      <!-- ===== ORDNUNGEN ===== -->
+      <section id="ordnungen" class="reveal">
+        <h2>Ordnungen &amp; Hasse-Diagramme</h2>
+        <p>Eine <strong>partielle Ordnung</strong> ist eine Relation ≤, die reflexiv, antisymmetrisch und transitiv
+          ist (Details dazu in Thema 2). Das Besondere: anders als bei Zahlen müssen <strong>nicht alle Elemente
+          miteinander vergleichbar</strong> sein. Ein <strong>Hasse-Diagramm</strong> zeichnet genau das: Elemente
+          weiter oben sind größer, aber nur <strong>direkte</strong> Vorgänger-Beziehungen werden verbunden
+          (Transitiv-Reduktion) — a→c wird nicht extra gezeichnet, wenn a→b→c schon dransteht.</p>
+
+        <!-- SVG 3: Hasse-Diagramm Teiler von 12 -->
+        <figure class="diagram">
+          <div class="diagram-title">Hasse-Diagramm: Teiler von 12 unter „teilt" (|)</div>
+          <svg viewBox="0 0 380 270" width="380" role="img" aria-label="Hasse-Diagramm der Teiler von 12: 1 unten, dann 2 und 3, dann 4 und 6, dann 12 oben">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <g stroke="#8a94a6" stroke-width="1.5">
+                <line x1="190" y1="220" x2="110" y2="165"/>
+                <line x1="190" y1="220" x2="270" y2="165"/>
+                <line x1="110" y1="165" x2="80" y2="100"/>
+                <line x1="110" y1="165" x2="230" y2="100"/>
+                <line x1="270" y1="165" x2="230" y2="100"/>
+                <line x1="80" y1="100" x2="190" y2="35"/>
+                <line x1="230" y1="100" x2="190" y2="35"/>
+              </g>
+              <circle cx="190" cy="220" r="22" fill="#12b28c" fill-opacity="0.28" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="190" y="226" text-anchor="middle" class="svg-ink" font-weight="800">1</text>
+              <text x="190" y="252" text-anchor="middle" fill="#12b28c" font-size="10" font-weight="700">minimal = kleinstes</text>
+
+              <circle cx="110" cy="165" r="20" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="110" y="171" text-anchor="middle" class="svg-ink" font-weight="700">2</text>
+              <circle cx="270" cy="165" r="20" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="270" y="171" text-anchor="middle" class="svg-ink" font-weight="700">3</text>
+
+              <circle cx="80" cy="100" r="20" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="80" y="106" text-anchor="middle" class="svg-ink" font-weight="700">4</text>
+              <circle cx="230" cy="100" r="20" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="230" y="106" text-anchor="middle" class="svg-ink" font-weight="700">6</text>
+
+              <circle cx="190" cy="35" r="22" fill="#f5810b" fill-opacity="0.24" stroke="#f5810b" stroke-width="2.5"/>
+              <text x="190" y="41" text-anchor="middle" class="svg-ink" font-weight="800">12</text>
+              <text x="190" y="14" text-anchor="middle" fill="#f5810b" font-size="10" font-weight="700">maximal = größtes</text>
+            </g>
+          </svg>
+          <figcaption>1 teilt alles → kleinstes Element. 12 wird von allen geteilt → größtes Element. 2 und 3 sind unvergleichbar (keiner teilt den anderen) — die Ordnung ist also nicht linear.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Begriff</th><th>Definition</th><th>Im Beispiel oben</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Minimal</strong></td><td>Kein anderes Element ist kleiner</td><td>nur {1}</td></tr>
+            <tr><td><strong>Maximal</strong></td><td>Kein anderes Element ist größer</td><td>nur {12}</td></tr>
+            <tr><td><strong>Kleinstes</strong></td><td>Ist ≤ <em>allen</em> anderen Elementen (eindeutig!)</td><td>1</td></tr>
+            <tr><td><strong>Größtes</strong></td><td>Ist ≥ <em>allen</em> anderen Elementen (eindeutig!)</td><td>12</td></tr>
+            <tr><td><strong>Linear geordnet</strong></td><td>Wirklich <em>alle</em> Paare vergleichbar</td><td>nein (2, 3 unvergleichbar)</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Achtung: minimal ≠ kleinstes</h3>
+        <p>Im Beispiel oben fallen „minimal" und „kleinstes" zusammen — das ist aber <strong>nicht immer</strong> so.
+          Sobald es <strong>mehrere</strong> minimale Elemente gibt, ist keins davon automatisch das kleinste:</p>
+
+        <!-- SVG 4: V-Poset ohne kleinstes Element -->
+        <figure class="diagram">
+          <div class="diagram-title">Gegenbeispiel: zwei minimale Elemente, kein kleinstes</div>
+          <svg viewBox="0 0 320 190" width="320" role="img" aria-label="Hasse-Diagramm mit a oben, b und c darunter, b und c unvergleichbar">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <line x1="160" y1="40" x2="90" y2="120" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="160" y1="40" x2="230" y2="120" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <circle cx="160" cy="40" r="22" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b" stroke-width="2.5"/>
+              <text x="160" y="46" text-anchor="middle" class="svg-ink" font-weight="800">a</text>
+              <text x="160" y="18" text-anchor="middle" fill="#f5810b" font-size="10" font-weight="700">maximal = größtes</text>
+
+              <circle cx="90" cy="120" r="20" fill="#e0483d" fill-opacity="0.2" stroke="#e0483d" stroke-width="2"/>
+              <text x="90" y="126" text-anchor="middle" class="svg-ink" font-weight="700">b</text>
+              <circle cx="230" cy="120" r="20" fill="#e0483d" fill-opacity="0.2" stroke="#e0483d" stroke-width="2"/>
+              <text x="230" y="126" text-anchor="middle" class="svg-ink" font-weight="700">c</text>
+              <text x="160" y="165" text-anchor="middle" fill="#e0483d" font-size="11" font-weight="700">b, c: beide minimal — aber unvergleichbar zueinander</text>
+            </g>
+          </svg>
+          <figcaption>b und c sind beide minimal (nichts ist kleiner), aber keins von beiden ist „das kleinste", denn b ≤ c gilt nicht und c ≤ b auch nicht. Ein kleinstes Element müsste mit BEIDEN vergleichbar UND kleiner sein.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Merke</div>
+          <p>„Minimal" ist eine <strong>lokale</strong> Eigenschaft (nichts direkt Kleineres da) — davon kann es
+            mehrere geben. „Kleinstes" ist eine <strong>globale</strong> Eigenschaft (kleiner-gleich als
+            <em>wirklich alle</em>) — davon gibt es höchstens eins. Jedes kleinste Element ist automatisch auch
+            minimal, aber nicht umgekehrt.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Immer bei n = 1 mit dem Induktionsanfang starten.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Induktionsanfang gehört an den
+            <strong>kleinsten Fall, für den die Aussage gelten soll</strong>. Soll A(n) für alle n ≥ 0 gelten
+            (0 ∈ ℕ in dieser Vorlesung!), ist IA bei n = 0. Soll sie erst ab n = 1 gelten, dann IA bei n = 1.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Im Induktionsschritt einfach „nach IH folgt …" schreiben, ohne die Induktionshypothese vorher hinzuschreiben.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Erst explizit: <strong>„Nach IH gilt: …"</strong>
+            mit der vollen Formel, DANN damit weiterrechnen. Sonst ist für die Korrektur nicht erkennbar, wo genau
+            die Annahme benutzt wurde.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>A(n+1) = A(n) + (n+1) einfach nach Gefühl hinschreiben.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Immer <strong>exakt die Definition</strong>
+            für n+1 aufschreiben und dann den letzten Summanden abspalten, z. B.
+            ∑ᵢ₌₀ⁿ⁺¹ i² = ∑ᵢ₌₀ⁿ i² + (n+1)² — nicht raten, sondern die Formel wörtlich auseinandernehmen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Im Hasse-Diagramm auch die Kante a→c einzeichnen, obwohl schon a→b und b→c gezeichnet sind.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Hasse-Diagramme zeigen nur die
+            <strong>Transitiv-Reduktion</strong> — ausschließlich unmittelbare Vorgänger-Nachfolger-Kanten. a→c
+            folgt automatisch aus Transitivität und wird NICHT extra gezeichnet.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Jedes Hasse-Diagramm hat ein kleinstes Element."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur wenn das Minimum <strong>eindeutig</strong>
+            ist! Gibt es mehrere minimale Elemente (wie b, c im Gegenbeispiel oben), existiert <strong>kein</strong>
+            kleinstes Element — nur mehrere minimale.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Zwei Elemente sind vergleichbar, also ist die ganze Ordnung linear."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Linear geordnet</strong> bedeutet:
+            <em>alle</em> Paare sind vergleichbar — nicht nur irgendein Paar. Ein einziges unvergleichbares Paar
+            (wie 2 und 3 bei den Teilern von 12) reicht, um die Ordnung als nicht-linear einzustufen.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Induktions-Schema (immer so gliedern)</h4>
+          <pre class="code">Induktion über:        n ∈ ℕ   (oder |M|, oder eine andere Mächtigkeit)
+Induktionsanfang (IA):  Zeige A(kleinster Fall)
+Induktionsschritt (IS): IH: Nimm an, A(n) gilt.
+                        Zeige: A(n) ⇒ A(n+1)
+Fazit:                  A(n) gilt für alle n</pre>
+
+          <h4>Klausurbeispiel: |P(M)| = 2^|M|</h4>
+          <pre class="code">IA  (|M|=0):   M=∅, P(∅)={∅} → |P(M)|=1=2⁰
+IS  (|M|=n+1): x∈M, M'=M\{x} (|M'|=n)
+               P(M) = P(M') ⊔ {N∪{x} : N∈P(M')}   (disjunkt!)
+               |P(M)| = 2·|P(M')| =(IH) 2·2ⁿ = 2ⁿ⁺¹</pre>
+
+          <h4>Ordnungsbegriffe im Überblick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Bedeutung</th><th>Eindeutig?</th></tr></thead>
+            <tbody>
+              <tr><td>Minimal</td><td>nichts direkt kleiner</td><td>mehrere möglich</td></tr>
+              <tr><td>Maximal</td><td>nichts direkt größer</td><td>mehrere möglich</td></tr>
+              <tr><td>Kleinstes</td><td>≤ wirklich alle anderen</td><td>höchstens eins</td></tr>
+              <tr><td>Größtes</td><td>≥ wirklich alle anderen</td><td>höchstens eins</td></tr>
+              <tr><td>Linear geordnet</td><td>alle Paare vergleichbar</td><td>—</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="factgrid">
+            <div class="fact"><b>Transitiv-Reduktion</b><span>nur direkte Kanten im Hasse-Diagramm</span></div>
+            <div class="fact"><b>IA am kleinsten n</b><span>nicht bei n=1, wenn n=0 gelten soll</span></div>
+            <div class="fact"><b>IH explizit</b><span>„Nach IH gilt: …" hinschreiben</span></div>
+            <div class="fact"><b>kleinstes ⇒ minimal</b><span>aber nicht umgekehrt!</span></div>
+          </div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Induktion über</strong> muss explizit benannt werden — meist n, manchmal |M| oder eine andere Größe</li>
+            <li><strong>IA, IS und Fazit</strong> sind eigene Zeilen, keine Nebensätze</li>
+            <li>Im IS <strong>zuerst</strong> IH hinschreiben, <strong>dann</strong> damit rechnen</li>
+            <li>Mengen-Induktion oft über <strong>|M|</strong>, mit „ein Element x herausziehen" als Standard-Trick</li>
+            <li><strong>Minimal ≠ kleinstes</strong>, <strong>maximal ≠ größtes</strong> — Eindeutigkeit ist der Unterschied</li>
+            <li>Hasse-Diagramm zeigt nur <strong>Transitiv-Reduktion</strong> — keine „Abkürzungs-Kanten"</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="text" data-answer="induktionshypothese|ih">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wie heißt die Annahme, dass A(n) im Induktionsschritt bereits gilt (Abkürzung: IH)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Induktionshypothese (IH)</strong> ist die Annahme, dass A(n) bereits gilt — sie wird im Induktionsschritt benutzt, um A(n+1) zu zeigen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="32">
+            <p class="quiz-prompt"><span class="q-no">2.</span>M ist eine Menge mit |M| = 5. Wie viele Elemente hat P(M)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>|P(M)| = 2^|M| = 2⁵ = <strong>32</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Was bedeutet „kleinstes Element" einer Ordnung?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Es ist minimal.</button>
+              <button class="quiz-choice" type="button" data-correct>Es ist ≤ wirklich allen anderen Elementen.</button>
+              <button class="quiz-choice" type="button">Es hat die wenigsten Nachfolger im Hasse-Diagramm.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>„Kleinstes Element" ist eine globale Eigenschaft: es muss mit <strong>allen</strong> anderen Elementen vergleichbar UND kleiner-gleich sein. „Minimal" reicht dafür nicht — davon kann es mehrere geben.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Eine Ordnung hat zwei minimale Elemente b und c, die zueinander unvergleichbar sind. Wie viele kleinste Elemente hat sie?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">2</button>
+              <button class="quiz-choice" type="button">1</button>
+              <button class="quiz-choice" type="button" data-correct>0</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Kein kleinstes Element, denn ein kleinstes Element müsste mit b UND c vergleichbar und kleiner sein — b und c sind aber unvergleichbar zueinander. b und c bleiben nur <strong>minimal</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="64">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: Der Beweis |P(M)| = 2^|M| (Aufgabe 2) gilt allgemein. Für |M| = 6, wie viele Elemente hat P(M)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>2^|M| = 2⁶ = <strong>64</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="bijektion|bijektiv">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2025: Im Induktionsschritt (Aufgabe 2) wird P(M) in Teilmengen ohne x (=P(M′)) und Teilmengen mit x (={N∪{x}}) zerlegt. Wie heißt die Abbildung N ↦ N∪{x}, die zeigt, dass beide Teile gleich groß sind?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Es ist eine <strong>Bijektion</strong> (Umkehrabbildung: x wieder entfernen) — deshalb sind P(M′) und {N∪{x} : N∈P(M′)} gleich groß, und |P(M)| verdoppelt sich pro zusätzlichem Element.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Ist die Teilbarkeits-Ordnung auf den Teilern von 12 = {1,2,3,4,6,12} linear (total)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja</button>
+              <button class="quiz-choice" type="button" data-correct>Nein</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nein — z. B. sind 2 und 3 unvergleichbar (2 teilt 3 nicht, 3 teilt 2 nicht). Für „linear" müssten wirklich <strong>alle</strong> Paare vergleichbar sein.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="02-relationen-funktionen.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Relationen &amp; Funktionen</div>
+        </a>
+        <a class="next" href="04-verbaende.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Verbände &amp; Ordnungsstrukturen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

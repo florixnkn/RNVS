@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prädikatenlogik: Interpretationen, Modelle &amp; Pränex-Normalform · LDS</title>
+<meta name="description" content="Interpretationen und Modelle konstruieren, De-Morgan-Regeln für Quantoren, und jede Formel Schritt für Schritt in Pränex-Normalform umformen — mit durchgerechneten Beispielen und den typischen Klausurfallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#interpretationen">Interpretationen</a>
+      <a href="#praenex">Pränex-NF</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#check">Wissenscheck</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 14</div>
+    <span class="th-icon">🌍</span>
+    <h1>Modelle &amp; Pränex-Normalform</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 12</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#interpretationen">Interpretationen &amp; Modelle</a></li>
+        <li><a href="#rechnen1">Schritt-für-Schritt: Modell konstruieren</a></li>
+        <li><a href="#praenex">Pränex-Normalform: das Rezept</a></li>
+        <li><a href="#rechnen2">Schritt-für-Schritt: Pränex-NF herleiten</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Zwei Fragen, die auf den ersten Blick nichts miteinander zu tun haben — und die trotzdem
+          im selben Blatt landen: <strong>„In welcher Welt ist meine Formel wahr?"</strong> (Interpretationen &amp;
+          Modelle) und <strong>„Wie schreibe ich jede Formel in einer festen Normalform?"</strong>
+          (Pränex-Normalform). Beide brauchst du für Thema 15 — den Sequenzenkalkül — als Werkzeug.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du behauptest: <strong>„Es gibt jemanden, der jeden mag."</strong> Ob das stimmt, hängt komplett von
+            der <strong>Welt</strong> ab, in der du dich befindest: In einer Schulklasse mit netten Kindern
+            vielleicht wahr, in einem Raum voller Streithähne falsch. Eine <strong>Interpretation A</strong> ist
+            genau eine solche Welt: eine <strong>Domain M</strong> (die Menge der Dinge, über die geredet wird) plus
+            eine Festlegung, was jede Konstante, Funktion und jedes Prädikat in dieser Welt konkret bedeutet. Macht
+            die Interpretation die Formel wahr, heißt sie <strong>Modell</strong> der Formel.<br><br>
+            Und die <strong>Pränex-Normalform</strong>? Stell dir vor, du räumst dein Zimmer auf und packst
+            <strong>alle Kisten (Quantoren) ganz nach vorne</strong> zum Eingang, damit im Rest des Zimmers nur noch
+            „normaler Kram" (aussagenlogische Verknüpfungen) liegt. Übersichtlicher, leichter zu durchsuchen — und
+            genau das brauchst du später für den Sequenzenkalkül.</p>
+        </div>
+      </section>
+
+      <!-- ===== INTERPRETATIONEN ===== -->
+      <section id="interpretationen" class="reveal">
+        <h2>Interpretationen &amp; Modelle</h2>
+        <p>Eine Interpretation A besteht aus genau vier Teilen — vergisst du auch nur einen, ist die Angabe
+          unvollständig:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Teil</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Domain M</strong></td><td>Die Grundmenge — mindestens 1 Element, „worüber wir reden"</td></tr>
+            <tr><td><strong>Konstanten</strong></td><td>Für jede Konstante c: ein konkretes Element c^A ∈ M</td></tr>
+            <tr><td><strong>Funktionen</strong></td><td>Für jede Funktion f: eine konkrete Abbildung f^A: Mⁿ → M</td></tr>
+            <tr><td><strong>Prädikate</strong></td><td>Für jedes Prädikat P: eine konkrete Relation P^A ⊆ Mⁿ</td></tr>
+          </tbody>
+        </table></div>
+
+        <p><strong>Modell</strong> = eine Interpretation, unter der die Formel wahr ist.</p>
+
+        <!-- SVG 1: Interpretation als Welt -->
+        <figure class="diagram">
+          <div class="diagram-title">Eine Interpretation ist eine „Welt", in der Formeln wahr oder falsch sind</div>
+          <svg viewBox="0 0 700 260" width="700" role="img" aria-label="Domain M = {a,b}, P^A = {a}, Q^A = {(a,a)}. Formel ∃x(P(x) ∧ Q(x,x)) wird mit Belegung x:=a geprüft und ist wahr">
+            <defs>
+              <marker id="arr-loop" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="20" y="24" class="svg-ink" font-weight="700" font-size="13">Interpretation A: Domain M = {a, b}</text>
+
+              <rect x="20" y="40" width="300" height="180" rx="12" fill="#8a94a6" fill-opacity="0.06" stroke="#8a94a6" stroke-dasharray="6 5"/>
+              <circle cx="110" cy="130" r="30" fill="#2f6df6" fill-opacity="0.25" stroke="#2f6df6" stroke-width="2"/>
+              <text x="110" y="135" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">a</text>
+              <circle cx="230" cy="130" r="30" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="230" y="135" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">b</text>
+
+              <!-- P^A ring around a -->
+              <circle cx="110" cy="130" r="42" fill="none" stroke="#f5810b" stroke-width="2" stroke-dasharray="5 4"/>
+              <text x="110" y="185" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="11">P^A = {a}</text>
+
+              <!-- Q^A self-loop on a -->
+              <path d="M 90 105 C 70 75, 130 75, 130 105" fill="none" stroke="#12a150" stroke-width="2" marker-end="url(#arr-loop)"/>
+              <text x="110" y="68" text-anchor="middle" fill="#12a150" font-weight="700" font-size="11">Q^A ∋ (a,a)</text>
+
+              <!-- Right: evaluation -->
+              <rect x="360" y="40" width="320" height="180" rx="12" fill="#7c4dff" fill-opacity="0.07" stroke="#7c4dff" stroke-width="1.5"/>
+              <text x="380" y="64" fill="#7c4dff" font-weight="700" font-size="12">Formel: ∃x(P(x) ∧ Q(x,x))</text>
+              <text x="380" y="88" class="svg-ink" font-size="12">Belegung: x := a</text>
+              <text x="380" y="110" class="svg-ink" font-size="12">P(a) = wahr &nbsp;(a ∈ P^A)</text>
+              <text x="380" y="132" class="svg-ink" font-size="12">Q(a,a) = wahr &nbsp;((a,a) ∈ Q^A)</text>
+              <text x="380" y="154" class="svg-ink" font-size="12">P(a) ∧ Q(a,a) = wahr ∧ wahr = wahr</text>
+              <text x="380" y="182" fill="#12a150" font-weight="800" font-size="13">→ A ist Modell von F ✓</text>
+              <text x="380" y="204" class="svg-soft" font-size="11">(b wird gar nicht gebraucht — ein Zeuge reicht bei ∃)</text>
+            </g>
+          </svg>
+          <figcaption>Eine Interpretation legt Domain, Prädikate, Funktionen und Konstanten konkret fest. Für ∃x-Formeln reicht EIN passendes Element (ein „Zeuge") aus der Domain, um die Formel wahr zu machen.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN 1 ===== -->
+      <section id="rechnen1" class="reveal">
+        <h2>Schritt-für-Schritt: Modell konstruieren</h2>
+        <p>Klausuraufgabe: „Gib eine Interpretation A an, die F erfüllt." Das ist keine Suche nach EINER richtigen
+          Antwort — du darfst dir die Welt so bauen, wie es dir passt, solange sie F wahr macht.</p>
+
+        <ol class="steps">
+          <li><strong>Domain wählen</strong> — meist reicht die kleinstmögliche Menge, z. B. M = {a} oder M = {1,2}.</li>
+          <li><strong>Konstanten festlegen</strong> — jede Konstante c bekommt ein konkretes c^A ∈ M.</li>
+          <li><strong>Funktionen festlegen</strong> — jede Funktion f bekommt eine konkrete Abbildung f^A: M → M.</li>
+          <li><strong>Prädikate so wählen, dass F erfüllt wird</strong> — arbeite von innen nach außen: welche
+            Paare/Elemente müssen in P^A, Q^A, … liegen, damit die Atome wahr werden?</li>
+          <li><strong>Gegenprobe:</strong> Formel Term für Term mit der gewählten Interpretation auswerten. Stimmt's
+            → fertig. Stimmt's nicht → Domain oder Prädikate anpassen und erneut versuchen.</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Durchgerechnet: Modell für F = ∃x(P(x) ∧ Q(x,x))</div>
+          <p>
+            Schritt 1: Domain M = {a} (ein einziges Element reicht)<br>
+            Schritt 4: P^A = {a} (damit P(a) wahr wird), Q^A = {(a,a)} (damit Q(a,a) wahr wird)<br>
+            Schritt 5: Belegung x := a → P(a) ∧ Q(a,a) = wahr ∧ wahr = <strong>wahr</strong><br>
+            <strong>Ergebnis:</strong> A mit M={a}, P^A={a}, Q^A={(a,a)} ist ein Modell von F.
+          </p>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Gegenprobe: Wann ist eine Interpretation KEIN Modell?</div>
+          <p>Formel: ∀x P(x). Interpretation B: Domain M = {1,2}, P^B = {1} (nur 1, nicht 2).<br>
+          Prüfung: P(1) = wahr, aber P(2) = <strong>falsch</strong> → ∀x P(x) ist unter B falsch.<br>
+          → B ist <strong>kein</strong> Modell von ∀x P(x). Fix: entweder P^B = {1,2} wählen, oder die Domain auf
+          {1} verkleinern.</p>
+        </div>
+      </section>
+
+      <!-- ===== PRAENEX ===== -->
+      <section id="praenex" class="reveal">
+        <h2>Pränex-Normalform: das Rezept</h2>
+        <p><strong>Definition:</strong> Alle Quantoren stehen ganz vorne, danach folgt eine quantorenfreie Matrix:</p>
+        <div class="callout callout-formula">
+          <span class="formula">(Q₁x₁)(Q₂x₂)…(Qₙxₙ) M &nbsp;&nbsp;— M quantorenfrei, jedes Qᵢ ∈ {∀, ∃}</span>
+        </div>
+
+        <!-- SVG 2: Quantoren nach vorne ziehen -->
+        <figure class="diagram">
+          <div class="diagram-title">Quantoren „ausräumen" — von verstreut zu vorne</div>
+          <svg viewBox="0 0 700 200" width="700" role="img" aria-label="Vorher stehen Quantoren verstreut in der Formel, nachher stehen alle Quantoren vorne und die Matrix ist quantorenfrei">
+            <defs>
+              <marker id="arr-pn" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="20" y="30" width="290" height="140" rx="10" fill="#e0483d" fill-opacity="0.08" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="165" y="54" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="12">Vorher: Quantoren verstreut</text>
+              <text x="165" y="86" text-anchor="middle" font-family="Consolas, monospace" font-size="13" class="svg-ink">(∀x P(x)) ∧</text>
+              <text x="165" y="108" text-anchor="middle" font-family="Consolas, monospace" font-size="13" class="svg-ink">(∃y Q(y)) → R</text>
+              <text x="165" y="140" text-anchor="middle" class="svg-soft" font-size="11">jeder Quantor „versteckt"</text>
+              <text x="165" y="156" text-anchor="middle" class="svg-soft" font-size="11">in seiner eigenen Klammer</text>
+
+              <line x1="320" y1="100" x2="375" y2="100" stroke="#8a94a6" stroke-width="2.5" marker-end="url(#arr-pn)"/>
+              <text x="347" y="90" text-anchor="middle" class="svg-soft" font-size="11">Rezept</text>
+
+              <rect x="390" y="30" width="290" height="140" rx="10" fill="#12a150" fill-opacity="0.08" stroke="#12a150" stroke-width="1.5"/>
+              <text x="535" y="54" text-anchor="middle" fill="#12a150" font-weight="700" font-size="12">Nachher: alle vorne</text>
+              <text x="535" y="90" text-anchor="middle" font-family="Consolas, monospace" font-size="14" class="svg-ink">∃x ∀z</text>
+              <text x="535" y="112" text-anchor="middle" font-family="Consolas, monospace" font-size="13" class="svg-ink">(¬P(x) ∨ ¬Q(z) ∨ R)</text>
+              <text x="535" y="140" text-anchor="middle" class="svg-soft" font-size="11">Matrix (Rest) ist</text>
+              <text x="535" y="156" text-anchor="middle" class="svg-soft" font-size="11">komplett quantorenfrei</text>
+            </g>
+          </svg>
+          <figcaption>Alle Quantoren wandern nach vorne, die Matrix dahinter enthält nur noch aussagenlogische Verknüpfungen — das macht die Formel für den Sequenzenkalkül (Thema 15) handhabbar.</figcaption>
+        </figure>
+
+        <h3>Das Rezept in 5 Schritten</h3>
+        <ol class="steps">
+          <li><strong>Alle → und ↔ auflösen</strong> — nur noch ¬, ∧, ∨ übrig.</li>
+          <li><strong>¬ nach innen treiben</strong> (De Morgan, auch für Quantoren!): ¬∀x A ≡ ∃x ¬A, &nbsp;
+            ¬∃x A ≡ ∀x ¬A.</li>
+          <li><strong>Variablen umbenennen</strong>, wenn derselbe Variablenname mehrfach mit verschiedenen
+            Quantoren vorkommt — Namenskonflikte vermeiden.</li>
+          <li><strong>Quantoren nach vorne ziehen</strong> — dabei den Scope im Blick behalten (siehe Fallen unten).</li>
+          <li><strong>Matrix ist quantorenfrei</strong> — fertig.</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: De Morgan für Quantoren</div>
+          <p><strong>¬∀ = ∃¬</strong> &nbsp;&nbsp; <strong>¬∃ = ∀¬</strong> — die Quantoren tauschen beim
+          Durchschieben der Negation die Sorte, genau wie ¬(A∧B) ≡ ¬A∨¬B in der Aussagenlogik.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN 2 ===== -->
+      <section id="rechnen2" class="reveal">
+        <h2>Schritt-für-Schritt: Pränex-NF herleiten</h2>
+        <p>Wir wenden das Rezept vollständig auf F = (∀x P(x)) ∧ (∃y Q(y)) → R an.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Schritt 1: Implikation auflösen</div>
+          <span class="formula">F ≡ ¬((∀x P(x)) ∧ (∃y Q(y))) ∨ R</span>
+        </div>
+        <div class="callout callout-formula">
+          <div class="c-title">Schritt 2: De Morgan (auch für Quantoren!)</div>
+          <span class="formula">≡ (¬∀x P(x) ∨ ¬∃y Q(y)) ∨ R &nbsp;≡&nbsp; (∃x ¬P(x) ∨ ∀y ¬Q(y)) ∨ R</span>
+        </div>
+        <div class="callout callout-formula">
+          <div class="c-title">Schritt 3: Variablen umbenennen (hier keine Kollision — x ≠ y, also unverändert)</div>
+          <span class="formula">≡ (∃x ¬P(x) ∨ ∀z ¬Q(z)) ∨ R &nbsp;&nbsp;(z statt y nur zur Illustration, falls Konflikt bestünde)</span>
+        </div>
+        <div class="callout callout-formula">
+          <div class="c-title">Schritt 4: Quantoren nach vorne ziehen</div>
+          <span class="formula">≡ ∃x ∀z ((¬P(x) ∨ ¬Q(z)) ∨ R)</span>
+        </div>
+        <div class="callout callout-formula">
+          <div class="c-title">Schritt 5: Matrix vereinfachen — fertig</div>
+          <span class="formula">Pränex-NF:&nbsp; ∃x ∀z (¬P(x) ∨ ¬Q(z) ∨ R)</span>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Sei A mit P = {1}" (Domain nicht angegeben).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>„Sei A mit Domain M = {1}, P^A = {1}." Ein Modell
+            braucht IMMER: Domain + alle Konstanten/Funktionen/Prädikate.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>¬∀x P(x) ≡ ∀x ¬P(x)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>¬∀x P(x) ≡ <strong>∃x ¬P(x)</strong> — die
+            Quantoren tauschen beim Negieren (¬∀ = ∃, ¬∃ = ∀)!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>(∀x P(x)) ∧ (∃x Q(x)) → ∀x ∃x (P(x) ∧ Q(x))</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>(∀x P(x)) ∧ (∃y Q(y)) → ∀x ∃y (P(x) ∧ Q(y)).
+            Gleicher Variablenname bei verschiedenen Quantoren kann sich „vermischen" — vorher umbenennen!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>(P(x) ∧ ∀x Q(x)) → ∀x (P(x) ∧ Q(x))</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das freie x in P(x) ist eine ANDERE Variable als
+            das durch ∀x gebundene x in Q(x). Vor dem Herausziehen erst umbenennen: ∀x Q(x) → ∀w Q(w), dann
+            P(x) ∧ ∀w Q(w) → ∀w (P(x) ∧ Q(w)) — x bleibt frei!</div>
+        </div>
+
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Modell-Konstruktion — Rezept</h4>
+          <pre class="code">Schritt 1: Domain wählen (z. B. {a} oder {1,2,3})
+Schritt 2: Konstanten: c^A ∈ Domain festlegen
+Schritt 3: Funktionen: f^A: Domain → Domain festlegen
+Schritt 4: Prädikate: P^A ⊆ Domain^Arität so wählen, dass F wahr wird
+Schritt 5: Gegenprobe — erfüllt die Interpretation F?
+  JA  → Modell gefunden ✓
+  NEIN → andere Domain / Interpretation versuchen</pre>
+
+          <h4>Pränex-Normalform — Rezept</h4>
+          <pre class="code">1. Alle → und ↔ auflösen (zu ¬, ∧, ∨)
+2. ¬ nach innen treiben: ¬∀x = ∃x¬, ¬∃x = ∀x¬
+3. Variablen umbenennen bei Namenskonflikten
+4. Quantoren nach vorne ziehen (Scope checken!)
+5. Matrix ist quantorenfrei
+
+Resultat: (Q₁x₁)(Q₂x₂)…(Qₙxₙ) Matrix</pre>
+
+          <h4>De-Morgan-Tabelle für Quantoren</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Ausdruck</th><th>Äquivalent zu</th></tr></thead>
+            <tbody>
+              <tr><td>¬∀x A</td><td>∃x ¬A</td></tr>
+              <tr><td>¬∃x A</td><td>∀x ¬A</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Häufige Fehler</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Fehler</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>Modell ohne Domain</td><td>Domain IMMER explizit angeben!</td></tr>
+              <tr><td>De Morgan falsch</td><td>¬∀x = ∃x¬, ¬∃x = ∀x¬</td></tr>
+              <tr><td>Variablen-Konflikte</td><td>Vor dem Herausziehen umbenennen</td></tr>
+              <tr><td>Quantor-Scope ignoriert</td><td>Muss alle beteiligten Terme decken</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Welche Formel ist äquivalent zu ¬∀x P(x)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">∀x ¬P(x)</button>
+              <button class="quiz-choice" type="button" data-correct>∃x ¬P(x)</button>
+              <button class="quiz-choice" type="button">¬∃x P(x)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>De Morgan für Quantoren: ¬∀x A ≡ ∃x ¬A. Der Quantor wechselt beim
+              Negieren die Sorte.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Was ist die korrekte Pränex-Normalform von
+              (∀x P(x)) ∧ (∃y Q(y)) → R?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">∀x ∃y (P(x) → Q(y) → R)</button>
+              <button class="quiz-choice" type="button" data-correct>∃x ∀z (¬P(x) ∨ ¬Q(z) ∨ R)</button>
+              <button class="quiz-choice" type="button">(∀x P(x)) ∧ (∃y Q(y) → R)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Erst → auflösen, dann De Morgan (¬∀=∃¬, ¬∃=∀¬) anwenden, dann die
+              Quantoren nach vorne ziehen: ∃x ∀z (¬P(x) ∨ ¬Q(z) ∨ R).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="5">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie viele Schritte hat das Pränex-Normalform-Rezept
+              (Auflösen → De Morgan → Umbenennen → Herausziehen → Matrix)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Genau <strong>5</strong> Schritte: →/↔ auflösen, De Morgan, Umbenennen
+              bei Konflikten, Quantoren herausziehen, Matrix ist fertig.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="domain|die domain|grundbereich|universum">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Was muss eine Interpretation IMMER zusätzlich zu
+              Konstanten, Funktionen und Prädikaten angeben, sonst ist sie unvollständig?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Domain</strong> (Grundbereich/Universum) M — ohne sie ist
+              unklar, worüber überhaupt geredet wird.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: F = ∃x(P(x) ∧ Q(x,x)). Welche
+              Interpretation A ist ein Modell für F?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">M = {a}, P^A = ∅, Q^A = {(a,a)}</button>
+              <button class="quiz-choice" type="button" data-correct>M = {a}, P^A = {a}, Q^A = {(a,a)}</button>
+              <button class="quiz-choice" type="button">M = {a,b}, P^A = {a}, Q^A = ∅</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nur die mittlere Option macht sowohl P(a) als auch Q(a,a) wahr — beide
+              werden für den ∃x-Zeugen a gebraucht. Bei den anderen beiden ist mindestens eines der beiden Atome
+              für jedes Element falsch.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2025: Bilde die Pränex-Normalform von
+              ¬(∀x P(x) ∧ ∃y Q(y)). Wie viele Quantoren stehen am Ende vorne in der Normalform?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>¬(∀x P(x) ∧ ∃y Q(y)) ≡ ¬∀x P(x) ∨ ¬∃y Q(y) ≡ ∃x ¬P(x) ∨ ∀y ¬Q(y) ≡
+              ∃x ∀y (¬P(x) ∨ ¬Q(y)). Das sind <strong>2</strong> Quantoren vorne (∃x und ∀y).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Was ist ¬∃x P(x) äquivalent zu?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">∃x ¬P(x)</button>
+              <button class="quiz-choice" type="button" data-correct>∀x ¬P(x)</button>
+              <button class="quiz-choice" type="button">¬∀x P(x)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>¬∃x A ≡ ∀x ¬A — auch hier tauscht der Quantor beim Negieren die Sorte.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="13-praedikatenlogik-syntax.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Prädikatenlogik: Syntax</div>
+        </a>
+        <a class="next" href="15-sequenzenkalkuel-pl.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Sequenzenkalkül (Prädikatenlogik)</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

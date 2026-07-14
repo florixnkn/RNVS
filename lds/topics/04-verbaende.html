@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verbände &amp; Ordnungsstrukturen · LDS</title>
+<meta name="description" content="Verbände (Supremum &amp; Infimum), Distributivität mit Pentagon- und Diamond-Test – und der euklidische Algorithmus für ggT &amp; kgV, Schritt für Schritt durchgerechnet, mit Hasse-Diagramm-Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#verband">Verband</a>
+      <a href="#distributivitaet">Distributivität</a>
+      <a href="#rechnen">Rechnen</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">LDS-Kursübersicht</a> › Thema 04</div>
+    <span class="th-icon">🔷</span>
+    <h1>Verbände &amp; Ordnungsstrukturen</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-blatt">Blatt 4</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#verband">Verbände: Supremum &amp; Infimum</a></li>
+        <li><a href="#distributivitaet">Distributivität: Pentagon &amp; Diamond</a></li>
+        <li><a href="#rechnen">Schritt-für-Schritt: Verband-Check &amp; Euklid</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Aus Thema 3 kennst du Ordnungen und Hasse-Diagramme. Jetzt kommt die Frage: Kann man zu
+          <strong>zwei beliebigen Elementen</strong> immer ein eindeutiges „nächstgelegenes gemeinsames Element"
+          nach oben UND nach unten finden? Wenn ja, heißt die Struktur <strong>Verband</strong> — und Verbände
+          tauchen überraschend oft auf, zum Beispiel ganz konkret bei <strong>ggT und kgV</strong> von Zahlen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… zwei Zahlen, <strong>12 und 18</strong>, geordnet nach „teilt" (a ≤ b, wenn a Teiler von b ist).<br>
+            <strong>ggT(12,18) = 6:</strong> die <em>größte</em> Zahl, die noch in beide „reinpasst" (beide teilt).
+            Das ist das <strong>Infimum</strong> (⊓) — die größte gemeinsame <em>untere</em> Schranke.<br>
+            <strong>kgV(12,18) = 36:</strong> die <em>kleinste</em> Zahl, die von beiden „erreicht" wird (Vielfaches
+            von beiden). Das ist das <strong>Supremum</strong> (⊔) — die kleinste gemeinsame <em>obere</em> Schranke.<br>
+            Für <strong>jedes</strong> Zahlenpaar existieren ggT und kgV — deshalb bilden die natürlichen Zahlen
+            unter Teilbarkeit einen Verband. Nicht jede Ordnung hat dieses Glück, wie du gleich siehst.</p>
+        </div>
+      </section>
+
+      <!-- ===== VERBAND ===== -->
+      <section id="verband" class="reveal">
+        <h2>Verbände: Supremum &amp; Infimum</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Verband</div>
+          <span class="formula">Ein Verband (L, ⊓, ⊔) ist eine partielle Ordnung, in der JEDES Paar
+von Elementen ein Supremum UND ein Infimum besitzt.
+
+⊔  (Join / Supremum)   a⊔b = die KLEINSTE obere Schranke von a und b
+⊓  (Meet / Infimum)    a⊓b = die GRÖSSTE untere Schranke von a und b</span>
+          <p>„Obere Schranke von a und b" heißt nur: <em>irgendein</em> Element ≥ a und ≥ b. Das Supremum ist unter
+            all diesen oberen Schranken das <strong>kleinste</strong> — nicht irgendeine beliebige obere Schranke!</p>
+        </div>
+
+        <!-- SVG 1: D12 Hasse-Diagramm mit Sup/Inf-Markierung -->
+        <figure class="diagram">
+          <div class="diagram-title">Sup &amp; Inf ablesen: Teiler von 12, Paar (4, 6)</div>
+          <svg viewBox="0 0 400 280" width="400" role="img" aria-label="Hasse-Diagramm der Teiler von 12 mit markiertem Supremum 12 und Infimum 2 für das Paar 4 und 6">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <g stroke="#8a94a6" stroke-width="1.3">
+                <line x1="200" y1="230" x2="120" y2="175"/>
+                <line x1="200" y1="230" x2="280" y2="175"/>
+                <line x1="120" y1="175" x2="90" y2="105"/>
+                <line x1="280" y1="175" x2="240" y2="105"/>
+                <line x1="240" y1="105" x2="200" y2="40"/>
+              </g>
+              <!-- Highlight: inf(4,6)=2 -->
+              <line x1="120" y1="175" x2="90" y2="105" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="6 4"/>
+              <line x1="120" y1="175" x2="240" y2="105" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="6 4"/>
+              <!-- Highlight: sup(4,6)=12 -->
+              <line x1="90" y1="105" x2="200" y2="40" stroke="#12b28c" stroke-width="3" stroke-dasharray="6 4"/>
+              <line x1="240" y1="105" x2="200" y2="40" stroke="#12b28c" stroke-width="3" stroke-dasharray="6 4"/>
+
+              <circle cx="200" cy="230" r="20" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="200" y="236" text-anchor="middle" class="svg-ink" font-weight="700">1</text>
+
+              <circle cx="120" cy="175" r="22" fill="#8b5cf6" fill-opacity="0.28" stroke="#8b5cf6" stroke-width="2.5"/>
+              <text x="120" y="181" text-anchor="middle" class="svg-ink" font-weight="800">2</text>
+              <text x="120" y="205" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="700">inf(4,6)</text>
+
+              <circle cx="280" cy="175" r="20" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="280" y="181" text-anchor="middle" class="svg-ink" font-weight="700">3</text>
+
+              <circle cx="90" cy="105" r="20" fill="#f5810b" fill-opacity="0.24" stroke="#f5810b" stroke-width="2"/>
+              <text x="90" y="111" text-anchor="middle" class="svg-ink" font-weight="700">4</text>
+
+              <circle cx="240" cy="105" r="20" fill="#f5810b" fill-opacity="0.24" stroke="#f5810b" stroke-width="2"/>
+              <text x="240" y="111" text-anchor="middle" class="svg-ink" font-weight="700">6</text>
+
+              <circle cx="200" cy="40" r="24" fill="#12b28c" fill-opacity="0.28" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="200" y="46" text-anchor="middle" class="svg-ink" font-weight="800">12</text>
+              <text x="200" y="18" text-anchor="middle" fill="#12b28c" font-size="10" font-weight="700">sup(4,6)</text>
+            </g>
+          </svg>
+          <figcaption>Orange = das gewählte Paar (4,6). Grün gestrichelt: einzige gemeinsame obere Schranke ist 12 → sup(4,6)=12. Lila gestrichelt: größte gemeinsame untere Schranke ist 2 (aus {1,2}) → inf(4,6)=2.</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li><strong>Zwei Elemente wählen:</strong> a = 4, b = 6.</li>
+          <li><strong>Obere Schranken suchen:</strong> Welche Teiler-von-12-Zahlen sind Vielfache von sowohl 4 als
+            auch 6? Nur 12. → <strong>sup(4,6) = 12</strong> (entspricht kgV(4,6) = 12).</li>
+          <li><strong>Untere Schranken suchen:</strong> Welche Zahlen teilen sowohl 4 als auch 6? {1, 2}. Die größte
+            davon ist 2. → <strong>inf(4,6) = 2</strong> (entspricht ggT(4,6) = 2).</li>
+          <li><strong>Für alle Paare wiederholen</strong> (z. B. (2,3): sup=6, inf=1) — wenn IMMER beides existiert,
+            ist die Struktur ein <strong>Verband</strong>. Bei den Teilern von 12 klappt das für jedes Paar.</li>
+        </ol>
+
+        <h3>Gegenbeispiel: nicht jede Ordnung ist ein Verband</h3>
+        <p>Aus Thema 3 kennst du schon dieses Beispiel — jetzt zeigt es, warum es <strong>kein</strong> Verband ist:</p>
+
+        <!-- SVG 2: V-Poset ohne Infimum -->
+        <figure class="diagram">
+          <div class="diagram-title">a oben, b und c unvergleichbar darunter — kein gemeinsames Element</div>
+          <svg viewBox="0 0 320 220" width="320" role="img" aria-label="Hasse-Diagramm a oben, b und c darunter unvergleichbar, ohne gemeinsame untere Schranke">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <line x1="160" y1="40" x2="90" y2="120" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="160" y1="40" x2="230" y2="120" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <circle cx="160" cy="40" r="22" fill="#12b28c" fill-opacity="0.24" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="160" y="46" text-anchor="middle" class="svg-ink" font-weight="800">a</text>
+              <text x="160" y="18" text-anchor="middle" fill="#12b28c" font-size="10" font-weight="700">sup(b,c) = a ✓</text>
+
+              <circle cx="90" cy="120" r="20" fill="#e0483d" fill-opacity="0.2" stroke="#e0483d" stroke-width="2"/>
+              <text x="90" y="126" text-anchor="middle" class="svg-ink" font-weight="700">b</text>
+              <circle cx="230" cy="120" r="20" fill="#e0483d" fill-opacity="0.2" stroke="#e0483d" stroke-width="2"/>
+              <text x="230" y="126" text-anchor="middle" class="svg-ink" font-weight="700">c</text>
+
+              <circle cx="160" cy="185" r="18" fill="none" stroke="#e0483d" stroke-width="2" stroke-dasharray="4 3" opacity="0.5"/>
+              <line x1="140" y1="167" x2="180" y2="203" stroke="#e0483d" stroke-width="2.5" opacity="0.7"/>
+              <line x1="180" y1="167" x2="140" y2="203" stroke="#e0483d" stroke-width="2.5" opacity="0.7"/>
+              <text x="160" y="210" text-anchor="middle" fill="#e0483d" font-size="10" font-weight="700">kein gemeinsames Element</text>
+            </g>
+          </svg>
+          <figcaption>sup(b,c) = a existiert (einzige gemeinsame obere Schranke). Aber es gibt gar kein Element unterhalb von b oder c — also auch keine gemeinsame untere Schranke, also kein inf(b,c). Nicht ALLE Paare haben Sup+Inf → <strong>kein Verband</strong>.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== DISTRIBUTIVITÄT ===== -->
+      <section id="distributivitaet" class="reveal">
+        <h2>Distributive Verbände: Pentagon- &amp; Diamond-Test</h2>
+        <p>Ein Verband heißt <strong>distributiv</strong>, wenn sich ⊓ und ⊔ wie „mal" und „plus" gegenseitig
+          ausklammern lassen — für <em>alle</em> a, b, c:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Distributivgesetz</div>
+          <span class="formula">a ⊓ (b ⊔ c)  =  (a ⊓ b) ⊔ (a ⊓ c)</span>
+          <p>Das für <strong>alle</strong> Tripel a,b,c einzeln nachzurechnen ist mühsam. Schneller geht es mit
+            einem Struktur-Test am Hasse-Diagramm.</p>
+        </div>
+
+        <!-- SVG 3: Pentagon (N5) und Diamond (M3) -->
+        <figure class="diagram">
+          <div class="diagram-title">Die zwei verbotenen Muster: Pentagon (N5) und Diamond (M3)</div>
+          <svg viewBox="0 0 620 260" width="620" role="img" aria-label="Links das Pentagon-Muster N5, rechts das Diamond-Muster M3 — beide sind nicht distributiv">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Pentagon N5 -->
+              <text x="140" y="26" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="14">Pentagon (N5)</text>
+              <g stroke="#8a94a6" stroke-width="1.5">
+                <line x1="100" y1="220" x2="60" y2="150"/>
+                <line x1="100" y1="220" x2="150" y2="150"/>
+                <line x1="150" y1="150" x2="150" y2="90"/>
+                <line x1="150" y1="90" x2="100" y2="40"/>
+                <line x1="60" y1="150" x2="100" y2="40"/>
+              </g>
+              <circle cx="100" cy="220" r="16" fill="#8a94a6" fill-opacity="0.2" stroke="#8a94a6"/>
+              <text x="100" y="225" text-anchor="middle" class="svg-ink" font-size="11">0</text>
+              <circle cx="60" cy="150" r="16" fill="#e0483d" fill-opacity="0.22" stroke="#e0483d"/>
+              <text x="60" y="155" text-anchor="middle" class="svg-ink" font-size="11">c</text>
+              <circle cx="150" cy="150" r="16" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6"/>
+              <text x="150" y="155" text-anchor="middle" class="svg-ink" font-size="11">a</text>
+              <circle cx="150" cy="90" r="16" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6"/>
+              <text x="150" y="95" text-anchor="middle" class="svg-ink" font-size="11">b</text>
+              <circle cx="100" cy="40" r="16" fill="#8a94a6" fill-opacity="0.2" stroke="#8a94a6"/>
+              <text x="100" y="45" text-anchor="middle" class="svg-ink" font-size="11">1</text>
+              <text x="140" y="245" text-anchor="middle" class="svg-soft" font-size="10">Kette 0&lt;a&lt;b&lt;1 plus ein Ausreißer c dazwischen</text>
+
+              <line x1="300" y1="10" x2="300" y2="250" stroke="#8a94a6" stroke-width="1" stroke-dasharray="6 5"/>
+
+              <!-- Diamond M3 -->
+              <text x="480" y="26" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="14">Diamond (M3)</text>
+              <g stroke="#8a94a6" stroke-width="1.5">
+                <line x1="480" y1="220" x2="420" y2="130"/>
+                <line x1="480" y1="220" x2="480" y2="130"/>
+                <line x1="480" y1="220" x2="540" y2="130"/>
+                <line x1="420" y1="130" x2="480" y2="40"/>
+                <line x1="480" y1="130" x2="480" y2="40"/>
+                <line x1="540" y1="130" x2="480" y2="40"/>
+              </g>
+              <circle cx="480" cy="220" r="16" fill="#8a94a6" fill-opacity="0.2" stroke="#8a94a6"/>
+              <text x="480" y="225" text-anchor="middle" class="svg-ink" font-size="11">0</text>
+              <circle cx="420" cy="130" r="16" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6"/>
+              <text x="420" y="135" text-anchor="middle" class="svg-ink" font-size="11">a</text>
+              <circle cx="480" cy="130" r="16" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6"/>
+              <text x="480" y="135" text-anchor="middle" class="svg-ink" font-size="11">b</text>
+              <circle cx="540" cy="130" r="16" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6"/>
+              <text x="540" y="135" text-anchor="middle" class="svg-ink" font-size="11">c</text>
+              <circle cx="480" cy="40" r="16" fill="#8a94a6" fill-opacity="0.2" stroke="#8a94a6"/>
+              <text x="480" y="45" text-anchor="middle" class="svg-ink" font-size="11">1</text>
+              <text x="480" y="245" text-anchor="middle" class="svg-soft" font-size="10">a, b, c alle drei paarweise unvergleichbar</text>
+            </g>
+          </svg>
+          <figcaption>Findest du eines dieser beiden Muster (als Teil-Hasse-Diagramm, nicht unbedingt der ganze Verband) irgendwo in deinem Verband, ist er sofort NICHT distributiv — ohne dass du eine einzige Formel nachrechnen musst.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Rückbezug: Teiler-Verbände sind immer distributiv</div>
+          <p>Der Teiler-von-12-Verband von oben enthält weder Pentagon noch Diamond (er ist eine einfache
+            „Ziegelstein"-Struktur ohne Ausreißer) — also ist er distributiv. Das gilt allgemein: <strong>jeder
+            Teiler-Verband (ℕ, |, ggT, kgV) ist distributiv.</strong></p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Verband-Check &amp; Euklidischer Algorithmus</h2>
+
+        <h3>A) Verband-Check auf den Teilern von 12</h3>
+        <ol class="steps">
+          <li><strong>Paar (4,6):</strong> sup = 12, inf = 2 (siehe Diagramm oben). Beides existiert. ✓</li>
+          <li><strong>Paar (2,3):</strong> gemeinsame obere Schranken: {6, 12} → kleinste = 6. Gemeinsame untere
+            Schranken: {1} → größte = 1. sup(2,3)=6, inf(2,3)=1. ✓</li>
+          <li><strong>Paar (4,3):</strong> gemeinsame obere Schranken: {12} → sup=12. Gemeinsame untere Schranken:
+            {1} → inf=1. ✓</li>
+          <li><strong>Fazit:</strong> Für alle geprüften (und tatsächlich für alle) Paare existieren Sup und Inf →
+            <strong>({1,2,3,4,6,12}, |) ist ein Verband</strong>, und wegen des fehlenden Pentagon/Diamond-Musters
+            sogar ein <strong>distributiver</strong> Verband.</li>
+        </ol>
+
+        <h3>B) Euklidischer Algorithmus: ggT(84, 30) Schritt für Schritt</h3>
+        <p>Der Euklidische Algorithmus berechnet das Infimum ⊓ = ggT zweier Zahlen, ohne alle Teiler auflisten zu
+          müssen — durch wiederholte Division mit Rest:</p>
+
+        <ol class="steps">
+          <li><strong>84 geteilt durch 30:</strong> 84 = 2 · 30 + <strong>24</strong> (Rest 24)</li>
+          <li><strong>30 geteilt durch 24:</strong> 30 = 1 · 24 + <strong>6</strong> (Rest 6)</li>
+          <li><strong>24 geteilt durch 6:</strong> 24 = 4 · 6 + <strong>0</strong> (Rest 0 → Stopp!)</li>
+          <li><strong>Ergebnis:</strong> Der letzte Rest ≠ 0 war 6. Also <strong>ggT(84, 30) = 6</strong>.</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: kgV aus ggT berechnen</div>
+          <span class="formula">kgV(a,b) = (a · b) / ggT(a,b)</span>
+          <p>kgV(84, 30) = (84 · 30) / 6 = 2520 / 6 = <strong>420</strong>. So musst du für das Supremum kein
+            eigenes Verfahren lernen — es folgt direkt aus dem Infimum.</p>
+        </div>
+
+        <h3>C) Distributivität numerisch bestätigen</h3>
+        <p>Test mit a=4, b=6, c=9 (⊓=ggT, ⊔=kgV):</p>
+        <ol class="steps">
+          <li><strong>Linke Seite:</strong> a ⊓ (b ⊔ c) = ggT(4, kgV(6,9)) = ggT(4, 18) = <strong>2</strong></li>
+          <li><strong>Rechte Seite:</strong> (a ⊓ b) ⊔ (a ⊓ c) = kgV(ggT(4,6), ggT(4,9)) = kgV(2, 1) = <strong>2</strong></li>
+          <li><strong>Gleich!</strong> ✓ — wie erwartet, denn Teiler-Verbände sind immer distributiv.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Jede partielle Ordnung ist ein Verband."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur wenn <strong>wirklich jedes</strong> Paar
+            Sup UND Inf hat. Gegenbeispiel: a oben, b und c darunter (unvergleichbar, ohne gemeinsame untere
+            Schranke) — sup(b,c)=a existiert, aber inf(b,c) <strong>nicht</strong>. Also kein Verband.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Supremum = irgendeine gemeinsame obere Schranke.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Supremum ist die <strong>kleinste</strong> unter
+            allen gemeinsamen oberen Schranken. Bei (2,3) im Teiler-von-12-Beispiel sind sowohl 6 als auch 12
+            gemeinsame obere Schranken — Supremum ist aber nur die kleinere: <strong>6</strong>.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Der Verband sieht irgendwie distributiv aus" als Beweis akzeptieren.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Entweder das Pentagon/Diamond-Muster im
+            Hasse-Diagramm rigoros ausschließen, oder für die kritischen Tripel die Formel
+            a⊓(b⊔c)=(a⊓b)⊔(a⊓c) tatsächlich nachrechnen. „Sieht so aus" reicht in der Klausur nicht.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>ggT und kgV vertauschen — z. B. kgV als „die kleinere Zahl der beiden Ergebnisse" annehmen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ggT (Infimum) ist <strong>immer ≤</strong> beiden
+            Ausgangszahlen, kgV (Supremum) ist <strong>immer ≥</strong> beiden Ausgangszahlen. Bei ggT(4,6)=2 und
+            kgV(4,6)=12 siehst du sofort: der ggT ist klein, das kgV ist groß — nicht umgekehrt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Beim Euklidischen Algorithmus den letzten Quotienten als ggT ablesen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der ggT ist der <strong>letzte Rest ungleich
+            0</strong> — nicht der letzte Quotient! Bei ggT(84,30): letzter Rest ≠ 0 war 6 (aus 30 = 1·24+6),
+            nicht die 4 aus dem letzten Schritt (24 = 4·6+0).</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Verband-Checkliste</h4>
+          <pre class="code">1. Zwei Elemente a, b wählen
+2. Sup (⊔): kleinste gemeinsame OBERE Schranke finden
+3. Inf (⊓): größte gemeinsame UNTERE Schranke finden
+4. Für ALLE Paare wiederholen (mind. die kritischen)
+
+Alle Paare haben Sup + Inf  →  VERBAND
+Ein Paar ohne Sup ODER Inf  →  KEIN Verband</pre>
+
+          <h4>Distributivitäts-Schnelltest</h4>
+          <pre class="code">Pentagon (N5) im Hasse-Diagramm gefunden?  → NICHT distributiv
+Diamond  (M3) im Hasse-Diagramm gefunden?  → NICHT distributiv
+Keins von beiden gefunden?                 → wahrscheinlich distributiv
+                                              (im Zweifel: Formel testen)</pre>
+
+          <h4>Euklidischer Algorithmus</h4>
+          <pre class="code">ggT(84,30):  84 = 2·30+24 → 30 = 1·24+6 → 24 = 4·6+0
+             letzter Rest ≠ 0  =  ggT  =  6
+kgV(a,b)   =  (a·b) / ggT(a,b)   →   kgV(84,30) = 2520/6 = 420</pre>
+
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Verband-Operation</th><th>Symbol</th><th>Bei Zahlen (Teilbarkeit)</th></tr></thead>
+            <tbody>
+              <tr><td>Meet / Infimum</td><td>⊓</td><td>ggT</td></tr>
+              <tr><td>Join / Supremum</td><td>⊔</td><td>kgV</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="factgrid">
+            <div class="fact"><b>Sup = kleinste</b><span>obere Schranke, nicht irgendeine</span></div>
+            <div class="fact"><b>Inf = größte</b><span>untere Schranke, nicht irgendeine</span></div>
+            <div class="fact"><b>ggT ≤ beide</b><span>kgV ≥ beide Zahlen</span></div>
+            <div class="fact"><b>letzter Rest ≠ 0</b><span>= ggT, nicht der Quotient</span></div>
+          </div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Verband</strong> = partielle Ordnung, in der WIRKLICH jedes Paar Sup UND Inf hat</li>
+            <li>Ein einziges Paar ohne Sup oder Inf reicht, um „kein Verband" zu zeigen</li>
+            <li><strong>Distributivität</strong>: Pentagon/Diamond-Muster suchen statt jedes Tripel einzeln zu prüfen</li>
+            <li>Teiler-Verbände (ℕ, |, ggT, kgV) sind <strong>immer</strong> distributiv</li>
+            <li>Euklidischer Algorithmus: ggT = letzter Rest ≠ 0, kgV = a·b/ggT(a,b)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="text" data-answer="supremum|sup">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wie heißt die kleinste obere Schranke zweier Elemente in einem Verband?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das <strong>Supremum</strong> (⊔, auch Join genannt) — die kleinste unter allen gemeinsamen oberen Schranken.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Berechne ggT(84, 30) mit dem Euklidischen Algorithmus.</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>84=2·30+24 → 30=1·24+6 → 24=4·6+0. Letzter Rest ≠ 0: <strong>6</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="420">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie groß ist kgV(84, 30)? (Nutze kgV(a,b) = a·b/ggT(a,b), ggT=6)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(84·30)/6 = 2520/6 = <strong>420</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Ist ({1,2,3,4,6,12}, |) — die Teiler von 12 unter Teilbarkeit — ein Verband?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja</button>
+              <button class="quiz-choice" type="button">Nein</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ja — jedes Paar hat sowohl Sup (=kgV) als auch Inf (=ggT) innerhalb der Menge, z. B. sup(4,6)=12, inf(4,6)=2.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Eine Ordnung hat a oben, b und c darunter (unvergleichbar zueinander, nichts liegt unter b oder c). Ist das ein Verband?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja</button>
+              <button class="quiz-choice" type="button" data-correct>Nein</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nein — sup(b,c)=a existiert zwar, aber b und c haben keine gemeinsame untere Schranke, also existiert inf(b,c) nicht. Für einen Verband müssen ALLE Paare beides haben.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Berechne a ⊓ (b ⊔ c) für a=4, b=6, c=9 mit ⊓=ggT und ⊔=kgV (nutze das Distributivgesetz zur Kontrolle mit der rechten Seite).</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>b⊔c = kgV(6,9) = 18. a⊓(b⊔c) = ggT(4,18) = <strong>2</strong>. Kontrolle: (a⊓b)⊔(a⊓c) = kgV(ggT(4,6),ggT(4,9)) = kgV(2,1) = 2 — stimmt überein, wie es das Distributivgesetz verlangt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Welches Muster im Hasse-Diagramm zeigt sofort, dass ein Verband NICHT distributiv ist?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">eine einfache Kette</button>
+              <button class="quiz-choice" type="button" data-correct>Pentagon (N5) oder Diamond (M3)</button>
+              <button class="quiz-choice" type="button">ein eindeutiges Minimum und Maximum</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Enthält der Verband als Teilstruktur ein <strong>Pentagon (N5)</strong> oder ein <strong>Diamond (M3)</strong>, ist er garantiert nicht distributiv — ohne dass eine einzige Formel nachgerechnet werden muss.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="03-induktion-ordnungen.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Induktion &amp; Ordnungen</div>
+        </a>
+        <a class="next" href="05-modulare-arithmetik.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Modulare Arithmetik &amp; Homomorphismen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

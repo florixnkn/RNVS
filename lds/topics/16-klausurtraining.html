@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klausurtraining: alle 7 Aufgabentypen · LDS</title>
+<meta name="description" content="Klausurtraining für LDS: alle 7 Aufgabentypen (Mengen, Induktion, Homomorphismen, Strukturen, Polynome, Aussagenlogik, Prädikatenlogik) mit Original-Klausuraufgaben aus 2024 und 2025 von Dr. Jan Johannsen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Ablauf</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">LDS-Kursübersicht</a> › Thema 16</div>
+    <span class="th-icon">🎯</span>
+    <h1>Klausurtraining: alle 7 Aufgabentypen</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-soft">Original-Klausuren SoSe 2024 &amp; 2025</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">So läuft die Klausur</a></li>
+        <li><a href="#mengen">1 · Mengen</a></li>
+        <li><a href="#induktion">2 · Induktion</a></li>
+        <li><a href="#homomorphismen">3 · Homomorphismen &amp; Funktionen</a></li>
+        <li><a href="#strukturen">4 · Algebraische Strukturen</a></li>
+        <li><a href="#polynome">5 · Polynome</a></li>
+        <li><a href="#aussagenlogik">6 · Aussagenlogik</a></li>
+        <li><a href="#praedikatenlogik">7 · Prädikatenlogik</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>So läuft die Klausur</h2>
+        <p class="lead-in">Die LDS-Klausur bei Dr. Jan Johannsen besteht immer aus <strong>7 Aufgaben</strong>,
+          für die du <strong>90 Minuten</strong> Zeit hast — in der Hauptklausur SoSe 2025 waren dabei
+          <strong>80 Punkte</strong> zu holen. Diese Seite ist kein neuer Stoff, sondern <strong>Training</strong>:
+          zu jedem der 7 immer wiederkehrenden Aufgabentypen gibt es Strategie, typische Fallen und komplett
+          durchgerechnete <strong>Original-Klausuraufgaben</strong> — 1:1 aus den Musterlösungen 2024 und 2025.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Die Spielregeln (wörtlich aus den Klausur-Hinweisen)</div>
+          <p><strong>N enthält die 0.</strong> Wenn irgendwo x, y ∈ ℕ mit x&lt;y steht, ist y=0 nie möglich, aber
+            x=0 schon — das ist eine der häufigsten Fallen überhaupt.</p>
+          <p>Sofern nicht anders angegeben, sind <strong>Rechenwege, Beweise bzw. Zwischenschritte gefordert</strong>
+            — reine Ergebnisse ohne Herleitung geben dann keine volle Punktzahl.</p>
+          <p><strong>Mehrere widersprüchliche Lösungen zu einer Aufgabe werden mit 0 Punkten bewertet.</strong>
+            Entscheide dich für einen Lösungsweg und streiche Alternativen sauber durch, statt zwei Antworten
+            stehen zu lassen.</p>
+          <p>Keine Hilfsmittel erlaubt — nur Stift, Ausweis, Getränk.</p>
+        </div>
+
+        <h3>Punkteverteilung (Hauptklausur SoSe 2025, 80 Punkte)</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Aufgabe</th><th>Thema</th><th>Punkte</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Mengen</td><td>12</td></tr>
+            <tr><td>2</td><td>Induktion</td><td>12</td></tr>
+            <tr><td>3</td><td>Homomorphismen</td><td>8</td></tr>
+            <tr><td>4</td><td>Algebraische Strukturen</td><td>12</td></tr>
+            <tr><td>5</td><td>Polynome</td><td>12</td></tr>
+            <tr><td>6</td><td>Aussagenlogik</td><td>12</td></tr>
+            <tr><td>7</td><td>Prädikatenlogik</td><td>12</td></tr>
+            <tr><td><strong>Summe</strong></td><td></td><td><strong>80</strong></td></tr>
+          </tbody>
+        </table></div>
+        <p class="lead-in" style="font-size:.92rem">In den Altklausuren 2024 (7. August &amp; 4. Oktober) waren es
+          jeweils 70 Punkte, aber dieselben 7 Themenblöcke in derselben Reihenfolge — die Struktur der Klausur ist
+          über die Semester hinweg stabil geblieben.</p>
+
+        <h3>Strategietipps aus den Klausur-Hinweisen</h3>
+        <ol class="steps">
+          <li><strong>Erst verschaffen, dann loslegen:</strong> Verschaffe dir zunächst einen Überblick über alle 7
+            Aufgaben, um herauszufinden, wo du mit deinen persönlichen Stärken schnell Punkte sammelst.</li>
+          <li><strong>Nicht festbeißen:</strong> Findest du bei einer Aufgabe nach längerem Überlegen keine Lösung,
+            mach lieber mit einer anderen weiter und komm später zurück.</li>
+          <li><strong>Teilaufgaben ohne Begründung zuerst:</strong> Rechenaufgaben wie „berechnen Sie die folgende
+            Menge — eine Begründung ist nicht erforderlich" sind reine Fleißpunkte. Sammle die zuerst ein.</li>
+          <li><strong>Beweise: Struktur vor Inhalt.</strong> Bei Ja/Nein-Fragen mit Beweispflicht (z. B. Homomorphismus,
+            Gruppe, Tautologie) gibt es fast immer Punkte allein für den richtigen <em>Aufbau</em> — auch wenn am
+            Ende ein Rechenfehler drin ist.</li>
+          <li><strong>Kleine Schritte bei Induktion &amp; Umformungen:</strong> Ein Schritt gilt als „zu groß", wenn
+            er ohne Zwischenschritt nicht direkt nachvollziehbar ist — im Zweifel lieber eine Zeile mehr schreiben.</li>
+        </ol>
+      </section>
+
+      <!-- ===== 1 MENGEN ===== -->
+      <section id="mengen" class="reveal">
+        <h2>Aufgabentyp 1: Mengen</h2>
+        <p>Aufgabe 1 ist fast immer dreigeteilt: Teil (a) konkrete Mengen <strong>ohne Begründung</strong> berechnen,
+          Teil (b) Kardinalitäten <strong>ohne Begründung</strong> berechnen, Teil (c) ein <strong>Beweis oder
+          Widerlegung</strong> einer Mengengleichung — meist elementweise, <em>ohne</em> Äquivalenzumformungen.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>{1,2} × ({3,4,5,6} ∩ {3,4,5} ∩ {4,5,6}) hat
+            2 × 2 = 4 Paare, weil der Schnitt 2 Elemente hat.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Berechne <strong>erst</strong> den Schnitt:
+            {4,5}. Das ist <strong>eine</strong> Menge — sie zählt als <strong>ein</strong> Element im Produkt.
+            Ergebnis: nur 2 Paare, {(1,{4,5}), (2,{4,5})}.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei A = C zeigen: „⊆ gilt, also gilt aus
+            Symmetriegründen auch ⊇."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Beide Richtungen sind <strong>unabhängige
+            Beweise</strong>. Sehr häufig gilt in Klausuraufgaben nur ⊆ — für ⊇ brauchst du dann ein
+            <strong>konkretes Gegenbeispiel</strong>, kein Venn-Diagramm reicht als Beweis.</div>
+        </div>
+
+        <h3>🎓 Musterlösung Klausur 2025 (Aufgabe 1, 12 Punkte)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Teil (a): Konkrete Mengen (ohne Begründung)</div>
+          <p>
+            (a)i &nbsp; ({a,b,c} ∪ {c,d,e}) ∩ ({a,b,c} ∪ {c,e,e,f}) = ?<br>
+            (a)ii &nbsp; {1,2} × { {3,4,5,6} ∩ {3,4,5} ∩ {4,5,6} } = ?<br>
+            (a)iii &nbsp; P({1,2,3} \ ({4,5,6} ∪ {7,8,9})) = ? Wie viele Elemente?
+          </p>
+        </div>
+        <ol class="steps">
+          <li><strong>(a)i:</strong> {a,b,c}∪{c,d,e}={a,b,c,d,e} und {a,b,c}∪{c,e,e,f}={a,b,c,e,f} (das doppelte
+            e zählt nur einmal). Schnitt: <strong>{a,b,c,e}</strong>.</li>
+          <li><strong>(a)ii — Falle: eine Menge als EIN Element!</strong> Innerer Schnitt zuerst:
+            {3,4,5,6}∩{3,4,5}∩{4,5,6} = {4,5} (eine einzige Menge). Also {1,2}×{{4,5}} =
+            <strong>{(1,{4,5}), (2,{4,5})}</strong> — nur 2 Paare, nicht 4.</li>
+          <li><strong>(a)iii:</strong> {4,5,6}∪{7,8,9}={4,5,6,7,8,9} — nichts davon ist in {1,2,3}. Also bleibt
+            {1,2,3}\{...} = {1,2,3} unverändert. P({1,2,3}) hat <strong>2³ = 8</strong> Elemente.</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">Teil (b): Kardinalitäten (ohne Begründung)</div>
+          <p>
+            (b)i &nbsp; |{1,2,3,4} × {5,6,7,8}| = ? &nbsp;·&nbsp;
+            (b)ii &nbsp; |P({a..h})| = ? &nbsp;·&nbsp;
+            (b)iii &nbsp; |P(A) \ P({})| = ? (in Termen von |A|)&nbsp;·&nbsp;
+            (b)iv &nbsp; |{(x,y)∈ℕ×ℕ; x&lt;y ∧ y&lt;4}| = ?
+          </p>
+        </div>
+        <ol class="steps">
+          <li><strong>(b)i:</strong> |A|·|B| = 4·4 = <strong>16</strong>.</li>
+          <li><strong>(b)ii:</strong> 8 Elemente in der Grundmenge → 2⁸ = <strong>256</strong>.</li>
+          <li><strong>(b)iii:</strong> P({}) = {{}} hat genau 1 Element (das immer auch in P(A) steckt, da {}⊆A
+            für jedes A). Bleiben alle Teilmengen außer {}: <strong>2^|A| − 1</strong>.</li>
+          <li><strong>(b)iv — Falle: ℕ enthält hier die 0!</strong> Gesucht (x,y) mit x&lt;y und y&lt;4, also
+            y∈{1,2,3}: y=1→x=0 (1 Paar); y=2→x∈{0,1} (2 Paare); y=3→x∈{0,1,2} (3 Paare). Summe:
+            1+2+3 = <strong>6</strong>.</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Teil (c), 5 Punkte: Beweis (A\B)\C = (A\C)\(B\C)</div>
+          <span class="formula">x ∈ (A\B)\C
+⇔ x∈A ∧ x∉B ∧ x∉C            (Definition \, zweimal angewendet)
+⇔ x∈A ∧ x∉C ∧ x∉B            (Reihenfolge der UND-Bedingungen ist egal)
+⇔ x ∈ (A\C)\(B\C)             (x∉C schon erfüllt, x∈(A\C) und x∉(B\C) sind dann äquivalent zu x∉B)</span>
+          <p>Da beide Seiten für dieselben x gelten, sind die Mengen gleich — <strong>hier reicht eine einzige
+            Äquivalenzkette für beide Richtungen</strong>, weil jeder Schritt ein „genau dann, wenn" ist.</p>
+        </div>
+
+        <h3>🎓 Zusatz aus Klausur 2024</h3>
+        <p>In beiden 2024er-Klausuren steckt Teil (c) dagegen eine Gleichung, bei der <strong>nur eine Richtung
+          gilt</strong> — Standardmuster: ⊆ per Elementbeweis zeigen, ⊇ per Gegenbeispiel widerlegen.</p>
+        <div class="callout callout-formula">
+          <div class="c-title">7. August 2024: A \ (B∪C) = (A\B) ∪ (A\C) — nur „⊆" stimmt</div>
+          <p><strong>⊆ (Beweis):</strong> Sei a∈A\(B∪C). Dann ist a∈A, aber a∉B∪C, also a∉B (und a∉C). Damit ist
+            a∈A\B und somit auch a∈(A\B)∪(A\C).</p>
+          <p><strong>⊇ (Gegenbeispiel):</strong> A=B={0}, C={}. Dann (A\B)∪(A\C) = ({0}\{0})∪({0}\{}) = {}∪{0} =
+            {0}, aber A\(B∪C) = {0}\({0}∪{}) = {0}\{0} = {}. Und {} ⊉ {0} — die Richtung ist also
+            <strong>falsch</strong>.</p>
+        </div>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Aufgabe</th><th>Rechnung</th><th>Ergebnis</th></tr></thead>
+          <tbody>
+            <tr><td>{a,b,c} ∩ ({a,d,d} ∪ {c,e,f})</td><td>{a,b,c} ∩ {a,c,d,e,f}</td><td>{a,c}</td></tr>
+            <tr><td>{1,2} × {{}, {1,2}}</td><td>alle 4 Kombinationen</td><td>{(1,{}),(1,{1,2}),(2,{}),(2,{1,2})}</td></tr>
+            <tr><td>P({4,5})</td><td>2² = 4 Teilmengen</td><td>{{}, {4}, {5}, {4,5}}</td></tr>
+            <tr><td>|P({0,1,2,3,4})|</td><td>2⁵</td><td>32</td></tr>
+            <tr><td>|{(x,y)∈ℕ×ℕ; x+y=4}|</td><td>(0,4),(1,3),(2,2),(3,1),(4,0)</td><td>5</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== 2 INDUKTION ===== -->
+      <section id="induktion" class="reveal">
+        <h2>Aufgabentyp 2: Induktion</h2>
+        <p>Immer derselbe dreiteilige Aufbau: <strong>Induktionsanfang (IA)</strong> — meist n=0, weil 0∈ℕ! —,
+          <strong>Induktionshypothese (IH)</strong> (muss nicht explizit hingeschrieben werden, aber gedanklich
+          klar sein) und <strong>Induktionsschritt (IS)</strong>: n→n+1, wobei die Anwendung der IH deutlich
+          markiert werden sollte.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Induktionsanfang bei n=1, „weil man ja meist mit 1
+            zu zählen anfängt".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>In LDS gilt <strong>0∈ℕ</strong> — der
+            Induktionsanfang ist fast immer bei n=0 zu zeigen, sonst fehlt ein Fall.</div>
+        </div>
+
+        <h3>🎓 Musterlösung Klausur 2025 (Aufgabe 2, 12 Punkte)</h3>
+        <p>Zeige per Induktion über |M|: <strong>|P(M)| = 2^|M|</strong> für jede endliche Menge M.</p>
+        <ol class="steps">
+          <li><strong>Induktionsanfang (|M|=0):</strong> M={}, also P(M)={{}} mit genau einem Element:
+            |P({})| = 1 = 2⁰. ✓</li>
+          <li><strong>Induktionshypothese:</strong> Für eine Menge M mit |M|=n gelte |P(M)| = 2ⁿ.</li>
+          <li><strong>Induktionsschritt (n→n+1):</strong> Sei M eine Menge mit |M|=n+1 und x∈M ein beliebiges
+            Element. Setze M' := M\{x} (also |M'|=n). Jede Teilmenge von M enthält x entweder oder nicht — das
+            zerlegt P(M) disjunkt: P(M) = P(M') ⊎ {N∪{x}; N∈P(M')}.</li>
+          <li><strong>Beide Teile abzählen:</strong> P(M') hat nach IH genau 2ⁿ Elemente, und {N∪{x}; N∈P(M')}
+            hat ebenso viele (jedes N∈P(M') liefert genau ein N∪{x}). Also |P(M)| = 2·|P(M')| =<sub>(IH)</sub>
+            2·2ⁿ = <strong>2^(n+1)</strong>. ✓</li>
+        </ol>
+
+        <h3>🎓 Zusatz Klausur 2024 (7. August, Aufgabe 2, 9 Punkte)</h3>
+        <p>Zeige per Induktion: <strong>(n³ + 2n) mod 3 = 0</strong> für alle n∈ℕ.</p>
+        <ol class="steps">
+          <li><strong>IA (n=0):</strong> (0³+2·0) mod 3 = 0 mod 3 = 0. ✓</li>
+          <li><strong>IH:</strong> (n³+2n) mod 3 = 0.</li>
+          <li><strong>IS (n→n+1):</strong> ((n+1)³+2(n+1)) mod 3
+            = ((n³+3n²+3n+1) + 2n+2) mod 3
+            = ((n³+2n) + (3n²+3n+3)) mod 3
+            = (n³+2n) mod 3 + (3n²+3n+3) mod 3   <em>(Modulo ist additiv aufspaltbar)</em>
+            = 0 + (3n²+3n+3) mod 3 &nbsp;<strong>(hier wird die IH angewendet)</strong>
+            = 3n² mod 3 + 3n mod 3 + 3 mod 3 = 0+0+0 = <strong>0</strong>. ✓</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Warum das funktioniert</div>
+          <p>Der Trick in fast jedem Induktionsschritt: (n+1)-Ausdruck ausmultiplizieren, dann so umgruppieren,
+            dass der <strong>komplette IH-Term</strong> (hier n³+2n) als eigener Summand isoliert dasteht — der
+            Rest muss dann unabhängig davon 0 ergeben (mod 3, mod 2, …). Genau dieser Moment ist die
+            „Anwendung der Induktionshypothese", die in der Klausur explizit markiert werden soll.</p>
+        </div>
+      </section>
+
+      <!-- ===== 3 HOMOMORPHISMEN ===== -->
+      <section id="homomorphismen" class="reveal">
+        <h2>Aufgabentyp 3: Homomorphismen &amp; Funktionen</h2>
+        <p>Um zu zeigen, dass eine Abbildung ein <strong>Homomorphismus</strong> ist, brauchst du einen
+          <strong>allgemeinen</strong> Beweis für alle Elemente. Um es zu <strong>widerlegen</strong>, reicht ein
+          einziges konkretes <strong>Gegenbeispiel</strong>. Ein <strong>Isomorphismus</strong> ist zusätzlich ein
+          Homomorphismus, der bijektiv ist (bzw. eine explizite Umkehrabbildung besitzt).</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Ich probiere ein Beispiel aus, es passt — also
+            ist es ein Homomorphismus."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein einzelnes passendes Beispiel beweist
+            <strong>gar nichts</strong> — für „ist ein Homomorphismus" brauchst du den allgemeinen Fall. Für „ist
+            <em>kein</em> Homomorphismus" reicht dagegen ein einziges Gegenbeispiel vollständig.</div>
+        </div>
+
+        <h3>🎓 Musterlösung Klausur 2025 (Aufgabe 3, 8 Punkte)</h3>
+        <p>Betrachtet wird (L, ∘) — die Menge aller Listen mit Konkatenation als Verknüpfung.</p>
+        <ol class="steps">
+          <li><strong>s (Liste absteigend sortieren):</strong> Kein Homomorphismus. Gegenbeispiel:
+            s([0])∘s([1]) = [0]∘[1] = [0,1], aber s([0]∘[1]) = s([0,1]) = [1,0]. Da [0,1] ≠ [1,0], gilt
+            s(A∘B) ≠ s(A)∘s(B) für dieses Beispiel → <strong>kein Homomorphismus, also auch kein
+            Isomorphismus.</strong></li>
+          <li><strong>g (jedes Element um +2 erhöhen):</strong> <strong>Homomorphismus</strong>, denn
+            g(A∘B) verschiebt jedes Element der konkatenierten Liste um 2 — das ist dasselbe wie erst A und B
+            einzeln zu verschieben und dann zu konkatenieren: g(A∘B) = g(A)∘g(B) gilt für <em>jede</em> Liste.
+            g ist zusätzlich bijektiv (die Umkehrabbildung „−2 je Element" macht g rückgängig) →
+            <strong>auch ein Isomorphismus.</strong></li>
+        </ol>
+
+        <h3>🎓 Zusatz Klausur 2024 (4. Oktober, Aufgabe 3 „Funktionen", 6 Punkte)</h3>
+        <p>f, g: ℤ₇→ℤ₇ mit f(x):=3·x und g(x):=2·x (Multiplikation modulo 7). Diese Art Aufgabe testet dieselben
+          Fähigkeiten wie Homomorphismen-Nachweise: Funktionen als Wertepaare hinschreiben, Umkehrfunktion und
+          Verkettung bilden, Zyklen erkennen.</p>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Funktion</th><th>Als Paare</th></tr></thead>
+          <tbody>
+            <tr><td>f</td><td>(0,0),(1,3),(2,6),(3,2),(4,5),(5,1),(6,4)</td></tr>
+            <tr><td>f⁻¹</td><td>(0,0),(1,5),(2,3),(3,1),(4,6),(5,4),(6,2)</td></tr>
+            <tr><td>f∘g</td><td>(0,0),(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)</td></tr>
+          </tbody>
+        </table></div>
+        <p><strong>Zyklen von g:</strong> {0}, {1,2,4}, {3,6,5} &nbsp;·&nbsp;
+          <strong>Zyklen von g⁻¹:</strong> {0}, {1,4,2}, {3,5,6} &nbsp;·&nbsp;
+          <strong>Zyklen von g∘f:</strong> {0}, {1,6}, {2,5}, {3,4}</p>
+        <p class="lead-in" style="font-size:.92rem">Praktischer Trick: f⁻¹ liest du direkt aus f ab, indem du
+          jedes Paar (a,b) zu (b,a) drehst — genau wie beim Prüfen, ob eine Abbildung ein Isomorphismus ist
+          (Bijektivität ⇒ Umkehrfunktion existiert).</p>
+      </section>
+
+      <!-- ===== 4 STRUKTUREN ===== -->
+      <section id="strukturen" class="reveal">
+        <h2>Aufgabentyp 4: Algebraische Strukturen</h2>
+        <p>Immer dieselbe Checkliste, von unten nach oben: <strong>Halbgruppe</strong> (abgeschlossen +
+          assoziativ) → <strong>Monoid</strong> (+ neutrales Element) → <strong>Gruppe</strong> (+ zu
+          <em>jedem</em> Element ein inverses Element) → <strong>abelsch</strong> (+ kommutativ). Sobald eine
+          Stufe fehlschlägt, bist du fertig — höhere Stufen kannst du dann nicht mehr erfüllen.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Für a=5 finde ich ein inverses Element, also ist
+            es eine Gruppe."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das inverse Element muss <strong>für jedes
+            Element der Grundmenge</strong> existieren — ein einzelnes Gegenbeispiel ohne Inverses reicht schon,
+            um „Gruppe" zu widerlegen (dann bleibt es beim Monoid).</div>
+        </div>
+
+        <h3>🎓 Musterlösung Klausur 2025 (Aufgabe 4, 12 Punkte)</h3>
+        <p>Betrachtet wird (ℤ×ℤ, ⋆) mit (a,b) ⋆ (c,d) := (a+c, b+d+a·c).</p>
+        <ol class="steps">
+          <li><strong>Halbgruppe (assoziativ):</strong> [(a,b)⋆(c,d)]⋆(e,f) = (a+c+e, b+d+f+ac+ae+ce) und
+            (a,b)⋆[(c,d)⋆(e,f)] = (a+c+e, b+d+f+ce+ac+ae) — beide Seiten sind gleich (Addition ist assoziativ
+            &amp; kommutativ), also <strong>Halbgruppe ✓</strong>.</li>
+          <li><strong>Monoid (neutrales Element):</strong> (0,0) probieren: (a,b)⋆(0,0) = (a+0, b+0+a·0) = (a,b)
+            und (0,0)⋆(a,b) = (0+a, 0+b+0·a) = (a,b). Neutrales Element ist <strong>(0,0)</strong> →
+            <strong>Monoid ✓</strong>.</li>
+          <li><strong>Gruppe (inverses Element):</strong> Gesucht (x,y) mit (a,b)⋆(x,y)=(0,0): erste Komponente
+            a+x=0 ⇒ x=−a. Zweite Komponente b+y+a·(−a)=0 ⇒ y=−b+a². Inverses Element:
+            <strong>(a,b)⁻¹ = (−a, −b+a²)</strong> — existiert für jedes (a,b) → <strong>Gruppe ✓</strong>.</li>
+          <li><strong>Abelsch (kommutativ):</strong> (a,b)⋆(c,d) = (a+c, b+d+ac) und (c,d)⋆(a,b) = (c+a, d+b+ca).
+            Da a+c=c+a und ac=ca, sind beide gleich → <strong>abelsche Gruppe ✓</strong>.</li>
+        </ol>
+
+        <h3>🎓 Zusatz aus Klausur 2024</h3>
+        <p>Beide 2024er-Klausuren zeigen ein sehr häufiges Muster: eine Struktur, die zwar Monoid, aber
+          <strong>keine Gruppe</strong> ist, weil nicht jedes Element ein Inverses hat.</p>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Struktur</th><th>Eingruppierung</th><th>Warum</th></tr></thead>
+          <tbody>
+            <tr><td>(P(ℕ), ∪)</td><td>Monoid, keine Gruppe</td><td>∅ ist neutral, aber A≠∅ hat kein B mit
+              A∪B=∅.</td></tr>
+            <tr><td>({n∈ℕ; n gerade}, +)</td><td>Monoid, keine Gruppe</td><td>0 ist neutral, aber z. B. 2 hat
+              kein inverses Element in ℕ (−2∉ℕ).</td></tr>
+            <tr><td>(ℤ, ∘ₖ) mit a∘ₖb := a+b+k</td><td>Abelsche Gruppe</td><td>Neutral: −k. Invers:
+              a⁻¹ = −2k−a. Kommutativ, da + kommutativ ist.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== 5 POLYNOME ===== -->
+      <section id="polynome" class="reveal">
+        <h2>Aufgabentyp 5: Polynome</h2>
+        <p>Drei wiederkehrende Aufgabenformen über einem endlichen Körper ℤₚ: <strong>(1)</strong> größten
+          gemeinsamen Teiler per euklidischem Algorithmus finden, <strong>(2)</strong> im Restklassenring
+          ℤₚ[x]/p(x) rechnen (Ergebnis nach der Multiplikation modulo p(x) reduzieren) und
+          <strong>(3)</strong> ein Polynom mit dem Horner-Schema an einer Stelle auswerten.</p>
+
+        <h3>🎓 Musterlösung Klausur 2025 (Aufgabe 5, 12 Punkte)</h3>
+        <p>Berechne ggT(x⁵+x³+x²+3x+2, x²+3x+2) über ℤ₅ per euklidischem Algorithmus (immer: größeres Polynom
+          durch kleineres teilen, mit dem Rest weitermachen, bis Rest 0 ist — der letzte Rest ≠ 0 ist der ggT).</p>
+        <pre class="code">Schritt 1: (x⁵+x³+x²+3x+2) ÷ (x²+3x+2) über Z5
+  x⁵/x²  = x³  →  x³·(x²+3x+2) = x⁵+3x⁴+2x³   →  Rest: 2x⁴+4x³+x²+3x+2
+  2x⁴/x² = 2x² →  2x²·(x²+3x+2) = 2x⁴+x³+4x²  →  Rest: 3x³+2x²+3x+2
+  3x³/x² = 3x  →  3x·(x²+3x+2) = 3x³+4x²+x    →  Rest: 3x²+2x+2
+  3x²/x² = 3   →  3·(x²+3x+2) = 3x²+4x+1      →  Rest: 3x+1
+  ⇒ Rest von Schritt 1 = 3x+1
+
+Schritt 2: (x²+3x+2) ÷ (3x+1) über Z5   (3⁻¹ = 2, da 3·2=6≡1)
+  x²/(3x) = 2x →  2x·(3x+1) = 6x²+2x ≡ x²+2x  →  Rest: x+2
+  x/(3x)  = 2  →  2·(3x+1)  = 6x+2  ≡ x+2      →  Rest: 0
+  ⇒ Rest von Schritt 2 = 0</pre>
+        <p>Letzter Rest ≠ 0 ist der ggT: <strong>ggT = 3x+1</strong> — jedes Vielfache in ℤ₅\{0} ist ebenfalls
+          korrekt (z. B. x+2, 4x+3, 2x+4).</p>
+
+        <h3>🎓 Zusatz Klausur 2024</h3>
+        <p><strong>7. August, Aufgabe 5 (7 Punkte):</strong> Dieselbe Methode über ℤ₇, mit zwei größeren
+          Polynomen — der euklidische Algorithmus läuft hier über zwei Iterationen und liefert
+          <strong>ggT = 4x²+x+5</strong> (Vielfache wie x²+2x+3 ebenso korrekt).</p>
+
+        <p><strong>4. Oktober, Aufgabe 5a (4 Punkte):</strong> Rechnen im Restklassenring ℤ₅[x]/p(x) mit
+          p(x)=x³+2x²+3 (irreduzibel): berechne (3x²+3x+1)·(x²+2).</p>
+        <pre class="code">(3x²+3x+1)·(x²+2) = 3x⁴+3x³+2x²+x+2
+3x⁴+3x³+2x²+x+2 ÷ (x³+2x²+3) über Z5:
+  3x⁴/x³ = 3x  →  3x·(x³+2x²+3) = 3x⁴+6x³+9x ≡ 3x⁴+x³+4x     →  Rest: 2x³+2x²+2x+2
+  2x³/x³ = 2   →  2·(x³+2x²+3)  = 2x³+4x²+6  ≡ 2x³+4x²+1     →  Rest: 3x²+2x+1
+⇒ 3x⁴+3x³+2x²+x+2 ≡ 3x²+2x+1 (mod x³+2x²+3)
+⇒ (3x²+3x+1)·(x²+2) = 3x²+2x+1  in Z5[x]/p(x)</pre>
+        <p><strong>4. Oktober, Aufgabe 5b (4 Punkte):</strong> Horner-Schema für p(x)=2x³+x²+3x+2 über ℤ₇ an der
+          Stelle x=4 (Koeffizienten von außen nach innen, jeweils „mal Stelle, plus nächster Koeffizient"):</p>
+        <pre class="code">p := 2                     (Leitkoeffizient)
+p := p·4 + 1 = 8+1 = 9 ≡ 2   (nächster Koeffizient: 1)
+p := p·4 + 3 = 8+3 = 11 ≡ 4  (nächster Koeffizient: 3)
+p := p·4 + 2 = 16+2 = 18 ≡ 4 (nächster Koeffizient: 2)
+⇒ p(4) = 4</pre>
+      </section>
+
+      <!-- ===== 6 AUSSAGENLOGIK ===== -->
+      <section id="aussagenlogik" class="reveal">
+        <h2>Aufgabentyp 6: Aussagenlogik</h2>
+        <p>Teil (a) ist fast immer: Wahrheitstafel aufstellen und klassifizieren — <strong>erfüllbar</strong>
+          (mind. eine Zeile wahr), <strong>unerfüllbar</strong> (keine Zeile wahr) oder <strong>Tautologie</strong>
+          (jede Zeile wahr). Teil (b) ist ein <strong>Resolutionsbeweis</strong>: Um zu zeigen, dass eine Formel
+          eine Tautologie ist, negierst du sie, bringst die Negation in KNF und leitest mit der Resolutionsregel
+          das <strong>leere Klausel □</strong> her — ein Widerspruch, der zeigt: die Negation ist unerfüllbar,
+          also war die Originalformel eine Tautologie.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Für den Resolutionsbeweis „die Formel selbst" in
+            KNF bringen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Du bringst die <strong>Negation</strong> der
+            Formel in KNF! Ziel ist, die Negation als unerfüllbar zu entlarven (□ herzuleiten) — daraus folgt,
+            dass die ursprüngliche Formel immer wahr ist.</div>
+        </div>
+
+        <h3>🎓 Musterlösung Klausur 2025 (Aufgabe 6, 12 Punkte)</h3>
+        <p>φ := x1 ∨ (((x1∨x4) → (x2∧x3)) ↔ ¬x3). Für x1=1 ist φ trivial wahr (x1∨… = 1). Interessant ist nur der
+          Fall x1=0:</p>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>x2</th><th>x3</th><th>x4</th><th>φ (bei x1=0)</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td><strong>1</strong></td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td><strong>1</strong></td></tr>
+            <tr><td>1</td><td>0</td><td>0</td><td><strong>1</strong></td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+          </tbody>
+        </table></div>
+        <p>φ ist also wahr bei allen x1=1 (8 Zeilen) sowie bei (x1,x2,x3,x4) = (0,0,0,0), (0,0,1,1), (0,1,0,0) —
+          macht 11 von 16 Zeilen wahr, 5 falsch. Damit ist φ <strong>erfüllbar, aber keine Tautologie</strong> (und
+          nicht unerfüllbar).</p>
+        <div class="callout callout-formula">
+          <div class="c-title">KNF direkt aus der Tafel ablesen</div>
+          <p>Für jede der 5 <strong>falschen</strong> Zeilen entsteht eine Klausel (xi, falls xi=0 in der Zeile;
+            ¬xi, falls xi=1), verknüpft mit ∧:</p>
+          <span class="formula">(x1∨x2∨x3∨¬x4) ∧ (x1∨x2∨¬x3∨x4) ∧ (x1∨¬x2∨x3∨¬x4) ∧ (x1∨¬x2∨¬x3∨x4) ∧ (x1∨¬x2∨¬x3∨¬x4)</span>
+        </div>
+        <p><strong>Teil (b):</strong> Die zweite Teilformel besteht aus einer längeren KNF (Klauseln C1 bis C7).
+          Die Resolutionskette läuft über eine Zwischenklausel a∨b, daraus ¬b, daraus a, daraus ¬a — und aus a
+          und ¬a schließlich das leere Klausel <strong>⊥</strong>: der Widerspruch, der zeigt, dass die
+          Ausgangsformel eine Tautologie ist.</p>
+
+        <h3>🎓 Zusatz Klausur 2024</h3>
+        <p><strong>7. August, Aufgabe 6b:</strong> Zeige per Resolution, dass ¬(x1→x2) ∨ ¬(x0→(x1∨x2)) ∨ ¬x0 ∨ x2
+          eine Tautologie ist. Negation in KNF: (¬x1∨x2) ∧ (¬x0∨x1∨x2) ∧ x0 ∧ ¬x2 (4 Klauseln).</p>
+        <pre class="code">5  x1 ∨ x2   aus (2,3)   — Resolution über x0
+6  x2        aus (1,5)   — Resolution über x1
+7  □         aus (4,6)   — Resolution über x2, Widerspruch!</pre>
+
+        <p><strong>4. Oktober, Aufgabe 6a:</strong> F := (x↔y) → ((x∧y) ∨ (¬x∧¬y)) — die Wahrheitstafel zeigt F=1
+          in <strong>allen vier</strong> Zeilen → <strong>Tautologie</strong>.</p>
+        <p><strong>4. Oktober, Aufgabe 6b:</strong> Resolutionsbeweis für
+          ((x→y)→((¬x∧¬y∧z)∨(x∧y)∨(¬x∧y)))∨¬z — die Negation ergibt 5 Klauseln:
+          (¬x∨y) ∧ (x∨y∨¬z) ∧ (¬x∨¬y) ∧ (x∨¬y) ∧ z.</p>
+        <pre class="code">6  x ∨ y   aus (2,5)
+7  ¬y      aus (3,4)
+8  y       aus (6,7)
+9  □       aus (7,8)   — Widerspruch, also Tautologie!</pre>
+      </section>
+
+      <!-- ===== 7 PRÄDIKATENLOGIK ===== -->
+      <section id="praedikatenlogik" class="reveal">
+        <h2>Aufgabentyp 7: Prädikatenlogik</h2>
+        <p>Zwei wiederkehrende Unteraufgaben: <strong>(a)</strong> entweder eine Formel in
+          <strong>Pränex-Normalform</strong> bringen (Implikationen auflösen, Negationen reinziehen, gebundene
+          Variablen bei Namenskollision umbenennen, Quantoren nach vorne ziehen), oder eine
+          <strong>Interpretation</strong> finden, die gegebene Axiome erfüllt. <strong>(b)</strong> immer eine
+          <strong>Sequenzenkalkül-Herleitung</strong>. Bei den Regeln <strong>∀-R</strong> und <strong>∃-L</strong>
+          gilt die <strong>Eigenvariablen-Bedingung (EVB):</strong> die neu eingeführte Variable darf in der
+          Konklusion (der Sequenz, in der die Regel angewendet wird) <strong>noch nicht vorkommen</strong>.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Eigenvariable darf einfach „noch nicht in der
+            Formel" vorkommen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Sie darf in der <strong>gesamten Konklusions-
+            Sequenz</strong> nicht vorkommen — also weder im restlichen Kontext Γ und Δ noch in der Formel selbst.
+            Als Term darf dieselbe Variable in <em>früheren</em> Zeilen der Herleitung aber trotzdem schon
+            benutzt worden sein (genau das passiert im Beispiel unten mit den Konstanten a und b).</div>
+        </div>
+
+        <h3>🎓 Musterlösung Klausur 2025 (Aufgabe 7b, 9 der 12 Punkte)</h3>
+        <p>Herleitung: ∃x(R(x)→¬∃x(¬S(x))) ⇒ ∀y(∃x(R(x)→S(y))). Zur Übersicht wird die innere, geshadowte
+          Quantifizierung ¬∃x(¬S(x)) hier als ¬∃w(¬S(w)) geschrieben (gleiche Formel, klarere Variablennamen).</p>
+        <pre class="code">1  R(a) ⇒ S(b), R(a)                                    (Axiom)
+ 2  R(a), S(b) ⇒ S(b)                                     (Axiom)
+ 3  R(a) ⇒ S(b), ¬S(b)                            (¬-R)   aus 2
+ 4  R(a) ⇒ S(b), ∃w(¬S(w))                        (∃-R)   aus 3
+ 5  R(a), ¬∃w(¬S(w)) ⇒ S(b)                        (¬-L)   aus 4
+ 6  R(a), R(a)→¬∃w(¬S(w)) ⇒ S(b)                   (→-L)   aus 1, 5
+ 7  R(a)→¬∃w(¬S(w)) ⇒ R(a)→S(b)                    (→-R)   aus 6
+ 8  R(a)→¬∃w(¬S(w)) ⇒ ∃x(R(x)→S(b))                (∃-R)   aus 7
+ 9  ∃x(R(x)→¬∃w(¬S(w))) ⇒ ∃x(R(x)→S(b))            (∃-L)   aus 8   ← EVB: a frisch
+10  ∃x(R(x)→¬∃w(¬S(w))) ⇒ ∀y(∃x(R(x)→S(y)))        (∀-R)   aus 9   ← EVB: b frisch</pre>
+        <p>10 Zeilen, EVB genau bei ∀-R (Zeile 10) und ∃-L (Zeile 9) — passt zur Klausurangabe. Der Kniff: beide
+          Eigenvariablen a und b werden schon früh als gewöhnliche Terme benutzt (Zeile 1), aber erst spät
+          „offiziell" durch ∃-L bzw. ∀-R eingeführt — das ist bei EVB-Beweisen völlig normal.</p>
+
+        <h3>🎓 Zusatz Klausur 2024</h3>
+        <p><strong>7. August, Aufgabe 7a — Pränex-Normalform:</strong> ∃x(P(x)) → (¬∀y(Q(y,y)) → Q(f(x),x))</p>
+        <pre class="code">≡ ¬∃x(P(x)) ∨ ∀y(Q(y,y)) ∨ Q(f(x),x)      (Implikation auflösen)
+≡ ∀x(¬P(x)) ∨ ∀y(Q(y,y)) ∨ Q(f(x),x)       (¬ reinziehen)
+≡ ∀z(¬P(z)) ∨ ∀y(Q(y,y)) ∨ Q(f(x),x)       (Umbenennen: x ist noch frei in Q(f(x),x)!)
+≡ ∀z∀y(¬P(z) ∨ Q(y,y) ∨ Q(f(x),x))         (Quantoren nach vorne)</pre>
+        <p>Die <strong>Umbenennung</strong> ist hier Pflicht: das gebundene x im ersten ∀x(¬P(x)) würde sonst mit
+          dem freien x in Q(f(x),x) kollidieren.</p>
+
+        <p><strong>7. August, Aufgabe 7b:</strong> ∃x∀y(P(x)→Q(y)) ⇒ ∀y∃x(Q(y)∨¬P(x)) — noch ein vollständiges
+          EVB-Beispiel (9 Punkte, Eigenvariablen a bei ∃-L und y bei ∀-R):</p>
+        <pre class="code">1  P(a) ⇒ Q(b), P(a)                                    (Axiom)
+2  P(a), Q(b) ⇒ Q(b)                                     (Axiom)
+3  P(a), P(a)→Q(b) ⇒ Q(b)                        (→-L)   aus 1, 2
+4  P(a)→Q(b) ⇒ Q(b), ¬P(a)                        (¬-R)   aus 3
+5  P(a)→Q(b) ⇒ Q(b) ∨ ¬P(a)                       (∨-R)   aus 4
+6  P(a)→Q(b) ⇒ ∃x(Q(b)∨¬P(x))                     (∃-R)   aus 5
+7  ∀y(P(a)→Q(y)) ⇒ ∃x(Q(b)∨¬P(x))                 (∀-L)   aus 6
+8  ∀y(P(a)→Q(y)) ⇒ ∀y∃x(Q(y)∨¬P(x))               (∀-R)   aus 7   ← EVB: b frisch
+9  ∃x∀y(P(x)→Q(y)) ⇒ ∀y∃x(Q(y)∨¬P(x))             (∃-L)   aus 8   ← EVB: a frisch</pre>
+
+        <p><strong>4. Oktober, Aufgabe 7a — Interpretation finden:</strong> Die Sprache mit Funktionssymbol ⋄ und
+          Prädikat =̇ soll die Monoid-Axiome erfüllen (Assoziativität, e als neutrales Element links und rechts).
+          Eine gültige Interpretation: Grundmenge G=ℤ₂, a↝1, e↝0, ⋄↝+ (mod 2), =̇↝Gleichheit. <strong>Jeder Monoid
+          mit mindestens 2 Elementen</strong> ist eine korrekte Lösung — die Aufgabe testet, ob du erkennst, dass
+          die vier Formeln zusammen genau die Monoid-Axiome sind.</p>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <div class="factgrid">
+            <div class="fact"><b>0 ∈ ℕ</b><span>Induktionsanfang meist bei n=0</span></div>
+            <div class="fact"><b>|P(A)|=2^|A|</b><span>Mengen als Elemente, nicht Elemente selbst</span></div>
+            <div class="fact"><b>1 Gegenbsp.</b><span>widerlegt „ist Homomorphismus/Gruppe/…"</span></div>
+            <div class="fact"><b>HG→Monoid→Gr.→ab.</b><span>Checkliste in dieser Reihenfolge</span></div>
+            <div class="fact"><b>KNF aus Tafel</b><span>1 Klausel pro falscher Zeile</span></div>
+            <div class="fact"><b>□ = Widerspruch</b><span>Resolution auf die NEGIERTE Formel</span></div>
+            <div class="fact"><b>EVB</b><span>bei ∀-R und ∃-L: Variable muss frisch sein</span></div>
+            <div class="fact"><b>0 Punkte</b><span>bei widersprüchlichen Doppel-Lösungen</span></div>
+          </div>
+
+          <h4>Kardinalitäts-Formeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>A ∪ B (disjunkt)</td><td>|A| + |B|</td></tr>
+              <tr><td>A ∪ B (allgemein)</td><td>|A| + |B| − |A∩B|</td></tr>
+              <tr><td>A × B</td><td>|A| · |B|</td></tr>
+              <tr><td>P(A)</td><td>2^|A|</td></tr>
+              <tr><td>P(A) \ P(∅)</td><td>2^|A| − 1</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Induktions-Schema</h4>
+          <pre class="code">IA:  n=0 zeigen (0∈N!)
+IH:  Annahme für n
+IS:  n→n+1 — (n+1)-Ausdruck so umformen, dass der komplette
+     IH-Term isoliert dasteht → IH einsetzen → Rest ausrechnen
+     (Anwendung der IH deutlich markieren, kleine Schritte!)</pre>
+
+          <h4>Struktur-Checkliste</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Stufe</th><th>Zusätzliche Bedingung</th></tr></thead>
+            <tbody>
+              <tr><td>Halbgruppe</td><td>abgeschlossen + assoziativ</td></tr>
+              <tr><td>Monoid</td><td>+ neutrales Element (links UND rechts)</td></tr>
+              <tr><td>Gruppe</td><td>+ inverses Element zu JEDEM Element</td></tr>
+              <tr><td>Abelsche Gruppe</td><td>+ kommutativ</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>KNF/DNF direkt aus der Wahrheitstafel</h4>
+          <pre class="code">KNF: für jede FALSCHE Zeile eine Klausel (OR):
+     xi, wenn xi=0 in der Zeile · ¬xi, wenn xi=1 — alle Klauseln mit AND verbinden.
+DNF: für jede WAHRE Zeile eine Klausel (AND):
+     xi, wenn xi=1 in der Zeile · ¬xi, wenn xi=0 — alle Klauseln mit OR verbinden.</pre>
+
+          <h4>Resolutionsregel &amp; Tautologiebeweis</h4>
+          <span class="formula">Aus (A ∨ x) und (B ∨ ¬x) folgt (A ∨ B).</span>
+          <p>Tautologiebeweis: Formel negieren → Negation in KNF bringen → Resolutionsregel wiederholt anwenden,
+            bis das <strong>leere Klausel □</strong> entsteht. □ = Widerspruch = Negation unerfüllbar = Formel war
+            Tautologie.</p>
+
+          <h4>Quantorregeln &amp; Eigenvariablen-Bedingung</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Regel</th><th>Instanziiert mit</th><th>EVB?</th></tr></thead>
+            <tbody>
+              <tr><td>∀-L</td><td>beliebigem Term t</td><td>nein</td></tr>
+              <tr><td>∀-R</td><td>frischer Eigenvariable y</td><td><strong>ja</strong></td></tr>
+              <tr><td>∃-L</td><td>frischer Eigenvariable y</td><td><strong>ja</strong></td></tr>
+              <tr><td>∃-R</td><td>beliebigem Term t</td><td>nein</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="callout callout-tip">
+            <div class="c-title">Merksatz für die Klausur</div>
+            <p>Mengen: N enthält 0, Mengen im Kreuzprodukt zählen als 1 Element. Induktion: IA bei n=0, IH-Nutzung
+              markieren. Homomorphismus: 1 Gegenbeispiel widerlegt, allgemeiner Beweis bestätigt. Strukturen: HG →
+              Monoid → Gruppe → abelsch, der Reihe nach prüfen. Polynome: euklidischer Algorithmus für ggT, Horner
+              für Auswertung. Aussagenlogik: Resolution auf die NEGIERTE Formel, Ziel ist □. Prädikatenlogik: EVB
+              nur bei ∀-R und ∃-L.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Alle 14 Fragen stammen 1:1 aus echten LDS-Klausuren (2024 &amp; 2025). Tippe deine
+          Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die
+          Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="8">
+            <p class="quiz-prompt"><span class="q-no">1.</span>🎓 Klausur 2025: Wie viele Elemente hat
+              P({1,2,3} \ ({4,5,6} ∪ {7,8,9})) (Aufgabe 1a·iii)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Elemente</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>{4,5,6}∪{7,8,9} hat nichts mit {1,2,3} gemeinsam, also bleibt
+              {1,2,3}\{...} = {1,2,3} unverändert. P({1,2,3}) hat 2³ = <strong>8</strong> Elemente.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="{a,c}|{a, c}|{c,a}|{c, a}">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🎓 Klausur 2024 (7. August): Berechne
+              {a,b,c} ∩ ({a,d,d} ∪ {c,e,f}) (Aufgabe 1a·i).</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="z. B. {1,2} …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>{a,d,d}∪{c,e,f} = {a,c,d,e,f} (Duplikat d zählt einmal). Schnitt mit
+              {a,b,c}: <strong>{a,c}</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🎓 Klausur 2025, Falle: Wie viele Paare hat
+              {1,2} × ({3,4,5,6} ∩ {3,4,5} ∩ {4,5,6}) (Aufgabe 1a·ii)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <span class="quiz-unit">Paare</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der innere Schnitt {3,4,5,6}∩{3,4,5}∩{4,5,6} = {4,5} ist EINE Menge,
+              zählt also als ein Element: {1,2}×{{4,5}} hat nur <strong>2</strong> Paare, nicht 4.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2025: Im Induktionsschritt von
+              |P(M)|=2^|M| gilt |P(M)| = ? · |P(M')| (mit M'=M\{x}).</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(M) zerfällt disjunkt in P(M') und {N∪{x}; N∈P(M')} — zwei gleich
+              große Teile, also |P(M)| = <strong>2</strong>·|P(M')|.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2024 (7. August): (n³+2n) mod 3 = ? für
+              alle n∈ℕ (Aufgabe 2)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist genau die zu beweisende Aussage der Aufgabe: (n³+2n) mod 3
+              ist für jedes n∈ℕ gleich <strong>0</strong> — bewiesen per Induktion.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2025: Ist s (Liste absteigend sortieren)
+              ein Homomorphismus bzgl. Listen-Konkatenation (Aufgabe 3)?</p>
+            <div class="quiz-choices quiz-tf">
+              <button class="quiz-choice" type="button" data-correct>Nein</button>
+              <button class="quiz-choice" type="button">Ja</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Gegenbeispiel: s([0])∘s([1]) = [0,1], aber s([0]∘[1]) = s([0,1]) =
+              [1,0]. Da [0,1]≠[1,0], ist s <strong>kein</strong> Homomorphismus.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🎓 Klausur 2024 (4. Oktober): f: ℤ₇→ℤ₇, f(x)=3·x.
+              Was ist f⁻¹(3) (Aufgabe 3)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Gesucht x mit f(x)=3, also 3x≡3 (mod 7) → x=1 (denn f(1)=3).
+              f⁻¹(3) = <strong>1</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Klausur 2025: (ℤ×ℤ, ⋆) mit
+              (a,b)⋆(c,d)=(a+c, b+d+a·c) — welche Eingruppierung trifft zu (Aufgabe 4)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Abelsche Gruppe</button>
+              <button class="quiz-choice" type="button">Gruppe, aber nicht abelsch</button>
+              <button class="quiz-choice" type="button">Monoid, aber keine Gruppe</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Neutral: (0,0). Invers: (a,b)⁻¹=(−a,−b+a²) — existiert für jedes
+              Element. Kommutativ, da a+c=c+a und a·c=c·a. Also <strong>abelsche Gruppe</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Klausur 2024 (7. August): (P(ℕ), ∪) — welche
+              Eingruppierung trifft zu (Aufgabe 4i)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Monoid, aber keine Gruppe</button>
+              <button class="quiz-choice" type="button">Abelsche Gruppe</button>
+              <button class="quiz-choice" type="button">Halbgruppe, aber kein Monoid</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>∪ ist assoziativ, ∅ ist neutral — also Monoid. Aber für A≠∅ gibt es
+              keine Menge B mit A∪B=∅ → <strong>keine Gruppe</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="3x+1|x+2|4x+3|2x+4">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🎓 Klausur 2025: ggT(x⁵+x³+x²+3x+2, x²+3x+2)
+              über ℤ₅ (Aufgabe 5)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="z. B. 3x+1 …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Euklidischer Algorithmus: erster Rest 3x+1, zweiter Rest 0 → ggT =
+              <strong>3x+1</strong> (jedes Vielfache in ℤ₅\{0} ebenso korrekt, z. B. x+2).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">11.</span>🎓 Klausur 2024 (4. Oktober): Horner-Schema für
+              p(x)=2x³+x²+3x+2 über ℤ₇ an der Stelle x=4: p(4) = ? (Aufgabe 5b)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Horner-Schema: p:=2 → 2·4+1=9≡2 → 2·4+3=11≡4 → 4·4+2=18≡4.
+              p(4) = <strong>4</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">12.</span>🎓 Klausur 2025: φ = x1 ∨ (((x1∨x4)→(x2∧x3))
+              ↔ ¬x3) — welche Klassifikation trifft zu (Aufgabe 6a)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Erfüllbar, aber keine Tautologie</button>
+              <button class="quiz-choice" type="button">Tautologie</button>
+              <button class="quiz-choice" type="button">Unerfüllbar</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>φ ist wahr bei allen x1=1 sowie 3 weiteren Belegungen mit x1=0 — 11
+              von 16 Zeilen wahr, 5 falsch. Also <strong>erfüllbar, aber keine Tautologie</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">13.</span>🎓 Klausur 2024 (4. Oktober): F := (x↔y) →
+              ((x∧y) ∨ (¬x∧¬y)) — welche Klassifikation trifft zu (Aufgabe 6a)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Tautologie</button>
+              <button class="quiz-choice" type="button">Erfüllbar, aber keine Tautologie</button>
+              <button class="quiz-choice" type="button">Unerfüllbar</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Wahrheitstafel zeigt F=1 in allen vier Zeilen (x,y ∈ {0,1}) →
+              <strong>Tautologie</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">14.</span>🎓 Klausur 2025: Bei welchen beiden Regeln des
+              Sequenzenkalküls muss die Eigenvariablen-Bedingung beachtet werden (Aufgabe 7b)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>∀-R und ∃-L</button>
+              <button class="quiz-choice" type="button">∀-L und ∃-R</button>
+              <button class="quiz-choice" type="button">Nur bei den ¬-Regeln</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>∀-R und ∃-L führen eine neue, „für alle" bzw. „mindestens ein"
+              stehende Variable ein — die darf noch in keiner anderen Formel der Konklusion vorkommen. ∀-L und
+              ∃-R dürfen dagegen mit jedem beliebigen Term instanziiert werden (keine EVB).</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="15-sequenzenkalkuel-pl.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Sequenzenkalkül (Prädikatenlogik)</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Zur Übersicht →</div>
+          <div class="pn-title">Zurück zur Kursübersicht</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

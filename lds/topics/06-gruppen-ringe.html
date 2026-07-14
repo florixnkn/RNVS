@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gruppen &amp; Ringe · LDS</title>
+<meta name="description" content="Die Checkliste Halbgruppe → Monoid → Gruppe (Standard-Klausuraufgabe!), Untergruppen am Beispiel (ℤ₅*,·), Ringe &amp; Körper – inklusive der echten LDS-Klausuraufgabe zu algebraischen Strukturen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#gruppen">Gruppen</a>
+      <a href="#untergruppen">Untergruppen</a>
+      <a href="#ringe">Ringe &amp; Körper</a>
+      <a href="#klausur">🎓 Klausur</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P7 · Logik &amp; DS</a> › Thema 06</div>
+    <span class="th-icon">👥</span>
+    <h1>Gruppen &amp; Ringe</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 6·7</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#gruppen">Gruppenaxiome</a></li>
+        <li><a href="#untergruppen">Untergruppen</a></li>
+        <li><a href="#ringe">Ringe &amp; Körper</a></li>
+        <li><a href="#klausur">🎓 Klausuraufgabe: Struktur-Checkliste</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Eine <strong>Gruppe</strong> ist eine Menge mit einer Verknüpfung, die sich "wie ein
+          vernünftiges Spiel" verhält: Du kannst Züge kombinieren, es gibt einen "Nichts-tun"-Zug, und jeder Zug lässt
+          sich rückgängig machen. Diese vier Eigenschaften bilden die <strong>meistgeprüfte Checkliste</strong> der
+          ganzen Klausur — sie taucht praktisch jedes Semester auf.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… einen <strong>Zauberwürfel</strong>. Jede Drehung ist ein "Element" deiner Menge, "Hintereinander-Drehen"
+            ist die Verknüpfung ⊙. <strong>Abgeschlossenheit:</strong> Nach jeder Drehfolge hast du immer noch einen
+            gültigen Würfelzustand. <strong>Assoziativität:</strong> Egal wie du Klammern setzt — (Dreh1 dann Dreh2)
+            dann Dreh3 = Dreh1 dann (Dreh2 dann Dreh3). <strong>Neutrales Element:</strong> "Gar nicht drehen" ändert
+            nichts. <strong>Inverses Element:</strong> Jede Drehung lässt sich durch die Gegendrehung rückgängig
+            machen. Erfüllt eine Struktur alle vier Punkte, ist sie eine <strong>Gruppe</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== GRUPPEN ===== -->
+      <section id="gruppen" class="reveal">
+        <h2>Gruppenaxiome</h2>
+        <p><strong>Definition:</strong> (G, ⊙) ist eine <strong>Gruppe</strong>, wenn vier Bedingungen gelten:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>#</th><th>Axiom</th><th>Formal</th></tr></thead>
+          <tbody>
+            <tr><td>G1</td><td><strong>Abgeschlossenheit</strong></td><td>a ⊙ b ∈ G für alle a,b ∈ G</td></tr>
+            <tr><td>G2</td><td><strong>Assoziativität</strong></td><td>(a ⊙ b) ⊙ c = a ⊙ (b ⊙ c)</td></tr>
+            <tr><td>G3</td><td><strong>Neutrales Element</strong></td><td>∃e ∈ G: e ⊙ a = a ⊙ e = a für alle a</td></tr>
+            <tr><td>G4</td><td><strong>Inverse Elemente</strong></td><td>∀a ∃a⁻¹: a ⊙ a⁻¹ = a⁻¹ ⊙ a = e</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>Gilt zusätzlich a ⊙ b = b ⊙ a für alle a,b, heißt die Gruppe <strong>abelsch (kommutativ)</strong>.</p>
+
+        <!-- SVG 1: Struktur-Leiter Halbgruppe -> Monoid -> Gruppe -> Abelsch -->
+        <figure class="diagram">
+          <div class="diagram-title">Die Struktur-Leiter: von der Halbgruppe zur abelschen Gruppe</div>
+          <svg viewBox="0 0 620 300" width="620" role="img" aria-label="Vier verschachtelte Kästen: Halbgruppe (nur Abgeschlossenheit und Assoziativität), darin Monoid (zusätzlich neutrales Element), darin Gruppe (zusätzlich Inverse), darin abelsche Gruppe (zusätzlich Kommutativität)">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="10" y="10" width="600" height="280" rx="14" fill="#8a94a6" fill-opacity="0.08" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="30" y="34" fill="#8a94a6" font-weight="800" font-size="13">Halbgruppe</text>
+              <text x="145" y="34" class="svg-soft" font-size="11">(Abgeschlossenheit + Assoziativität)</text>
+
+              <rect x="30" y="46" width="560" height="224" rx="12" fill="#f5810b" fill-opacity="0.08" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="50" y="70" fill="#f5810b" font-weight="800" font-size="13">Monoid</text>
+              <text x="130" y="70" class="svg-soft" font-size="11">(+ neutrales Element e)</text>
+
+              <rect x="50" y="82" width="520" height="168" rx="10" fill="#2f6df6" fill-opacity="0.10" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="70" y="106" fill="#2f6df6" font-weight="800" font-size="13">Gruppe</text>
+              <text x="140" y="106" class="svg-soft" font-size="11">(+ Inverse a⁻¹ für alle a)</text>
+
+              <rect x="70" y="118" width="480" height="112" rx="8" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c" stroke-width="2"/>
+              <text x="90" y="142" fill="#12b28c" font-weight="800" font-size="13">Abelsche Gruppe</text>
+              <text x="240" y="142" class="svg-soft" font-size="11">(+ Kommutativität a⊙b=b⊙a)</text>
+
+              <text x="310" y="195" text-anchor="middle" class="svg-ink" font-size="12">Beispiel: (ℤ, +)</text>
+              <text x="310" y="215" text-anchor="middle" class="svg-soft" font-size="11">erfüllt alle vier Stufen</text>
+              <text x="310" y="255" text-anchor="middle" class="svg-soft" font-size="11">(ℕ, +) ist nur Monoid — keine Inversen (kein −a in ℕ)</text>
+            </g>
+          </svg>
+          <figcaption>Jede Stufe erbt alle Eigenschaften der äußeren Stufe und fügt eine weitere hinzu. Eine Gruppe ist automatisch auch Monoid und Halbgruppe.</figcaption>
+        </figure>
+
+        <div class="callout callout-info">
+          <div class="c-title">Beispiel: (ℤ₅*, ·) — Gruppe prüfen</div>
+          <p>ℤ₅* = {1,2,3,4} mit Multiplikation mod 5. Verknüpfungstabelle:</p>
+        </div>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>·</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td><strong>2</strong></td><td>2</td><td>4</td><td>1</td><td>3</td></tr>
+            <tr><td><strong>3</strong></td><td>3</td><td>1</td><td>4</td><td>2</td></tr>
+            <tr><td><strong>4</strong></td><td>4</td><td>3</td><td>2</td><td>1</td></tr>
+          </tbody>
+        </table></div>
+
+        <ol class="steps">
+          <li><strong>Abgeschlossenheit:</strong> Alle Einträge in {1,2,3,4} ✓</li>
+          <li><strong>Assoziativität:</strong> Multiplikation ist immer assoziativ ✓</li>
+          <li><strong>Neutrales Element:</strong> Zeile 1 = Spalte 1 = Identität → e = 1 ✓</li>
+          <li><strong>Inverse:</strong> 1⁻¹=1, 2⁻¹=3, 3⁻¹=2, 4⁻¹=4 (jede Zeile enthält eine 1) ✓</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Ergebnis</div>
+          <p>(ℤ₅*, ·) erfüllt alle vier Axiome → ist eine <strong>Gruppe</strong>. Da die Tabelle symmetrisch zur
+            Diagonale ist, ist sie sogar <strong>abelsch</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== UNTERGRUPPEN ===== -->
+      <section id="untergruppen" class="reveal">
+        <h2>Untergruppen</h2>
+        <p><strong>Definition:</strong> H ⊆ G ist Untergruppe, wenn (H, ⊙) selbst eine Gruppe ist.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Untergruppen-Test (Kurzform)</div>
+          <span class="formula">H ≠ ∅  und  ∀a,b ∈ H: a ⊙ b⁻¹ ∈ H</span>
+          <p>Äquivalent und oft einfacher zu prüfen: H ≠ ∅, H ist abgeschlossen unter ⊙, und jedes Element hat sein
+            Inverses in H.</p>
+        </div>
+
+        <h3>Beispiel: Untergruppen von (ℤ₅*, ·) = {1,2,3,4}</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Kandidat</th><th>Test</th><th>Ergebnis</th></tr></thead>
+          <tbody>
+            <tr><td>{1}</td><td>trivial, alle Bedingungen erfüllt</td><td>✅ Untergruppe</td></tr>
+            <tr><td>{1,2}</td><td>2·2 = 4 ∉ {1,2}</td><td>❌ keine Untergruppe</td></tr>
+            <tr><td>{1,3}</td><td>3·3 = 4 ∉ {1,3}</td><td>❌ keine Untergruppe</td></tr>
+            <tr><td>{1,4}</td><td>4·4 = 1 ∈ {1,4} ✓</td><td>✅ Untergruppe</td></tr>
+            <tr><td>{1,2,3,4}</td><td>ganze Gruppe</td><td>✅ Untergruppe (unecht)</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 2: Untergruppen-Hasse-Diagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Untergruppen-Lattice von (ℤ₅*, ·)</div>
+          <svg viewBox="0 0 400 220" width="400" role="img" aria-label="Hasse-Diagramm: Untergruppe {1} unten, verbunden nach oben mit {1,4}, verbunden nach oben mit der ganzen Gruppe {1,2,3,4}">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <line x1="200" y1="180" x2="200" y2="110" stroke="#8a94a6" stroke-width="2"/>
+              <line x1="200" y1="90" x2="200" y2="40" stroke="#8a94a6" stroke-width="2"/>
+
+              <rect x="150" y="180" width="100" height="34" rx="8" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="2"/>
+              <text x="200" y="202" text-anchor="middle" class="svg-ink" font-weight="700">{1}</text>
+
+              <rect x="140" y="90" width="120" height="34" rx="8" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="2"/>
+              <text x="200" y="112" text-anchor="middle" class="svg-ink" font-weight="700">{1, 4}</text>
+
+              <rect x="105" y="10" width="190" height="34" rx="8" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="200" y="32" text-anchor="middle" class="svg-ink" font-weight="700">{1, 2, 3, 4}</text>
+
+              <text x="330" y="200" class="svg-soft" font-size="11">triviale UG</text>
+              <text x="330" y="108" class="svg-soft" font-size="11">echte UG</text>
+              <text x="300" y="30" class="svg-soft" font-size="11">ganze Gruppe</text>
+            </g>
+          </svg>
+          <figcaption>{1,2} und {1,3} tauchen im Diagramm gar nicht erst auf — sie sind nicht abgeschlossen und daher keine Untergruppen.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RINGE ===== -->
+      <section id="ringe" class="reveal">
+        <h2>Ringe &amp; Körper</h2>
+        <p><strong>Definition:</strong> (R, +, ·) ist ein <strong>Ring</strong>, wenn:</p>
+        <ol class="steps">
+          <li><strong>(R, +) ist abelsche Gruppe</strong> (mit Nullelement 0)</li>
+          <li><strong>(R, ·) ist Halbgruppe</strong> (nur Abgeschlossenheit + Assoziativität — keine Inversen nötig!)</li>
+          <li><strong>Distributivgesetze:</strong> a·(b+c) = a·b + a·c (und (a+b)·c = a·c + b·c)</li>
+        </ol>
+
+        <!-- SVG 3: Ring / Körper Zwei-Kreise-Diagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Ring vs. Körper: zwei Verknüpfungen, verbunden durch Distributivität</div>
+          <svg viewBox="0 0 640 260" width="640" role="img" aria-label="Zwei Kreise: links Addition muss abelsche Gruppe sein, rechts Multiplikation muss Halbgruppe sein (bei einem Körper: abelsche Gruppe ohne Null), verbunden durch das Distributivgesetz in der Mitte">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <circle cx="160" cy="130" r="110" fill="#2f6df6" fill-opacity="0.10" stroke="#2f6df6" stroke-width="2"/>
+              <text x="160" y="80" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="14">(R, +)</text>
+              <text x="160" y="100" text-anchor="middle" class="svg-ink" font-size="12">muss sein:</text>
+              <text x="160" y="122" text-anchor="middle" class="svg-ink" font-size="12">abelsche Gruppe</text>
+              <text x="160" y="144" text-anchor="middle" class="svg-soft" font-size="11">(Nullelement 0,</text>
+              <text x="160" y="160" text-anchor="middle" class="svg-soft" font-size="11">jedes Element hat −a)</text>
+
+              <circle cx="480" cy="130" r="110" fill="#f5810b" fill-opacity="0.10" stroke="#f5810b" stroke-width="2"/>
+              <text x="480" y="80" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="14">(R, ·)</text>
+              <text x="480" y="100" text-anchor="middle" class="svg-ink" font-size="12">Ring: nur Halbgruppe</text>
+              <text x="480" y="122" text-anchor="middle" class="svg-ink" font-size="12">Körper: (R\{0},·)</text>
+              <text x="480" y="144" text-anchor="middle" class="svg-ink" font-size="12">abelsche Gruppe</text>
+
+              <rect x="255" y="110" width="130" height="42" rx="10" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="2"/>
+              <text x="320" y="128" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="11">Distributivität</text>
+              <text x="320" y="144" text-anchor="middle" class="svg-ink" font-size="10">a·(b+c)=a·b+a·c</text>
+
+              <text x="320" y="230" text-anchor="middle" class="svg-soft" font-size="12">Körper = Ring, bei dem auch die Multiplikation (ohne 0) eine Gruppe bildet</text>
+            </g>
+          </svg>
+          <figcaption>Ein Ring braucht bei der Multiplikation nur eine Halbgruppe (keine Inversen). Ein Körper verlangt zusätzlich, dass auch (R\{0}, ·) eine abelsche Gruppe ist — jedes Element außer 0 hat ein multiplikatives Inverses.</figcaption>
+        </figure>
+
+        <div class="factgrid">
+          <div class="fact"><b>Ring</b><span>(R,+) Gruppe + (R,·) Halbgruppe + Distributivität</span></div>
+          <div class="fact"><b>Körper</b><span>Ring + (R\{0},·) ist abelsche Gruppe</span></div>
+          <div class="fact"><b>Beispiel Ring</b><span>(ℤ, +, ·) — kein Körper, da 2⁻¹ ∉ ℤ</span></div>
+          <div class="fact"><b>Beispiel Körper</b><span>(ℚ, +, ·), (ℝ, +, ·), (ℤ₅, +, ·)</span></div>
+        </div>
+      </section>
+
+      <!-- ===== KLAUSUR ===== -->
+      <section id="klausur" class="reveal">
+        <h2>🎓 Klausuraufgabe: Struktur-Checkliste</h2>
+        <p class="lead-in"><strong>Klausur SoSe 2025, Aufgabe 4 (12 Punkte) — die klassische Checklisten-Aufgabe.</strong>
+          Gegeben: (ℤ×ℤ, ⋆) mit (a,b) ⋆ (c,d) = (a+c, b+d+a·c). Prüfe: Halbgruppe? Monoid? Gruppe? Kommutativ?</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Sanity-Check mit konkreten Zahlen</div>
+          <p>(1,2) ⋆ (3,4) = (1+3, 2+4+1·3) = <strong>(4, 9)</strong> — so ein Zahlenbeispiel hilft, die Formel vor
+            dem allgemeinen Beweis zu verstehen.</p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <strong>Halbgruppe? (Assoziativität prüfen)</strong><br>
+            Linke Seite: [(a,b)⋆(c,d)]⋆(e,f) = (a+c, b+d+ac) ⋆ (e,f) = <strong>(a+c+e, b+d+f+ac+ae+ce)</strong><br>
+            Rechte Seite: (a,b)⋆[(c,d)⋆(e,f)] = (a,b) ⋆ (c+e, d+f+ce) = <strong>(a+c+e, b+d+f+ce+ac+ae)</strong><br>
+            Beide Ausdrücke sind identisch (nur die Summanden anders sortiert) → <strong>assoziativ ✓.</strong>
+            Abgeschlossenheit ist offensichtlich (Ergebnis wieder in ℤ×ℤ). → <strong>Halbgruppe: JA</strong>
+          </li>
+          <li>
+            <strong>Monoid? (neutrales Element finden)</strong><br>
+            Test e=(0,0): (0,0)⋆(a,b) = (0+a, 0+b+0·a) = (a,b) ✓<br>
+            (a,b)⋆(0,0) = (a+0, b+0+a·0) = (a,b) ✓<br>
+            → <strong>Monoid: JA</strong>, neutrales Element ist (0,0).
+          </li>
+          <li>
+            <strong>Gruppe? (Inverses finden)</strong><br>
+            Gesucht (x,y) mit (a,b)⋆(x,y) = (0,0): (a+x, b+y+ax) = (0,0)<br>
+            Aus a+x=0 folgt x = −a. Eingesetzt: b+y+a(−a) = 0 ⟹ y = −b+a².<br>
+            Probe (andere Richtung): (x,y)⋆(a,b) = (−a+a, (−b+a²)+b+(−a)·a) = (0, −b+a²+b−a²) = (0,0) ✓<br>
+            → <strong>Gruppe: JA</strong>, Inverses: (a,b)⁻¹ = <strong>(−a, −b+a²)</strong>
+          </li>
+          <li>
+            <strong>Kommutativ?</strong><br>
+            (a,b)⋆(c,d) = (a+c, b+d+ac) &nbsp;vs.&nbsp; (c,d)⋆(a,b) = (c+a, d+b+ca)<br>
+            Da + und · in ℤ kommutativ sind (a+c=c+a, ac=ca), sind beide Ergebnisse gleich → <strong>kommutativ: JA</strong>
+          </li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Ergebnis</div>
+          <p>(ℤ×ℤ, ⋆) ist eine <strong>abelsche Gruppe</strong> mit neutralem Element (0,0) und Inversem
+            (a,b)⁻¹ = (−a, −b+a²). Diese vier Punkte (Halbgruppe → Monoid → Gruppe → kommutativ) sind exakt die
+            Reihenfolge, in der du jede „algebraische Struktur"-Aufgabe abarbeiten solltest.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"Die Verknüpfung sieht aus wie +/·, also automatisch assoziativ."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bei <strong>custom Verknüpfungen</strong> (wie a⋆b = a+b+ab) MUSS Assoziativität explizit nachgerechnet werden — nichts wird automatisch angenommen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Neutrales Element nur in einer Richtung testen: e⊙a = a reicht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es MUSS <strong>beide Richtungen</strong> gelten: e⊙a = a UND a⊙e = a. Bei nicht-kommutativen Verknüpfungen reicht eine Richtung nicht.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Inverses nur für "einfache" Elemente prüfen, oder nur a⊙b=e zeigen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Für <strong>jedes</strong> a ∈ G muss ein a⁻¹ existieren, und zwar mit a⊙a⁻¹ = <strong>a⁻¹⊙a</strong> = e (beide Richtungen).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>∅ ist eine Untergruppe.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Jede Untergruppe muss <strong>mindestens das neutrale Element e</strong> enthalten — H ≠ ∅ ist Pflichtbedingung.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"(R,+) Gruppe und (R,·) Halbgruppe reichen für einen Ring."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Zusätzlich MUSS die <strong>Distributivität</strong> a·(b+c) = a·b+a·c gelten — sie verbindet die beiden Verknüpfungen.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Gruppen-Checkliste</h4>
+          <pre class="code">Gegeben: (G, ⊙)
+
+☐ Abgeschlossenheit: a⊙b ∈ G für alle a,b ∈ G?
+☐ Assoziativität: (a⊙b)⊙c = a⊙(b⊙c) für alle?
+☐ Neutrales Element: ∃e mit e⊙a = a⊙e = a?
+☐ Inverse Elemente: ∀a ∃a⁻¹ mit a⊙a⁻¹ = a⁻¹⊙a = e?
+
+Falls alle JA: GRUPPE ✓ — Falls ein NEIN: KEINE GRUPPE ✗
+Bonus: kommutativ (abelsch)? a⊙b = b⊙a für alle?</pre>
+
+          <h4>Untergruppen-Test</h4>
+          <pre class="code">H ⊆ G ist Untergruppe ⟺
+☐ H ≠ ∅ (enthält mindestens e)
+☐ ∀a,b ∈ H: a⊙b⁻¹ ∈ H
+
+äquivalent: H ≠ ∅, abgeschlossen, und alle Inverse in H</pre>
+
+          <h4>Ring- &amp; Körper-Checkliste</h4>
+          <pre class="code">Gegeben: (R, +, ·)
+
+☐ (R,+) ist abelsche Gruppe?
+☐ (R,·) ist Halbgruppe? (Abgeschlossenheit + Assoziativität)
+☐ Distributivität: a·(b+c) = a·b + a·c?
+
+Falls alle: RING ✓
+Körper: Ring + (R\{0},·) ist abelsche Gruppe</pre>
+
+          <h4>Klausur-Ergebnis (ℤ×ℤ, ⋆)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Eigenschaft</th><th>Ergebnis</th></tr></thead>
+            <tbody>
+              <tr><td>Halbgruppe</td><td>✅ Ja (assoziativ, abgeschlossen)</td></tr>
+              <tr><td>Monoid</td><td>✅ Ja, neutral = (0,0)</td></tr>
+              <tr><td>Gruppe</td><td>✅ Ja, (a,b)⁻¹ = (−a, −b+a²)</td></tr>
+              <tr><td>Kommutativ</td><td>✅ Ja (abelsche Gruppe)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Häufige Fehler</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Fehler</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>Assoziativität nicht geprüft</td><td>IMMER prüfen bei Nicht-Standard-Verknüpfung</td></tr>
+              <tr><td>Neutrales Element nur eine Richtung</td><td>Muss beide Seiten gelten</td></tr>
+              <tr><td>Nicht alle Inversen geprüft</td><td>ALLE Elemente brauchen ein Inverses</td></tr>
+              <tr><td>Untergruppe ∅ zugelassen</td><td>Muss mindestens e enthalten</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Ist (ℕ, +) eine Gruppe?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — es fehlen Inverse</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(ℕ, +) ist nur ein <strong>Monoid</strong>: Abgeschlossenheit, Assoziativität und neutrales Element (0) gelten, aber es gibt kein −a ∈ ℕ. Keine Gruppe!</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie lautet 3⁻¹ in (ℤ₅*, ·)? (Also: welche Zahl x erfüllt 3·x ≡ 1 mod 5?)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>3·2 = 6 ≡ 1 (mod 5), also 3⁻¹ = <strong>2</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="{1,4}|1,4|{1;4}">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Nenne die einzige echte, nicht-triviale Untergruppe von (ℤ₅*, ·) = {1,2,3,4}.</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="z. B. {1,4}" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>{1,4} ist abgeschlossen (4·4=16≡1) und enthält alle nötigen Inversen — die einzige echte, nicht-triviale Untergruppe ist <strong>{1,4}</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2025: Ist (ℤ×ℤ, ⋆) mit (a,b)⋆(c,d) = (a+c, b+d+a·c) eine abelsche Gruppe?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja</button>
+              <button class="quiz-choice" type="button">Nein, keine Gruppe (fehlende Inverse)</button>
+              <button class="quiz-choice" type="button">Nein, nicht kommutativ</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Assoziativ, neutrales Element (0,0), jedes (a,b) hat Inverses (−a,−b+a²), und da + und · in ℤ kommutativ sind, ist ⋆ auch kommutativ → <strong>abelsche Gruppe</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="7">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: Das Inverse von (a,b) bzgl. ⋆ ist (−a, −b+a²). Berechne die zweite Komponente des Inversen von (3, 2).</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>−b+a² = −2+3² = −2+9 = <strong>7</strong>. Das Inverse von (3,2) ist also (−3, 7).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Was fehlt einem Ring (R,+,·), damit er ein Körper ist?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Kommutativität von +</button>
+              <button class="quiz-choice" type="button" data-correct>(R\{0}, ·) muss eine abelsche Gruppe sein</button>
+              <button class="quiz-choice" type="button">Ein neutrales Element bei +</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ein Ring hat bei · nur eine Halbgruppe. Ein Körper verlangt zusätzlich, dass alle Elemente außer 0 ein multiplikatives Inverses haben — also (R\{0},·) ist abelsche Gruppe.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="05-modulare-arithmetik.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Modulare Arithmetik &amp; Homomorphismen</div>
+        </a>
+        <a class="next" href="07-polynome-koerper.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Polynome &amp; Körper</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

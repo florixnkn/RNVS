@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kombinatorik &amp; Körpererweiterungen · LDS</title>
+<meta name="description" content="Richtig zählen mit Permutationen, Variationen, Kombinationen und Multimengen – und wie man kleine Körper wie ℚ(√2) erweitert und mit dem Turmgesetz den Erweiterungsgrad berechnet." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#zaehlen">Zählen</a>
+      <a href="#multimengen">Multimengen</a>
+      <a href="#koerper">Körpererweiterung</a>
+      <a href="#turmgesetz">Turmgesetz</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P7 · Logik &amp; DS</a> › Thema 08</div>
+    <span class="th-icon">🎲</span>
+    <h1>Kombinatorik &amp; Körpererweiterungen</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-blatt">Blatt 8</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#zaehlen">Permutationen, Variationen, Kombinationen</a></li>
+        <li><a href="#multimengen">Multimengen-Permutationen</a></li>
+        <li><a href="#koerper">Körpererweiterungen &amp; Grad</a></li>
+        <li><a href="#turmgesetz">Das Turmgesetz</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Zwei auf den ersten Blick völlig verschiedene Themen, die beide auf "wie viele
+          Möglichkeiten gibt es?" hinauslaufen. <strong>Kombinatorik</strong> zählt Anordnungen und Auswahlen — die
+          entscheidende Frage ist immer: <strong>zählt die Reihenfolge?</strong> <strong>Körpererweiterungen</strong>
+          zählen etwas anderes: wie viele "Bausteine" (eine Basis) du brauchst, um einen größeren Zahlenraum aus
+          einem kleineren aufzubauen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… ein <strong>Wettrennen</strong> mit 5 Läufern. Für die <strong>Medaillenränge</strong> (Gold, Silber,
+            Bronze) zählt die Reihenfolge — wer zuerst kommt, wer zweiter wird, ist wichtig: das sind
+            <strong>Variationen</strong>. Für ein <strong>3er-Team</strong>, das ins nächste Rennen darf, ist die
+            Reihenfolge egal — nur WER dabei ist, zählt: das sind <strong>Kombinationen</strong>. Bei
+            Körpererweiterungen stell dir stattdessen einen <strong>Turm</strong> vor: ℚ ist das Erdgeschoss, ℚ(√2)
+            ein Stockwerk höher — und der "Grad" [L:K] ist die Anzahl Stufen, die du hochsteigen musst.</p>
+        </div>
+      </section>
+
+      <!-- ===== ZAEHLEN ===== -->
+      <section id="zaehlen" class="reveal">
+        <h2>Permutationen, Variationen, Kombinationen</h2>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Begriff</th><th>Formel</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Permutationen</strong></td><td>n!</td><td>Alle Anordnungen von n Elementen</td></tr>
+            <tr><td><strong>Variationen</strong> (ohne Zurücklegen)</td><td>V(n,k) = n!/(n−k)!</td><td>k aus n auswählen, <strong>Reihenfolge zählt</strong></td></tr>
+            <tr><td><strong>Kombinationen</strong> (ohne Zurücklegen)</td><td>C(n,k) = n!/(k!(n−k)!)</td><td>k aus n auswählen, <strong>Reihenfolge egal</strong></td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 1: Variation (Podium) vs Kombination (Team) -->
+        <figure class="diagram">
+          <div class="diagram-title">Variation (geordnet) vs. Kombination (ungeordnet)</div>
+          <svg viewBox="0 0 680 250" width="680" role="img" aria-label="Links: Siegertreppchen mit Gold, Silber, Bronze - Reihenfolge zählt, das sind Variationen. Rechts: Team-Auswahl ohne Rangfolge - das sind Kombinationen">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="10" y="10" width="320" height="230" rx="10" fill="#2f6df6" fill-opacity="0.07" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="170" y="34" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="15">Variation V(5,3)</text>
+              <text x="170" y="50" text-anchor="middle" class="svg-soft" font-size="11">Siegertreppchen — Reihenfolge zählt!</text>
+
+              <!-- Treppchen -->
+              <rect x="150" y="140" width="40" height="70" fill="#f5c451" fill-opacity="0.85"/>
+              <text x="170" y="165" text-anchor="middle" font-weight="800" fill="#5a4400">1.</text>
+              <text x="170" y="185" text-anchor="middle" font-size="11" fill="#5a4400">Läufer C</text>
+              <rect x="100" y="165" width="40" height="45" fill="#c9ccd6" fill-opacity="0.9"/>
+              <text x="120" y="185" text-anchor="middle" font-weight="800" fill="#3a3d47">2.</text>
+              <text x="120" y="202" text-anchor="middle" font-size="10" fill="#3a3d47">Läufer A</text>
+              <rect x="200" y="180" width="40" height="30" fill="#d68a4c" fill-opacity="0.85"/>
+              <text x="220" y="197" text-anchor="middle" font-weight="800" fill="#452c10">3.</text>
+              <text x="220" y="205" text-anchor="middle" font-size="9" fill="#452c10">Läufer E</text>
+
+              <text x="170" y="230" text-anchor="middle" class="svg-ink" font-size="11">C,A,E ≠ A,C,E → beides verschiedene Ergebnisse</text>
+
+              <rect x="350" y="10" width="320" height="230" rx="10" fill="#12b28c" fill-opacity="0.07" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="510" y="34" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="15">Kombination C(5,3)</text>
+              <text x="510" y="50" text-anchor="middle" class="svg-soft" font-size="11">Team-Auswahl — Reihenfolge egal!</text>
+
+              <circle cx="450" cy="130" r="26" fill="#12b28c" fill-opacity="0.7"/>
+              <text x="450" y="136" text-anchor="middle" fill="#fff" font-weight="700">A</text>
+              <circle cx="510" cy="110" r="26" fill="#12b28c" fill-opacity="0.7"/>
+              <text x="510" y="116" text-anchor="middle" fill="#fff" font-weight="700">C</text>
+              <circle cx="570" cy="130" r="26" fill="#12b28c" fill-opacity="0.7"/>
+              <text x="570" y="136" text-anchor="middle" fill="#fff" font-weight="700">E</text>
+              <text x="510" y="185" text-anchor="middle" class="svg-ink" font-size="12">"Team {A,C,E}"</text>
+              <text x="510" y="215" text-anchor="middle" class="svg-ink" font-size="11">{A,C,E} = {C,A,E} → dasselbe Team!</text>
+            </g>
+          </svg>
+          <figcaption>Dieselben 3 Läufer, zwei verschiedene Zählweisen: Auf dem Treppchen ist die Reihenfolge entscheidend (Variation), im Team zählt nur die Mitgliedschaft (Kombination).</figcaption>
+        </figure>
+
+        <div class="callout callout-info">
+          <div class="c-title">Beispiel: C(5,2) berechnen</div>
+          <p>C(5,2) = 5!/(2!·3!) = (5·4·3!)/(2·1·3!) = 20/2 = <strong>10</strong><br>
+            Merksatz: "5 über 2" = wähle 2 aus 5 (Binomialkoeffizient).</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>n!</b><span>Permutationen: alle Anordnungen</span></div>
+          <div class="fact"><b>V(n,k)</b><span>geordnet: Reihenfolge zählt</span></div>
+          <div class="fact"><b>C(n,k)</b><span>ungeordnet: Reihenfolge egal</span></div>
+        </div>
+      </section>
+
+      <!-- ===== MULTIMENGEN ===== -->
+      <section id="multimengen" class="reveal">
+        <h2>Multimengen-Permutationen</h2>
+        <p>Wenn Elemente sich <strong>wiederholen</strong>, überzählt die einfache n!-Formel — vertauschte Kopien
+          desselben Buchstabens erzeugen ja keine neue Anordnung.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel für Multimengen</div>
+          <span class="formula">Anzahl Anordnungen = n! / (n₁!·n₂!·…·nₖ!)</span>
+          <p>n Elemente insgesamt, davon n₁ vom Typ 1, n₂ vom Typ 2, usw.</p>
+        </div>
+
+        <!-- SVG 2: AABBCC visualisiert -->
+        <figure class="diagram">
+          <div class="diagram-title">"AABBCC" — warum nicht 6! Anordnungen?</div>
+          <svg viewBox="0 0 620 170" width="620" role="img" aria-label="Sechs Kacheln A A B B C C in gleichen Farben je Buchstabe, mit Hinweis dass Vertauschen der beiden A untereinander keine neue Anordnung ergibt">
+            <g font-family="Segoe UI, sans-serif" font-size="14">
+              <rect x="30" y="20" width="60" height="60" rx="8" fill="#2f6df6" fill-opacity="0.75"/>
+              <text x="60" y="58" text-anchor="middle" fill="#fff" font-weight="800" font-size="20">A</text>
+              <rect x="100" y="20" width="60" height="60" rx="8" fill="#2f6df6" fill-opacity="0.5"/>
+              <text x="130" y="58" text-anchor="middle" fill="#fff" font-weight="800" font-size="20">A</text>
+
+              <rect x="185" y="20" width="60" height="60" rx="8" fill="#12b28c" fill-opacity="0.75"/>
+              <text x="215" y="58" text-anchor="middle" fill="#fff" font-weight="800" font-size="20">B</text>
+              <rect x="255" y="20" width="60" height="60" rx="8" fill="#12b28c" fill-opacity="0.5"/>
+              <text x="285" y="58" text-anchor="middle" fill="#fff" font-weight="800" font-size="20">B</text>
+
+              <rect x="340" y="20" width="60" height="60" rx="8" fill="#f5810b" fill-opacity="0.75"/>
+              <text x="370" y="58" text-anchor="middle" fill="#fff" font-weight="800" font-size="20">C</text>
+              <rect x="410" y="20" width="60" height="60" rx="8" fill="#f5810b" fill-opacity="0.5"/>
+              <text x="440" y="58" text-anchor="middle" fill="#fff" font-weight="800" font-size="20">C</text>
+
+              <path d="M 60,85 Q 95,105 130,85" fill="none" stroke="#e0483d" stroke-width="2" stroke-dasharray="4 3"/>
+              <text x="95" y="120" text-anchor="middle" fill="#e0483d" font-size="12">A ↔ A tauschen: identisch!</text>
+
+              <text x="310" y="150" text-anchor="middle" class="svg-ink" font-weight="700" font-size="14">6! / (2!·2!·2!) = 720 / 8 = 90 verschiedene Anordnungen</text>
+            </g>
+          </svg>
+          <figcaption>Alle 2! Vertauschungen der beiden A untereinander (und ebenso für B und C) liefern dieselbe sichtbare Anordnung — deshalb wird durch 2!·2!·2! geteilt.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p>Zähle zuerst alle 6! = 720 "so-als-wären-alle-verschieden"-Anordnungen, teile dann durch die Fakultäten
+            der Wiederholungen — sonst zählst du identische Anordnungen mehrfach.</p>
+        </div>
+      </section>
+
+      <!-- ===== KOERPER ===== -->
+      <section id="koerper" class="reveal">
+        <h2>Körpererweiterungen &amp; Grad</h2>
+        <p><strong>Definition:</strong> K ⊆ L ist eine Körpererweiterung, wenn K ein Unterkörper von L ist. Der
+          <strong>Grad</strong> [L:K] = dim_K(L) ist die Dimension von L, aufgefasst als Vektorraum über K.</p>
+
+        <!-- SVG 3: Q ⊂ Q(√2) ⊂ C -->
+        <figure class="diagram">
+          <div class="diagram-title">ℚ(√2) — eine Körpererweiterung von ℚ</div>
+          <svg viewBox="0 0 500 220" width="500" role="img" aria-label="Verschachtelte Kreise: Q innen, darum Q von Wurzel 2 mit Basis 1 und Wurzel 2, darum C ganz außen">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <circle cx="250" cy="120" r="95" fill="#8b5cf6" fill-opacity="0.08" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="250" y="38" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="12">ℂ (komplexe Zahlen)</text>
+
+              <circle cx="250" cy="140" r="65" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="250" y="90" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="13">ℚ(√2)</text>
+              <text x="250" y="106" text-anchor="middle" class="svg-soft" font-size="10">{a + b√2 | a,b ∈ ℚ}</text>
+
+              <circle cx="250" cy="160" r="30" fill="#12b28c" fill-opacity="0.35" stroke="#12b28c" stroke-width="2"/>
+              <text x="250" y="165" text-anchor="middle" fill="#fff" font-weight="800" font-size="13">ℚ</text>
+
+              <text x="250" y="205" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">[ℚ(√2):ℚ] = 2  —  Basis {1, √2}</text>
+            </g>
+          </svg>
+          <figcaption>ℚ(√2) ist ein 2-dimensionaler ℚ-Vektorraum: Jedes Element lässt sich eindeutig als a·1 + b·√2 mit a,b ∈ ℚ schreiben.</figcaption>
+        </figure>
+
+        <div class="callout callout-info">
+          <div class="c-title">Beispiel: Grad von ℚ(√2) über ℚ</div>
+          <p>[ℚ(√2):ℚ] = 2, denn jedes Element hat die eindeutige Form a·1 + b·√2 mit a,b ∈ ℚ — die Basis {1, √2}
+            hat 2 Elemente. (√2 ∉ ℚ ist algebraisch unabhängig von ℚ.)<br>
+            Analog: [ℂ:ℝ] = 2, weil ℂ = {a + bi | a,b ∈ ℝ} — Basis {1, i}.</p>
+        </div>
+      </section>
+
+      <!-- ===== TURMGESETZ ===== -->
+      <section id="turmgesetz" class="reveal">
+        <h2>Das Turmgesetz</h2>
+        <p>Für eine Kette von Körpererweiterungen K ⊆ L ⊆ M gilt das <strong>Turmgesetz</strong> — die Grade
+          <strong>multiplizieren</strong> sich, nicht addieren sich!</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Turmgesetz</div>
+          <span class="formula">[M:K] = [M:L] · [L:K]</span>
+        </div>
+
+        <!-- SVG 4: Literaler Turm -->
+        <figure class="diagram">
+          <div class="diagram-title">Der Turm: ℚ ⊆ ℚ(√2) ⊆ ℚ(√2,√3)</div>
+          <svg viewBox="0 0 420 260" width="420" role="img" aria-label="Ein dreistöckiger Turm: unterstes Stockwerk Q, mittleres Stockwerk Q von Wurzel 2 mit Grad 2, oberstes Stockwerk Q von Wurzel 2 und Wurzel 3 mit Grad 2 darüber — insgesamt Grad 4 vom Fundament bis zur Spitze">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Stockwerk 1 (Fundament): Q -->
+              <rect x="60" y="200" width="300" height="50" rx="6" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="2"/>
+              <text x="210" y="230" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">ℚ</text>
+
+              <!-- Stockwerk 2: Q(√2) -->
+              <rect x="80" y="130" width="260" height="60" rx="6" fill="#2f6df6" fill-opacity="0.20" stroke="#2f6df6" stroke-width="2"/>
+              <text x="210" y="155" text-anchor="middle" class="svg-ink" font-weight="800" font-size="14">ℚ(√2)</text>
+              <text x="210" y="175" text-anchor="middle" fill="#2f6df6" font-size="11">[ℚ(√2):ℚ] = 2</text>
+
+              <!-- Stockwerk 3: Q(√2,√3) -->
+              <rect x="100" y="50" width="220" height="70" rx="6" fill="#8b5cf6" fill-opacity="0.20" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="210" y="78" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13">ℚ(√2, √3)</text>
+              <text x="210" y="98" text-anchor="middle" fill="#8b5cf6" font-size="11">[ℚ(√2,√3):ℚ(√2)] = 2</text>
+
+              <text x="210" y="35" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="13">Gesamthöhe: [ℚ(√2,√3):ℚ] = 2·2 = 4</text>
+            </g>
+          </svg>
+          <figcaption>Jedes Stockwerk hat seinen eigenen Grad zum Stockwerk direkt darunter. Der Gesamtgrad vom Fundament bis zur Spitze ist das Produkt aller Stockwerk-Grade — daher "Turmgesetz".</figcaption>
+        </figure>
+
+        <div class="callout callout-info">
+          <div class="c-title">Beispiel: Turmgesetz anwenden</div>
+          <p>Gegeben: ℚ ⊆ ℚ(√2) ⊆ ℚ(√2, √3). Gesucht: [ℚ(√2,√3):ℚ]<br>
+            [ℚ(√2,√3):ℚ] = [ℚ(√2,√3):ℚ(√2)] · [ℚ(√2):ℚ] = 2 · 2 = <strong>4</strong></p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"Wähle 3 von 5" = 5·4·3 = 60 (immer Variation).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Erst fragen: Zählt die Reihenfolge? Wenn NICHT: C(5,3) = 10 (Kombination). Nur bei Rängen/Reihenfolge: V(5,3) = 60.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"AABBCC" hat 6! = 720 verschiedene Anordnungen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>6!/(2!·2!·2!) = <strong>90</strong> — Wiederholungen dürfen nicht mehrfach gezählt werden!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>[ℚ(√2):ℚ] = √2 (der Grad ist "die Zahl selbst").</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Grad ist immer eine <strong>natürliche Zahl</strong> — die Dimension als Vektorraum. [ℚ(√2):ℚ] = <strong>2</strong> (Basis hat 2 Elemente).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>[M:K] = [M:L] + [L:K] (Grade addieren).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Turmgesetz: [M:K] = [M:L] <strong>·</strong> [L:K] — die Grade werden <strong>multipliziert</strong>, nicht addiert!</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kombinatorik-Formeln</h4>
+          <pre class="code">n! = n·(n-1)·...·1
+
+V(n,k) = n!/(n-k)!       [Variationen — Reihenfolge zählt]
+C(n,k) = n!/(k!·(n-k)!)  [Kombinationen — Reihenfolge egal]
+
+Multimengen: n!/(n₁!·n₂!·...·nₖ!)</pre>
+
+          <h4>Körpererweiterungen</h4>
+          <pre class="code">[L:K] = Dimension von L als Vektorraum über K
+
+Turmgesetz:  [M:K] = [M:L] · [L:K]
+
+Beispiele:
+[ℂ:ℝ] = 2
+[ℚ(√2):ℚ] = 2
+[ℚ(√2,√3):ℚ] = 2·2 = 4</pre>
+
+          <h4>Häufige Fehler</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Fehler</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>Kombination als Variation gerechnet</td><td>Mit Reihenfolge? V(n,k). Ohne? C(n,k).</td></tr>
+              <tr><td>Multimengen nicht berücksichtigt</td><td>Fakultäten der Wiederholungen abziehen</td></tr>
+              <tr><td>Körpergrad als Element angegeben</td><td>Grad ist immer eine natürliche Zahl (Dimension)</td></tr>
+              <tr><td>Turmgesetz additiv angewendet</td><td>Grade multiplizieren, nicht addieren</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="20">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Berechne C(6,3) — wie viele 3er-Teams lassen sich aus 6 Personen bilden?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>C(6,3) = 6!/(3!·3!) = 720/(6·6) = <strong>20</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="10">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie viele verschiedene Anordnungen hat das Wort "AAABB" (3× A, 2× B)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>5!/(3!·2!) = 120/(6·2) = <strong>10</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Bei einer Kombination C(n,k) — zählt die Reihenfolge der Auswahl?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja</button>
+              <button class="quiz-choice" type="button" data-correct>Nein</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei Kombinationen ist nur WELCHE Elemente ausgewählt werden wichtig, nicht in welcher Reihenfolge — das unterscheidet sie von Variationen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie groß ist [ℂ:ℝ]?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ℂ = {a+bi | a,b ∈ ℝ} mit Basis {1, i} — also [ℂ:ℝ] = <strong>2</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="grad|körpergrad|erweiterungsgrad">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt die Größe [L:K] = dim_K(L) einer Körpererweiterung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Man nennt [L:K] den <strong>Grad</strong> der Körpererweiterung — die Dimension von L als K-Vektorraum.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie lautet das Turmgesetz? [M:K] = [M:L] ___ [L:K]</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">+</button>
+              <button class="quiz-choice" type="button" data-correct>·</button>
+              <button class="quiz-choice" type="button">/</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Grade werden <strong>multipliziert</strong>: [M:K] = [M:L] · [L:K] — daher "Turmgesetz", die Stockwerk-Höhen multiplizieren sich zur Gesamthöhe.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="8">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Wir wissen [ℚ(√2,√3):ℚ] = 4. Kommt zusätzlich √5 dazu (Grad 2 über ℚ(√2,√3)), wie groß ist dann [ℚ(√2,√3,√5):ℚ]?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Turmgesetz: [ℚ(√2,√3,√5):ℚ] = [ℚ(√2,√3,√5):ℚ(√2,√3)] · [ℚ(√2,√3):ℚ] = 2 · 4 = <strong>8</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="07-polynome-koerper.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Polynome &amp; Körper</div>
+        </a>
+        <a class="next" href="09-aussagenlogik.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Aussagenlogik: Grundlagen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

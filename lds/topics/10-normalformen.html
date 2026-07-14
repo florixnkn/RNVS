@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Normalformen: DNF &amp; KNF · P7 LDS</title>
+<meta name="description" content="DNF und KNF sauber aus der Wahrheitstabelle ablesen, per Äquivalenzumformung herleiten, und die Klausur-2025-Aufgabe 6a bis zur fertigen KNF durchrechnen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">DNF &amp; KNF</a>
+      <a href="#konstruktion">Kochrezept</a>
+      <a href="#rechnen">Klausuraufgabe</a>
+      <a href="#check">Wissenscheck</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Kursübersicht</a> › Thema 10</div>
+    <span class="th-icon">📋</span>
+    <h1>Normalformen: DNF &amp; KNF</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 10</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">DNF &amp; KNF: die Definition</a></li>
+        <li><a href="#konstruktion">Kochrezept: Tabelle → DNF/KNF</a></li>
+        <li><a href="#umformung">Ohne Tabelle: Äquivalenzen nutzen</a></li>
+        <li><a href="#rechnen">Klausuraufgabe 6a: KNF ableiten</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Dieselbe Formel kann auf unzählige Arten geschrieben werden. Eine <strong>Normalform</strong>
+           bringt jede Formel in eine feste, standardisierte Struktur — das macht sie vergleichbar und ist die
+           Voraussetzung für Resolution (Thema 12) und viele SAT-Solver-Algorithmen. Es gibt zwei Normalformen,
+           die auf den ersten Blick verwirrend ähnlich aussehen — und genau deshalb eine der größten Fehlerquellen
+           der Klausur sind.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du planst einen Abend. <strong>DNF</strong> ist wie eine Liste von <em>fertigen Erfolgsrezepten</em>:
+             „(Kino UND Popcorn) ODER (Pizza UND Film daheim) ODER (Spazieren UND Eis)" — jedes Rezept
+             (Konjunktion) funktioniert für sich allein, du brauchst nur EINES davon (Disjunktion außen).
+             <strong>KNF</strong> ist dagegen wie eine Liste von <em>Regeln, die ALLE gleichzeitig gelten müssen</em>:
+             „(Kino ODER Pizza) UND (Popcorn ODER Eis) UND (kein Regen ODER Regenschirm)" — jede einzelne Regel
+             (Disjunktion) muss erfüllt sein, und alle zusammen (Konjunktion außen) ergeben erst den ganzen Plan.
+             Beide beschreiben denselben Abend — nur aus komplett verschiedenen Blickwinkeln.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>DNF &amp; KNF: die Definition</h2>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th></th><th>DNF (Disjunktive Normalform)</th><th>KNF (Konjunktive Normalform)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Äußerste Operation</strong></td><td>∨ (Disjunktion)</td><td>∧ (Konjunktion)</td></tr>
+            <tr><td><strong>Innere Operation</strong></td><td>∧ (Konjunktionen aus Literalen)</td><td>∨ (Disjunktionen aus Literalen, „Klauseln")</td></tr>
+            <tr><td><strong>Struktur</strong></td><td><code>(p∧q∧¬r) ∨ (¬p∧q) ∨ p</code></td><td><code>(p∨q∨¬r) ∧ (¬p∨q) ∧ p</code></td></tr>
+            <tr><td><strong>Kommt aus …</strong></td><td>den T-Zeilen der Wahrheitstabelle</td><td>den F-Zeilen der Wahrheitstabelle</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG: Baumstruktur DNF vs KNF -->
+        <figure class="diagram">
+          <div class="diagram-title">DNF- und KNF-Baum im Vergleich</div>
+          <svg viewBox="0 0 660 260" width="660" role="img" aria-label="Zwei Baumdiagramme: DNF mit Disjunktion an der Wurzel und Konjunktionen darunter, KNF mit Konjunktion an der Wurzel und Disjunktionen darunter">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- DNF tree -->
+              <text x="160" y="24" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="14">DNF</text>
+              <circle cx="160" cy="50" r="20" fill="#12b28c" fill-opacity="0.25" stroke="#12b28c" stroke-width="2"/>
+              <text x="160" y="55" text-anchor="middle" fill="#12b28c" font-weight="700">∨</text>
+              <line x1="160" y1="70" x2="90" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="160" y1="70" x2="160" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="160" y1="70" x2="230" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+              <circle cx="90" cy="128" r="16" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="90" y="132" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">∧</text>
+              <circle cx="160" cy="128" r="16" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="160" y="132" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">∧</text>
+              <circle cx="230" cy="128" r="16" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+              <text x="230" y="132" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="12">∧</text>
+              <text x="90" y="168" text-anchor="middle" class="svg-soft" font-size="11">p, q, ¬r</text>
+              <text x="160" y="168" text-anchor="middle" class="svg-soft" font-size="11">¬p, q</text>
+              <text x="230" y="168" text-anchor="middle" class="svg-soft" font-size="11">p</text>
+              <text x="160" y="200" text-anchor="middle" class="svg-ink" font-size="11">außen ∨, innen ∧</text>
+              <text x="160" y="218" text-anchor="middle" class="svg-ink" font-size="11" font-weight="700">= „einer der Wege reicht"</text>
+
+              <line x1="345" y1="10" x2="345" y2="240" stroke="#8a94a6" stroke-width="1" stroke-dasharray="6 5"/>
+
+              <!-- KNF tree -->
+              <text x="500" y="24" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="14">KNF</text>
+              <circle cx="500" cy="50" r="20" fill="#f5810b" fill-opacity="0.25" stroke="#f5810b" stroke-width="2"/>
+              <text x="500" y="55" text-anchor="middle" fill="#f5810b" font-weight="700">∧</text>
+              <line x1="500" y1="70" x2="430" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="500" y1="70" x2="500" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="500" y1="70" x2="570" y2="110" stroke="#8a94a6" stroke-width="1.5"/>
+              <circle cx="430" cy="128" r="16" fill="#8b5cf6" fill-opacity="0.22" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="430" y="132" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="12">∨</text>
+              <circle cx="500" cy="128" r="16" fill="#8b5cf6" fill-opacity="0.22" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="500" y="132" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="12">∨</text>
+              <circle cx="570" cy="128" r="16" fill="#8b5cf6" fill-opacity="0.22" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="570" y="132" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="12">∨</text>
+              <text x="430" y="168" text-anchor="middle" class="svg-soft" font-size="11">p, q, ¬r</text>
+              <text x="500" y="168" text-anchor="middle" class="svg-soft" font-size="11">¬p, q</text>
+              <text x="570" y="168" text-anchor="middle" class="svg-soft" font-size="11">p</text>
+              <text x="500" y="200" text-anchor="middle" class="svg-ink" font-size="11">außen ∧, innen ∨</text>
+              <text x="500" y="218" text-anchor="middle" class="svg-ink" font-size="11" font-weight="700">= „alle Klauseln müssen gelten"</text>
+            </g>
+          </svg>
+          <figcaption>DNF: ∨ oben, ∧ darunter (Konjunktionen = „Disjunkte"). KNF: ∧ oben, ∨ darunter (Disjunktionen = „Klauseln").</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Schnell-Unterscheidung merken</div>
+          <p><strong>D</strong>NF → <strong>D</strong>isjunktion außen. <strong>K</strong>NF → <strong>K</strong>onjunktion
+             außen. Wenn du unsicher bist, schau dir nur das äußerste Symbol der Formel an.</p>
+        </div>
+      </section>
+
+      <!-- ===== KONSTRUKTION ===== -->
+      <section id="konstruktion" class="reveal">
+        <h2>Kochrezept: Wahrheitstabelle → DNF/KNF</h2>
+        <p>Der zuverlässigste Weg, DNF oder KNF zu bekommen: Wahrheitstabelle aufstellen, dann mechanisch
+           ablesen. Wir nehmen als Übung eine Formel, deren Ergebnis du schon kennst:
+           <strong>H = p → q</strong>.</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>p</th><th>q</th><th>H = p→q</th></tr></thead>
+          <tbody>
+            <tr><td>T</td><td>T</td><td><strong>T</strong> ← Zeile 1</td></tr>
+            <tr><td>T</td><td>F</td><td><strong>F</strong> ← einzige F-Zeile</td></tr>
+            <tr><td>F</td><td>T</td><td><strong>T</strong> ← Zeile 3</td></tr>
+            <tr><td>F</td><td>F</td><td><strong>T</strong> ← Zeile 4</td></tr>
+          </tbody>
+        </table></div>
+
+        <ol class="steps">
+          <li>
+            <strong>DNF — nimm alle T-Zeilen, Literale normal (p wenn p=T, ¬p wenn p=F):</strong><br>
+            Zeile 1 (p=T,q=T): (p∧q) &nbsp;|&nbsp; Zeile 3 (p=F,q=T): (¬p∧q) &nbsp;|&nbsp; Zeile 4 (p=F,q=F): (¬p∧¬q)<br>
+            <strong>DNF(H) = (p∧q) ∨ (¬p∧q) ∨ (¬p∧¬q)</strong>
+          </li>
+          <li>
+            <strong>KNF — nimm alle F-Zeilen, Literale NEGIERT (¬p wenn p=T, p wenn p=F):</strong><br>
+            Zeile 2 (p=T,q=F): p=T → ¬p, q=F → q &nbsp;→&nbsp; Klausel (¬p ∨ q)<br>
+            <strong>KNF(H) = ¬p ∨ q</strong>
+          </li>
+          <li>
+            <strong>Gegenprobe:</strong> ¬p ∨ q ist genau die bekannte Äquivalenz für p→q! Die KNF hier ist
+            sogar kürzer als die Ausgangsformel — das kommt vor, wenn es nur eine F-Zeile gibt.
+          </li>
+        </ol>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Der Merksatz, der die meisten Punkte rettet</div>
+          <p><strong>DNF:</strong> T-Zeile nehmen, Literale <em>normal</em> übernehmen.<br>
+             <strong>KNF:</strong> F-Zeile nehmen, Literale <em>negieren</em>.<br>
+             Warum die Negation bei KNF? Eine Disjunktion ist nur falsch, wenn ALLE ihre Literale falsch sind.
+             Also muss für jedes Literal, das in der F-Zeile wahr war, das NEGIERTE Literal in die Klausel — nur
+             dann wird die Klausel exakt bei dieser einen Zeile falsch.</p>
+        </div>
+      </section>
+
+      <!-- ===== UMFORMUNG ===== -->
+      <section id="umformung" class="reveal">
+        <h2>Ohne Tabelle: mit Äquivalenzen umformen</h2>
+        <p>Bei größeren Formeln lohnt sich oft der algebraische Weg statt einer riesigen Wahrheitstabelle:</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Beispiel: F = (p → q) → r in DNF</div>
+          <p></p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <strong>Implikation auflösen (innen zuerst):</strong> p→q ≡ ¬p∨q<br>
+            F = (¬p ∨ q) → r
+          </li>
+          <li>
+            <strong>Äußere Implikation auflösen:</strong> A→B ≡ ¬A∨B, hier A=(¬p∨q), B=r<br>
+            F ≡ ¬(¬p ∨ q) ∨ r
+          </li>
+          <li>
+            <strong>De Morgan anwenden:</strong> ¬(¬p ∨ q) ≡ p ∧ ¬q<br>
+            F ≡ (p ∧ ¬q) ∨ r
+          </li>
+          <li>
+            <strong>Prüfen: Ist das DNF?</strong> Ja! Äußerste Operation ist ∨, darunter eine Konjunktion
+            (p∧¬q) und ein einzelnes Literal (r, das zählt als „Konjunktion der Länge 1").<br>
+            <strong>DNF(F) = (p ∧ ¬q) ∨ r</strong>
+          </li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Der allgemeine Fahrplan (ohne Wahrheitstabelle)</div>
+          <span class="formula">1. → und ↔ auflösen  →  2. De Morgan: Negation nach innen  →  3. Distributivgesetz bis DNF/KNF fertig</span>
+          <p>Distributivgesetze: <code>p∧(q∨r) ≡ (p∧q)∨(p∧r)</code> (für DNF) und
+             <code>p∨(q∧r) ≡ (p∨q)∧(p∨r)</code> (für KNF).</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Klausuraufgabe 6a: KNF ableiten</h2>
+        <p class="lead-in">🎓 Klausur 2025: Wir bauen auf der Wahrheitstabelle von Thema 09 auf — dort hatten wir
+           φ = x1 ∨ (((x1∨x4)→(x2∧x3)) ↔ ¬x3) bereits vollständig ausgewertet. Jetzt lesen wir direkt die KNF ab.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Die 5 F-Zeilen aus Thema 09 (alle mit x1=0)</div>
+          <p>(x1,x2,x3,x4) = (0,0,0,1), (0,0,1,0), (0,1,0,1), (0,1,1,0), (0,1,1,1)</p>
+        </div>
+
+        <p>Für die KNF nehmen wir jede F-Zeile und bilden eine Klausel: für jede Variable, die in dieser Zeile
+           <strong>1 (wahr)</strong> ist, kommt das <strong>negierte</strong> Literal in die Klausel; für jede
+           Variable, die <strong>0 (falsch)</strong> ist, kommt das Literal <strong>unverändert</strong> rein.</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>F-Zeile (x1,x2,x3,x4)</th><th>Klausel</th></tr></thead>
+          <tbody>
+            <tr><td>(0,0,0,1)</td><td>(x1 ∨ x2 ∨ x3 ∨ ¬x4)</td></tr>
+            <tr><td>(0,0,1,0)</td><td>(x1 ∨ x2 ∨ ¬x3 ∨ x4)</td></tr>
+            <tr><td>(0,1,0,1)</td><td>(x1 ∨ ¬x2 ∨ x3 ∨ ¬x4)</td></tr>
+            <tr><td>(0,1,1,0)</td><td>(x1 ∨ ¬x2 ∨ ¬x3 ∨ x4)</td></tr>
+            <tr><td>(0,1,1,1)</td><td>(x1 ∨ ¬x2 ∨ ¬x3 ∨ ¬x4)</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Vollständige KNF von φ</div>
+          <span class="formula">KNF(φ) = (x1∨x2∨x3∨¬x4) ∧ (x1∨x2∨¬x3∨x4) ∧ (x1∨¬x2∨x3∨¬x4) ∧ (x1∨¬x2∨¬x3∨x4) ∧ (x1∨¬x2∨¬x3∨¬x4)</span>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Beobachtung: x1 steht in jeder Klausel positiv</div>
+          <p>Fällt dir etwas auf? In <strong>jeder</strong> der 5 Klauseln steht <code>x1</code> unnegiert.
+             Das ist kein Zufall: alle F-Zeilen haben x1=0, und „x1=0" wird laut Regel zum unveränderten
+             Literal x1. Das spiegelt genau den Klausur-Trick aus Thema 09: sobald x1=1 ist, kann keine
+             dieser Klauseln mehr falsch werden — die ganze KNF ist automatisch erfüllt.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Warum hier die KNF und nicht die DNF sinnvoll ist</div>
+          <p>φ hat 11 T-Zeilen, aber nur 5 F-Zeilen. Die DNF bräuchte 11 Disjunkte (je 4 Literale) — die KNF
+             kommt mit nur 5 Klauseln aus. <strong>Faustregel:</strong> Hat eine Formel mehr T- als F-Zeilen,
+             ist die KNF meist kompakter — und umgekehrt.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>(p ∧ q) ∨ (r ∧ s) ist KNF.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das ist <strong>DNF</strong> (∨ außen, ∧ innen). Die zugehörige KNF wäre: (p∨r) ∧ (p∨s) ∧ (q∨r) ∧ (q∨s).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Für die KNF nimmt man die F-Zeilen und übernimmt die Literale unverändert.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Für die KNF müssen die Literale <strong>negiert</strong> werden: F-Zeile p=T,q=F,r=T → Klausel <strong>(¬p ∨ q ∨ ¬r)</strong>, nicht (p ∨ ¬q ∨ r).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man lässt p → q einfach so stehen und baut die Normalform drumherum.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Implikation und Bikonditional müssen VOR den Normalform-Umformungen aufgelöst werden: p→q ≡ ¬p∨q. Sonst greifen die Distributivgesetze nicht sauber.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Zu jeder Formel gibt es automatisch eine „normale" DNF/KNF mit Literalen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Sonderfälle: Ist die Formel eine <strong>Tautologie</strong>, ist die DNF einfach „T" (keine F-Zeilen). Ist sie <strong>unerfüllbar</strong>, ist die KNF einfach „F" (keine T-Zeilen für eine sinnvolle DNF).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die kanonische (vollständige) DNF/KNF aus der Wahrheitstabelle ist immer die kürzeste Darstellung.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Kanonische Normalformen sind oft <strong>nicht minimal</strong>. Danach kann man mit Absorption/Redundanz-Regeln weiter kürzen — für die Klausur reicht aber meist die korrekte kanonische Form.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>DNF vs. KNF — Schnell-Unterscheidung</h4>
+          <pre class="code">      DNF                    KNF
+  ∨ außen, ∧ innen       ∧ außen, ∨ innen
+  (p∧q) ∨ (r∧s)          (p∨q) ∧ (r∨s)
+  aus T-Zeilen           aus F-Zeilen
+  Literale NORMAL        Literale NEGIERT</pre>
+
+          <h4>Kochrezept</h4>
+          <pre class="code">DNF:  T-Zeile → Konjunktion, Literal = normal (p wenn p=T)
+      Alle Konjunktionen mit ∨ verbinden
+
+KNF:  F-Zeile → Disjunktion, Literal = negiert (¬p wenn p=T)
+      Alle Disjunktionen (Klauseln) mit ∧ verbinden
+
+Ohne Tabelle:  → auflösen (p→q≡¬p∨q) → De Morgan → Distributivgesetz</pre>
+
+          <h4>Klausurbeispiel: KNF von φ (Aufgabe 6a)</h4>
+          <pre class="code">5 F-Zeilen → 5 Klauseln, x1 in jeder Klausel positiv:
+
+(x1∨x2∨x3∨¬x4) ∧ (x1∨x2∨¬x3∨x4) ∧ (x1∨¬x2∨x3∨¬x4)
+∧ (x1∨¬x2∨¬x3∨x4) ∧ (x1∨¬x2∨¬x3∨¬x4)</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>D</strong>NF = <strong>D</strong>isjunktion außen, <strong>K</strong>NF = <strong>K</strong>onjunktion außen</li>
+            <li>DNF aus T-Zeilen (normale Literale), KNF aus F-Zeilen (negierte Literale)</li>
+            <li>→ und ↔ IMMER zuerst auflösen, bevor du De Morgan/Distributivgesetz anwendest</li>
+            <li>Wenige F-Zeilen → KNF kompakter. Wenige T-Zeilen → DNF kompakter.</li>
+            <li>Tautologie → DNF = T. Unerfüllbar → KNF = F.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Welche Struktur hat eine DNF?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Disjunktion von Konjunktionen (∨ außen)</button>
+              <button class="quiz-choice" type="button">Konjunktion von Disjunktionen (∧ außen)</button>
+              <button class="quiz-choice" type="button">Nur Negationen von Literalen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>DNF = Disjunktive Normalform: ∨ ist die äußerste Operation, darunter stehen Konjunktionen von Literalen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="¬p ∨ q|not p or q|¬p∨q">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Formel H = p → q hat genau eine F-Zeile (p=T,q=F). Wie lautet die KNF von H?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F-Zeile p=T,q=F → Literale negieren: ¬p, q → Klausel <strong>(¬p ∨ q)</strong>. Das ist exakt die bekannte Äquivalenz für p→q!</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>F-Zeile lautet p=F, q=T, r=F. Welche KNF-Klausel ergibt das?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>(p ∨ ¬q ∨ r)</button>
+              <button class="quiz-choice" type="button">(¬p ∨ q ∨ ¬r) — Literale einfach unverändert übernommen</button>
+              <button class="quiz-choice" type="button">(¬p ∨ ¬q ∨ ¬r) — alle Literale negiert</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>p=F → Literal p bleibt (unnegiert), q=T → Literal wird ¬q, r=F → Literal bleibt r. Klausel: (p ∨ ¬q ∨ r). Nur die Variablen, die in der F-Zeile WAHR sind, werden negiert — nicht alle und nicht keine.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="5">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2025: Aus wie vielen Klauseln besteht die KNF von φ (Aufgabe 6a)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>φ hat 5 F-Zeilen → <strong>5</strong> Klauseln in der KNF. Die DNF hätte dagegen 11 Disjunkte (aus den 11 T-Zeilen) — deutlich länger.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: Warum steht x1 in JEDER Klausel der KNF von φ unnegiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Zufall</button>
+              <button class="quiz-choice" type="button" data-correct>Weil alle F-Zeilen x1=0 haben, und x1=0 ergibt das unveränderte Literal x1</button>
+              <button class="quiz-choice" type="button">Weil x1 die wichtigste Variable ist</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nur bei x1=0 kann φ überhaupt falsch werden (Klausur-Trick aus Thema 09). Also haben ALLE F-Zeilen x1=0, und laut KNF-Regel wird x1=0 zum Literal x1 (unnegiert) — in jeder einzelnen Klausel.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="p ∧ ¬q ∨ r|(p ∧ ¬q) ∨ r|(p∧¬q)∨r|p∧¬q∨r">
+            <p class="quiz-prompt"><span class="q-no">6.</span>F = (p → q) → r soll in DNF gebracht werden. Löse zuerst beide Implikationen auf und wende De Morgan an. Wie lautet die DNF? (Format: „(p ∧ ¬q) ∨ r")</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(p→q)→r ≡ ¬(¬p∨q)∨r ≡ (p∧¬q)∨r. Das ist bereits DNF (∨ außen, ∧ und Literal innen).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Eine Formel ist eine Tautologie. Was ist ihre DNF (kanonisch, nach dem Kochrezept)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Es gibt keine DNF</button>
+              <button class="quiz-choice" type="button" data-correct>„T" bzw. die Disjunktion aller möglichen Belegungen (jede Zeile ist T)</button>
+              <button class="quiz-choice" type="button">„F"</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei einer Tautologie ist JEDE Zeile T — es gibt keine F-Zeile. Die DNF besteht dann aus allen Zeilen (oder man schreibt einfach „T"), die KNF hätte in diesem Fall keine Klauseln (auch „T").</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="09-aussagenlogik.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Aussagenlogik: Grundlagen</div>
+        </a>
+        <a class="next" href="11-sequenzenkalkuel-al.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Sequenzenkalkül (Aussagenlogik)</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

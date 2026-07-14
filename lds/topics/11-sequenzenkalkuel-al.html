@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sequenzenkalkül (Aussagenlogik) · P7 LDS</title>
+<meta name="description" content="Die Schlussregeln des Sequenzenkalküls (Axiom, ∧-L/R, ∨-L/R, →-L/R, ¬-L/R) als Werkzeugkasten — zwei vollständig durchgerechnete Beweisbäume, plus die häufigste Fehlerquelle: ∨-Links erzeugt ZWEI Äste." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#regeln">Die Regeln</a>
+      <a href="#rechnen">Beweisbaum 1</a>
+      <a href="#rechnen2">Beweisbaum 2</a>
+      <a href="#check">Wissenscheck</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Kursübersicht</a> › Thema 11</div>
+    <span class="th-icon">⚖️</span>
+    <h1>Sequenzenkalkül (Aussagenlogik)</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 10·11</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Sequenz-Notation Γ ⊢ Δ</a></li>
+        <li><a href="#regeln">Die 8 Schlussregeln</a></li>
+        <li><a href="#rechnen">Beweisbaum 1: top-down</a></li>
+        <li><a href="#rechnen2">Beweisbaum 2: bottom-up</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Der Sequenzenkalkül ist ein <strong>mechanisches Beweissystem</strong>: Statt eine
+           Formel „irgendwie" als wahr zu erkennen, zerlegst du sie Schritt für Schritt nach festen Regeln, bis
+           nur noch triviale Bausteine (Axiome) übrig sind. Das Ergebnis ist ein <strong>Beweisbaum</strong> —
+           und genau dieser Baum ist in der Klausur die volle Punktzahl wert, wenn er korrekt aufgebaut ist.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… eine Sequenz Γ ⊢ Δ ist wie eine <strong>Quittung</strong>: Auf der linken Seite (Γ) stehen alle
+             Zutaten, die du im Warenkorb hast — mit UND verbunden, du besitzt <em>alle</em>. Auf der rechten
+             Seite (Δ) stehen mögliche Gerichte, die du daraus kochen kannst — mit ODER verbunden, <em>mindestens
+             eines</em> muss klappen. Das Symbol ⊢ sagt: „Aus den Zutaten links folgt zwingend, dass du
+             mindestens eins der Gerichte rechts kochen kannst." Formal: <strong>Γ ⊢ Δ ≡ (∧Γ) → (∨Δ)</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Sequenz-Notation Γ ⊢ Δ</h2>
+        <p>Γ und Δ sind <strong>Mengen von Formeln</strong> (oft durch Komma getrennt geschrieben). Eine Sequenz
+           Γ ⊢ Δ ist bewiesen (gilt), wenn: <em>immer wenn alle Formeln in Γ wahr sind, mindestens eine Formel in
+           Δ wahr ist.</em></p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Grundgleichung</div>
+          <span class="formula">Γ ⊢ Δ &nbsp;≡&nbsp; (∧Γ) → (∨Δ)</span>
+          <p>Leeres Γ bedeutet „keine Voraussetzung" (die Konjunktion des leeren Γ ist per Konvention T). Leeres
+             Δ bedeutet „nichts folgt" (die Disjunktion des leeren Δ ist F) — ⊢ (mit leerer linker UND rechter
+             Seite) wäre also ein Widerspruch.</p>
+        </div>
+
+        <!-- SVG: Beweisbaum-Richtung -->
+        <figure class="diagram">
+          <div class="diagram-title">Wie ein Beweisbaum wächst: von der Wurzel unten zu den Axiomen oben</div>
+          <svg viewBox="0 0 560 240" width="560" role="img" aria-label="Baumdiagramm: die zu beweisende Sequenz steht unten als Wurzel, durch Regelanwendung entstehen darüber immer einfachere Sequenzen, bis oben nur noch Axiome stehen">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="60" y="16" width="110" height="30" rx="6" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="115" y="36" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="11">Axiom: A⊢A</text>
+              <rect x="390" y="16" width="110" height="30" rx="6" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="445" y="36" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="11">Axiom: B⊢B</text>
+
+              <line x1="115" y1="46" x2="220" y2="90" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="445" y1="46" x2="340" y2="90" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <rect x="170" y="90" width="220" height="30" rx="6" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="280" y="110" text-anchor="middle" fill="#2f6df6" font-size="11">nach 1 Regelanwendung</text>
+
+              <line x1="280" y1="120" x2="280" y2="164" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <rect x="140" y="164" width="280" height="34" rx="6" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="280" y="186" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="12">Γ ⊢ Δ  (die zu beweisende Sequenz — WURZEL)</text>
+
+              <text x="30" y="34" class="svg-soft" font-size="11">oben:</text>
+              <text x="30" y="188" class="svg-soft" font-size="11">unten:</text>
+              <text x="280" y="222" text-anchor="middle" class="svg-ink" font-size="12" font-weight="700">Regeln wenden Formeln auf, bis nur noch Axiome übrig sind</text>
+            </g>
+          </svg>
+          <figcaption>Die zu beweisende Sequenz steht ganz unten. Jede Regelanwendung erzeugt darüber neue (einfachere) Sequenzen. Ganz oben müssen ausschließlich Axiome stehen — dann ist der Beweis fertig.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== REGELN ===== -->
+      <section id="regeln" class="reveal">
+        <h2>Die 8 Schlussregeln</h2>
+        <p>Jede Regel bricht eine zusammengesetzte Formel in einfachere Teile auf. Merke: Regeln für die
+           <strong>linke</strong> Seite („-Links") und für die <strong>rechte</strong> Seite („-Rechts") sehen
+           unterschiedlich aus — und genau das wird gern verwechselt.</p>
+
+        <h3>Axiom (verallgemeinert)</h3>
+        <pre class="code">Γ, A ⊢ A, Δ
+
+Gilt IMMER, egal was in Γ und Δ sonst noch steht — solange dieselbe Formel A
+sowohl links als auch rechts vorkommt, ist der Ast sofort geschlossen (fertig).
+Der einfache Fall A ⊢ A ist nur der Spezialfall mit leerem Γ, Δ.</pre>
+
+        <h3>∧ (Konjunktion)</h3>
+        <pre class="code">∧-Links:                    ∧-Rechts:
+Γ, A, B ⊢ Δ                 Γ ⊢ Δ, A     Γ ⊢ Δ, B
+────────────  (1 Ast)       ──────────────────────  (1 Zeile, 2 Prämissen)
+Γ, A∧B ⊢ Δ                  Γ ⊢ Δ, A∧B</pre>
+
+        <h3>∨ (Disjunktion) — ACHTUNG, häufigste Fehlerquelle!</h3>
+        <pre class="code">∨-Links:                        ∨-Rechts:
+Γ, A ⊢ Δ    Γ, B ⊢ Δ            Γ ⊢ Δ, A, B
+────────────────────  ZWEI      ─────────────  (1 Ast, A und B
+Γ, A∨B ⊢ Δ             ÄSTE!    Γ ⊢ Δ, A∨B      landen beide in Δ)</pre>
+
+        <h3>¬ (Negation) — wechselt die Seite</h3>
+        <pre class="code">¬-Links:            ¬-Rechts:
+Γ ⊢ Δ, A            Γ, A ⊢ Δ
+─────────           ─────────
+Γ, ¬A ⊢ Δ           Γ ⊢ Δ, ¬A</pre>
+
+        <h3>→ (Implikation)</h3>
+        <pre class="code">→-Links:                        →-Rechts:
+Γ ⊢ Δ, A    Γ, B ⊢ Δ            Γ, A ⊢ Δ, B
+────────────────────            ─────────────
+Γ, A→B ⊢ Δ                      Γ ⊢ Δ, A→B</pre>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz: Links vs. Rechts</div>
+          <p>„Beim <strong>Auflösen links</strong> können mehrere Äste entstehen (nur bei ∨-Links und →-Links);
+             beim <strong>Aufbauen rechts</strong> bleibt es fast immer eine Linie." Und: <strong>¬ wechselt
+             immer die Seite</strong> — ¬A links wird zu A rechts (und umgekehrt), niemals bleibt ¬A einfach
+             stehen.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Und der Schnitt?</div>
+          <p>Es gibt noch eine mächtige, aber <strong>optionale</strong> Regel namens Schnitt (Cut), mit der man
+             zwei Teilbeweise verkleben kann. Für die meisten Klausuraufgaben brauchst du sie nicht — die obigen
+             8 Regeln reichen aus, jede gültige aussagenlogische Sequenz zu beweisen.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN 1 ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beweisbaum 1: top-down</h2>
+        <p class="lead-in">📚 Klausurtypische Aufgabe: Zeige <strong>¬(x → y) ∨ (y ∧ z) ⊢ x ∨ z</strong>.
+           Wir bauen den Baum top-down: von der Wurzel unten nach oben, bis überall Axiome stehen.</p>
+
+        <ol class="steps">
+          <li>
+            <strong>Wurzel:</strong> ¬(x→y) ∨ (y∧z) ⊢ x∨z. Die einzige zusammengesetzte Formel links ist eine
+            Disjunktion → <strong>∨-Links</strong> anwenden. Das erzeugt <strong>zwei Äste</strong>.
+          </li>
+          <li>
+            <strong>Ast A:</strong> ¬(x→y) ⊢ x∨z. Wende <strong>¬-Links</strong> an: die Negation wandert nach
+            rechts. Neue Sequenz: ⊢ (x→y), x∨z.
+          </li>
+          <li>
+            <strong>Ast A weiter:</strong> Wende <strong>→-Rechts</strong> auf (x→y) an: x wandert nach links.
+            Neue Sequenz: x ⊢ y, x∨z.
+          </li>
+          <li>
+            <strong>Ast A weiter:</strong> Wende <strong>∨-Rechts</strong> auf (x∨z) an: x und z landen beide
+            einzeln in Δ. Neue Sequenz: x ⊢ y, x, z.
+          </li>
+          <li>
+            <strong>Ast A fertig:</strong> x steht links UND rechts → <strong>Axiom</strong> (A=x). ✅ geschlossen.
+          </li>
+          <li>
+            <strong>Ast B:</strong> y∧z ⊢ x∨z. Wende <strong>∧-Links</strong> an: y, z ⊢ x∨z.
+          </li>
+          <li>
+            <strong>Ast B weiter:</strong> Wende <strong>∨-Rechts</strong> an: y, z ⊢ x, z.
+          </li>
+          <li>
+            <strong>Ast B fertig:</strong> z steht links UND rechts → <strong>Axiom</strong> (A=z). ✅ geschlossen.
+          </li>
+        </ol>
+
+        <pre class="code">                    Axiom (A=x)                        Axiom (A=z)
+                x ⊢ y, x, z                        y, z ⊢ x, z
+                ──────────────── ∨-R               ──────────────── ∨-R
+                x ⊢ y, x∨z                          y, z ⊢ x∨z
+                ──────────────── →-R                ──────────────── ∧-L
+                ⊢ x→y, x∨z                           y∧z ⊢ x∨z
+                ──────────────── ¬-L
+                ¬(x→y) ⊢ x∨z
+
+                ──────────────────────────────────────────────────── ∨-L (ZWEI ÄSTE!)
+                          ¬(x→y) ∨ (y∧z) ⊢ x∨z</pre>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Warum das klappt</div>
+          <p>Beide Äste enden in einem Axiom — jeder Ast hat also eine Formel, die auf beiden Seiten steht
+             (Ast A: x, Ast B: z). Damit ist der GESAMTE Baum bewiesen. Fehlt bei einem Ast das Axiom, ist der
+             Beweis unvollständig (oder die Sequenz ist gar nicht gültig!).</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN 2 ===== -->
+      <section id="rechnen2" class="reveal">
+        <h2>Beweisbaum 2: bottom-up gedacht</h2>
+        <p class="lead-in">📚 Klausurtypische Aufgabe: Zeige <strong>(q ∨ r) ∧ ¬q ⊢ r</strong> — klassischer
+           „disjunktiver Syllogismus" (aus q∨r und ¬q folgt r).</p>
+
+        <ol class="steps">
+          <li>
+            <strong>Wurzel:</strong> (q∨r) ∧ ¬q ⊢ r. Wende <strong>∧-Links</strong> an: q∨r, ¬q ⊢ r.
+          </li>
+          <li>
+            <strong>∨-Links</strong> auf (q∨r) anwenden → <strong>zwei Äste</strong>:<br>
+            Ast A: q, ¬q ⊢ r &nbsp;|&nbsp; Ast B: r, ¬q ⊢ r
+          </li>
+          <li>
+            <strong>Ast B ist sofort fertig:</strong> r steht links UND rechts → <strong>Axiom</strong> (A=r). ✅
+          </li>
+          <li>
+            <strong>Ast A:</strong> q, ¬q ⊢ r. Wende <strong>¬-Links</strong> auf ¬q an: q wandert nach rechts.
+            Neue Sequenz: q ⊢ r, q.
+          </li>
+          <li>
+            <strong>Ast A fertig:</strong> q steht links UND rechts → <strong>Axiom</strong> (A=q). ✅
+          </li>
+        </ol>
+
+        <pre class="code">          Axiom (A=q)
+        q ⊢ r, q
+        ──────────── ¬-L
+        q, ¬q ⊢ r                    Axiom (A=r)
+                                    r, ¬q ⊢ r
+
+        ────────────────────────────────────────── ∨-L (ZWEI ÄSTE!)
+                   q∨r, ¬q ⊢ r
+        ────────────────────────────────────────── ∧-L
+                   (q∨r)∧¬q ⊢ r</pre>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Ast B war der Trick</div>
+          <p>Viele versuchen, auch Ast B (r, ¬q ⊢ r) noch weiter aufzulösen — dabei steht r schon links UND
+             rechts, der Ast ist <strong>sofort</strong> ein Axiom! Bevor du eine Regel anwendest, prüfe immer
+             zuerst: „Ist das nicht schon ein Axiom?"</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>∨-Links erzeugt nur einen Ast, genau wie ∧-Links.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>∨-Links erzeugt ZWEI Äste</strong> — das ist die häufigste Fehlerquelle im ganzen Kalkül. ∧-Links dagegen bleibt bei einem Ast.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>¬A auf der linken Seite bleibt einfach ¬A stehen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>¬A links wird zu <strong>A rechts</strong> (und umgekehrt). Negation wechselt IMMER die Seite — sie „verschwindet" nie einfach.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>p, q ⊢ r ist ein Axiom, weil auf beiden Seiten Formeln stehen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein Axiom braucht <strong>dieselbe</strong> Formel auf beiden Seiten. p, q ⊢ r ist KEIN Axiom (r kommt links nicht vor) — dafür bräuchte es weitere Regeln oder ist die Sequenz gar nicht beweisbar.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei einer Regelanwendung verschwinden alle anderen Formeln in Γ und Δ.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur die Formel, auf die die Regel angewendet wird, wird verändert. <strong>Alle anderen Formeln in Γ und Δ bleiben in jeder Prämisse erhalten</strong> (Kontext wird durchgereicht).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man muss immer erst prüfen, ob man top-down oder bottom-up beweist, und darf nicht mischen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Beide Sichtweisen beschreiben denselben Baum — top-down heißt „von der Wurzel aus Regeln anwenden", bottom-up heißt „vom fertigen Baum aus lesen". Wichtig ist nur: <strong>am Ende muss jeder Ast in einem Axiom enden.</strong></div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Alle Regeln auf einen Blick</h4>
+          <pre class="code">AXIOM:  Γ, A ⊢ A, Δ   (A auf beiden Seiten — Ast sofort geschlossen)
+
+∧-Links:          ∧-Rechts:
+Γ,A,B ⊢ Δ         Γ⊢Δ,A   Γ⊢Δ,B
+──────────        ────────────────
+Γ,A∧B ⊢ Δ         Γ⊢Δ,A∧B
+
+∨-Links (2 ÄSTE!):        ∨-Rechts:
+Γ,A⊢Δ   Γ,B⊢Δ              Γ⊢Δ,A,B
+────────────────           ─────────
+Γ,A∨B ⊢ Δ                  Γ⊢Δ,A∨B
+
+¬-Links:          ¬-Rechts:
+Γ⊢Δ,A              Γ,A⊢Δ
+────────           ────────
+Γ,¬A⊢Δ             Γ⊢Δ,¬A
+
+→-Links (2 ÄSTE!):        →-Rechts:
+Γ⊢Δ,A   Γ,B⊢Δ              Γ,A⊢Δ,B
+────────────────           ─────────
+Γ,A→B ⊢ Δ                  Γ⊢Δ,A→B</pre>
+
+          <h4>Beweis-Strategie Checkliste</h4>
+          <ul>
+            <li>☐ Zuerst prüfen: Ist die aktuelle Sequenz schon ein Axiom (gleiche Formel links UND rechts)?</li>
+            <li>☐ Sonst: eine zusammengesetzte Formel auswählen und passende Regel anwenden</li>
+            <li>☐ ∨-Links oder →-Links angewendet? → nicht vergessen, BEIDE Äste weiterzuführen</li>
+            <li>☐ ¬ angewendet? → Formel muss die Seite gewechselt haben</li>
+            <li>☐ Ganz am Ende: sind WIRKLICH alle Blätter (Astenden) Axiome?</li>
+          </ul>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>∨-Links = ZWEI Äste</strong> (häufigster Fehler überhaupt)</li>
+            <li><strong>¬ wechselt die Seite</strong>: ¬A links = A rechts (negiert), nie beides gleichzeitig</li>
+            <li>Axiom braucht dieselbe Formel <strong>links UND rechts</strong> — Kontext (Γ, Δ) darf beliebig sein</li>
+            <li>Kontext bleibt bei jeder Regel erhalten — nur die bearbeitete Formel verändert sich</li>
+            <li>Schnitt ist mächtig, aber für die meisten Aufgaben <strong>nicht nötig</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wie viele Äste erzeugt eine Anwendung der ∨-Links-Regel?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>2</strong> Äste — je einer für A und einer für B bei Γ,A∨B⊢Δ. Das ist die häufigste Fehlerquelle im Sequenzenkalkül.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Was passiert mit ¬A, wenn es auf der linken Seite (Γ) einer Sequenz steht und du die ¬-Regel anwendest?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Es bleibt als ¬A links stehen</button>
+              <button class="quiz-choice" type="button" data-correct>Es wird zu A auf der rechten Seite (Δ)</button>
+              <button class="quiz-choice" type="button">Es verschwindet komplett</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>¬-Links: Γ,¬A⊢Δ hat Prämisse Γ⊢Δ,A — die Negation wechselt die Seite und verschwindet dabei selbst (A bleibt ohne ¬ übrig).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Ist p, q ⊢ p, r ein gültiges Axiom?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja — p steht links und rechts, der Rest (q, r) ist egal</button>
+              <button class="quiz-choice" type="button">Nein, weil q und r nicht übereinstimmen</button>
+              <button class="quiz-choice" type="button">Nein, weil zu viele Formeln beteiligt sind</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der verallgemeinerte Axiom Γ,A⊢A,Δ erlaubt beliebigen Kontext. Da p auf beiden Seiten steht, ist die Sequenz ein Axiom — egal was sonst noch in Γ und Δ steht.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="axiom|axiom (a=x)|axiom a=x">
+            <p class="quiz-prompt"><span class="q-no">4.</span>In Beweisbaum 1 (¬(x→y) ∨ (y∧z) ⊢ x∨z) endet Ast A bei der Sequenz x ⊢ y, x, z. Welche Regel/Feststellung schließt diesen Ast?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist ein <strong>Axiom</strong> (A=x): x steht sowohl links (in Γ) als auch rechts (in Δ) — der Ast ist damit fertig, ohne weitere Regelanwendung nötig.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">5.</span>📚 Klausurtypisch: In Beweisbaum 1 werden insgesamt wie viele verschiedene Regeln (Axiom nicht mitgezählt) auf dem längeren Ast A angewendet (∨-L, ¬-L, →-R, ∨-R)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>4</strong> Regeln: ∨-Links (an der Wurzel, erzeugt Ast A), ¬-Links, →-Rechts, ∨-Rechts — danach ist Ast A ein Axiom.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>📚 Klausurtypisch: Beim Beweis von (q∨r)∧¬q ⊢ r schließt Ast B (r, ¬q ⊢ r) sofort. Warum?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Weil ¬q automatisch wahr ist</button>
+              <button class="quiz-choice" type="button" data-correct>Weil r bereits links UND rechts steht — Axiom</button>
+              <button class="quiz-choice" type="button">Weil q∨r immer wahr ist</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>r, ¬q ⊢ r hat r sowohl in Γ als auch in Δ — das ist per Definition ein Axiom, unabhängig vom Rest des Kontexts (hier ¬q).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Welche Aussage über →-Links ist richtig?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">→-Links erzeugt nie mehrere Äste</button>
+              <button class="quiz-choice" type="button" data-correct>→-Links erzeugt wie ∨-Links zwei Äste: Γ⊢Δ,A und Γ,B⊢Δ</button>
+              <button class="quiz-choice" type="button">→-Links gibt es im Sequenzenkalkül nicht</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>→-Links: aus Γ,A→B⊢Δ werden zwei Prämissen: Γ⊢Δ,A (der Fall „A ist falsch") und Γ,B⊢Δ (der Fall „B ist wahr") — logisch, weil A→B ≡ ¬A∨B und ∨-Links auch zwei Äste braucht.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="10-normalformen.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Normalformen: DNF &amp; KNF</div>
+        </a>
+        <a class="next" href="12-resolution-tseitin.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Resolution &amp; Tseitin</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

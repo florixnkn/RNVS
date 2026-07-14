@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LDS – Logik &amp; Diskrete Strukturen, bildlich erklärt</title>
+<meta name="description" content="Logik und Diskrete Strukturen verständlich und visuell erklärt – von Mengen über Gruppen und Polynome bis zu Aussagenlogik, Normalformen und Sequenzenkalkül. Für Einsteiger ohne Vorwissen." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Vorlesungen</a>
+      <a href="#phase-1">Grundlagen</a>
+      <a href="#phase-2">Algebra</a>
+      <a href="#phase-3">Aussagenlogik</a>
+      <a href="#phase-4">Prädikatenlogik</a>
+      <a href="#phase-5">Klausurtraining</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <h1>Logik &amp; Diskrete Strukturen,<br><span class="grad">endlich bildlich erklärt.</span></h1>
+    <p class="lead">Von der ersten Mengenklammer bis zum kompletten Sequenzenkalkül-Beweis — jedes Thema auf
+      einer eigenen Seite, mit Diagrammen, Alltags-Vergleichen und Schritt-für-Schritt-Rechnungen. Gemacht für alle,
+      die <strong>noch kaum Ahnung</strong> davon haben.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#phase-1">🚀 Bei den Mengen starten</a>
+      <a class="btn btn-ghost" href="topics/11-sequenzenkalkuel-al.html">⚖️ Direkt zum Sequenzenkalkül</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>16</b><span>Themen-Seiten</span></div>
+      <div class="stat"><b>5</b><span>Lernphasen</span></div>
+      <div class="stat"><b>0</b><span>Vorwissen nötig</span></div>
+      <div class="stat"><b>6</b><span>ECTS im Modul P 7</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- ===== PHASE 1 ===== -->
+  <section class="phase" id="phase-1">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat1)">1</div>
+      <div><h2>Grundlagen</h2><p>Die Bausteine: Mengen, Relationen, Funktionen, Induktion und Ordnungen.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/01-mengen.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🧺</span><span class="tc-no">01</span></div>
+        <h3>Mengen &amp; Kardinalitäten</h3>
+        <p>∪, ∩, \, Kreuzprodukt &amp; Potenzmenge — und wie man Kardinalitäten wie |𝒫(A)| blitzschnell zählt.</p>
+        <div class="tc-meta"><span class="stars">★☆☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Blatt 1</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/02-relationen-funktionen.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🔗</span><span class="tc-no">02</span></div>
+        <h3>Relationen &amp; Funktionen</h3>
+        <p>Reflexiv, symmetrisch, transitiv — plus injektiv, surjektiv, bijektiv und Permutationen, bildlich sortiert.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-blatt">Blatt 2</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/03-induktion-ordnungen.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🪜</span><span class="tc-no">03</span></div>
+        <h3>Induktion &amp; Ordnungen</h3>
+        <p>Das Beweis-Schema der vollständigen Induktion (kommt fast immer dran!) und Hasse-Diagramme.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Blatt 3</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/04-verbaende.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🔷</span><span class="tc-no">04</span></div>
+        <h3>Verbände &amp; Ordnungsstrukturen</h3>
+        <p>Supremum &amp; Infimum, Verbände und Distributivität — plus der euklidische Algorithmus für Zahlen.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-blatt">Blatt 4</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 2 ===== -->
+  <section class="phase" id="phase-2">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat2)">2</div>
+      <div><h2>Algebra</h2><p>Rechnen mit Strukturen: von mod n über Gruppen und Ringe bis zu Polynomen über Körpern.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/05-modulare-arithmetik.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🔄</span><span class="tc-no">05</span></div>
+        <h3>Modulare Arithmetik &amp; Homomorphismen</h3>
+        <p>Rechnen im Uhren-Universum ℤₙ, schnelle Exponentiation — und wann eine Funktion die Struktur erhält.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Blatt 5</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/06-gruppen-ringe.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">👥</span><span class="tc-no">06</span></div>
+        <h3>Gruppen &amp; Ringe</h3>
+        <p>Die Checkliste Halbgruppe → Monoid → Gruppe (Standard-Klausuraufgabe!), Untergruppen, Ringe &amp; Körper.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 6·7</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/07-polynome-koerper.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🧮</span><span class="tc-no">07</span></div>
+        <h3>Polynome &amp; Körper</h3>
+        <p>Polynomdivision über ℤₚ und der GGT per euklidischem Algorithmus — Schritt für Schritt durchgerechnet.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 7·8</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/08-kombinatorik.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🎲</span><span class="tc-no">08</span></div>
+        <h3>Kombinatorik &amp; Körpererweiterungen</h3>
+        <p>Richtig zählen mit Binomialkoeffizienten &amp; Multimengen — und wie man kleine Körper erweitert.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-blatt">Blatt 8</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 3 ===== -->
+  <section class="phase" id="phase-3">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat3)">3</div>
+      <div><h2>Aussagenlogik</h2><p>Der klausur-kritische Teil: Wahrheitstabellen, Normalformen, Kalküle und Resolution.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/09-aussagenlogik.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">💡</span><span class="tc-no">09</span></div>
+        <h3>Aussagenlogik: Grundlagen</h3>
+        <p>Wahrheitstabellen sicher ausfüllen und entscheiden: erfüllbar, tautologisch oder unerfüllbar?</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Blatt 9</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/10-normalformen.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">📋</span><span class="tc-no">10</span></div>
+        <h3>Normalformen: DNF &amp; KNF</h3>
+        <p>DNF und KNF direkt aus der Wahrheitstabelle ablesen — plus De Morgan &amp; Implikation auflösen.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 10</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/11-sequenzenkalkuel-al.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">⚖️</span><span class="tc-no">11</span></div>
+        <h3>Sequenzenkalkül (Aussagenlogik)</h3>
+        <p>Die Schlussregeln als Werkzeugkasten: Beweisbäume Schritt für Schritt aufbauen, ohne sich zu verlaufen.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 10·11</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/12-resolution-tseitin.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🧩</span><span class="tc-no">12</span></div>
+        <h3>Resolution &amp; Tseitin</h3>
+        <p>Unerfüllbarkeit beweisen wie ein SAT-Solver: Klauseln resolvieren, bis die leere Klausel ⊥ dasteht.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Blatt 11</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 4 ===== -->
+  <section class="phase" id="phase-4">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat4)">4</div>
+      <div><h2>Prädikatenlogik</h2><p>Quantoren, Modelle und der Sequenzenkalkül mit Eigenvariablen-Bedingung — das Endgegner-Kapitel.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/13-praedikatenlogik-syntax.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">✍️</span><span class="tc-no">13</span></div>
+        <h3>Prädikatenlogik: Syntax</h3>
+        <p>Terme, Formeln, ∀ und ∃ — und der wichtige Unterschied zwischen freien und gebundenen Variablen.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 12</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/14-modelle-praenex.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🌍</span><span class="tc-no">14</span></div>
+        <h3>Modelle &amp; Pränex-Normalform</h3>
+        <p>Interpretationen bauen, Modelle finden — und jede Formel in Pränex-Normalform umformen.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Blatt 12</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/15-sequenzenkalkuel-pl.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">⊢</span><span class="tc-no">15</span></div>
+        <h3>Sequenzenkalkül (Prädikatenlogik)</h3>
+        <p>Die vier Quantor-Regeln und die Eigenvariablen-Bedingung — die 12-Punkte-Aufgabe jeder Klausur.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨🚨 Klausur</span><span class="badge badge-blatt">Blatt 12</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 5 ===== -->
+  <section class="phase" id="phase-5">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat1)">5</div>
+      <div><h2>Klausurtraining</h2><p>Die komplette Klausur vom SoSe 2025 durchgerechnet — plus Original-Aufgaben zum Selbst-Lösen.</p></div>
+    </div>
+    <div class="topic-grid">
+      <a class="topic-card reveal" href="topics/16-klausurtraining.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🎯</span><span class="tc-no">16</span></div>
+        <h3>Klausurtraining: alle 7 Aufgabentypen</h3>
+        <p>Mengen, Induktion, Homomorphismen, Strukturen, Polynome, Aussagen- &amp; Prädikatenlogik — 1:1 aus Altklausuren.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">2024–2025</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Lernpfad-Hinweis -->
+  <div class="callout callout-tip reveal" style="margin: 40px 0;">
+    <div class="c-title">So nutzt du diese Seite am besten</div>
+    <p>Arbeite die Themen <strong>der Reihe nach</strong> durch (01 → 15) — jedes baut auf dem vorherigen auf.
+      Der <strong>Logik-Teil (Phase 3 und 4)</strong> entscheidet die Klausur: Normalformen und Sequenzenkalkül
+      solltest du mehrfach üben. Jede Seite endet mit einem interaktiven <strong>Wissenscheck</strong>, und das
+      Klausurtraining (16) spielt zum Schluss eine komplette Altklausur durch. Oben rechts kannst du zwischen
+      hellem und dunklem Design wechseln.</p>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zu allen Vorlesungen</a> · © <span data-year>2026</span></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

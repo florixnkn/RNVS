@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Polynome &amp; Körper · LDS</title>
+<meta name="description" content="Polynomdivision Schritt für Schritt, der GGT von Polynomen per euklidischem Algorithmus, Irreduzibilität über verschiedenen Körpern – inklusive der echten LDS-Klausuraufgabe zum GGT über ℤ₅." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230ea5a3'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>⊢</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">⊢</span>
+      <span>P7 · Logik &amp; DS<small>Logik &amp; Diskrete Strukturen, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#polynome">Polynome</a>
+      <a href="#division">Polynomdivision</a>
+      <a href="#ggt">GGT</a>
+      <a href="#klausur">🎓 Klausur</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P7 · Logik &amp; DS</a> › Thema 07</div>
+    <span class="th-icon">🧮</span>
+    <h1>Polynome &amp; Körper</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 7·8</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#polynome">Polynome über Körpern</a></li>
+        <li><a href="#division">Polynomdivision</a></li>
+        <li><a href="#ggt">GGT von Polynomen</a></li>
+        <li><a href="#klausur">🎓 Klausuraufgabe: GGT über ℤ₅</a></li>
+        <li><a href="#irreduzibel">Irreduzible Polynome</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Polynome verhalten sich verblüffend wie <strong>ganze Zahlen</strong> — nur mit x statt
+          Ziffern. Es gibt eine Division mit Rest, einen größten gemeinsamen Teiler (GGT), und sogar "Primzahlen"
+          (<strong>irreduzible Polynome</strong>). Der einzige Unterschied: Alles findet <strong>über einem Körper K</strong>
+          statt — und über welchem Körper du rechnest, kann das Ergebnis komplett verändern.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du kennst den euklidischen Algorithmus für ganze Zahlen: ggT(12, 8) — teile 12 durch 8, Rest 4; teile
+            8 durch 4, Rest 0; GGT = 4. Für Polynome läuft <strong>exakt derselbe Algorithmus</strong>, nur dass
+            "teilen mit Rest" jetzt Polynomdivision bedeutet. Und so wie 4 keine kleineren Faktoren außer 1 und sich
+            selbst hat, gibt es Polynome, die sich nicht weiter in Faktoren kleineren Grades zerlegen lassen — die
+            "Primzahlen der Polynomwelt".</p>
+        </div>
+      </section>
+
+      <!-- ===== POLYNOME ===== -->
+      <section id="polynome" class="reveal">
+        <h2>Polynome über Körpern</h2>
+        <p><strong>Definition:</strong> Ein Polynom über Körper K ist p(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + … + a₁x + a₀, wobei
+          alle Koeffizienten aᵢ ∈ K.</p>
+
+        <!-- SVG 1: Polynom-Anatomie -->
+        <figure class="diagram">
+          <div class="diagram-title">Anatomie eines Polynoms</div>
+          <svg viewBox="0 0 620 150" width="620" role="img" aria-label="Ein Polynom 3x hoch 4 plus 2x hoch 2 minus x plus 5 mit beschrifteten Teilen: führender Koeffizient, Grad, Konstantes Glied">
+            <g font-family="Segoe UI, sans-serif" font-size="20">
+              <text x="30" y="70" class="svg-ink" font-weight="700">p(x) =</text>
+              <text x="130" y="70" fill="#2f6df6" font-weight="800">3</text>
+              <text x="150" y="70" class="svg-ink" font-weight="700">x</text>
+              <text x="163" y="55" fill="#12b28c" font-weight="800" font-size="14">4</text>
+              <text x="185" y="70" class="svg-ink" font-weight="700"> + 2x</text>
+              <text x="255" y="55" class="svg-ink" font-size="14">2</text>
+              <text x="270" y="70" class="svg-ink" font-weight="700"> − x + </text>
+              <text x="380" y="70" fill="#f5810b" font-weight="800">5</text>
+
+              <line x1="130" y1="85" x2="130" y2="105" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="130" y="122" text-anchor="middle" fill="#2f6df6" font-size="12">führender Koeff. a₄=3</text>
+
+              <line x1="163" y1="85" x2="163" y2="105" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="163" y="122" text-anchor="middle" fill="#12b28c" font-size="12">Grad = 4 (höchster Exponent)</text>
+
+              <line x1="380" y1="85" x2="380" y2="105" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="440" y="122" text-anchor="middle" fill="#f5810b" font-size="12">konstantes Glied a₀=5</text>
+            </g>
+          </svg>
+          <figcaption>Der Grad deg(p) ist der höchste Exponent mit nicht-verschwindendem Koeffizienten — hier deg(p)=4.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Regel</th><th>Formel</th></tr></thead>
+          <tbody>
+            <tr><td>Grad eines Produkts</td><td>deg(p·q) = deg(p) + deg(q)</td></tr>
+            <tr><td>Grad einer Summe</td><td>deg(p+q) ≤ max(deg(p), deg(q))</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="factgrid">
+          <div class="fact"><b>deg(p·q)</b><span>= deg(p) + deg(q) — addieren!</span></div>
+          <div class="fact"><b>deg(p+q)</b><span>≤ max(deg(p), deg(q))</span></div>
+          <div class="fact"><b>aᵢ ∈ K</b><span>Koeffizienten müssen im Körper liegen</span></div>
+        </div>
+      </section>
+
+      <!-- ===== DIVISION ===== -->
+      <section id="division" class="reveal">
+        <h2>Polynomdivision</h2>
+        <p>Genau wie bei ganzen Zahlen gibt es Division mit Rest: p(x) = q(x)·d(x) + r(x), mit deg(r) &lt; deg(d).</p>
+
+        <ol class="steps">
+          <li><strong>Teile</strong> den höchsten Grad-Term von p durch den höchsten Grad-Term von d (ergibt einen Term des Quotienten).</li>
+          <li><strong>Multipliziere</strong> d mit diesem Term.</li>
+          <li><strong>Subtrahiere</strong> das Ergebnis von p — das ergibt einen neuen (kleineren) Rest.</li>
+          <li><strong>Wiederhole</strong>, bis deg(Rest) &lt; deg(d).</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">Beispiel: p(x) = x³ + 2x² + 3x + 4 durch q(x) = x + 1</div>
+          <pre class="code">      x² +  x  + 2
+    _________________
+x+1 | x³ + 2x² + 3x + 4
+      x³ +  x²
+      -----------
+           x² + 3x
+           x² +  x
+           --------
+               2x + 4
+               2x + 2
+               ------
+                    2   ← Rest</pre>
+          <p><strong>Ergebnis:</strong> x³+2x²+3x+4 = (x+1)·(x²+x+2) + <strong>2</strong></p>
+        </div>
+      </section>
+
+      <!-- ===== GGT ===== -->
+      <section id="ggt" class="reveal">
+        <h2>GGT von Polynomen: Euklidischer Algorithmus</h2>
+        <p><strong>Definition:</strong> ggT(p,q) ist das Polynom größten Grades, das sowohl p als auch q teilt.
+          Genau wie bei Zahlen gilt die <strong>Bézout-Identität</strong>: Es existieren Polynome s,t mit
+          ggT(p,q) = s·p + t·q.</p>
+
+        <!-- SVG 2: Euklidischer Algorithmus Kette -->
+        <figure class="diagram">
+          <div class="diagram-title">Euklidischer Algorithmus als Kette: immer kleinerer Rest</div>
+          <svg viewBox="0 0 700 150" width="700" role="img" aria-label="Kette von Boxen: p, q, dann Rest r1 = p mod q, dann Rest r2 = q mod r1, bis der letzte Rest 0 ist — das vorletzte Ergebnis ist der GGT">
+            <defs>
+              <marker id="arr-g1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 Z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="10" y="45" width="90" height="46" rx="8" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="2"/>
+              <text x="55" y="73" text-anchor="middle" class="svg-ink" font-weight="700">p, q</text>
+              <line x1="100" y1="68" x2="140" y2="68" stroke="#8a94a6" stroke-width="1.5" marker-end="url(#arr-g1)"/>
+
+              <rect x="145" y="45" width="110" height="46" rx="8" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="200" y="73" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11">r₁ = p mod q</text>
+              <line x1="255" y1="68" x2="295" y2="68" stroke="#8a94a6" stroke-width="1.5" marker-end="url(#arr-g1)"/>
+
+              <rect x="300" y="45" width="110" height="46" rx="8" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="355" y="73" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11">r₂ = q mod r₁</text>
+              <line x1="410" y1="68" x2="450" y2="68" stroke="#8a94a6" stroke-width="1.5" marker-end="url(#arr-g1)"/>
+
+              <text x="465" y="73" class="svg-soft" font-size="16">…</text>
+              <line x1="490" y1="68" x2="530" y2="68" stroke="#8a94a6" stroke-width="1.5" marker-end="url(#arr-g1)"/>
+
+              <rect x="535" y="45" width="150" height="46" rx="8" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2"/>
+              <text x="610" y="66" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="11">letzter Rest ≠ 0</text>
+              <text x="610" y="82" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="11">= GGT(p, q)</text>
+
+              <text x="350" y="130" text-anchor="middle" class="svg-soft" font-size="11">Stop, sobald ein Rest = 0 ist — der letzte Rest DAVOR ist der GGT</text>
+            </g>
+          </svg>
+          <figcaption>Wie bei Zahlen: immer "größer mod kleiner", bis der Rest 0 ist. Das letzte Nicht-Null-Polynom ist der GGT.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Pseudocode</div>
+          <span class="formula">ggT(p,q): while q≠0: (p,q) ← (q, p mod q); return p</span>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Kurzbeispiel: ggT(x³−1, x²−1)</div>
+          <p>Schritt 1: x³−1 = (x²−1)·x + (x−1)<br>
+             Schritt 2: x²−1 = (x−1)·(x+1) + 0<br>
+             → <strong>ggT(x³−1, x²−1) = x−1</strong></p>
+        </div>
+      </section>
+
+      <!-- ===== KLAUSUR ===== -->
+      <section id="klausur" class="reveal">
+        <h2>🎓 Klausuraufgabe: GGT über ℤ₅</h2>
+        <p class="lead-in"><strong>Klausur SoSe 2025, Aufgabe 5 (12 Punkte).</strong> Berechne mit dem euklidischen
+          Algorithmus: ggT(x⁵+x³+x²+3x+2, &nbsp; x²+3x+2) über dem Körper ℤ₅ (alle Koeffizienten mod 5!).</p>
+
+        <h3>Schritt 1: Divison von x⁵+x³+x²+3x+2 durch x²+3x+2</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Zeile</th><th>x⁵</th><th>x⁴</th><th>x³</th><th>x²</th><th>x¹</th><th>x⁰</th></tr></thead>
+          <tbody>
+            <tr><td>Dividend</td><td>1</td><td>0</td><td>1</td><td>1</td><td>3</td><td>2</td></tr>
+            <tr><td>− x³·(x²+3x+2)</td><td>1</td><td>3</td><td>2</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td><strong>Zwischenrest</strong></td><td>0</td><td>2</td><td>4</td><td>1</td><td>3</td><td>2</td></tr>
+            <tr><td>− 2x²·(x²+3x+2)</td><td></td><td>2</td><td>1</td><td>4</td><td>0</td><td>0</td></tr>
+            <tr><td><strong>Zwischenrest</strong></td><td></td><td>0</td><td>3</td><td>2</td><td>3</td><td>2</td></tr>
+            <tr><td>− 3x·(x²+3x+2)</td><td></td><td></td><td>3</td><td>4</td><td>1</td><td>0</td></tr>
+            <tr><td><strong>Zwischenrest</strong></td><td></td><td></td><td>0</td><td>3</td><td>2</td><td>2</td></tr>
+            <tr><td>− 3·(x²+3x+2)</td><td></td><td></td><td></td><td>3</td><td>4</td><td>1</td></tr>
+            <tr><td><strong>Rest r₁(x)</strong></td><td></td><td></td><td></td><td>0</td><td>3</td><td>1</td></tr>
+          </tbody>
+        </table></div>
+        <p>Quotient: x³+2x²+3x+3 &nbsp;|&nbsp; <strong>Rest r₁(x) = 3x+1</strong> (alle Koeffizienten mod 5 reduziert).</p>
+
+        <h3>Schritt 2: Division von x²+3x+2 durch r₁(x) = 3x+1</h3>
+        <p>3⁻¹ = 2 in ℤ₅ (da 3·2=6≡1), also x²/3x → Faktor 2x.</p>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Zeile</th><th>x²</th><th>x¹</th><th>x⁰</th></tr></thead>
+          <tbody>
+            <tr><td>Dividend</td><td>1</td><td>3</td><td>2</td></tr>
+            <tr><td>− 2x·(3x+1)</td><td>1</td><td>2</td><td>0</td></tr>
+            <tr><td><strong>Zwischenrest</strong></td><td>0</td><td>1</td><td>2</td></tr>
+            <tr><td>− 2·(3x+1)</td><td></td><td>1</td><td>2</td></tr>
+            <tr><td><strong>Rest r₂(x)</strong></td><td></td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table></div>
+        <p>Quotient: 2x+2 &nbsp;|&nbsp; <strong>Rest r₂(x) = 0</strong> → Abbruch!</p>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Ergebnis: GGT = 3x + 1</div>
+          <p>Der letzte Rest ≠ 0 war r₁(x) = 3x+1 — das ist der GGT. Da ℤ₅ ein <strong>Körper</strong> ist, ist jedes
+            skalare Vielfache ≠ 0 ebenfalls ein gültiger GGT (Assoziierte):</p>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Multipliziert mit</th><th>Ergebnis</th></tr></thead>
+            <tbody>
+              <tr><td>× 1</td><td>3x + 1</td></tr>
+              <tr><td>× 2</td><td>x + 2 &nbsp;(normiert, führender Koeff. 1)</td></tr>
+              <tr><td>× 3</td><td>4x + 3</td></tr>
+              <tr><td>× 4</td><td>2x + 4</td></tr>
+            </tbody>
+          </table></div>
+          <p>Üblicherweise gibt man die <strong>normierte</strong> Form an (führender Koeffizient = 1): <strong>x + 2</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== IRREDUZIBEL ===== -->
+      <section id="irreduzibel" class="reveal">
+        <h2>Irreduzible Polynome</h2>
+        <p><strong>Definition:</strong> p ist irreduzibel über K, wenn deg(p) ≥ 1 und p sich <strong>nicht</strong>
+          als Produkt p = a·b mit deg(a) ≥ 1 und deg(b) ≥ 1 schreiben lässt. Merksatz: irreduzible Polynome sind die
+          "Primzahlen der Polynome".</p>
+
+        <!-- SVG 3: Irreduzibilität hängt vom Körper ab -->
+        <figure class="diagram">
+          <div class="diagram-title">x² + 1 — irreduzibel oder nicht? Kommt auf den Körper an!</div>
+          <svg viewBox="0 0 660 190" width="660" role="img" aria-label="Drei Felder: über den reellen Zahlen ist x hoch 2 plus 1 irreduzibel, über den komplexen Zahlen zerfällt es in (x-i)(x+i), über Z2 zerfällt es in (x+1) zum Quadrat">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="10" y="15" width="200" height="155" rx="10" fill="#12b28c" fill-opacity="0.10" stroke="#12b28c" stroke-width="2"/>
+              <text x="110" y="42" text-anchor="middle" fill="#12b28c" font-weight="800">über ℝ</text>
+              <text x="110" y="80" text-anchor="middle" class="svg-ink" font-size="15">x² + 1</text>
+              <text x="110" y="108" text-anchor="middle" class="svg-ink" font-size="12">keine reelle Nullstelle</text>
+              <text x="110" y="140" text-anchor="middle" fill="#12b28c" font-weight="700">✅ irreduzibel</text>
+
+              <rect x="230" y="15" width="200" height="155" rx="10" fill="#f5810b" fill-opacity="0.10" stroke="#f5810b" stroke-width="2"/>
+              <text x="330" y="42" text-anchor="middle" fill="#f5810b" font-weight="800">über ℂ</text>
+              <text x="330" y="80" text-anchor="middle" class="svg-ink" font-size="15">x² + 1</text>
+              <text x="330" y="108" text-anchor="middle" class="svg-ink" font-size="13">= (x−i)(x+i)</text>
+              <text x="330" y="140" text-anchor="middle" fill="#f5810b" font-weight="700">❌ reduzibel</text>
+
+              <rect x="450" y="15" width="200" height="155" rx="10" fill="#8b5cf6" fill-opacity="0.10" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="550" y="42" text-anchor="middle" fill="#8b5cf6" font-weight="800">über ℤ₂</text>
+              <text x="550" y="80" text-anchor="middle" class="svg-ink" font-size="15">x² + 1</text>
+              <text x="550" y="108" text-anchor="middle" class="svg-ink" font-size="13">= (x+1)²</text>
+              <text x="550" y="140" text-anchor="middle" fill="#8b5cf6" font-weight="700">❌ reduzibel</text>
+            </g>
+          </svg>
+          <figcaption>Dasselbe Polynom kann über einem Körper irreduzibel und über einem anderen reduzibel sein — der Körper ist immer Teil der Fragestellung.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Faustregel für Grad 2 und 3</div>
+          <p>Für Polynome vom <strong>Grad 2 oder 3</strong> gilt: p hat eine Nullstelle in K ⟺ p ist reduzibel über K.
+            (Achtung: bei Grad ≥ 4 gilt das nicht mehr — ein Polynom kann ohne Nullstelle trotzdem in zwei
+            quadratische Faktoren zerfallen!)</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>(x³+2x²) / x = x²+2x (ganzer Term auf einmal geteilt).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur der <strong>höchste</strong> Term wird geteilt: x³/x = x². Dann multiplizieren, subtrahieren, weitermachen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>ggT(x²−1, x−1) = 1, wie bei "teilerfremden" Zahlen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ggT(x²−1, x−1) = <strong>x−1</strong> — das Polynom selbst! Polynome sind keine Zahlen, "teilerfremd" bedeutet hier ggT = konstantes Polynom ≠ x−1.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"x²+1 ist überall irreduzibel."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Irreduzibilität hängt vom <strong>Körper</strong> ab: über ℝ irreduzibel, über ℂ reduzibel zu (x−i)(x+i), über ℤ₂ reduzibel zu (x+1)². Körper immer angeben!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei Rechnung über ℤₚ am Ende vergessen, mod p zu reduzieren.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Jeder</strong> Koeffizient — auch bei Zwischenschritten — muss mod p reduziert werden, sonst rechnest du in ℤ statt in ℤₚ weiter.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Polynomdivision — Algorithmus</h4>
+          <pre class="code">1. Teile höchsten Grad-Term von p durch höchsten Grad-Term von q
+2. Multipliziere q mit diesem Quotiententerm
+3. Subtrahiere das Ergebnis von p
+4. Wiederhole, bis deg(Rest) &lt; deg(q)</pre>
+
+          <h4>GGT mit euklidischem Algorithmus</h4>
+          <pre class="code">ggT(p, q):
+  while q ≠ 0:
+    r = p mod q
+    p = q
+    q = r
+  return p   // letzter Nicht-Null-Rest</pre>
+
+          <h4>Irreduzibilitäts-Test</h4>
+          <pre class="code">p irreduzibel über K wenn:
+☐ deg(p) ≥ 1
+☐ keine Faktorisierung p = a·b mit deg(a),deg(b) ≥ 1 in K[x]
+
+Für Grad 2/3: Nullstelle in K? → reduzibel. Keine? → irreduzibel.</pre>
+
+          <h4>Klausur-Ergebnis: ggT über ℤ₅</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schritt</th><th>Division</th><th>Rest</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>(x⁵+x³+x²+3x+2) mod (x²+3x+2)</td><td>3x + 1</td></tr>
+              <tr><td>2</td><td>(x²+3x+2) mod (3x+1)</td><td>0 → Abbruch</td></tr>
+            </tbody>
+          </table></div>
+          <p><strong>GGT = 3x+1</strong> (normiert: x+2). Jedes Vielfache ≠ 0 in ℤ₅ ist ebenfalls korrekt.</p>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Welchen Grad hat p(x) = x⁴ + 3x − 2?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der höchste Exponent mit Koeffizient ≠ 0 ist 4, also deg(p) = <strong>4</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="5">
+            <p class="quiz-prompt"><span class="q-no">2.</span>deg(p) = 3, deg(q) = 2. Wie groß ist deg(p·q)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>deg(p·q) = deg(p) + deg(q) = 3 + 2 = <strong>5</strong> (Grade addieren sich, NICHT wie bei der Summe!).</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="x-1|x - 1">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie lautet ggT(x³−1, x²−1)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="z. B. x-1" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x³−1 = (x²−1)·x + (x−1); x²−1 = (x−1)(x+1) + 0 → GGT = <strong>x−1</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2025: Welchen Grad hat ggT(x⁵+x³+x²+3x+2, x²+3x+2) über ℤ₅?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der euklidische Algorithmus liefert GGT = 3x+1 — ein Polynom vom Grad <strong>1</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="x+2|x + 2">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2025: Gib den GGT aus Aufgabe 4 in normierter Form an (führender Koeffizient = 1).</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="z. B. x+2" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>3x+1 mit 3⁻¹=2 (in ℤ₅) multipliziert: 2·(3x+1) = 6x+2 ≡ <strong>x+2</strong> (mod 5).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Ist x² + 1 irreduzibel über ℝ?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja</button>
+              <button class="quiz-choice" type="button">Nein</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x²+1=0 hätte x=±i zur Lösung — keine reelle Nullstelle, also über ℝ <strong>irreduzibel</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Ist x² + 1 irreduzibel über ℂ?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja</button>
+              <button class="quiz-choice" type="button" data-correct>Nein</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Über ℂ gilt x²+1 = (x−i)(x+i) — eine echte Faktorisierung, also <strong>reduzibel</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="06-gruppen-ringe.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Gruppen &amp; Ringe</div>
+        </a>
+        <a class="next" href="08-kombinatorik.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Kombinatorik &amp; Körpererweiterungen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>LDS · Logik &amp; Diskrete Strukturen (P 7, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>
