@@ -525,6 +525,35 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Das <strong>Two Generals' Problem</strong>: Die letzte Nachricht kann immer verloren gehen, ihr Absender weiß nie sicher, ob sie ankam.</div>
           </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2022: Unter welchen Bedingungen ist verbindungslose Kommunikation von Vorteil?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Bei sehr kurzen Kommunikationen wie DNS-Anfragen oder Ping</button>
+              <button class="quiz-choice" type="button">Wenn kein einziges Paket verloren gehen darf</button>
+              <button class="quiz-choice" type="button">Wenn Pakete garantiert in der richtigen Reihenfolge ankommen müssen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Musterlösung nennt: sehr kurze Kommunikationen (DNS, Ping), stark schwankendes Datenaufkommen und Kommunikation ohne Schaden bei Verlust. Für Zuverlässigkeit und Reihenfolge braucht man dagegen eine verbindungsorientierte Verbindung.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2009/2014: Welche dieser Dienste sind typisch verbindungsorientiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Telefon, ISDN, Standleitung</button>
+              <button class="quiz-choice" type="button">IP, Post, Ethernet, Broadcasting</button>
+              <button class="quiz-choice" type="button">DNS und Ping</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Verbindungsorientiert: Telefon, ISDN, Mobilfunk (ohne VoIP), Standleitung — erst Verbindungsaufbau, dann exklusive Nutzung. Verbindungslos: IP, Post, Ethernet, Broadcasting — jedes Paket trägt seine Zieladresse selbst.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2009: Richtig oder falsch: „Bei verbindungsorientierter Kommunikation brauchen die Nutzdaten nach dem Verbindungsaufbau keine Zielinformationen mehr."</p>
+            <div class="quiz-choices quiz-tf">
+              <button class="quiz-choice" type="button" data-correct>Richtig</button>
+              <button class="quiz-choice" type="button">Falsch</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Richtig — zuerst werden Steuerpakete zum Verbindungsaufbau geschickt, danach fließen die Nutzdaten durch die stehende Verbindung. Bei verbindungsloser Kommunikation muss dagegen jedes Paket mit der Zieladresse versehen werden.</div>
+          </div>
         </div>
       </section>
 

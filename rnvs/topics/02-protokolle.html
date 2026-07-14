@@ -370,6 +370,27 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Verbindungsorientiert (z.&nbsp;B. TCP) heißt: erst aufbauen, dann Daten, dann abbauen — wie ein Telefonanruf. Ohne Aufbau ist verbindungslos (z.&nbsp;B. UDP).</div>
           </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2014: In einer SMTP-Sitzung (E-Mail-Versand) stehen Zeilen wie <code>Helo</code>, <code>Mail From:</code>, <code>Rcpt To:</code>, <code>Data</code> und <code>Quit</code>. Was sind diese Zeilen im Sinne von Steuerdaten vs. Nutzdaten?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Protokollsteuerinformationen (Steuerdaten)</button>
+              <button class="quiz-choice" type="button">Nutzdaten der E-Mail</button>
+              <button class="quiz-choice" type="button">Adressinformationen der IP-Schicht</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Diese Zeilen steuern den Ablauf des SMTP-Protokolls — der eigentliche Mail-Text (nach <code>Data</code>) ist die Nutzlast. In der Klausur 2014 musste man genau diese Zeilen markieren.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausurhinweis 2014/2022: Richtig oder falsch: ‚Eine Nachricht der Schicht N passt immer in eine PDU der Schicht N−1.'</p>
+            <div class="quiz-choices quiz-tf">
+              <button class="quiz-choice" type="button" data-correct>Richtig</button>
+              <button class="quiz-choice" type="button">Falsch</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Richtig — das ist das Kapselungsprinzip: Jede Schicht verpackt die Daten der darüberliegenden Schicht vollständig. Dieser Satz stand wörtlich als Hinweis in der Klausuraufgabe „Kommunikationsablauf".</div>
+          </div>
         </div>
       </section>
 

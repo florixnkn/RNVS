@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klausurtraining: Adressierung, CRC, DNS &amp; Co. · RNVS</title>
+<meta name="description" content="Klausurtraining für RNVS: CIDR &amp; Subnetze, IPv6 kürzen, ARP, Fragmentierung, CRC, DNS, E-Mail und Codierung — mit Original-Klausuraufgaben von 2009 bis 2022." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6df6'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>RN</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">RN</span>
+      <span>RNVS<small>Rechnernetze, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Startseite</a> › Thema 11</div>
+    <span class="th-icon">🎯</span>
+    <h1>Klausurtraining: Adressierung, CRC, DNS &amp; Co.</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-soft">Altklausuren 2009–2022</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#adressierung">IPv4: CIDR &amp; Subnetze</a></li>
+        <li><a href="#ipv6">IPv6 kürzen</a></li>
+        <li><a href="#arp">ARP, Switch &amp; Router</a></li>
+        <li><a href="#fragmentierung">Fragmentierung</a></li>
+        <li><a href="#crc">CRC</a></li>
+        <li><a href="#dns">DNS im Detail</a></li>
+        <li><a href="#email">E-Mail</a></li>
+        <li><a href="#codierung">Codierung &amp; Raten</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Klausur-Check</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Diese Seite sammelt die Klausur-Themen, die (noch) <strong>keine eigene Themenseite</strong>
+          haben — als Schnell-Theorie plus <strong>Original-Klausuraufgaben von 2009 bis 2022</strong>. Kein neuer
+          Stoff also, sondern die Lücken zwischen den Themen 01–10 geschlossen: Adressierung im Detail, CRC, DNS,
+          E-Mail und Übertragungsraten.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gut zu wissen</div>
+          <p>Die Aufgaben auf dieser Seite stammen <strong>1:1 aus alten RNVS-Klausuren</strong> (GAF-Archiv,
+            2009–2022). Wer alle löst, hat auch die „exotischeren" Klausurblöcke abgedeckt, die in keiner der
+            Themen 01–10 einen eigenen Platz hatten.</p>
+        </div>
+      </section>
+
+      <!-- ===== ADRESSIERUNG ===== -->
+      <section id="adressierung" class="reveal">
+        <h2>IPv4: CIDR, Netzmaske &amp; Broadcast</h2>
+        <p>Eine IPv4-Adresse besteht aus 32 Bit und gliedert sich in zwei Teile: die <strong>Netz-ID</strong>
+          (identifiziert das Subnetz) und die <strong>Host-ID</strong> (identifiziert den einzelnen Rechner
+          darin). Das Präfix <code>/n</code> gibt an, wie viele der 32 Bit zur Netz-ID gehören — es sind die ersten
+          <code>n</code> Bit der Netzmaske, die auf 1 gesetzt sind, der Rest steht auf 0.</p>
+        <p>Bei <strong>CIDR</strong> (Classless Inter-Domain Routing) ist die Länge der Netz-ID frei wählbar und
+          nicht mehr an feste Klassen A/B/C gebunden — deshalb Präfixe wie <code>/19</code>, <code>/28</code> oder
+          <code>/12</code> statt starrer Klassengrenzen.</p>
+        <p><strong>Rezept für die Broadcast-Adresse:</strong> Netz-ID unverändert lassen, alle Bit der Host-ID auf 1
+          setzen. Werden zusätzlich <code>m</code> Bit der Host-ID als Subnetz-Bits verwendet, entstehen 2<sup>m</sup>
+          Subnetze — abzüglich der beiden reservierten (Netz- und Broadcast-Subnetz) bleiben
+          <strong>2<sup>m</sup> − 2</strong> nutzbare Subnetze übrig.</p>
+
+        <ol class="steps">
+          <li><strong>Netz notieren:</strong> 141.84.32.0/19 — die ersten 19 Bit sind die Netz-ID.</li>
+          <li><strong>Maske bilden:</strong> /19 → 255.255.224.0 (19 Einsen: 11111111.11111111.11100000.00000000).</li>
+          <li><strong>Host-Teil bestimmen:</strong> 32 − 19 = 13 Bit bleiben für die Host-ID.</li>
+          <li><strong>Host-Bits auf 1 setzen:</strong> Drittes Oktett 00100000 → die letzten 5 Bit werden 1:
+            00111111 = 63. Viertes Oktett ist komplett Host-ID → 11111111 = 255.</li>
+          <li><strong>Broadcast ablesen:</strong> <strong>141.84.63.255</strong>.</li>
+        </ol>
+
+        <figure class="diagram">
+          <div class="diagram-title">141.84.32.0/19 — 32 Bit, aufgeteilt in Netz- und Host-ID</div>
+          <svg viewBox="0 0 660 210" width="660" role="img" aria-label="IPv4-Adresse in 19 Bit Netz-ID und 13 Bit Host-ID aufgeteilt; werden alle Host-Bits auf 1 gesetzt, ergibt sich die Broadcast-Adresse 141.84.63.255">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="330" y="22" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">32 Bit gesamt</text>
+
+              <rect x="40" y="36" width="345" height="50" rx="6" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="2"/>
+              <text x="212" y="56" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Netz-ID</text>
+              <text x="212" y="74" text-anchor="middle" class="svg-soft" font-size="11">19 Bit (fix)</text>
+
+              <rect x="385" y="36" width="235" height="50" rx="6" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="502" y="56" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">Host-ID</text>
+              <text x="502" y="74" text-anchor="middle" class="svg-soft" font-size="11">13 Bit</text>
+
+              <text x="330" y="112" text-anchor="middle" class="svg-soft" font-size="11" font-weight="700">Für den Broadcast: alle Host-Bits → 1</text>
+
+              <rect x="40" y="126" width="345" height="40" rx="6" fill="#12b28c" fill-opacity="0.10" stroke="#12b28c" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <text x="212" y="151" text-anchor="middle" class="svg-ink" font-size="13">141.84.32 …</text>
+
+              <rect x="385" y="126" width="235" height="40" rx="6" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b" stroke-width="2"/>
+              <text x="502" y="151" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">… 63.255</text>
+
+              <text x="330" y="196" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">Broadcast: 141.84.63.255</text>
+            </g>
+          </svg>
+          <figcaption>Netz-ID bleibt fix, alle 13 Host-Bits werden für den Broadcast auf 1 gesetzt — das ergibt 141.84.63.255.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Vor- und Nachteil klassenbasierter Vergabe (Klausur 2009)</div>
+          <p><strong>Vorteil:</strong> Router können allein anhand des Adress-Präfixes sofort entscheiden, in welches
+            Netz weitergeleitet wird — eine schnelle Routing-Entscheidung ohne variable Maskenlängen nachzuschlagen.</p>
+          <p><strong>Nachteil:</strong> Die Netzgrößen sind starr (Klasse A/B/C) — viele Organisationen bekommen mehr
+            Adressen zugeteilt, als sie brauchen. Ein Großteil der Adressen bleibt ungenutzt. Genau dieses Problem
+            löst CIDR, indem die Präfixlänge frei wählbar wird.</p>
+        </div>
+      </section>
+
+      <!-- ===== IPV6 ===== -->
+      <section id="ipv6" class="reveal">
+        <h2>IPv6-Adressen maximal kürzen</h2>
+        <p>Eine IPv6-Adresse besteht aus 128 Bit, geschrieben als acht Blöcke à 16 Bit (4 Hex-Ziffern), getrennt
+          durch Doppelpunkte. Für die Klausur reichen zwei Kürzungsregeln:</p>
+        <ul>
+          <li><strong>Führende Nullen weglassen:</strong> Innerhalb jedes 16-Bit-Blocks dürfen führende Nullen
+            entfallen — aus <code>0000</code> wird <code>0</code>, aus <code>0db8</code> wird <code>db8</code>.</li>
+          <li><strong>Genau eine Nullfolge kürzen:</strong> Die <strong>längste</strong> zusammenhängende Folge von
+            Null-Blöcken wird durch <code>::</code> ersetzt — aber nur <strong>ein einziges Mal</strong> in der
+            ganzen Adresse.</li>
+        </ul>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Beispiel (Klausur 2017)</div>
+          <span class="formula">1337:0000:0000:0000:1000:0000:0000:0001</span>
+          <p>Die längste Nullfolge sind die drei Blöcke direkt nach <code>1337</code> → die werden zu <code>::</code>.
+            Die übrigen zwei Null-Blöcke (nach <code>1000</code>) bleiben als einzelne <code>0</code> stehen, weil
+            <code>::</code> schon vergeben ist:</p>
+          <span class="formula">1337::1000:0:0:1</span>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>1337::1000::1</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><code>::</code> darf nur <strong>einmal</strong>
+            in einer Adresse vorkommen — sonst wäre nicht mehr eindeutig, wie viele Null-Blöcke jeweils gemeint
+            sind. Die Adresse wäre mehrdeutig.</div>
+        </div>
+      </section>
+
+      <!-- ===== ARP ===== -->
+      <section id="arp" class="reveal">
+        <h2>ARP, Switch &amp; Router</h2>
+        <p><strong>MAC-Adressen</strong> sind 6 Byte lang, ab Werk fest in die Netzwerkkarte eingebrannt — flach
+          und nicht hierarchisch wie IP-Adressen (Hersteller-Präfix plus eindeutige Seriennummer).</p>
+        <p>Das <strong>Address Resolution Protocol (ARP)</strong> löst innerhalb eines lokalen Netzes eine
+          IP-Adresse in die zugehörige MAC-Adresse auf: „Wer hat IP x.y.z.w?" Die ARP-Anfrage (ARP-Query) wird als
+          <strong>Broadcast</strong> an <code>FF-FF-FF-FF-FF-FF</code> verschickt, weil der Sender noch nicht weiß,
+          wer antworten wird — alle im LAN hören mit, nur der Besitzer der gesuchten IP antwortet direkt mit seiner
+          MAC-Adresse.</p>
+        <p><strong>Grundregel:</strong> Die <strong>IP-Adressen bleiben Ende-zu-Ende gleich</strong> — Absender- und
+          Ziel-IP ändern sich auf dem gesamten Weg nicht. Die <strong>MAC-Adressen wechseln dagegen bei jedem
+          Hop</strong> neu. Ein Router trennt Netze — dahinter beginnt ein neues Netz mit neuen MAC-Adressen. Ein
+          Switch bzw. eine Bridge verbindet Geräte im selben Netz — die MAC-Adresse bleibt bis zum Endziel
+          unverändert.</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Gerät</th><th>Adressierbar per IP?</th><th>Trennt Netze?</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Router</strong></td><td>✓ Ja</td><td>✓ Ja — neues Netz pro Interface</td></tr>
+            <tr><td><strong>Switch / Bridge</strong></td><td>✗ Nein</td><td>✗ Nein — verbindet Endsysteme im
+              selben Netz</td></tr>
+            <tr><td><strong>Hub</strong></td><td>✗ Nein</td><td>✗ Nein — nur Elektrik, eine gemeinsame
+              Kollisionsdomäne</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== FRAGMENTIERUNG ===== -->
+      <section id="fragmentierung" class="reveal">
+        <h2>Fragmentierung (IPv4 vs. IPv6)</h2>
+        <p>Bei <strong>IPv4</strong> dürfen sowohl der Sender als auch <strong>Router auf dem Weg</strong> ein Paket
+          fragmentieren, sobald die Paketlänge größer ist als die <strong>MTU</strong> (Maximum Transmission Unit)
+          des nächsten Links. Jedes Fragment bekommt seinen eigenen 20-Byte-IP-Header. Der <strong>Offset</strong>
+          im Header zählt in <strong>8-Byte-Blöcken</strong> — deshalb müssen die Nutzdaten jedes Fragments (außer
+          dem letzten) durch 8 teilbar sein. Das <strong>More-Fragments-Flag (MF)</strong> steht auf 1, solange noch
+          weitere Fragmente folgen, und auf 0 beim letzten Fragment.</p>
+
+        <ol class="steps">
+          <li><strong>Ausgangslage:</strong> IP-Paket mit 20 Byte Header + 600 Byte Nutzdaten soll über einen Link
+            mit MTU 300 Byte.</li>
+          <li><strong>Nutzdaten pro Fragment berechnen:</strong> Verfügbar sind 300 − 20 = 280 Byte je Fragment —
+            und 280 ist durch 8 teilbar, passt also direkt.</li>
+          <li><strong>Fragment 1:</strong> 280 Byte Nutzdaten, Offset 0, MF = 1.</li>
+          <li><strong>Fragment 2:</strong> weitere 280 Byte Nutzdaten (zusammen 560 von 600), Offset 35 (280/8),
+            MF = 1.</li>
+          <li><strong>Fragment 3:</strong> die restlichen 600 − 560 = 40 Byte Nutzdaten, Offset 70 (560/8), MF = 0
+            (letztes Fragment).</li>
+        </ol>
+
+        <p>Bei <strong>IPv6</strong> ist Fragmentierung unterwegs nicht mehr erlaubt: <strong>nur der Absender</strong>
+          darf fragmentieren. Ist ein Paket für einen Router auf dem Pfad zu groß, verwirft dieser es und schickt
+          eine <strong>ICMPv6-Nachricht „Packet too big"</strong> zurück, damit der Absender kleiner fragmentiert
+          (Path-MTU-Discovery). Wird fragmentiert, kommt zum 40-Byte-IPv6-Header noch ein 8 Byte großer
+          <strong>Fragment-Header</strong> dazu — macht zusammen <strong>48 Byte</strong> Header pro Fragment.</p>
+      </section>
+
+      <!-- ===== CRC ===== -->
+      <section id="crc" class="reveal">
+        <h2>CRC — Cyclic Redundancy Check</h2>
+        <p>CRC prüft, ob eine Bitfolge unterwegs verfälscht wurde. Sender und Empfänger einigen sich vorher auf ein
+          <strong>Generatorpolynom G</strong> — z. B. G = x³ + 1, geschrieben als Bitfolge <code>1001</code> (ein
+          Polynom vom Grad r wird durch <strong>r + 1 Bit</strong> dargestellt: Grad 3 → 4 Bit).</p>
+        <p><strong>Sender:</strong> Die Nachricht wird um <em>Grad(G)</em> Nullen verlängert (gepaddet), dann wird
+          diese verlängerte Bitfolge per <strong>XOR-Division</strong> durch G geteilt. Der Rest dieser Division
+          (hier 3 Bit lang) ist die Prüfsumme — sie ersetzt die angehängten Nullen.</p>
+        <p><strong>Empfänger:</strong> Die komplette empfangene Bitfolge (Nachricht + Prüfsumme) wird erneut durch G
+          (XOR) geteilt. Bleibt der Rest <strong>0</strong>, gilt die Übertragung als korrekt — jeder andere Rest
+          zeigt einen Übertragungsfehler an.</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>⊕ (XOR)</th><th>0</th><th>1</th></tr></thead>
+          <tbody>
+            <tr><td><strong>0</strong></td><td>0</td><td>1</td></tr>
+            <tr><td><strong>1</strong></td><td>1</td><td>0</td></tr>
+          </tbody>
+        </table></div>
+
+        <ol class="steps">
+          <li><strong>Nachricht &amp; Generator:</strong> Nachricht M = 110011 (6 Bit), Generator G = 1001
+            (Grad 3, 4 Bit).</li>
+          <li><strong>Padden:</strong> M wird um Grad(G) = 3 Nullen verlängert: 110011<strong>000</strong>
+            (9 Bit).</li>
+          <li><strong>XOR-Division durch G:</strong> 110011000 wird bitweise (mod 2, ohne Überträge) durch 1001
+            geteilt.</li>
+          <li><strong>Rest ablesen:</strong> Die Division liefert den Rest <strong>101</strong> (3 Bit — passend
+            zu Grad(G) = 3).</li>
+          <li><strong>Prüfsumme anhängen:</strong> Der Rest ersetzt die angehängten Nullen → gesendet wird
+            <strong>110011101</strong>.</li>
+        </ol>
+      </section>
+
+      <!-- ===== DNS ===== -->
+      <section id="dns" class="reveal">
+        <h2>DNS im Detail</h2>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Typ</th><th>Bildet ab</th></tr></thead>
+          <tbody>
+            <tr><td><strong>A</strong></td><td>Hostname → IPv4-Adresse</td></tr>
+            <tr><td><strong>AAAA</strong></td><td>Hostname → IPv6-Adresse</td></tr>
+            <tr><td><strong>NS</strong></td><td>Domain → zuständiger Nameserver</td></tr>
+            <tr><td><strong>CNAME</strong></td><td>Alias-Name → echter (kanonischer) Hostname</td></tr>
+            <tr><td><strong>MX</strong></td><td>Domain → zuständiger Mailserver</td></tr>
+          </tbody>
+        </table></div>
+
+        <p><strong>Klausur 2017:</strong> <code>www.ifi.lmu.de</code> ist kein eigener Host, sondern ein
+          <strong>CNAME</strong> (Alias) auf <code>salerno.tcs.ifi.lmu.de</code>. Erst dessen <strong>A-Record</strong>
+          liefert die tatsächliche IPv4-Adresse <code>141.84.94.49</code> — an diese IP gehen dann die eigentlichen
+          HTTP-Anfragen des Browsers.</p>
+        <p>Mit <code>dig +trace</code> lässt sich die <strong>iterative Auflösung</strong> sichtbar machen: Der
+          eigene Resolver fragt nacheinander den Root-Server, dann den zuständigen <code>.de</code>-Server, dann den
+          <code>lmu.de</code>-Server und schließlich den Ziel-Nameserver — macht insgesamt <strong>4 Anfragen</strong>,
+          bis die endgültige Adresse feststeht.</p>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merke</div>
+          <p>DNS-Anfragen laufen normalerweise über <strong>UDP Port 53</strong> (schnell, ein
+            Anfrage-Antwort-Paar reicht meist). Nur <strong>Zonentransfers</strong> zwischen Nameservern laufen über
+            <strong>TCP</strong>, weil dabei größere Datenmengen zuverlässig übertragen werden müssen.</p>
+        </div>
+      </section>
+
+      <!-- ===== EMAIL ===== -->
+      <section id="email" class="reveal">
+        <h2>E-Mail: SMTP, IMAP &amp; POP3</h2>
+
+        <figure class="diagram">
+          <div class="diagram-title">Der Weg einer E-Mail</div>
+          <svg viewBox="0 0 680 170" width="680" role="img" aria-label="Weg einer E-Mail: Sender-UA über SMTP zum Mailserver des Senders, per SMTP weiter zum Mailserver des Empfängers, und per IMAP oder POP3 zum Empfänger-UA">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="10" y="45" width="140" height="60" rx="8" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6" stroke-width="2"/>
+              <text x="80" y="71" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Sender-UA</text>
+              <text x="80" y="89" text-anchor="middle" class="svg-soft" font-size="10">Mail-Programm</text>
+
+              <text x="167" y="82" text-anchor="middle" class="svg-soft" font-size="16" font-weight="700">→</text>
+              <text x="167" y="60" text-anchor="middle" class="svg-soft" font-size="10" font-weight="700">SMTP</text>
+
+              <rect x="185" y="45" width="140" height="60" rx="8" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c" stroke-width="2"/>
+              <text x="255" y="71" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Mailserver</text>
+              <text x="255" y="89" text-anchor="middle" class="svg-soft" font-size="10">Sender</text>
+
+              <text x="342" y="82" text-anchor="middle" class="svg-soft" font-size="16" font-weight="700">→</text>
+              <text x="342" y="60" text-anchor="middle" class="svg-soft" font-size="10" font-weight="700">SMTP</text>
+
+              <rect x="360" y="45" width="140" height="60" rx="8" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c" stroke-width="2"/>
+              <text x="430" y="71" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Mailserver</text>
+              <text x="430" y="89" text-anchor="middle" class="svg-soft" font-size="10">Empfänger</text>
+
+              <text x="517" y="82" text-anchor="middle" class="svg-soft" font-size="16" font-weight="700">→</text>
+              <text x="517" y="56" text-anchor="middle" class="svg-soft" font-size="10" font-weight="700">IMAP oder</text>
+              <text x="517" y="68" text-anchor="middle" class="svg-soft" font-size="10" font-weight="700">POP3</text>
+
+              <rect x="535" y="45" width="135" height="60" rx="8" fill="#f5810b" fill-opacity="0.15" stroke="#f5810b" stroke-width="2"/>
+              <text x="602" y="71" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">Empfänger-UA</text>
+              <text x="602" y="89" text-anchor="middle" class="svg-soft" font-size="10">Mail-Programm</text>
+
+              <text x="340" y="140" text-anchor="middle" class="svg-soft" font-size="10" font-style="italic">Bei Webmail: zusätzlich HTTP(S) zwischen Browser und Server</text>
+            </g>
+          </svg>
+          <figcaption>Versand und Transport zwischen den Mailservern laufen über SMTP; das Abholen beim eigenen
+            Server läuft über IMAP oder POP3.</figcaption>
+        </figure>
+
+        <p><strong>IMAP</strong> verwaltet die E-Mails zentral auf dem Server — mehrere Geräte (Handy, Laptop,
+          Webmail) sehen jederzeit denselben, synchronen Posteingang. <strong>POP3</strong> lädt die Mails dagegen
+          auf das jeweilige Gerät herunter und löscht sie danach meist vom Server — praktisch für ein einzelnes
+          Gerät, aber nicht synchron über mehrere Geräte hinweg.</p>
+        <p><strong>MIME</strong> (Multipurpose Internet Mail Extensions) ist der Mechanismus, der es überhaupt erst
+          erlaubt, mehr als reinen 7-Bit-ASCII-Text per E-Mail zu verschicken — also Umlaute, andere Zeichensätze
+          und Anhänge wie Bilder oder PDFs (Klausur 2014).</p>
+        <p><strong>Dienstgüte:</strong> E-Mail ist <strong>empfindlich gegen Datenverlust</strong> (eine verlorene
+          Mail ist inakzeptabel — deshalb TCP als Transport), aber <strong>unempfindlich gegen Latenz und
+          Jitter</strong>: Ob eine Mail 1 Sekunde oder 10 Sekunden braucht, spielt keine Rolle — E-Mail ist kein
+          Echtzeitdienst (Klausur 2009/2022).</p>
+      </section>
+
+      <!-- ===== CODIERUNG ===== -->
+      <section id="codierung" class="reveal">
+        <h2>Codierung &amp; Übertragungsraten</h2>
+        <p>Bei der <strong>Manchester-Codierung</strong> steckt der Takt direkt im Signal: Es gibt garantiert einen
+          Pegelwechsel in der <strong>Mitte jedes Bits</strong>. Dadurch braucht man doppelt so viele Signalwechsel
+          wie Bits — die <strong>Baud-Rate</strong> (Signalwechsel pro Sekunde) ist bei Manchester also immer
+          <strong>doppelt so hoch</strong> wie die Übertragungsrate (Bit pro Sekunde).</p>
+        <p><strong>Klausur 2009:</strong> 12 Bit werden in 1 ms übertragen → Übertragungsrate = 12 Bit / 1 ms =
+          12 000 bit/s. Wegen Manchester-Codierung ist die Baud-Rate doppelt so groß: 2 × 12 000 =
+          <strong>24 000 Baud</strong>.</p>
+        <p>Für ein <strong>ideales, rauschfreies</strong> Medium gibt das <strong>Nyquist-Theorem</strong> die
+          maximale Kapazität an, mit Bandbreite B und Anzahl möglicher Signalstufen M. <strong>Klausur 2009:</strong>
+          B = 1 MHz, M = 2 (nur 2 Stufen, also 1 Bit pro Signalwechsel) → C = 2 · 10⁶ · log₂ 2 = 2 · 10⁶ · 1 =
+          <strong>2 · 10⁶ bit/s</strong>.</p>
+        <p>Für ein <strong>reales, verrauschtes</strong> Medium gilt stattdessen das <strong>Shannon-Theorem</strong>,
+          mit dem Signal-Rausch-Verhältnis S/N. <strong>Klausur 2009:</strong> B = 1 MHz, S/N = 1023 →
+          C = 10⁶ · log₂(1 + 1023) = 10⁶ · log₂(1024) = 10⁶ · 10 = <strong>10⁷ bit/s</strong>.</p>
+        <p>Die <strong>Bandbreite</strong> selbst ist einfach die Differenz zwischen oberer und unterer
+          Grenzfrequenz. <strong>Klausur 2018:</strong> f<sub>unten</sub> = 2,1 GHz, f<sub>oben</sub> = 2,8 GHz →
+          B = |2,8 − 2,1| GHz = <strong>0,7 GHz</strong>.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Die drei Formeln kompakt</div>
+          <span class="formula">Manchester: Baud-Rate = 2 × Übertragungsrate</span>
+          <span class="formula">Nyquist (ideal): C = 2 · B · log₂ M</span>
+          <span class="formula">Shannon (mit Rauschen): C = B · log₂(1 + S/N)</span>
+          <p>B = Bandbreite in Hz · M = Anzahl Signalstufen · S/N = Signal-Rausch-Verhältnis (als Zahl, nicht dB).</p>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <div class="factgrid">
+            <div class="fact"><b>/n</b><span>n Bit Netz-ID in der Maske</span></div>
+            <div class="fact"><b>Host-Bits = 1</b><span>ergibt die Broadcast-Adresse</span></div>
+            <div class="fact"><b>2<sup>m</sup> − 2</b><span>Subnetze bei m Subnetz-Bits</span></div>
+            <div class="fact"><b>FF-FF-FF-FF-FF-FF</b><span>ARP-Query geht an Broadcast</span></div>
+            <div class="fact"><b>Rest = 0</b><span>CRC-Prüfung ist korrekt</span></div>
+            <div class="fact"><b>Baud = 2×Rate</b><span>bei Manchester-Codierung</span></div>
+            <div class="fact"><b>UDP/53</b><span>DNS-Anfrage · TCP = Zonentransfer</span></div>
+            <div class="fact"><b>MIME</b><span>ermöglicht Nicht-ASCII in E-Mails</span></div>
+          </div>
+
+          <h4>Formeln im Überblick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td><code>C = 2 · B · log₂ M</code></td><td>Nyquist — Kapazität ohne Rauschen</td></tr>
+              <tr><td><code>C = B · log₂(1 + S/N)</code></td><td>Shannon — Kapazität mit Rauschen</td></tr>
+              <tr><td><code>L_min = RTT · R</code></td><td>Minimale Rahmengröße, damit die Leitung durchgehend
+                ausgelastet ist</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="callout callout-tip">
+            <div class="c-title">Merksatz für die Klausur</div>
+            <p>Netzmaske → Broadcast (Host-Bits auf 1) → Subnetze (2<sup>m</sup> − 2). IPv6: <code>::</code> nur
+              einmal. ARP fragt per Broadcast, MAC wechselt pro Hop, IP bleibt gleich. CRC: Rest 0 = korrekt.
+              Manchester verdoppelt die Baud-Rate. DNS läuft über UDP/53 (außer Zonentransfer). E-Mail braucht
+              Zuverlässigkeit, aber keine Echtzeit.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== KLAUSUR-CHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Klausur-Check</h2>
+        <p class="lead-in">Alle Aufgaben stammen 1:1 aus alten Klausuren (2009–2022). Tippe deine Antwort ein oder
+          wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="text" data-answer="255.255.255.240">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Klausur 2009: Wie lautet die Netzmaske für das
+              Subnetz 192.168.218.0/28? (dezimal, r.s.p.q)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="z. B. 255.255.255.0 …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>/28 = 28 Einsen in der Maske. Das letzte (vierte) Oktett hat davon
+              4 Einsen: 1111 0000 = 240. Maske: <strong>255.255.255.240</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="141.84.63.255">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Klausur 2017: Bestimme die Broadcast-Adresse des
+              Subnetzes 141.84.32.0/19.</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="a.b.c.d …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Host-Teil sind die letzten 13 Bit (32 − 19). Werden alle auf 1
+              gesetzt, ergibt sich <strong>141.84.63.255</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="8190">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Klausur 2018: Der Block 172.16.0.0/12 wird mit der
+              Subnetzmaske 255.255.255.128 aufgeteilt. Wie viele Subnetze lassen sich maximal realisieren?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <span class="quiz-unit">Subnetze</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>255.255.255.128 = /25. Zusätzliche Subnetz-Bits: 25 − 12 = 13 →
+              2<sup>13</sup> − 2 = <strong>8190</strong> nutzbare Subnetze.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="1337::1000:0:0:1">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Klausur 2017: Kürze die IPv6-Adresse
+              1337:0000:0000:0000:1000:0000:0000:0001 maximal.</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="gekürzte Adresse …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die längste Nullfolge (3 Blöcke nach <code>1337</code>) wird zu
+              <code>::</code>; die übrigen Null-Blöcke bleiben als einzelne <code>0</code> stehen:
+              <strong>1337::1000:0:0:1</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Klausur 2009: In welchem Fall müssen IPv4-Pakete
+              fragmentiert werden?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Wenn die Paketlänge größer als die MTU auf
+                dem Pfad ist</button>
+              <button class="quiz-choice" type="button">Wenn die TTL abgelaufen ist</button>
+              <button class="quiz-choice" type="button">Wenn die Prüfsumme nicht stimmt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die MTU ist die maximale Rahmengröße der Sicherungsschicht. Ist das
+              IP-Paket größer, muss es (bei IPv4 auch von Routern unterwegs) fragmentiert werden.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Klausur 2015: Wer darf ein IPv6-Paket
+              fragmentieren?</p>
+            <div class="quiz-choices quiz-tf">
+              <button class="quiz-choice" type="button" data-correct>Nur der Absender (E1)</button>
+              <button class="quiz-choice" type="button">Auch die Router unterwegs</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei IPv6 fragmentiert ausschließlich der Absender. Router auf dem
+              Pfad verwerfen zu große Pakete und melden „Packet too big" per ICMPv6 zurück.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Klausur 2017: Gegeben sei das Generatorpolynom
+              G = x³ + 1. Durch wie viele Bits wird G bei CRC repräsentiert?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Anzahl …" aria-label="Antwort">
+              <span class="quiz-unit">Bit</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Grad von G ist 3, dargestellt werden Grad + 1 = <strong>4 Bit</strong>:
+              x³ + 1 → 1001.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">8.</span>Klausur 2017: Woran erkennt der Empfänger einer
+              CRC-geschützten Bitfolge, dass sie korrekt übertragen wurde?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Die XOR-Division durch G ergibt Rest 0</button>
+              <button class="quiz-choice" type="button">Die Bitfolge endet mit 000</button>
+              <button class="quiz-choice" type="button">Die Anzahl der 1en ist gerade</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Empfänger teilt die komplette empfangene Folge (mod 2) durch G.
+              Bleibt der Rest 0, gilt die Übertragung als fehlerfrei.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="24000">
+            <p class="quiz-prompt"><span class="q-no">9.</span>Klausur 2009: Ein Manchester-codiertes Bitmuster mit
+              12 Bit wird in 1 ms übertragen (Übertragungsrate 12000 bit/s). Wie hoch ist die Baud-Rate?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Baud-Rate …" aria-label="Antwort">
+              <span class="quiz-unit">Baud</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei Manchester-Codierung gilt Baud-Rate = 2 × Übertragungsrate =
+              2 × 12 000 = <strong>24 000 Baud</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">10.</span>Klausur 2017: Ein A-Record bildet Hostname →
+              IPv4-Adresse ab. Was bildet ein CNAME-Record ab?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Alias-Name → echter (kanonischer)
+                Hostname</button>
+              <button class="quiz-choice" type="button">Domain → zuständiger Mailserver</button>
+              <button class="quiz-choice" type="button">Domain → zuständiger Nameserver</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>CNAME = Alias, z. B. www.ifi.lmu.de → salerno.tcs.ifi.lmu.de.
+              Mailserver werden über MX, Nameserver über NS abgebildet.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">11.</span>Klausur 2009/2022: Mit welchen Protokollen wandert
+              eine E-Mail vom Sender-UA über die beiden Mailserver zum Empfänger-UA?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>SMTP → SMTP → IMAP oder POP3</button>
+              <button class="quiz-choice" type="button">HTTP → SMTP → HTTP</button>
+              <button class="quiz-choice" type="button">IMAP → IMAP → SMTP</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Versand und der Transport zwischen den Servern laufen über SMTP, das
+              Abholen beim eigenen Server über IMAP oder POP3. Bei Webmail kommt zusätzlich HTTP(S) zwischen
+              Browser und Server dazu.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">12.</span>Klausur 2022: Die ARP-Tabelle des Senders ist leer.
+              An welche Ziel-MAC-Adresse schickt er seine ARP-Query?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>FF-FF-FF-FF-FF-FF (Broadcast)</button>
+              <button class="quiz-choice" type="button">An die MAC des Standard-Gateways</button>
+              <button class="quiz-choice" type="button">00-00-00-00-00-00</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Eine ARP-Query ist ein Broadcast an alle im LAN („Wer hat IP
+              x.y.z?"). Der Besitzer der gesuchten IP antwortet direkt mit seiner MAC-Adresse.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="10-congestion-control.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">TCP Congestion Control</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Zur Übersicht →</div>
+          <div class="pn-title">Alle Themen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>RNVS · Rechnernetze &amp; Verteilte Systeme (P 11, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

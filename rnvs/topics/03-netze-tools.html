@@ -539,6 +539,35 @@ man man           # Die Erklärung der man-Pages selbst</pre>
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden><strong>RTD</strong> = Round Trip Delay. <code>ping</code> misst genau das (Spalte <code>time=…</code>).</div>
           </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2009: ICMP kann melden, dass kein Weg zum Ziel existiert (<em>destination unreachable</em>). Welche zwei weiteren ICMP-Meldungen gibt es?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>echo request und time exceeded</button>
+              <button class="quiz-choice" type="button">SYN und ACK</button>
+              <button class="quiz-choice" type="button">GET und POST</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><em>echo request/reply</em> nutzt <code>ping</code>, <em>time exceeded</em> (TTL abgelaufen) nutzt <code>traceroute</code>. SYN/ACK sind TCP-Flags, GET/POST sind HTTP-Methoden.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2017: Welches Transportprotokoll wird bei DNS für normale Anfragen empfohlen — und welches für Zonentransfers?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>UDP für Anfragen, TCP für Zonentransfers</button>
+              <button class="quiz-choice" type="button">TCP für Anfragen, UDP für Zonentransfers</button>
+              <button class="quiz-choice" type="button">Beides läuft immer über TCP</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Kurze Anfrage/Antwort → UDP reicht (schnell, bei Verlust einfach neu fragen). Zonentransfers übertragen viele Daten zuverlässig → TCP.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2017: In einer <code>dig +trace</code>-Ausgabe sieht man nacheinander Antworten der Root-Server, der .de-Server und der lmu.de-Server. Ist diese DNS-Anfrage rekursiv oder iterativ?</p>
+            <div class="quiz-choices quiz-tf">
+              <button class="quiz-choice" type="button" data-correct>Iterativ</button>
+              <button class="quiz-choice" type="button">Rekursiv</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Iterativ — sonst würde man die einzelnen Zwischenschritte (4 DNS-Requests) gar nicht sehen; bei einer rekursiven Anfrage erledigt der erste Server alles allein.</div>
+          </div>
         </div>
       </section>
 

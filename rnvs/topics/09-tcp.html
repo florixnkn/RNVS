@@ -721,6 +721,37 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Die AckNr nennt das <strong>nächste erwartete Byte</strong> und bestätigt damit kumulativ alles davor.</div>
           </div>
+          <div class="quiz-q" data-type="number" data-answer="2052">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2014/2019: Der Server sendet Segment S1 mit gesetztem FIN,ACK-Flag, 0 Byte Nutzdaten und Seq = 2051. Welche AckNr sendet der Client als Antwort zurück?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="AckNr …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>2052</strong> — obwohl S1 keine Nutzdaten enthält! Bei gesetztem SYN- oder FIN-Flag wird ein „Phantom-Byte" mitgezählt: AckNr = Seq + Nutzdaten + 1. Klassische Falle in den Klausuren 2014, 2015 und 2019.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2019: Welche gesetzten Flags im Header eines TCP-Segments werden immer durch ein ACK quittiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>SYN und FIN</button>
+              <button class="quiz-choice" type="button">ACK und RST</button>
+              <button class="quiz-choice" type="button">PSH und URG</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>SYN (Verbindungsaufbau) und FIN (Verbindungsabbau) müssen immer quittiert werden — deshalb zählen sie auch je ein Phantom-Byte in der Sequenznummer.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2009: Im TCP-Zustandsdiagramm des Clients: In welchem Zustand befindet sich der Client, nachdem er das erste SYN gesendet hat?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>SYN_SENT</button>
+              <button class="quiz-choice" type="button">ESTABLISHED</button>
+              <button class="quiz-choice" type="button">TIME_WAIT</button>
+              <button class="quiz-choice" type="button">CLOSED</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ablauf beim Client: CLOSED → SYN senden → <strong>SYN_SENT</strong> → SYNACK empfangen, ACK senden → ESTABLISHED. Beim Abbau: FIN senden → FIN_WAIT_1 → FIN_WAIT_2 → (FIN empfangen, ACK senden) → TIME_WAIT → warten → CLOSED.</div>
+          </div>
         </div>
       </section>
 

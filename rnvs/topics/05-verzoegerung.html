@@ -731,6 +731,27 @@ t_gesamt                       ≈ 344,3 µs</pre>
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Die Signalverzögerung (d/v) hängt nur von Distanz und Geschwindigkeit ab. Die <strong>Paketgröße</strong> beeinflusst die Nachrichtendauer (L/R), nicht das Signal.</div>
           </div>
+          <div class="quiz-q" data-type="number" data-answer="1250">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2009/2014: Ethernet mit Übertragungsrate 1 GBit/s (= 10⁹ bit/s), Leitungslänge 1000 m, Signalgeschwindigkeit 2·10⁸ m/s. Damit der Sender eine Kollision noch während des Sendens erkennt, muss er mindestens so lange senden, wie das Signal hin- UND zurück braucht (RTT = 2·t_sig). Wie groß ist die minimale Rahmengröße?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">Byte</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>t_sig = 1000 m / 2·10⁸ m/s = 5 µs → RTT = 10 µs = 10⁻⁵ s. Minimale Rahmengröße = 10⁻⁵ s · 10⁹ bit/s = 10⁴ bit = <strong>1250 Byte</strong>. Diese CSMA/CD-Rechnung kam 2009, 2014 und 2015 dran — nur die Zahlen ändern sich.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2018: Wie verändert sich die maximal mögliche Leitungslänge zur Kollisionserkennung, wenn die Übertragungsrate verringert wird?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Sie erhöht sich</button>
+              <button class="quiz-choice" type="button">Sie verringert sich</button>
+              <button class="quiz-choice" type="button">Sie bleibt gleich</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei niedrigerer Rate dauert das Senden desselben Rahmens länger — das Signal darf also länger unterwegs sein, bevor die Kollisionserkennung versagt. Rahmendauer ≥ RTT muss gelten.</div>
+          </div>
         </div>
       </section>
 

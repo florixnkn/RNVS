@@ -405,6 +405,26 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Richtig — UDP hat eine 16-bit-Checksum. Es <em>erkennt</em> Fehler, <em>behebt</em> sie aber nicht (kein erneutes Senden).</div>
           </div>
+          <div class="quiz-q" data-type="text" data-answer="01011111|0101 1111">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2019: Bei der 16-Bit-Internet-Checksumme (die auch UDP verwendet) wird am Ende das Einerkomplement gebildet. Die Summe zweier Segmente sei 10100000 — wie lautet das Einerkomplement (8 Bit)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Bitfolge …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Einerkomplement = alle Bits kippen: 10100000 → <strong>01011111</strong>. In der Klausur 2019 wurde so die Checksumme der Nachricht „RNVS" berechnet.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2019: Welche Schritte führt der Empfänger aus, um eine Nachricht mit Internet-Checksumme als korrekt zu verifizieren?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Alle 16-Bit-Segmente und die Checksumme summieren — besteht das Ergebnis nur aus 1en, ist die Nachricht korrekt</button>
+              <button class="quiz-choice" type="button">Die Checksumme mit der Paketlänge vergleichen</button>
+              <button class="quiz-choice" type="button">Die Checksumme an den Sender zurückschicken und auf Bestätigung warten</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Summe aller Segmente + Einerkomplement-Checksumme = 1111…1, wenn kein Bit gekippt ist. Enthält das Ergebnis eine 0, liegt ein Übertragungsfehler vor.</div>
+          </div>
         </div>
       </section>
 

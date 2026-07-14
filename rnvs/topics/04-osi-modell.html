@@ -727,6 +727,37 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Falsch — die SDU sind die reinen Nutzdaten von oben. Erst <strong>PDU = PCI (Header) + SDU</strong>.</div>
           </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2017: Wie entsteht aus einer Service Data Unit (SDU) eine Protocol Data Unit (PDU)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Durch Hinzufügen der PCI: PCI + SDU = PDU</button>
+              <button class="quiz-choice" type="button">Durch Entfernen des Headers</button>
+              <button class="quiz-choice" type="button">Durch Aufteilen in mehrere Segmente</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Jede Schicht hängt ihre Protokoll-Steuerinformation (PCI, der „Header") vor die SDU. Wörtliche Klausurfrage 2017/2018.</div>
+          </div>
+          <div class="quiz-q" data-type="text" data-answer="n-1|schicht n-1|n−1|schicht n−1">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2017: Eine Protokollinstanz der Schicht N tauscht PDUs mit ihrer Peer-Entity aus (die liegt ebenfalls auf Schicht N). An welche Schicht wird die PDU zur Übertragung übergeben?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Schicht …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>An <strong>Schicht N−1</strong> — die PDU der Schicht N wird zur SDU der Schicht N−1. Die Peer-Entity liegt auf derselben Schicht N, kommuniziert wird aber immer über die darunterliegende Schicht.</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausurklassiker (2014/2017): Welches dieser Protokolle liegt NICHT auf der Anwendungsschicht?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>ARP</button>
+              <button class="quiz-choice" type="button">HTTP</button>
+              <button class="quiz-choice" type="button">IMAP</button>
+              <button class="quiz-choice" type="button">DNS</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ARP gehört zur Sicherungsschicht (2). Merke fürs Einordnen: HTTP(S), IMAP, POP3, SMTP, DNS, FTP → Anwendung (7) · TCP, UDP → Transport (4) · ICMP, OSPF, IP → Vermittlung (3) · ARP, PPP → Sicherung (2).</div>
+          </div>
         </div>
       </section>
 

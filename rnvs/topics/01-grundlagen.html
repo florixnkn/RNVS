@@ -509,6 +509,28 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>128 + 64 = <strong>192</strong> (die beiden höchsten Bits sind gesetzt) — die erste Hälfte von 192.168.</div>
           </div>
+          <div class="quiz-q" data-type="number" data-answer="19">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2017: Die Subnetzmaske 255.255.224.0 besteht binär aus lauter 1en gefolgt von lauter 0en (255 = 1111 1111, 224 = 1110 0000). Aus wie vielen 1-Bits besteht sie insgesamt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">Bit</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>8 + 8 + 3 = <strong>19</strong>. Man schreibt dafür kurz „/19" — die sogenannte Präfixlänge. Genau so in der Klausur 2017/2018 (Adressierung) gefragt.</div>
+          </div>
+          <div class="quiz-q" data-type="number" data-answer="26">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2009: Ein IPv4-Subnetz (Adressen haben 32 Bit) soll 58 Hosts fassen. Der Host-Teil braucht n Bits mit 2ⁿ − 2 ≥ 58. Wie lang darf die Netz-ID höchstens sein?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">Bit</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>2⁶ − 2 = 62 ≥ 58 → 6 Host-Bits nötig → Netz-ID höchstens 32 − 6 = <strong>26</strong> Bit. (−2, weil Netz- und Broadcast-Adresse nicht an Hosts vergeben werden.)</div>
+          </div>
         </div>
       </section>
 

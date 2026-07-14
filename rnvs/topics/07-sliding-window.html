@@ -627,6 +627,27 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Richtig — Stop-and-Wait sendet genau eine Nachricht und wartet auf deren Quittung: w = 1.</div>
           </div>
+          <div class="quiz-q" data-type="number" data-answer="3072">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2019 (Flusssteuerung): Der Empfänger hat einen Puffer von 4096 Byte. Er empfängt 1024 Byte (Seq = 0), die Anwendung hat sie noch nicht verarbeitet. Welche Fenstergröße Win meldet er im ACK zurück?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">Byte</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Win = freier Puffer = 4096 − 1024 = <strong>3072 Byte</strong>. Kommen danach weitere 2048 Byte an, sinkt Win auf 1024. Das ACK meldet dabei immer die nächste erwartete Sequenznummer (hier ACK = 1024).</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2019: Durch welches Ereignis wird der Pufferspeicher auf Empfängerseite wieder frei?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Die Anwendung liest/verarbeitet die empfangenen Daten</button>
+              <button class="quiz-choice" type="button">Der Sender schickt ein weiteres ACK</button>
+              <button class="quiz-choice" type="button">Ein Timeout läuft ab</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>TCP puffert empfangene Daten, bis die Anwendung sie abholt. Erst dann wächst das gemeldete Fenster (Win) wieder — der Sender darf wieder mehr schicken.</div>
+          </div>
         </div>
       </section>
 

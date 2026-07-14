@@ -658,6 +658,38 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Bei 3 Dup-ACKs macht Reno <strong>Fast Recovery</strong> (CongWin halbiert, kein Slow-Start). Nur bei einem <em>Timeout</em> geht CongWin auf 1 zurück (wie Tahoe).</div>
           </div>
+          <div class="quiz-q" data-type="number" data-answer="5">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur 2019: In Runde 6 tritt bei CongWin = 10 ein Segmentverlust durch Timeout auf. Welchen Wert hat Threshold in Runde 7?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">MSS</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Beim Timeout wird Threshold = CongWin / 2 = 10 / 2 = <strong>5</strong> gesetzt, CongWin springt auf 1 und ein neuer Slow-Start beginnt (TCP Tahoe).</div>
+          </div>
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur 2017/2019: In welcher Einheit wird die y-Achse (CongWin) im Staukontroll-Diagramm gemessen?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>MSS (Maximum Segment Size)</button>
+              <button class="quiz-choice" type="button">Byte</button>
+              <button class="quiz-choice" type="button">Segmente pro Sekunde</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>CongWin wird in Vielfachen der MSS angegeben — „CongWin = 8" heißt: 8 maximal große Segmente dürfen unbestätigt unterwegs sein.</div>
+          </div>
+          <div class="quiz-q" data-type="number" data-answer="7">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur 2022: TCP Reno mit CongWin = 8. Ein Paketverlust wird durch 3 ACK-Duplikate erkannt; Threshold wird auf 8/2 = 4 gesetzt. Welchen Wert hat CongWin anschließend (Fast Recovery)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <span class="quiz-unit">MSS</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Fast Recovery: CongWin = Threshold + 3 = 4 + 3 = <strong>7</strong>. Nur bei 3 Duplikat-ACKs (Reno)! Bei einem Timeout würde stattdessen CongWin = 1 gesetzt (neuer Slow-Start, wie Tahoe).</div>
+          </div>
         </div>
       </section>
 
@@ -667,9 +699,9 @@
           <div class="pn-label">← Vorheriges Thema</div>
           <div class="pn-title">TCP: Verbindung, Sequenznummern &amp; SACK</div>
         </a>
-        <a class="next" href="../index.html">
-          <div class="pn-label">Übersicht →</div>
-          <div class="pn-title">Zurück zur Themenübersicht</div>
+        <a class="next" href="11-klausurtraining.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Klausurtraining: Adressierung, CRC, DNS &amp; Co.</div>
         </a>
       </nav>
 
