@@ -52,6 +52,7 @@
         <li><a href="#theorie">Dichte &amp; Verteilungsfunktion</a></li>
         <li><a href="#rechnen">Beispiele</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#transformation">Dichtetransformation</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
         <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
@@ -156,7 +157,28 @@
           <div class="fact"><b>= F(b) − F(a)</b><span>egal ob mit oder ohne Rand</span></div>
           <div class="fact"><b>Quantil x_p</b><span>F(x_p) = p, also x_p = F⁻¹(p)</span></div>
           <div class="fact"><b>Median</b><span>x_{0.5}, das 50%-Quantil</span></div>
+          <div class="fact"><b>Modus</b><span>argmax f(x) — Maximum der Dichte, nicht von F</span></div>
         </div>
+
+        <h3>Modus, Median &amp; Quantile im Detail</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Formeln: Lagemaße aus Dichte bzw. VF ablesen</div>
+          <span class="formula">Modus = argmax<sub>x</sub> f_X(x) &nbsp;·&nbsp; Median x_{0.5}:
+            F(x_{0.5}) = 0.5 &nbsp;·&nbsp; p-Quantil x_p: F(x_p) = p</span>
+          <p>Der <strong>Modus</strong> kommt direkt aus der <strong>Dichte</strong> f(x) — es ist einfach die
+            Stelle mit dem höchsten "Berg". Median und alle anderen Quantile kommen dagegen aus der
+            <strong>Verteilungsfunktion</strong> F(x): du setzt F(x) = p und löst nach x auf — F wird
+            <strong>umgekehrt</strong>, nicht eingesetzt.</p>
+        </div>
+
+        <p><strong>Beispiel (🎓 Nachklausur SS 2025):</strong> F(x) = 1 − x<sup>−3/2</sup> für x ≥ 1. Gesucht: das
+          75%-Quantil x<sub>0.75</sub>.</p>
+        <ol class="steps">
+          <li><strong>Quantilgleichung aufstellen:</strong> 1 − x<sup>−3/2</sup> = 0.75</li>
+          <li><strong>Umstellen:</strong> x<sup>−3/2</sup> = 0.25 &nbsp;⟹&nbsp; x<sup>3/2</sup> = 4</li>
+          <li><strong>Nach x auflösen:</strong> x = 4<sup>2/3</sup></li>
+          <li><strong>Auswerten:</strong> x<sub>0.75</sub> ≈ <strong>2.52</strong></li>
+        </ol>
 
         <h3>Gleichverteilung U(a,b) — die einfachste stetige Verteilung</h3>
         <p>Alle Werte in [a,b] sind gleich wahrscheinlich — die Dichte ist ein flaches Rechteck:</p>
@@ -288,6 +310,120 @@
         </div>
       </section>
 
+      <!-- ===== TRANSFORMATION ===== -->
+      <section id="transformation" class="reveal">
+        <h2>Dichtetransformation: Y = g(X)</h2>
+        <p class="lead-in">Oft kennst du die Dichte von X, brauchst aber die Dichte einer <strong>transformierten</strong>
+          Zufallsvariable Y = g(X) — zum Beispiel Y = 1/X oder Y = a + bX. Du darfst die Dichte dabei
+          <strong>nicht</strong> einfach wie eine Gleichung "umstellen": Weil sich beim Transformieren auch die
+          Skala staucht oder streckt, muss ein Korrekturfaktor — die Ableitung der Umkehrfunktion — mit hinein.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du rechnest Kilometer in Meilen um, oder du dehnst ein <strong>Gummiband</strong> ungleichmäßig: an
+            Stellen, wo das Band stark <strong>gestaucht</strong> wird, rücken die aufgemalten Striche enger
+            zusammen — die "Strichdichte" pro Zentimeter steigt dort. Genau das passiert mit der
+            Wahrscheinlichkeitsdichte bei einer Transformation Y=g(X): Wo g(x) die x-Achse stark staucht,
+            konzentriert sich die Dichte von Y; wo g(x) streckt, verdünnt sie sich. Der Korrekturfaktor
+            |dg⁻¹(y)/dy| misst genau diese lokale Stauchung bzw. Streckung.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Transformationssatz (g streng monoton)</div>
+          <span class="formula">f_Y(y) = f_X(g⁻¹(y)) · |d g⁻¹(y)/dy|</span>
+          <p>Gilt, wenn g auf dem Träger von X <strong>streng monoton</strong> (streng steigend oder streng
+            fallend) und differenzierbar ist — nur dann existiert die Umkehrfunktion g⁻¹ eindeutig.</p>
+        </div>
+
+        <!-- SVG: Stauchung sichtbar machen -->
+        <figure class="diagram">
+          <div class="diagram-title">Y = 1/X staucht die Dichte am rechten Rand von X (nahe x=4) zusammen</div>
+          <svg viewBox="0 0 480 240" width="480" role="img" aria-label="Links flache Dichte von X auf dem Intervall 2 bis 4, rechts die daraus transformierte Dichte von Y auf dem Intervall 0.25 bis 0.5, die zum linken Rand hin ansteigt, weil dort die Stauchung am staerksten ist">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <text x="120" y="15" text-anchor="middle" class="svg-soft" font-weight="700">f_X(x) = 1/2 auf [2,4]</text>
+              <line x1="20" y1="210" x2="220" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <line x1="20" y1="20" x2="20" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <rect x="60" y="140" width="120" height="70" fill="#2f6df6" fill-opacity="0.4" stroke="#2f6df6" stroke-width="1.6"/>
+              <text x="60" y="224" text-anchor="middle" class="svg-soft">2</text>
+              <text x="120" y="224" text-anchor="middle" class="svg-soft">3</text>
+              <text x="180" y="224" text-anchor="middle" class="svg-soft">4</text>
+
+              <text x="240" y="120" text-anchor="middle" class="svg-soft" font-size="12">Y=1/X →</text>
+
+              <text x="360" y="15" text-anchor="middle" class="svg-soft" font-weight="700">f_Y(y) = 1/(2y²) auf [¼,½]</text>
+              <line x1="260" y1="210" x2="460" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <line x1="260" y1="20" x2="260" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <path d="M280,210 L280,75 C330,85 380,135 440,168 L440,210 Z" fill="#f5810b" fill-opacity="0.45" stroke="#f5810b" stroke-width="1.8"/>
+              <line x1="280" y1="210" x2="280" y2="185" stroke="#f5810b" stroke-width="1.3" stroke-dasharray="2,3"/>
+              <text x="280" y="224" text-anchor="middle" fill="#f5810b" font-weight="800">¼</text>
+              <text x="360" y="224" text-anchor="middle" class="svg-soft">⅓</text>
+              <text x="440" y="224" text-anchor="middle" class="svg-soft">½</text>
+              <text x="285" y="70" fill="#f5810b" font-size="10.5" font-weight="700">Modus (Maximum)</text>
+            </g>
+          </svg>
+          <figcaption>Links ist f_X flach (Gleichverteilung). Rechts ist f_Y am linken Rand (y=¼, entspricht x=4)
+            am höchsten — dort staucht Y=1/X am stärksten. Der Modus von Y liegt deshalb bei ¼, nicht in der
+            "Mitte" des neuen Trägers.</figcaption>
+        </figure>
+
+        <h3>Rezept in 3 Schritten</h3>
+        <ol class="steps">
+          <li><strong>Umkehrfunktion bilden:</strong> löse y = g(x) nach x auf → x = g⁻¹(y)</li>
+          <li><strong>Ableitung der Umkehrfunktion bilden und Betrag nehmen:</strong> |dg⁻¹(y)/dy| — der Betrag
+            ist Pflicht, sonst wird die Dichte bei fallendem g negativ!</li>
+          <li><strong>Einsetzen und NEUEN TRÄGER bestimmen:</strong> f_Y(y) = f_X(g⁻¹(y)) · |dg⁻¹(y)/dy|, nur auf
+            dem Bildbereich {g(x) : x im Träger von X} — <strong>der mit Abstand häufigste Fehler ist, den neuen
+            Träger von Y zu vergessen</strong> oder einfach den alten Träger von X zu übernehmen.</li>
+        </ol>
+
+        <h3>Durchgerechnetes Klausurbeispiel (🎓 Klausur SS 2025): X~U(2,4), Y=1/X</h3>
+        <p>X ~ U(2,4), also f_X(x) = 1/2 auf [2,4]. Gesucht: die Dichte von Y = 1/X (samt Träger).</p>
+        <ol class="steps">
+          <li><strong>Umkehrfunktion:</strong> y = 1/x &nbsp;⟹&nbsp; x = g⁻¹(y) = 1/y</li>
+          <li><strong>Ableitung + Betrag:</strong> d/dy(1/y) = −1/y² &nbsp;⟹&nbsp; |dg⁻¹(y)/dy| = 1/y²</li>
+          <li><strong>Einsetzen:</strong> f_Y(y) = f_X(1/y) · 1/y² = (1/2) · 1/y² = <strong>1/(2y²)</strong></li>
+          <li><strong>Neuer Träger:</strong> g ist streng fallend, die Reihenfolge kehrt sich um: x=2 ⟹ y=0.5
+            (obere Grenze), x=4 ⟹ y=0.25 (untere Grenze). Träger von Y: <strong>[¼, ½]</strong></li>
+        </ol>
+
+        <p>Damit lassen sich die üblichen Kennzahlen von Y direkt bestimmen:</p>
+        <ol class="steps">
+          <li><strong>E[Y]:</strong> ∫<sub>¼</sub><sup>½</sup> y · 1/(2y²) dy = ∫<sub>¼</sub><sup>½</sup> 1/(2y) dy
+            = ½·[ln y]<sub>¼</sub><sup>½</sup> = ½·(ln ½ − ln ¼) = <strong>ln(2)/2 ≈ 0.347</strong></li>
+          <li><strong>Modus:</strong> f_Y(y) = 1/(2y²) ist auf [¼,½] streng fallend (y² wächst, also fällt
+            1/(2y²)) → das Maximum liegt am linken Rand: <strong>Modus = ¼</strong></li>
+          <li><strong>F_Y(y):</strong> ∫<sub>¼</sub><sup>y</sup> 1/(2t²) dt = [−1/(2t)]<sub>¼</sub><sup>y</sup> =
+            −1/(2y) + 2 = <strong>2 − 1/(2y)</strong> für y ∈ [¼,½] (Check: F_Y(¼)=0, F_Y(½)=1 ✓)</li>
+          <li><strong>Median:</strong> 2 − 1/(2m) = 0.5 &nbsp;⟹&nbsp; 1/(2m) = 1.5 &nbsp;⟹&nbsp;
+            m = <strong>1/3 ≈ 0.333</strong></li>
+        </ol>
+
+        <p><strong>Und P(Y = 0.374)?</strong> Egal wie "krumm" der Wert aussieht: Y ist stetig, also ist
+          P(Y = 0.374) = <strong>0</strong> — genau wie bei jeder anderen stetigen Zufallsvariable (siehe
+          <a href="#worum">oben</a>). Das gilt für jeden Einzelpunkt, auch wenn er im Träger [¼,½] liegt.</p>
+
+        <h3>Zweites Beispiel: lineare Transformation (🎓 Nachklausur SS 2025)</h3>
+        <p>Für Y = a + bX mit b &gt; 0 (also g(x) = a+bx, streng steigend) ist die Rechnung besonders einfach:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: lineare Transformation</div>
+          <span class="formula">g⁻¹(y) = (y−a)/b &nbsp;·&nbsp; |dg⁻¹/dy| = 1/b &nbsp;·&nbsp;
+            f_Y(y) = f_X((y−a)/b) · 1/b</span>
+        </div>
+        <p>Der Träger verschiebt sich um a und streckt sich um den Faktor b: aus X ∈ [c,d] wird
+          Y ∈ [a+bc, a+bd]. Ist b&lt;0 (g fallend), drehen sich Ober- und Untergrenze wie im Beispiel oben um —
+          der Betrag |1/b| bleibt aber so oder so positiv.</p>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Typische Fallen bei der Dichtetransformation</div>
+          <p><strong>Neuen Träger vergessen:</strong> f_Y gilt nur auf dem Bildbereich von g, nicht auf dem alten
+            Träger von X (und meistens auch nicht auf ganz ℝ).</p>
+          <p><strong>Betrag der Ableitung vergessen:</strong> bei fallendem g ist dg⁻¹/dy negativ — ohne
+            Betragsstriche würde die "Dichte" negativ, was unmöglich ist.</p>
+          <p><strong>Dichte einfach "umstellen":</strong> f_Y(y) ist <strong>nicht</strong> einfach f_X nach y
+            umgestellt; der Transformationssatz mit dem Ableitungsfaktor ist zwingend nötig.</p>
+        </div>
+      </section>
+
       <!-- ===== QUICKREF ===== -->
       <section id="quickref" class="reveal">
         <h2>Quick-Reference</h2>
@@ -316,6 +452,8 @@
               <tr><td>f(x) = F'(x)</td><td>Dichte aus VF</td></tr>
               <tr><td>f(x) = 1/(b−a) auf [a,b]</td><td>Gleichverteilung U(a,b)</td></tr>
               <tr><td>E[X]=(a+b)/2, Var(X)=(b−a)²/12</td><td>Gleichverteilung: Kennzahlen</td></tr>
+              <tr><td>f_Y(y) = f_X(g⁻¹(y)) · |dg⁻¹(y)/dy|</td><td>Dichtetransformation Y=g(X), siehe
+                <a href="#transformation">oben</a></td></tr>
             </tbody>
           </table></div>
 
@@ -326,6 +464,8 @@
             <li><strong>Nur die Fläche zählt</strong> — die Höhe von f(x) allein sagt nichts</li>
             <li>≤ und &lt; sind bei stetigen ZV <strong>austauschbar</strong></li>
             <li>F immer <strong>stückweise vollständig</strong> hinschreiben (vor / im / nach dem Träger)</li>
+            <li>Bei Y=g(X): <strong>Betrag der Ableitung</strong> nicht vergessen und immer den
+              <strong>neuen Träger</strong> bestimmen</li>
           </ul>
         </div>
       </section>
@@ -421,6 +561,46 @@
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>F(m) = (m−2)/4 = 0.5 → m = <strong>4</strong>. Bei der Gleichverteilung
               ist der Median immer der Mittelpunkt (a+b)/2.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.3333" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Klausur SS25: X ~ U(2,4), Y = 1/X. Was ist der
+              Median von Y?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F_Y(y) = 2 − 1/(2y). F_Y(m) = 0.5 → 1/(2m) = 1.5 → m =
+              <strong>1/3 ≈ 0.333</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Klausur SS25: Y = 1/X ist eine stetige
+              Zufallsvariable mit Träger [¼,½]. Was ist P(Y = 0.374)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>0</button>
+              <button class="quiz-choice" type="button">f_Y(0.374)</button>
+              <button class="quiz-choice" type="button">1</button>
+              <button class="quiz-choice" type="button">hängt vom Träger ab</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Y ist stetig, also hat jeder Einzelpunkt Wahrscheinlichkeit
+              <strong>0</strong> — auch 0.374, obwohl es im Träger [¼,½] liegt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2.52" data-tol="0.02">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🎓 Nachklausur SS25: F(x) = 1 − x<sup>−3/2</sup>
+              für x ≥ 1. Welchen Wert hat das 75%-Quantil?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>1 − x<sup>−3/2</sup> = 0.75 → x<sup>−3/2</sup> = 0.25 → x = 4<sup>2/3</sup>
+              ≈ <strong>2.52</strong>.</div>
           </div>
 
         </div>

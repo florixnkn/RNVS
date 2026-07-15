@@ -381,6 +381,8 @@ P(μ−3σ ≤ X ≤ μ+3σ) ≈ 0.9973   (99.7%)</pre>
             <li><strong>Φ(−z) = 1 − Φ(z)</strong> — Symmetrie für negative z nutzen</li>
             <li><strong>Exp(λ): E[X] = 1/λ</strong> — nicht λ selbst</li>
             <li>Gedächtnislosigkeit ist ein <strong>Alleinstellungsmerkmal von Exp(λ)</strong></li>
+            <li>Wird X transformiert (z. B. Y=1/X oder Y=a+bX), brauchst du den <strong>Transformationssatz</strong>
+              — siehe <a href="06-stetige-zv.html#transformation">Dichtetransformation (Thema 06)</a></li>
           </ul>
         </div>
       </section>
@@ -477,6 +479,33 @@ P(μ−3σ ≤ X ≤ μ+3σ) ≈ 0.9973   (99.7%)</pre>
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>σ=2. Φ(2) − Φ(−1) = 0.9772 − (1−0.8413) = 0.9772 − 0.1587 =
               <strong>0.8185</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Nachklausur SS25: Eine stetige Zufallsvariable
+              hat die Verteilungsfunktion F(x) = c − 1/x<sup>3/2</sup> für x ≥ 1. Welchen Wert muss c haben,
+              damit F eine gültige Verteilungsfunktion ist?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Für x→∞ muss F(x)→1 gehen: lim<sub>x→∞</sub> (c − 1/x<sup>3/2</sup>)
+              = c = <strong>1</strong>. (Gegenprobe: F(1) = c−1 muss 0 sein, ergibt ebenfalls c=1.)</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Nachklausur SS25: Dichte f(x) = (3/2)·x<sup>−5/2</sup>
+              für x ≥ 1. Was ist E[X]?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>E[X] = ∫₁^∞ x·(3/2)x<sup>−5/2</sup> dx = ∫₁^∞ (3/2)x<sup>−3/2</sup> dx
+              = [−3x<sup>−1/2</sup>]₁^∞ = 0 − (−3) = <strong>3</strong>.</div>
           </div>
 
         </div>

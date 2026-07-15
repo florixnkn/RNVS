@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Klausurtraining: von Bayes bis Regression · P12</title>
-<meta name="description" content="Klausurtraining für P12 Stochastik &amp; Statistik: eine selbst konstruierte Probeklausur mit 10 klausurtypischen Aufgaben von Bayes über Verteilungen bis Regression, komplett durchgerechnet — plus Quick-Reference und Wissenscheck." />
+<meta name="description" content="Klausurtraining für P12 Stochastik &amp; Statistik: 10 Aufgabentypen mit echten Klausuraufgaben aus vier Klausuren (HK/NK SS 2024, HK/NK SS 2025, PD Dr. Fabian Scheipl), komplett durchgerechnet — plus Quick-Reference und Wissenscheck." />
 <link rel="stylesheet" href="../../css/style.css" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
 </head>
@@ -36,8 +36,8 @@
     <div class="th-meta">
       <span class="stars">★★★</span>
       <span class="badge badge-exam">🚨 Klausur</span>
-      <span class="badge badge-blatt">Probeklausur</span>
-      <span class="badge badge-soft">Keine Altklausur verfügbar – selbst konstruiert</span>
+      <span class="badge badge-blatt">🎓 4 echte Klausuren</span>
+      <span class="badge badge-soft">HK+NK SS 2024 · HK+NK SS 2025 · PD Dr. Fabian Scheipl</span>
     </div>
   </div>
 </section>
@@ -49,16 +49,16 @@
       <h4>Auf dieser Seite</h4>
       <ul>
         <li><a href="#worum">So trainierst du am besten</a></li>
-        <li><a href="#bayes">1 · Bayes (Medizintest)</a></li>
-        <li><a href="#binomial">2 · Binomialverteilung</a></li>
-        <li><a href="#poisson">3 · Poisson-Verteilung</a></li>
-        <li><a href="#normalverteilung">4 · Normalverteilung</a></li>
-        <li><a href="#erwartungswert">5 · Erwartungswert &amp; Varianz</a></li>
-        <li><a href="#konfidenzintervall">6 · Konfidenzintervall</a></li>
-        <li><a href="#ztest">7 · z-Test</a></li>
-        <li><a href="#markov">8 · Markov-Kette</a></li>
-        <li><a href="#regression">9 · Lineare Regression</a></li>
-        <li><a href="#tschebyschew">10 · Tschebyschew-Ungleichung</a></li>
+        <li><a href="#bayes">1 · Bayes, totale WK &amp; Unabhängigkeit</a></li>
+        <li><a href="#totalewk">2 · Totale Wahrscheinlichkeit &amp; Erwartungswert</a></li>
+        <li><a href="#stetigezv">3 · Stetige Zufallsvariable</a></li>
+        <li><a href="#dichtetrafo">4 · Dichtetransformation</a></li>
+        <li><a href="#kontingenz">5 · Kontingenztabelle &amp; Korrelation</a></li>
+        <li><a href="#mle">6 · MLE, Standardfehler &amp; Wald-KI</a></li>
+        <li><a href="#markov">7 · Markov-Ketten &amp; Zustandsklassifikation</a></li>
+        <li><a href="#regression">8 · Lineare Regression (auch multipel)</a></li>
+        <li><a href="#verteilungen">9 · Verteilungen erkennen</a></li>
+        <li><a href="#zgws">10 · ZGWS, KI, Test &amp; Stichprobenumfang</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
         <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
@@ -73,28 +73,55 @@
           Rechnen und Beweisen in einem Fach. Diese Seite ist kein neuer Stoff, sondern <strong>Training</strong>:
           10 klausurtypische Aufgaben, quer durch alle 14 Themen, komplett durchgerechnet.</p>
 
-        <div class="callout callout-warning">
-          <div class="c-title">Ehrlich gesagt: Für P12 gibt es (noch) keine Altklausuren</div>
-          <p>Anders als bei älteren Modulen liegen für P12 aktuell <strong>keine echten Altklausuren</strong> vor.
-            Alle 10 Aufgaben auf dieser Seite sind deshalb <strong>selbst konstruiert</strong> — eine Probeklausur
-            im Stil des Moduls, mit klausurtypischen Aufgabenformaten und sorgfältig durchgerechneten,
-            verifizierten Zahlen. Sie ersetzt keine offiziellen Übungsklausuren, ist aber ein guter Gradmesser,
-            ob du die Rechenwege wirklich beherrschst.</p>
+        <div class="callout callout-tip">
+          <div class="c-title">🎓 Jetzt mit echten Klausuraufgaben</div>
+          <p>Für P12 liegen inzwischen <strong>vier echte Klausuren mit offiziellen Musterlösungen</strong> vor:
+            Hauptklausur SS 2024 (19.07.2024), Nachklausur SS 2024 (07.10.2024), Hauptklausur SS 2025
+            (29.07.2025) und Nachklausur SS 2025 — alle von <strong>PD Dr. Fabian Scheipl, Institut für
+            Statistik, LMU München</strong>. Jede der 10 Aufgaben unten ist eine <strong>echte
+            Klausuraufgabe 1:1</strong>, mit Herkunftsangabe und der vollständigen offiziellen Musterlösung
+            Schritt für Schritt nachvollzogen.</p>
+        </div>
+
+        <h3>So läuft die Klausur</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Format &amp; Rahmenbedingungen</div>
+          <p><strong>5 Aufgaben</strong> in <strong>90 Minuten</strong> (erste 30 / letzte 15 Minuten keine
+            vorzeitige Abgabe), meist <strong>65–75 Punkte</strong> gesamt — HK/NK SS 2024 je 75, HK SS 2025
+            65, NK SS 2025 mit 6 statt 5 Aufgaben.</p>
+          <p><strong>Hilfsmittel — anders als in vielen anderen Modulen:</strong> die
+            <strong>ausgedruckte Formelsammlung ohne jegliche Markierungen</strong> sowie ein
+            <strong>nicht-programmierbarer, nicht-grafikfähiger Taschenrechner</strong>. Kein Skript, keine
+            eigenen Notizen.</p>
+          <p>(Zwischen-)Ergebnisse werden auf <strong>2 Nachkommastellen gerundet</strong>, mit
+            <strong>detaillierter Bepunktung des Lösungswegs</strong> — schreib bei jeder Teilaufgabe zuerst
+            Ansatz bzw. Formel hin: das bringt Teilpunkte, auch wenn die Rechnung danach schiefgeht.</p>
+        </div>
+
+        <p>Über alle vier ausgewerteten Klausuren hinweg tauchen immer wieder dieselben acht Aufgabentypen auf
+          — genau die, die unten in den 10 Aufgaben trainiert werden:</p>
+        <div class="factgrid">
+          <div class="fact"><b>1 · Bayes</b><span>totale Wahrscheinlichkeit, Unabhängigkeit</span></div>
+          <div class="fact"><b>2 · Stetige ZV</b><span>Dichte, VF, E[X], Quantile, Dichtetransformation</span></div>
+          <div class="fact"><b>3 · Gemeinsame Verteilung</b><span>Kontingenztabelle, Kovarianz, Korrelation</span></div>
+          <div class="fact"><b>4 · MLE</b><span>Standardfehler, Wald-Konfidenzintervall</span></div>
+          <div class="fact"><b>5 · Markov-Ketten</b><span>inkl. Zustandsklassifikation</span></div>
+          <div class="fact"><b>6 · Lineare Regression</b><span>auch multipel, Koeffiziententabelle</span></div>
+          <div class="fact"><b>7 · Verteilungen erkennen</b><span>welches Modell passt zum Szenario?</span></div>
+          <div class="fact"><b>8 · ZGWS/Tschebyscheff/Test</b><span>Konfidenzintervall, Stichprobenumfang</span></div>
         </div>
 
         <h3>Deine Strategie</h3>
         <ol class="steps">
-          <li><strong>Erst selbst rechnen, dann vergleichen:</strong> Lies die Aufgabenstellung, rechne sie komplett
-            auf einem Blatt durch — und schau erst danach in den Lösungskasten. Reines Mitlesen ohne eigenes
-            Rechnen bringt für eine Formel-Klausur wie diese fast nichts.</li>
-          <li><strong>Formel zuerst hinschreiben, dann erst Zahlen einsetzen:</strong> In fast jeder Aufgabe unten
-            steht die allgemeine Formel als erster Lösungsschritt — genau das ist auch in einer echten Klausur
-            oft schon die Voraussetzung für Teilpunkte, selbst wenn du dich beim Einsetzen verrechnest.</li>
-          <li><strong>Zwischenschritte aufschreiben, nicht im Kopf rechnen:</strong> Gerade bei Bayes, Tests und
-            Regression gibt es mehrere Zwischengrößen (z. B. P(+), die Teststatistik z, Sxy) — schreib sie einzeln
-            hin, dann findest du Rechenfehler viel schneller.</li>
-          <li><strong>Zum Schluss den Wissenscheck als Zeitdruck-Test nutzen:</strong> Wenn du alle 10 Aufgaben
-            durchgerechnet hast, arbeite den Wissenscheck unten am Stück durch, ohne vorher nochmal nachzuschlagen.</li>
+          <li><strong>Erst selbst rechnen, dann vergleichen:</strong> komplett auf einem Blatt durchrechnen, erst
+            danach in den Lösungskasten schauen. Reines Mitlesen bringt für eine Formel-Klausur fast nichts.</li>
+          <li><strong>Formel zuerst hinschreiben, dann erst Zahlen einsetzen:</strong> das ist auch in der echten
+            Klausur die Voraussetzung für Teilpunkte, selbst wenn du dich beim Einsetzen verrechnest.</li>
+          <li><strong>Zwischenschritte aufschreiben, nicht im Kopf rechnen:</strong> gerade bei Bayes, MLE und
+            Regression (z. B. P(+), ℓ''(θ̂), X'X) findest du so Rechenfehler schneller — und die Korrektur
+            kann Teilpunkte vergeben.</li>
+          <li><strong>Wissenscheck als Zeitdruck-Test:</strong> nach allen 10 Aufgaben am Stück durcharbeiten,
+            ohne vorher nachzuschlagen.</li>
         </ol>
 
         <h3>Die Top-5-Fehlerquellen des Moduls</h3>
@@ -105,313 +132,439 @@
           <div class="fact"><b>2 · P(A|B)≠P(B|A)</b><span>Bayes-Verwechslung, die häufigste Falle überhaupt</span></div>
           <div class="fact"><b>3 · Var(X+Y)</b><span>=Var(X)+Var(Y) nur bei Unabhängigkeit</span></div>
           <div class="fact"><b>4 · f(x) ist keine WK</b><span>Dichte bei stetigen ZV darf &gt; 1 sein</span></div>
-          <div class="fact"><b>5 · 1/(n−1)</b><span>für erwartungstreue Varianzschätzung, nicht 1/n</span></div>
+          <div class="fact"><b>5 · unkorreliert ≠ unabhängig</b><span>nur die Rückrichtung gilt immer</span></div>
         </div>
       </section>
 
       <!-- ===== 1 BAYES ===== -->
       <section id="bayes" class="reveal">
-        <h2>Aufgabentyp 1: Bayes (Medizintest)</h2>
-        <p>Der Klassiker unter den P12-Fallen: Ein Test klingt sehr zuverlässig (hohe Sensitivität, hohe
-          Spezifität) — trotzdem ist die Wahrscheinlichkeit, bei positivem Test wirklich krank zu sein, oft
-          erstaunlich niedrig. Der Grund liegt in der <strong>Prävalenz</strong>: Ist eine Krankheit selten, gibt
-          es unter allen positiv Getesteten mehr falsch-positive Gesunde als richtig-positive Kranke.</p>
+        <h2>Aufgabentyp 1: Bayes, totale Wahrscheinlichkeit &amp; Unabhängigkeit</h2>
+        <p>Der Klassiker unter den P12-Fallen: gesucht ist P(A|B), gegeben ist aber nur P(B|A) — der Satz von
+          Bayes rechnet die eine bedingte Wahrscheinlichkeit in die andere um. Danach folgt fast immer eine
+          scheinbar harmlose dritte Teilaufgabe: eine Unabhängigkeitsprüfung.</p>
 
         <div class="fr">
-          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Der Test hat 99% Sensitivität, also bin ich bei
-            positivem Ergebnis auch zu etwa 99% krank."</div>
-          <div class="right"><span class="fr-tag">✅ Richtig</span>Sensitivität P(+|K) und die gesuchte Größe
-            P(K|+) sind <strong>zwei verschiedene bedingte Wahrscheinlichkeiten</strong> — P(A|B) ≠ P(B|A). Erst
-            der Satz von Bayes rechnet die eine in die andere um, und dabei spielt die Prävalenz P(K) eine
-            entscheidende Rolle.</div>
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Geschäft A hat die niedrigere Ausfallrate,
+            das hat doch nichts mit der Kaufentscheidung selbst zu tun — die Ereignisse sind also unabhängig."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Unabhängigkeit ist eine <strong>rein
+            rechnerische</strong> Bedingung: P(A∩B) = P(A)·P(B). Sobald sich die bedingte Wahrscheinlichkeit
+            eines Ereignisses je nach Ausprägung des anderen unterscheidet — wie hier die Ausfallrate je
+            Geschäft —, sind die Ereignisse per Definition <strong>abhängig</strong>, ganz unabhängig von der
+            Intuition.</div>
         </div>
 
-        <h3>🧮 Aufgabe 1: Wie zuverlässig ist ein positiver Medizintest wirklich?</h3>
+        <h3>🧮 Aufgabe: Glühbirnen aus zwei Geschäften</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Hauptklausur SS 2024 · Aufgabe 1 (9 Punkte)</span></p>
         <div class="callout callout-info">
           <div class="c-title">Aufgabenstellung</div>
-          <p>Eine Krankheit K hat in der Bevölkerung eine Prävalenz von <strong>P(K) = 0.01</strong> (1% sind
-            erkrankt). Ein Test hat eine Sensitivität von <strong>P(+|K) = 0.99</strong> (99% der Erkrankten testen
-            positiv) und eine Spezifität von <strong>P(−|G) = 0.95</strong>, wobei G = „gesund" das
-            Komplementärereignis zu K ist (95% der Gesunden testen negativ). Gesucht: <strong>P(K|+)</strong> — wie
-            wahrscheinlich ist es, tatsächlich krank zu sein, wenn der Test positiv ausfällt?</p>
+          <p>Geschäft A verkauft Glühbirnen, die mit Wahrscheinlichkeit <strong>0.03</strong> defekt sind,
+            während in Geschäft B gekaufte Glühbirnen mit Wahrscheinlichkeit <strong>0.1</strong> defekt sind.
+            John kauft <strong>70%</strong> seiner Glühbirnen in Geschäft A, den Rest in Geschäft B. „+" steht
+            für „funktionierende Glühbirne", „−" für „defekte Glühbirne".</p>
+          <p>a) Wie wahrscheinlich ist es, dass John eine defekte Glühbirne kauft? b) Angenommen, John hat eine
+            funktionierende Glühbirne gekauft — wie wahrscheinlich stammt sie aus Geschäft A? c) Sind „gekauft
+            in Geschäft A" und „funktionierende Glühbirne" stochastisch unabhängig?</p>
         </div>
         <ol class="steps">
-          <li><strong>Formel von Bayes aufschreiben:</strong> P(K|+) = P(+|K) · P(K) / P(+).</li>
-          <li><strong>P(+) fehlt noch — totale Wahrscheinlichkeit:</strong> P(+) = P(+|K)·P(K) + P(+|G)·P(G).
-            Dafür brauchst du P(+|G) = 1 − P(−|G) = 1 − 0.95 = 0.05 und P(G) = 1 − P(K) = 0.99.</li>
-          <li><strong>P(+) berechnen:</strong> P(+) = 0.01·0.99 + 0.99·0.05 = 0.0099 + 0.0495 = <strong>0.0594</strong>.</li>
-          <li><strong>Bayes einsetzen:</strong> P(K|+) = 0.0099 / 0.0594 = 1/6 ≈ <strong>0.1667</strong>.</li>
-        </ol>
-        <div class="callout callout-tip">
-          <div class="c-title">Warum das Ergebnis so klein ist</div>
-          <p>Trotz 99% Sensitivität und 95% Spezifität liegt P(K|+) nur bei rund <strong>16.7%</strong> — mehr als
-            5 von 6 positiv Getesteten sind also tatsächlich gesund. Das liegt allein an der niedrigen Prävalenz:
-            unter 10 000 Personen sind nur 100 wirklich krank (davon testen ~99 positiv), aber unter den 9 900
-            Gesunden testen trotz 95% Spezifität noch ~495 fälschlich positiv. Absolut gesehen gibt es also mehr
-            falsch-positive als richtig-positive Fälle.</p>
-        </div>
-      </section>
-
-      <!-- ===== 2 BINOMIAL ===== -->
-      <section id="binomial" class="reveal">
-        <h2>Aufgabentyp 2: Binomialverteilung</h2>
-        <p>Immer dasselbe Muster: <strong>n</strong> unabhängige Versuche mit fester Erfolgswahrscheinlichkeit
-          <strong>p</strong>, gesucht ist die Wahrscheinlichkeit für genau <strong>k</strong> Erfolge — plus meist
-          Erwartungswert und Varianz der Verteilung.</p>
-
-        <h3>🧮 Aufgabe 2: Genau 2 Treffer bei 10 Versuchen</h3>
-        <div class="callout callout-info">
-          <div class="c-title">Aufgabenstellung</div>
-          <p>X ~ Bin(n=10, p=0.3), z. B. die Anzahl Treffer bei 10 unabhängigen Versuchen mit Trefferwahrscheinlichkeit
-            30%. Berechne <strong>P(X=2)</strong> sowie <strong>E[X]</strong> und <strong>Var(X)</strong>.</p>
-        </div>
-        <pre class="code">P(X=k) = C(n,k) · p^k · (1−p)^(n−k)
-
-P(X=2) = C(10,2) · 0.3² · 0.7⁸
-        = 45 · 0.09 · 0.05764801
-        ≈ 0.2335
-
-E[X]   = n·p       = 10 · 0.3 = 3
-Var(X) = n·p·(1−p) = 10 · 0.3 · 0.7 = 2.1</pre>
-        <p>C(10,2) = 45 ist die Anzahl der Möglichkeiten, welche 2 der 10 Versuche die Treffer sind; 0.3² ist die
-          Wahrscheinlichkeit für genau diese 2 Treffer, 0.7⁸ die Wahrscheinlichkeit für die übrigen 8 Nieten.
-          Erwartungswert und Varianz folgen direkt aus den Standardformeln der Binomialverteilung — hier musst du
-          nichts summieren.</p>
-      </section>
-
-      <!-- ===== 3 POISSON ===== -->
-      <section id="poisson" class="reveal">
-        <h2>Aufgabentyp 3: Poisson-Verteilung</h2>
-        <p>Die Poisson-Verteilung modelliert seltene Ereignisse pro Zeiteinheit (Anrufe, Unfälle, Tippfehler …) mit
-          nur einem Parameter <strong>λ</strong> — der mittleren Anzahl Ereignisse in der betrachteten Einheit.
-          Praktischer Trick: P(X≥1) ist fast immer leichter über das Gegenereignis P(X=0) zu berechnen.</p>
-
-        <h3>🧮 Aufgabe 3: Anrufe an einer Hotline</h3>
-        <div class="callout callout-info">
-          <div class="c-title">Aufgabenstellung</div>
-          <p>An einer Hotline treffen im Mittel <strong>λ = 2</strong> Anrufe pro Minute ein (Poisson-verteilt).
-            Berechne <strong>P(X=0)</strong> (keine Anrufe in einer Minute) und <strong>P(X≥1)</strong> (mindestens
-            ein Anruf).</p>
-        </div>
-        <pre class="code">P(X=k) = e^(−λ) · λ^k / k!
-
-P(X=0) = e^(−2) · 2⁰/0! = e^(−2) ≈ 0.1353
-
-P(X≥1) = 1 − P(X=0) = 1 − 0.1353 ≈ 0.8647   (Gegenereignis!)</pre>
-        <p>P(X≥1) direkt auszusummieren würde P(X=1)+P(X=2)+P(X=3)+… bis unendlich bedeuten — über das
-          Gegenereignis 1−P(X=0) ist es eine einzige Zeile.</p>
-      </section>
-
-      <!-- ===== 4 NORMALVERTEILUNG ===== -->
-      <section id="normalverteilung" class="reveal">
-        <h2>Aufgabentyp 4: Normalverteilung</h2>
-        <p>Bei X~N(μ,σ²) rechnest du nie direkt mit X, sondern <strong>standardisierst</strong> zuerst:
-          Z = (X−μ)/σ ~ N(0,1). Danach liest du die Werte für die Standardnormalverteilung Φ aus der Tabelle ab —
-          Φ(z) ist dabei die Verteilungsfunktion (kumulative Wahrscheinlichkeit), nicht die Dichte.</p>
-
-        <div class="fr">
-          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Die Dichte f(x) ist eine Wahrscheinlichkeit,
-            deshalb darf f(x) nie größer als 1 sein."</div>
-          <div class="right"><span class="fr-tag">✅ Richtig</span>f(x) ist eine <strong>Dichte</strong>, keine
-            Wahrscheinlichkeit — bei kleiner Varianz (steile, schmale Glockenkurve) kann f(x) durchaus über 1
-            liegen. Nur die <strong>Fläche</strong> unter f (also ein Integral) muss insgesamt 1 ergeben, niemals
-            ein einzelner Funktionswert.</div>
-        </div>
-
-        <h3>🧮 Aufgabe 4: Wahrscheinlichkeiten bei normalverteilten Werten</h3>
-        <div class="callout callout-info">
-          <div class="c-title">Aufgabenstellung</div>
-          <p>X ~ N(100, 15²) — z. B. Testergebnisse mit Mittelwert 100 und Standardabweichung 15. Berechne
-            <strong>P(X≤130)</strong> und <strong>P(85≤X≤115)</strong>.</p>
-        </div>
-        <pre class="code">Standardisieren: Z = (X−μ)/σ
-
-P(X≤130):  z = (130−100)/15 = 2
-           P(X≤130) = Φ(2) ≈ 0.9772
-
-P(85≤X≤115): z-Grenzen: (85−100)/15 = −1,  (115−100)/15 = 1
-           P(85≤X≤115) = Φ(1) − Φ(−1) = 2·Φ(1) − 1
-                        = 2 · 0.8413 − 1 ≈ 0.6827   (die „68%-Regel")</pre>
-        <p>Die zweite Rechnung nutzt die Symmetrie der Standardnormalverteilung: Φ(−1) = 1−Φ(1), daher
-          Φ(1)−Φ(−1) = 2Φ(1)−1. Das Ergebnis 0.6827 ist kein Zufall — es ist genau die bekannte „68% liegen
-          innerhalb einer Standardabweichung"-Faustregel.</p>
-      </section>
-
-      <!-- ===== 5 ERWARTUNGSWERT/VARIANZ ===== -->
-      <section id="erwartungswert" class="reveal">
-        <h2>Aufgabentyp 5: Erwartungswert &amp; Varianz (diskret)</h2>
-        <p>Für eine diskrete Zufallsvariable mit gegebener Wahrscheinlichkeitsfunktion berechnest du E[X] als
-          gewichteten Mittelwert und Var(X) am schnellsten über den Verschiebungssatz
-          Var(X) = E[X²] − (E[X])².</p>
-
-        <div class="fr">
-          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Var(X+Y) = Var(X) + Var(Y) gilt immer, für
-            beliebige Zufallsvariablen."</div>
-          <div class="right"><span class="fr-tag">✅ Richtig</span>Diese Additivität gilt nur, wenn X und Y
-            <strong>unabhängig</strong> sind (bzw. zumindest unkorreliert, Cov(X,Y)=0). Allgemein gilt
-            Var(X+Y) = Var(X) + Var(Y) + 2·Cov(X,Y).</div>
-        </div>
-
-        <h3>🧮 Aufgabe 5: E[X] und Var(X) aus einer Wahrscheinlichkeitsfunktion</h3>
-        <div class="callout callout-info">
-          <div class="c-title">Aufgabenstellung</div>
-          <p>Eine diskrete Zufallsvariable X hat P(X=1)=0.2, P(X=2)=0.5, P(X=3)=0.3. Berechne <strong>E[X]</strong>,
-            <strong>Var(X)</strong> und die Standardabweichung <strong>σ</strong>.</p>
-        </div>
-        <pre class="code">E[X]  = Σ x·P(X=x) = 1·0.2 + 2·0.5 + 3·0.3 = 0.2+1.0+0.9 = 2.1
-
-E[X²] = Σ x²·P(X=x) = 1·0.2 + 4·0.5 + 9·0.3 = 0.2+2.0+2.7 = 4.9
-
-Var(X) = E[X²] − (E[X])² = 4.9 − 2.1² = 4.9 − 4.41 = 0.49
-
-σ = √Var(X) = √0.49 = 0.7</pre>
-        <p>Der Verschiebungssatz Var(X)=E[X²]−(E[X])² ist fast immer schneller als die direkte Definition
-          Var(X)=Σ(x−E[X])²·P(X=x) — vor allem, wenn E[X] keine „schöne" Zahl ist.</p>
-      </section>
-
-      <!-- ===== 6 KONFIDENZINTERVALL ===== -->
-      <section id="konfidenzintervall" class="reveal">
-        <h2>Aufgabentyp 6: Konfidenzintervall</h2>
-        <p>Ein Konfidenzintervall gibt einen Bereich an, in dem der wahre Parameter (hier μ) mit einer bestimmten
-          Sicherheit (z. B. 95%) liegt. Bei bekanntem σ verwendest du die Standardnormalverteilung, das
-          Grundgerüst ist immer: <strong>Schätzer ± kritischer Wert · Standardfehler</strong>.</p>
-
-        <h3>🧮 Aufgabe 6: 95%-Konfidenzintervall für μ (σ bekannt)</h3>
-        <div class="callout callout-info">
-          <div class="c-title">Aufgabenstellung</div>
-          <p>Eine Stichprobe hat n=100, Stichprobenmittel x̄=50 und bekannte Standardabweichung σ=10. Bestimme das
-            <strong>95%-Konfidenzintervall</strong> für μ.</p>
-        </div>
-        <pre class="code">KI = x̄ ± z(1−α/2) · σ/√n         (95% ⇒ z(0.975) = 1.96)
-
-Standardfehler: σ/√n = 10/√100 = 10/10 = 1
-Fehlerspanne:   1.96 · 1 = 1.96
-
-KI = [50 − 1.96, 50 + 1.96] = [48.04, 51.96]</pre>
-        <div class="callout callout-tip">
-          <div class="c-title">Was, wenn σ nicht bekannt ist?</div>
-          <p>Ist σ unbekannt, schätzt du es aus der Stichprobe mit der <strong>erwartungstreuen</strong>
-            Stichprobenvarianz s² = 1/(n−1) · Σ(xi−x̄)² — bewusst mit <strong>1/(n−1)</strong>, nicht 1/n, sonst
-            wäre der Schätzer im Mittel zu klein (verzerrt). Zusätzlich ersetzt du z(1−α/2) durch den kritischen
-            Wert der t-Verteilung mit n−1 Freiheitsgraden, weil die zusätzliche Unsicherheit aus der
-            σ-Schätzung berücksichtigt werden muss.</p>
-        </div>
-      </section>
-
-      <!-- ===== 7 Z-TEST ===== -->
-      <section id="ztest" class="reveal">
-        <h2>Aufgabentyp 7: z-Test</h2>
-        <p>Fester Ablauf bei jedem Hypothesentest: Hypothesen aufstellen, Teststatistik berechnen, mit dem
-          kritischen Wert vergleichen (oder p-Wert berechnen), Entscheidung treffen. Bei bekanntem σ ist die
-          Teststatistik z-verteilt.</p>
-
-        <h3>🧮 Aufgabe 7: Zweiseitiger z-Test</h3>
-        <div class="callout callout-info">
-          <div class="c-title">Aufgabenstellung</div>
-          <p>H0: μ=500 gegen H1: μ≠500 (zweiseitig), mit n=25, x̄=490, σ=20 bekannt und Signifikanzniveau
-            α=0.05. Führe den Test durch und triff eine Entscheidung.</p>
-        </div>
-        <pre class="code">Teststatistik: z = (x̄ − μ0) / (σ/√n) = (490 − 500) / (20/√25) = −10/4 = −2.5
-
-Kritischer Wert (zweiseitig, α=0.05):  z(1−α/2) = 1.96
-
-Vergleich: |z| = 2.5  >  1.96   ⇒  H0 wird abgelehnt
-
-p-Wert = 2·Φ(−2.5) ≈ 2·0.0062 = 0.0124</pre>
-        <ol class="steps">
-          <li><strong>Teststatistik berechnen:</strong> z = −2.5 — der Stichprobenmittelwert liegt 2.5
-            Standardfehler unter dem hypothetischen μ0=500.</li>
-          <li><strong>Mit dem kritischen Wert vergleichen:</strong> |−2.5| = 2.5 ist größer als die Grenze 1.96 für
-            den zweiseitigen 5%-Test → das Ergebnis liegt im Ablehnungsbereich.</li>
-          <li><strong>Entscheidung:</strong> H0 wird zum Niveau α=0.05 abgelehnt — der beobachtete Unterschied ist
-            statistisch signifikant.</li>
-          <li><strong>Gegenprobe über den p-Wert:</strong> p≈0.0124 ist kleiner als α=0.05 — das bestätigt die
-            Ablehnung von H0 über den zweiten möglichen Rechenweg.</li>
+          <li><strong>a) Totale Wahrscheinlichkeit für „defekt":</strong> P(−) = P(−|A)·P(A) + P(−|B)·P(B)
+            = 0.03·0.7 + 0.1·0.3 = 0.021 + 0.03 = <strong>0.051</strong>.</li>
+          <li><strong>b) Satz von Bayes für P(A|+):</strong> zuerst das Komplement P(+) = 1 − P(−) = 0.949.
+            Dann P(A|+) = P(+|A)·P(A) / P(+) = (0.97·0.7)/0.949 = 0.679/0.949 ≈ <strong>0.72</strong>.</li>
+          <li><strong>c) Unabhängigkeitscheck:</strong> P(A∩+) = P(+|A)·P(A) = 0.97·0.7 = 0.679. Vergleich mit
+            P(A)·P(+) = 0.7·0.949 = 0.6643. Da 0.679 ≠ 0.6643, sind „gekauft in A" und „funktionierend"
+            <strong>nicht unabhängig</strong>.</li>
         </ol>
       </section>
 
-      <!-- ===== 8 MARKOV ===== -->
+      <!-- ===== 2 TOTALE WK & ERWARTUNGSWERT ===== -->
+      <section id="totalewk" class="reveal">
+        <h2>Aufgabentyp 2: Totale Wahrscheinlichkeit &amp; Erwartungswert</h2>
+        <p>Zweite klausurtypische Kombination: totale Wahrscheinlichkeit berechnen, daraus einen erwarteten
+          Verlust ableiten, und am Ende eine Zielgröße nach einem unbekannten Parameter umstellen.</p>
+
+        <h3>🧮 Aufgabe: Verspätungen in einem Paketdepot</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Nachklausur SS 2025 · Aufgabe 1 (12 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Ein Paketdepot wickelt an einem Werktag N = 950 unabhängige Sendungen ab, aufgeteilt in
+            Land (L, Anteil P(L) = 0.6) und Stadt (L̄, Anteil 0.4). Eine Sendung in der Stadt ist mit
+            Wahrscheinlichkeit <strong>0.28</strong> verspätet (Z), auf dem Land nur mit
+            <strong>0.08</strong>. Jede Verspätung kostet 5 €.</p>
+          <p>a) Sind L und Z unabhängig? b) Gesamtwahrscheinlichkeit für eine Verspätung? c) Erwarteter
+            Tagesverlust? d) P(Stadt | pünktlich)? e) Wie hoch darf die Verspätungswahrscheinlichkeit in der
+            Stadt höchstens sein, damit der erwartete Verlust ≤ 500 € bleibt? f) Minimal erreichbarer Verlust,
+            wenn nur die Stadt beeinflusst werden kann?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>a) Unabhängigkeit:</strong> P(Z|L) = 0.08 ≠ P(Z|L̄) = 0.28, also sind L und Z
+            <strong>nicht unabhängig</strong>.</li>
+          <li><strong>b) Totale Wahrscheinlichkeit:</strong> P(Z) = P(Z|L̄)·P(L̄) + P(Z|L)·P(L)
+            = 0.28·0.4 + 0.08·0.6 = 0.112 + 0.048 = <strong>0.16</strong>.</li>
+          <li><strong>c) Erwarteter Verlust:</strong> erwartete verspätete Pakete = 950·0.16 = 152; E[V]
+            = 152·5 € = <strong>760 €</strong>.</li>
+          <li><strong>d) Bayes, „Stadt gegeben pünktlich":</strong> P(L̄|Z̄) = P(L̄)·P(Z̄|L̄)/P(Z̄)
+            = (0.4·0.72)/0.84 = 0.288/0.84 = 12/35 ≈ <strong>0.3429</strong>.</li>
+          <li><strong>e) Zielverlust ≤ 500€, gesuchtes x = P(Z|L̄):</strong> E[Verlust] = 4750·(0.4x+0.048) ≤ 500
+            ⇒ x ≤ 500/1900 − 0.12 ≈ <strong>0.143</strong> (Stadt-Verspätung darf höchstens 14.3% betragen).</li>
+          <li><strong>f) Minimum bei x=0:</strong> 4750·0.048 = <strong>228 €</strong> — der Sockelverlust aus
+            den Land-Sendungen, den auch perfekte Stadt-Logistik nicht unterschreiten kann.</li>
+        </ol>
+      </section>
+
+      <!-- ===== 3 STETIGE ZV ===== -->
+      <section id="stetigezv" class="reveal">
+        <h2>Aufgabentyp 3: Stetige Zufallsvariable — Dichte, Verteilungsfunktion, Quantile</h2>
+        <p>Typisches Muster: erst die unbekannte Konstante c über die Normierungsbedingung bestimmen, dann
+          daraus Dichte, Intervall-Wahrscheinlichkeiten, ein Quantil und den Erwartungswert ableiten.</p>
+
+        <h3>🧮 Aufgabe: Verteilungsfunktion mit Potenzform</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Nachklausur SS 2025 · Aufgabe 2 (12 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Eine stetige Zufallsvariable X hat die Verteilungsfunktion F<sub>X</sub>(x) = 0 für x &lt; 1 und
+            F<sub>X</sub>(x) = c − x<sup>−3/2</sup> für x ≥ 1.</p>
+          <p>a) Bestimme c. b) Bestimme die Dichte f<sub>X</sub>(x). c) Berechne P(X=0), P(X=10) und
+            P(2 &lt; X ≤ 8). d) Bestimme das 75%-Quantil q<sub>0.75</sub>. e) Berechne E[X].</p>
+        </div>
+        <ol class="steps">
+          <li><strong>a) Konstante c:</strong> für x→∞ muss F<sub>X</sub>(x)→1 gelten: lim(c − x<sup>−3/2</sup>)
+            = c, also <strong>c = 1</strong>.</li>
+          <li><strong>b) Dichte:</strong> f<sub>X</sub>(x) = F'<sub>X</sub>(x) = d/dx(1 − x<sup>−3/2</sup>)
+            = <strong>3/2 · x<sup>−5/2</sup></strong> für x ≥ 1, sonst 0.</li>
+          <li><strong>c) Einzelwerte und Intervall:</strong> P(X=0) = P(X=10) = 0, da X stetig ist (jeder
+            Einzelpunkt hat Wahrscheinlichkeit 0). Für das Intervall:</li>
+        </ol>
+        <pre class="code">P(2 &lt; X ≤ 8) = F(8) − F(2) = (1 − 8^−1.5) − (1 − 2^−1.5)
+              = 1/(2√2) − 1/(16√2) = 7/(16√2) ≈ 0.31
+
+d) 75%-Quantil: F(q) = 0.75
+   1 − q^−1.5 = 0.75  ⇒  q^1.5 = 4  ⇒  q₀.₇₅ = 4^(2/3) ≈ 2.52
+
+e) Erwartungswert:
+   E[X] = ∫₁^∞ x · (3/2)x^−5/2 dx = (3/2)∫₁^∞ x^−3/2 dx = (3/2)[−2x^−1/2]₁^∞ = 3</pre>
+      </section>
+
+      <!-- ===== 4 DICHTETRANSFORMATION ===== -->
+      <section id="dichtetrafo" class="reveal">
+        <h2>Aufgabentyp 4: Dichtetransformation</h2>
+        <p>Immer dasselbe Rezept: für Y = g(X) mit eindeutig umkehrbarem g gilt f<sub>Y</sub>(y) =
+          f<sub>X</sub>(g<sup>−1</sup>(y)) · |d/dy g<sup>−1</sup>(y)| — und den transformierten Träger nicht
+          vergessen.</p>
+
+        <h3>🧮 Aufgabe: Y = 1/X für X ~ U(2,4)</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Hauptklausur SS 2025 · Aufgabe 1 (15 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>X ~ U(a=2, b=4) ist gleichverteilt auf [2,4]. Sei Y = 1/X.</p>
+          <p>a) Zeige f<sub>Y</sub>(y) = 1/(2y²) für 1/4 ≤ y ≤ 1/2. b) Zeige E[Y] = ln(2)/2. c) Bestimme den
+            Modus von Y. d) Bestimme die Verteilungsfunktion von Y. e) Zeige, dass der Median von Y gleich 1/3
+            ist. f) Was ist P(Y = 0.374)?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>a) Dichtetransformation:</strong> der Träger von Y = X<sup>−1</sup> ist [1/4, 1/2].
+            f<sub>X</sub>(x) = 1/2 auf [2,4]. Mit g<sup>−1</sup>(y) = 1/y und |d/dy(1/y)| = 1/y² folgt
+            f<sub>Y</sub>(y) = f<sub>X</sub>(1/y)·|1/y²| = (1/2)·(1/y²) = <strong>1/(2y²)</strong>.</li>
+          <li><strong>b) Erwartungswert:</strong> E[Y] = ∫<sub>1/4</sub><sup>1/2</sup> y·1/(2y²) dy
+            = (1/2)∫1/y dy = (1/2)[ln(1/2) − ln(1/4)] = (1/2)(2ln2 − ln2) = <strong>ln(2)/2 ≈ 0.3466</strong>.</li>
+          <li><strong>c) Modus:</strong> f<sub>Y</sub> ist auf [1/4, 1/2] streng monoton fallend, das Maximum
+            liegt also am linken Rand: y<sub>m</sub> = <strong>1/4 = 0.25</strong>.</li>
+          <li><strong>d) Verteilungsfunktion:</strong> F<sub>Y</sub>(y) = ∫<sub>1/4</sub><sup>y</sup>
+            1/(2t²) dt = <strong>2 − 1/(2y)</strong> für 1/4 ≤ y ≤ 1/2 (0 davor, 1 danach).</li>
+          <li><strong>e) Median:</strong> F<sub>Y</sub>(m) = 1/2 ⇒ 2 − 1/(2m) = 1/2 ⇒ 1/(2m) = 3/2 ⇒
+            m = <strong>1/3 ≈ 0.3333</strong>.</li>
+          <li><strong>f) P(Y = 0.374):</strong> <strong>0</strong>, weil Y eine stetige Zufallsvariable ist —
+            jeder Einzelpunkt hat Wahrscheinlichkeit 0, unabhängig davon, ob er im Träger liegt.</li>
+        </ol>
+      </section>
+
+      <!-- ===== 5 KONTINGENZTABELLE ===== -->
+      <section id="kontingenz" class="reveal">
+        <h2>Aufgabentyp 5: Gemeinsame Verteilung &amp; Kontingenztabelle</h2>
+        <p>Eine Kontingenztabelle mit fehlenden Zellen wird über die Randbedingung (Zeilen/Spalten summieren zur
+          Randwahrscheinlichkeit, alles zu 1) vervollständigt. Danach folgen Kovarianz, Korrelation — und oft
+          eine Unabhängigkeitsprüfung, die zeigt: unkorreliert ist nicht dasselbe wie unabhängig.</p>
+
+        <h3>🧮 Aufgabe A: Tabelle vervollständigen, Kovarianz &amp; Korrelation</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Hauptklausur SS 2024 · Aufgabe 2 (12 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben sind Teile der gemeinsamen Wahrscheinlichkeitsfunktion f<sub>X,Y</sub>(x,y) zweier
+            diskreter Zufallsvariablen X ∈ {−1,0,1}, Y ∈ {1,2}: f(−1,2)=0.1, f(1,1)=0.1, f(1,2)=0.25,
+            f<sub>X</sub>(−1)=0.4, f<sub>Y</sub>(2)=0.5. a) Vervollständige die Tabelle (inkl.
+            Randverteilungen). b) Berechne Cov(X,Y). c) Berechne die Korrelation ρ(X,Y).</p>
+        </div>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>f<sub>X,Y</sub>(x,y)</th><th>y = 1</th><th>y = 2</th><th>f<sub>X</sub>(x)</th></tr></thead>
+          <tbody>
+            <tr><td>x = −1</td><td>0.3</td><td>0.1</td><td>0.4</td></tr>
+            <tr><td>x = 0</td><td>0.1</td><td>0.15</td><td>0.25</td></tr>
+            <tr><td>x = 1</td><td>0.1</td><td>0.25</td><td>0.35</td></tr>
+            <tr><td>f<sub>Y</sub>(y)</td><td>0.5</td><td>0.5</td><td>1</td></tr>
+          </tbody>
+        </table></div>
+        <pre class="code">E(X) = −1·0.4 + 1·0.35 = −0.05
+E(Y) =  1·0.5 + 2·0.5  = 1.5
+E(XY) = −1·1·0.3 + (−1)·2·0.1 + 1·1·0.1 + 1·2·0.25 = −0.3 − 0.2 + 0.1 + 0.5 = 0.1
+
+Cov(X,Y) = E(XY) − E(X)E(Y) = 0.1 − (−0.05)(1.5) = 0.1 + 0.075 = 0.175
+
+Var(X) = 0.725,  Var(Y) = 0.25   (über E[X²] − E[X]² je Randverteilung)
+ρ(X,Y) = Cov(X,Y) / √(Var(X)·Var(Y)) = 0.175 / √(0.725·0.25) ≈ 0.411</pre>
+
+        <h3>🧮 Aufgabe B: Parametrische Tabelle — unkorreliert ≠ unabhängig</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Nachklausur SS 2024 · Aufgabe 4 (15 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Eine weitere Kontingenztabelle mit X ∈ {−1,0,1}, Y ∈ {0,1} ist teilweise durch einen Parameter θ
+            gegeben: f(−1,0)=0.1, f(1,1)=θ, f<sub>X</sub>(−1)=0.2, f<sub>Y</sub>(0)=0.3. a) Vervollständige die
+            Tabelle in Abhängigkeit von θ. b) Bestimme θ so, dass X und Y unkorreliert sind. c) Sind X und Y
+            mit diesem θ stochastisch unabhängig?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>a) Tabelle füllen:</strong> über die Randbedingungen ergibt sich Zeile x=−1: (0.1, 0.1);
+            Zeile x=0: (θ−0.3, 0.6−θ); Zeile x=1: (0.5−θ, θ); Randverteilung Y: (0.3, 0.7).</li>
+          <li><strong>b) Unkorreliertheit ⇔ Cov(X,Y)=0 ⇔ E[XY]=E[X]E[Y]:</strong> E[X]=0.3, E[Y]=0.7, also
+            E[X]E[Y]=0.21. Außerdem E[XY] = −1·P(X=−1,Y=1) + 1·P(X=1,Y=1) = −0.1 + θ. Gleichsetzen:
+            −0.1 + θ = 0.21 ⇒ <strong>θ = 0.31</strong>.</li>
+          <li><strong>c) Unabhängigkeit prüfen:</strong> mit θ=0.31 gilt f<sub>X,Y</sub>(−1,0) = 0.1, aber
+            f<sub>X</sub>(−1)·f<sub>Y</sub>(0) = 0.2·0.3 = 0.06. Da 0.1 ≠ 0.06, sind X und Y trotz
+            Unkorreliertheit <strong>nicht stochastisch unabhängig</strong>.</li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Die wichtigste Einbahnstraße des Moduls</div>
+          <p>Unabhängigkeit impliziert immer Unkorreliertheit — aber <strong>nicht umgekehrt</strong>. Aufgabe B
+            zeigt das konkret: Cov(X,Y)=0 lässt sich exakt so einstellen, dass die Tabelle trotzdem eine klare
+            Abhängigkeit enthält. Verlangt eine Aufgabe „unkorreliert", steckt oft genau diese Falle dahinter.</p>
+        </div>
+      </section>
+
+      <!-- ===== 6 MLE ===== -->
+      <section id="mle" class="reveal">
+        <h2>Aufgabentyp 6: Maximum-Likelihood-Schätzer, Standardfehler &amp; Wald-Konfidenzintervall</h2>
+        <p>Fester Ablauf: Likelihood → Log-Likelihood → erste Ableitung null setzen (liefert θ̂) → zweite
+          Ableitung negativ zeigen (Maximum-Nachweis) → Standardfehler SE(θ̂)=√(−1/ℓ''(θ̂)). Am Ende steht fast
+          immer ein Wald-Konfidenzintervall θ̂±z·SE(θ̂).</p>
+
+        <h3>🧮 Aufgabe: MLE für eine Bernoulli-Stichprobe</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Hauptklausur SS 2024 · Aufgabe 4 (17 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>X<sub>1</sub>,…,X<sub>n</sub> ist eine i.i.d.-Stichprobe aus einer Bernoulli-Verteilung mit Parameter
+            0 &lt; π &lt; 1. a) Zeige, dass π̂ = x̄ der MLE für π ist. b) Zeige, dass SE(π̂) = √(x̄(1−x̄)/n).
+            c) Bestimme mit der beobachteten Stichprobe (n=10: 0,0,1,1,0,0,1,0,0,0, also x̄=0.3) ein
+            99%-Wald-Konfidenzintervall für π̂.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>a) Likelihood und Score-Gleichung:</strong> L(π) = ∏π<sup>xi</sup>(1−π)<sup>1−xi</sup>,
+            ℓ(π) = log(π)·Σxi + log(1−π)·Σ(1−xi). Ableitung null setzen und nach π auflösen liefert
+            <strong>π̂ = Σxi/n = x̄</strong>.</li>
+          <li><strong>b) Standardfehler über die zweite Ableitung:</strong> ℓ''(π̂) = −n/(π̂(1−π̂)), also
+            SE(π̂) = √(−1/ℓ''(π̂)) = <strong>√(π̂(1−π̂)/n)</strong>.</li>
+          <li><strong>c) Einsetzen der Stichprobe:</strong> π̂ = x̄ = 0.3. SE(π̂) = √(0.3·0.7/10) = √0.021
+            ≈ <strong>0.145</strong>. Für 99% ist z<sub>0.995</sub> = 2.57, also
+            KI = 0.3 ± 2.57·0.145 = 0.3 ± 0.373 = <strong>[−0.073, 0.673]</strong>.</li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Kuriosität: das Konfidenzintervall geht unter 0</div>
+          <p>π muss in [0,1] liegen — trotzdem liefert die Wald-Formel hier eine untere Grenze von −0.073. Kein
+            Rechenfehler, sondern eine bekannte <strong>Schwäche des Wald-KI</strong>: bei kleinem n und π̂ nahe
+            am Rand ist die Normalapproximation schlecht. Die Klausur erwartet das Ergebnis trotzdem genau so
+            (die Musterlösung tut es auch) — in der Praxis würde man bei 0 abschneiden oder Wilson-Score nutzen.</p>
+        </div>
+      </section>
+
+      <!-- ===== 7 MARKOV ===== -->
       <section id="markov" class="reveal">
-        <h2>Aufgabentyp 8: Markov-Kette</h2>
-        <p>Für die <strong>stationäre Verteilung</strong> π einer Markov-Kette löst du die Fixpunktgleichung
-          π = π·P zusammen mit der Normierung Σπi = 1 — nicht durch Potenzieren von P für „viele Schritte", sondern
-          direkt als lineares Gleichungssystem.</p>
+        <h2>Aufgabentyp 7: Markov-Ketten &amp; Zustandsklassifikation</h2>
+        <p>Neben der stationären Verteilung π=πP fragt die Klausur regelmäßig nach der
+          <strong>Klassifikation der Zustände</strong>: irreduzibel? rekurrent, transient oder absorbierend?
+          Zwei gegensätzliche Beispiele zeigen den Unterschied.</p>
 
-        <h3>🧮 Aufgabe 8: Stationäre Verteilung eines Wettermodells</h3>
+        <h3>🧮 Aufgabe A: Ein Gen mit absorbierendem Zustand</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Hauptklausur SS 2024 · Aufgabe 5 (18 Punkte)</span></p>
         <div class="callout callout-info">
           <div class="c-title">Aufgabenstellung</div>
-          <p>Ein einfaches Wettermodell mit den Zuständen Sonne (S) und Regen (R) hat die Übergangsmatrix</p>
-          <span class="formula">P = [ [0.9, 0.1], [0.5, 0.5] ]</span>
-          <p>(Zeile = aktueller Zustand, Spalte = Folgezustand: von Sonne bleibt es mit 0.9 sonnig, von Regen wird
-            es mit 0.5 sonnig). Berechne die <strong>stationäre Verteilung</strong> π = (πS, πR).</p>
+          <p>Ein Gen kann Aktiv (A), Inaktiv (I) oder Mutiert (M) sein. Von A aus: bleibt mit 0.6 aktiv, wird
+            mit 0.3 inaktiv (Rest zu M). Von I aus: bleibt mit 0.5 inaktiv, wird mit 0.4 aktiv (Rest zu M). Von
+            M aus: bleibt mit Wahrscheinlichkeit 1 mutiert. a) Übergangsmatrix P aufstellen. b) P(X₂=M |
+            X₁=I, X₀=A)? c) Bei Start in A: welcher Zustand ist bei t=2 am wahrscheinlichsten? d) Ist die
+            Kette irreduzibel? e) Welcher Zustand ist für t→∞ am wahrscheinlichsten?</p>
         </div>
-        <pre class="code">Fixpunktgleichung: π = π·P, zusammen mit πS + πR = 1
+        <ol class="steps">
+          <li><strong>a) Übergangsmatrix</strong> (Zeilen summieren zu 1): P = [[0.6, 0.3, 0.1], [0.4, 0.5,
+            0.1], [0, 0, 1]] (Reihenfolge A, I, M).</li>
+          <li><strong>b) Markov-Eigenschaft nutzen:</strong> P(X₂=M | X₁=I, X₀=A) = P(X₂=M | X₁=I) = p<sub>IM</sub>
+            = <strong>0.1</strong> (die Vergangenheit vor X₁ spielt keine Rolle).</li>
+          <li><strong>c) Zwei-Schritt-Übergang:</strong> P² = [[0.48, 0.33, 0.19], [0.44, 0.37, 0.19], [0, 0,
+            1]]. Mit Start p₀=(1,0,0) folgt p₂ = p₀·P² = (0.48, 0.33, 0.19) — am wahrscheinlichsten ist bei
+            t=2 der Zustand <strong>Aktiv (0.48)</strong>.</li>
+          <li><strong>d) Irreduzibilität:</strong> <strong>Nein</strong> — M ist absorbierend, von M aus sind
+            A und I nicht mehr erreichbar, also kommunizieren nicht alle Zustände miteinander.</li>
+          <li><strong>e) Langfristiges Verhalten:</strong> sobald das Gen einmal in M ist, verlässt es diesen
+            Zustand nie mehr. Für t→∞ ist das Gen daher <strong>fast sicher in M</strong>.</li>
+        </ol>
 
-Spalte "Sonne":  πS = πS·0.9 + πR·0.5
-              ⇒  πS − 0.9·πS = 0.5·πR
-              ⇒  0.1·πS = 0.5·πR
-              ⇒  πS = 5·πR
+        <h3>🧮 Aufgabe B: Kundenloyalität — irreduzible Kette, stationäre Verteilung sofort erreicht</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Nachklausur SS 2025 · Aufgabe 3 (11 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Kunden sind loyal zu Marke A, unentschieden (U) oder loyal zu Marke B; ein direkter Sprung A↔B ist
+            nicht möglich (p<sub>AB</sub>=p<sub>BA</sub>=0). Gegeben: p<sub>AA</sub>=0.6, p<sub>UA</sub>=0.3,
+            p<sub>UU</sub>=0.4, p<sub>BU</sub>=0.4. Startverteilung μ₀ = (1/3, 1/3, 1/3), 3000 Kunden.</p>
+          <p>a) Matrix vervollständigen. b) Welche Zustände sind rekurrent? c) Verteilung nach einem Zyklus?
+            d) Verteilung nach zwei Zyklen? e) Welche langfristige Verteilung folgt daraus?</p>
+        </div>
+        <pre class="code">P =  [[0.6, 0.4, 0.0],
+      [0.3, 0.4, 0.3],
+      [0.0, 0.4, 0.6]]
 
-Normierung:  5·πR + πR = 1  ⇒  6·πR = 1  ⇒  πR = 1/6
-             πS = 5/6
+b) Über U kommunizieren A, U und B gegenseitig ⇒ die Kette ist irreduzibel
+   ⇒ in einer endlichen irreduziblen Kette sind ALLE Zustände positiv rekurrent.
 
-π = (5/6, 1/6) ≈ (0.8333, 0.1667)</pre>
-        <p>Langfristig ist es also an etwa <strong>83.3%</strong> der Tage sonnig und an <strong>16.7%</strong>
-          regnerisch — unabhängig davon, mit welchem Wetter die Kette gestartet ist.</p>
+c) μ₁ = μ₀·P = (0.3, 0.4, 0.3)   ⇒  erwartete Kundenzahlen: (900, 1200, 900)
+d) μ₂ = μ₁·P = (0.3, 0.4, 0.3)   ⇒  unverändert!
+e) μ₁ erfüllt bereits π = π·P  ⇒  π = (0.3, 0.4, 0.3) ist die stationäre Verteilung —
+   hier schon nach einem einzigen Schritt erreicht.</pre>
       </section>
 
-      <!-- ===== 9 REGRESSION ===== -->
+      <!-- ===== 8 REGRESSION ===== -->
       <section id="regression" class="reveal">
-        <h2>Aufgabentyp 9: Lineare Regression</h2>
-        <p>Die Kleinste-Quadrate-Gerade ŷ = α̂ + β̂x läuft immer über denselben festen Ablauf: Mittelwerte
-          bestimmen, dann Sxy (Kovarianz-Summe) und Sxx (Varianz-Summe) berechnen, daraus die Steigung β̂ = Sxy/Sxx
-          und den Achsenabschnitt α̂ = ȳ − β̂·x̄.</p>
+        <h2>Aufgabentyp 8: Lineare Regression (auch multipel)</h2>
+        <p>Bei mehreren Einflussgrößen läuft alles über die Matrixform β̂=(X'X)<sup>−1</sup>X'Y. Dazu regelmäßig:
+          t-Werte berechnen (t=Estimate/SE), Koeffizienten inhaltlich interpretieren, Vorhersagen einsetzen,
+          Interaktionseffekte erkennen, Residuenplots auf verletzte Annahmen prüfen.</p>
 
-        <h3>🧮 Aufgabe 9: KQ-Regressionsgerade durch drei Punkte</h3>
+        <h3>🧮 Aufgabe A: Koeffiziententabelle, Prognose &amp; Residuenplot</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Nachklausur SS 2025 · Aufgabe 5 (9 Punkte)</span></p>
         <div class="callout callout-info">
           <div class="c-title">Aufgabenstellung</div>
-          <p>Gegeben die Datenpunkte (1,2), (2,3), (3,5). Bestimme die Kleinste-Quadrate-Regressionsgerade
-            ŷ = α̂ + β̂x.</p>
+          <p>Ein Regressionsmodell erklärt den Gebrauchtwagenpreis (Euro) durch Kilometerstand (km, in 1000 km),
+            Motorleistung (ps), Premium-Marke (0/1) und Baujahr (bj):</p>
         </div>
-        <pre class="code">Mittelwerte: x̄ = (1+2+3)/3 = 2,   ȳ = (2+3+5)/3 = 10/3
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th></th><th>Estimate</th><th>Std. Error</th><th>t value</th></tr></thead>
+          <tbody>
+            <tr><td>(Intercept)</td><td>−425 680</td><td>18 520</td><td>−22.99</td></tr>
+            <tr><td>km</td><td>−140</td><td>15.5</td><td>−9.03</td></tr>
+            <tr><td>ps</td><td>85.5</td><td>8.2</td><td>?</td></tr>
+            <tr><td>premium</td><td>4500</td><td>850</td><td>5.29</td></tr>
+            <tr><td>bj</td><td>218</td><td>9.3</td><td>23.44</td></tr>
+          </tbody>
+        </table></div>
+        <ol class="steps">
+          <li><strong>a) Fehlender t-Wert für ps:</strong> t = Estimate/Std.Error = 85.5/8.2 ≈
+            <strong>10.43</strong>.</li>
+          <li><strong>b) Intercept sinnvoll interpretierbar?</strong> <strong>Nein</strong> — er entspräche
+            0 km, 0 PS, keine Premium-Marke, Baujahr 0: eine unrealistische Merkmalskombination, außerdem wäre
+            der resultierende Preis negativ.</li>
+          <li><strong>c) Koeffizienten inhaltlich:</strong> je 1000 km zusätzlicher Laufleistung sinkt der Preis
+            um <strong>140 €</strong>; ein Premium-Fahrzeug kostet im Schnitt <strong>4500 € mehr</strong> als
+            ein sonst gleiches Nicht-Premium-Fahrzeug.</li>
+          <li><strong>d) Prognose</strong> für 2015er Premium-Wagen, 120 PS, 80 000 km:
+            −425680 + 80·(−140) + 120·85.5 + 4500 + 2015·218 = <strong>17 150 €</strong>.</li>
+          <li><strong>e) Unterschiedliche Baujahr-Steigung je Marke:</strong> ein
+            <strong>Interaktionseffekt</strong> zwischen bj und premium bildet ab, dass der Baujahr-Effekt bei
+            Premium- und Nicht-Premium-Marken unterschiedlich stark ist.</li>
+          <li><strong>f) Residuenplot (Residuen gegen km):</strong> zwei Annahmen offensichtlich verletzt —
+            <strong>Varianzhomogenität</strong> (die Streuung der Residuen nimmt mit steigendem km deutlich zu)
+            und <strong>Unverzerrtheit</strong> (die Residuen sind bei kleinem km im Mittel positiv, bei
+            großem km im Mittel negativ, der km-Effekt ist also vermutlich nicht linear).</li>
+        </ol>
 
-Sxy = Σ(xi−x̄)(yi−ȳ)
-    = (1−2)(2−10/3) + (2−2)(3−10/3) + (3−2)(5−10/3)
-    = (−1)(−4/3)   +   0·(−1/3)     +   (1)(5/3)
-    = 4/3 + 0 + 5/3 = 9/3 = 3
+        <h3>🧮 Aufgabe B (kurz): Regression von Grund auf in Matrixnotation</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Nachklausur SS 2024 · Aufgabe 3 (19 Punkte, Auszug)</span></p>
+        <p>Drei Patient:innen, Placebo/Behandlung als Dummy D<sub>i</sub>, Blutdruck Y = (130, 120, 135)':</p>
+        <pre class="code">X = [[1,0],[1,1],[1,0]]     (Spalte 1: Intercept, Spalte 2: Behandlungs-Dummy)
 
-Sxx = Σ(xi−x̄)² = (−1)² + 0² + 1² = 1+0+1 = 2
+X'X = [[3,1],[1,1]]     (X'X)⁻¹ = [[0.5,−0.5],[−0.5,0.5]]
 
-β̂ = Sxy/Sxx = 3/2 = 1.5
-α̂ = ȳ − β̂·x̄ = 10/3 − 1.5·2 = 10/3 − 3 = 1/3
+β̂ = (X'X)⁻¹X'Y = (132.5, −12.5)     ⇒  β̂₀ = 132.5 (Kontrollgruppen-Mittel),
+                                        β̂₁ = −12.5 (Behandlung senkt Blutdruck um 12.5)
 
-⇒ ŷ = 1/3 + 1.5x</pre>
-        <p>Kontrollprobe: Für x=2 liefert die Gerade ŷ = 1/3 + 1.5·2 = 1/3 + 3 = 10/3 = ȳ — jede KQ-Gerade läuft
-          exakt durch den Punkt (x̄, ȳ), das ist eine gute Selbstkontrolle für jede Regressionsaufgabe.</p>
+σ̂² = ε̂'ε̂ / (n − p) = 12.5 / (3−1−1) = 12.5   ⇒   σ̂ ≈ 3.536
+
+Mit Alter im Modell: β̂₀=62.5, β̂₁=−9.5, β̂₂=1.3, β̂₃=−0.2 (Interaktion Behandlung×Alter)
+Prognose 65-jährig, Behandlung: 62.5 − 9.5 + 1.3·65 − 0.2·65 = 124.5
+β̂₃ = −0.2: der Blutdruck steigt in der Behandlungsgruppe pro Jahr um 0.2 langsamer
+            (1.1 statt 1.3 pro Jahr) als in der Placebogruppe.</pre>
       </section>
 
-      <!-- ===== 10 TSCHEBYSCHEW ===== -->
-      <section id="tschebyschew" class="reveal">
-        <h2>Aufgabentyp 10: Tschebyschew-Ungleichung</h2>
-        <p>Die Tschebyschew-Ungleichung liefert eine <strong>obere Schranke</strong> für die Wahrscheinlichkeit,
-          weit vom Erwartungswert abzuweichen — und das, ohne irgendetwas über die genaue Verteilung von X zu
-          wissen (nicht einmal Normalverteilung ist nötig). Der Preis dafür: Die Schranke ist meist recht grob.</p>
+      <!-- ===== 9 VERTEILUNGEN ERKENNEN ===== -->
+      <section id="verteilungen" class="reveal">
+        <h2>Aufgabentyp 9: Verteilungen erkennen</h2>
+        <p>Statt zu rechnen, musst du hier ein Szenario in ein Verteilungsmodell übersetzen — Stichwort für
+          Stichwort: „ohne Zurücklegen" → hypergeometrisch, „seltene Ereignisse pro Zeit-/Flächeneinheit" →
+          Poisson, „Anzahl Versuche bis zum ersten Erfolg" → geometrisch, „feste Anzahl unabhängiger
+          Bernoulli-Versuche" → Binomial.</p>
 
-        <h3>🧮 Aufgabe 10: Obere Schranke ohne Verteilungsannahme</h3>
+        <h3>🧮 Aufgabe: Vier Szenarien, vier Verteilungen</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Hauptklausur SS 2025 · Aufgabe 5 (10 Punkte)</span></p>
         <div class="callout callout-info">
           <div class="c-title">Aufgabenstellung</div>
-          <p>Eine Zufallsvariable X hat E[X]=50 und Var(X)=25 (die genaue Verteilung ist nicht bekannt). Schätze mit
-            der Tschebyschew-Ungleichung eine obere Schranke für <strong>P(|X−50|≥10)</strong>.</p>
+          <p>a) Ökolog:innen fangen m Spinnen, markieren sie, lassen sie frei, fangen später n Tiere erneut —
+            X₁ = Anzahl markierter Tiere in dieser zweiten Stichprobe. b) X₂ = Anzahl emittierter α-Teilchen
+            eines radioaktiven Klumpens pro Zeitintervall. c) Eine Nachtwächterin probiert bei 10 Schlüsseln
+            zufällig einen aus; passt er nicht, vergisst sie es und probiert erneut — X₃ = Anzahl Versuche bis
+            zum passenden Schlüssel. d) Himbeer-Toni kennt jede 10 000. Person Münchens persönlich; X₄ = Anzahl
+            Bekannter unter 150 zufällig getroffenen Münchner:innen.</p>
         </div>
-        <pre class="code">Tschebyschew-Ungleichung:  P(|X − E[X]| ≥ k)  ≤  Var(X) / k²
+        <ol class="steps">
+          <li><strong>a) Fang-Wiederfang, Ziehen ohne Zurücklegen</strong> ⇒ X₁ ist
+            <strong>hypergeometrisch</strong> verteilt: X₁ ~ H(n, N, m).</li>
+          <li><strong>b) Seltene Ereignisse in festem Zeitintervall</strong> ⇒ X₂ ist
+            <strong>Poisson-verteilt</strong>: X₂ ~ P(λ).</li>
+          <li><strong>c) Unabhängige Versuche mit konstanter Erfolgswahrscheinlichkeit bis zum ersten Erfolg</strong>
+            (sie vergisst jeweils, was sie schon probiert hat — die Versuche sind also unabhängig mit
+            gleichbleibendem p) ⇒ X₃ ist <strong>geometrisch</strong> verteilt mit p = 0.1: X₃ ~ G(0.1).</li>
+          <li><strong>d) n=150 unabhängige Bernoulli-Versuche mit kleinem p</strong> (jede Person kennt man mit
+            Wahrscheinlichkeit p = 1/10000 = 0.0001, unabhängig, „mit Zurücklegen" gedacht) ⇒ X₄ ist
+            <strong>binomialverteilt</strong>: X₄ ~ B(150, 0.0001).</li>
+        </ol>
+      </section>
 
-Hier: k=10, Var(X)=25
+      <!-- ===== 10 ZGWS ===== -->
+      <section id="zgws" class="reveal">
+        <h2>Aufgabentyp 10: Zentraler Grenzwertsatz, Konfidenzintervall, Test &amp; Stichprobenumfang</h2>
+        <p>Eine Summe S<sub>n</sub> von i.i.d. Zufallsvariablen ist laut ZGWS näherungsweise normalverteilt:
+          S<sub>n</sub>≈N(nμ, nσ²). Darauf bauen vier Standardaufgaben: Überschreitungswahrscheinlichkeit,
+          Konfidenzintervall, Hypothesentest, minimaler Stichprobenumfang (oft über zwei Methoden).</p>
 
-P(|X−50| ≥ 10)  ≤  25 / 10²  =  25/100  =  0.25</pre>
-        <p>Egal wie X konkret verteilt ist: Die Wahrscheinlichkeit, mehr als 10 vom Erwartungswert entfernt zu
-          liegen, ist höchstens 25%. Bei einer bekannten Normalverteilung wäre die tatsächliche Wahrscheinlichkeit
-          meist deutlich kleiner — Tschebyschew garantiert nur die (grobe) Worst-Case-Schranke, die für
-          <em>jede</em> Verteilung mit dieser Varianz gilt.</p>
+        <h3>🧮 Aufgabe: IT-Support-Tickets</h3>
+        <p class="lead-in"><span class="badge badge-blatt">🎓 Nachklausur SS 2025 · Aufgabe 4 (14 Punkte)</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Bearbeitungszeiten X₁,…,X₈₁ sind i.i.d. mit E(Xi)=μ, Var(Xi)=49. S₈₁=ΣXi.</p>
+          <p>a) Unter Annahme μ=20: berechne P(S₈₁ ≥ 1743.5) über den ZGWS. b) Beobachtet wurde S₈₁=1741.5 —
+            bestimme ein approximatives 95%-KI für μ. c) Teste H₀: μ=20 gegen H₁: μ≠20 zum Niveau α=0.05 mit
+            der gegebenen Teststatistik Z=1.93. d) Wie groß muss n mindestens sein, damit X̄ₙ mit
+            Wahrscheinlichkeit &gt; 90% höchstens 0.5 Minuten von μ abweicht?</p>
+        </div>
+        <pre class="code">Unter μ=20: E(S₈₁) = 81·20 = 1620,  sd(S₈₁) = √(81·49) = 63
+
+a) z = (1743.5 − 1620)/63 = 123.5/63 ≈ 1.96
+   P(S₈₁ ≥ 1743.5) ≈ 1 − Φ(1.96) = 1 − 0.975 = 0.025
+
+b) X̄ = 1741.5/81 = 21.5,  sd(X̄) = √(49/81) = 7/9 ≈ 0.778
+   95%-KI = 21.5 ± 1.96·0.778 = 21.5 ± 1.524 = [19.976, 23.024]
+
+c) Z|H₀ ≈ N(0,1), kritischer Bereich |Z| > z₀.₉₇₅ = 1.96
+   |1.93| < 1.96  ⇒  H₀ wird NICHT verworfen — die Zweifel sind (knapp) statistisch nicht abgesichert
+
+d) Zwei Lösungswege für ε = 0.5 Minuten, Ziel P(|X̄ₙ−μ|≤ε) > 0.9:
+
+   Tschebyscheff (verteilungsfrei, konservativ):
+   P(|X̄ₙ−μ|≥ε) ≤ Var(X̄ₙ)/ε² = (49/n)/0.25 = 196/n
+   1 − 196/n > 0.9  ⇒  n > 1960
+
+   ZGWS (approximativ, viel schärfer):
+   2Φ(ε√n/σ) − 1 > 0.9  ⇒  n > (z₀.₉₅·σ/ε)² = (1.645·7/0.5)² ≈ 530.4  ⇒  n ≥ 531</pre>
+        <div class="callout callout-tip">
+          <div class="c-title">Zwei Antworten auf dieselbe Frage — und ein Faktor fast 4</div>
+          <p>Tschebyscheff liefert n&gt;1960, die ZGWS-Näherung nur n≥531. Kein Widerspruch: Tschebyscheff gilt
+            <strong>garantiert für jede</strong> Verteilung, ist dafür grob. ZGWS ist schärfer, aber nur
+            <strong>approximativ</strong>. Ohne Vorgabe: prüfen, ob „garantierte Schranke" oder „genaue
+            Näherung" gefragt ist.</p>
+        </div>
       </section>
 
       <!-- ===== QUICKREF ===== -->
@@ -425,10 +578,12 @@ P(|X−50| ≥ 10)  ≤  25 / 10²  =  25/100  =  0.25</pre>
             <div class="fact"><b>Bayes</b><span>P(A|B)=P(B|A)·P(A)/P(B), niemals P(A|B)=P(B|A)</span></div>
             <div class="fact"><b>Var(X+Y)</b><span>nur additiv bei Unabhängigkeit</span></div>
             <div class="fact"><b>Dichte f(x)</b><span>keine WK, darf &gt; 1 sein — nur ∫f=1 zählt</span></div>
-            <div class="fact"><b>1/(n−1)</b><span>erwartungstreue Varianzschätzung</span></div>
+            <div class="fact"><b>Dichtetransformation</b><span>f_Y(y)=f_X(g⁻¹(y))·|d/dy g⁻¹(y)|</span></div>
+            <div class="fact"><b>SE &amp; Wald-KI</b><span>SE(θ̂)=√(−1/ℓ''(θ̂)), KI: θ̂±z·SE(θ̂)</span></div>
             <div class="fact"><b>π=πP</b><span>stationäre Verteilung als Gleichungssystem lösen</span></div>
-            <div class="fact"><b>β̂=Sxy/Sxx</b><span>KQ-Steigung, Gerade durch (x̄,ȳ)</span></div>
+            <div class="fact"><b>β̂=(X'X)⁻¹X'Y</b><span>KQ-Schätzer in Matrixform, t=Estimate/SE</span></div>
             <div class="fact"><b>Tschebyschew</b><span>P(|X−E[X]|≥k) ≤ Var(X)/k², verteilungsfrei</span></div>
+            <div class="fact"><b>unkorreliert ≠ unabhängig</b><span>nur Unabhängigkeit ⇒ Unkorreliertheit</span></div>
           </div>
 
           <h4>Grundlagen: Laplace, Bayes, totale Wahrscheinlichkeit</h4>
@@ -451,6 +606,7 @@ P(|X−50| ≥ 10)  ≤  25 / 10²  =  25/100  =  0.25</pre>
               <tr><td>Binomial(n,p)</td><td>np</td><td>np(1−p)</td></tr>
               <tr><td>Geometrisch(p)</td><td>1/p</td><td>(1−p)/p²</td></tr>
               <tr><td>Poisson(λ)</td><td>λ</td><td>λ</td></tr>
+              <tr><td>Hypergeometrisch(N,m,n)</td><td>n·m/N</td><td>n·(m/N)(1−m/N)·(N−n)/(N−1)</td></tr>
               <tr><td>Gleichverteilung U(a,b)</td><td>(a+b)/2</td><td>(b−a)²/12</td></tr>
               <tr><td>Exponential(λ)</td><td>1/λ</td><td>1/λ²</td></tr>
               <tr><td>Normalverteilung N(μ,σ²)</td><td>μ</td><td>σ²</td></tr>
@@ -459,6 +615,18 @@ P(|X−50| ≥ 10)  ≤  25 / 10²  =  25/100  =  0.25</pre>
 
           <h4>Standardisierung &amp; Tschebyschew</h4>
           <span class="formula">Z = (X − μ) / σ ~ N(0,1)          P(|X−E[X]| ≥ k) ≤ Var(X)/k²</span>
+
+          <h4>Dichtetransformation &amp; Maximum-Likelihood</h4>
+          <pre class="code">Dichtetransformation (Y = g(X), g eindeutig umkehrbar):
+f_Y(y) = f_X(g⁻¹(y)) · |d/dy g⁻¹(y)|
+
+Maximum-Likelihood-Rezept:
+1. Likelihood L(θ) = Π f(xi; θ) aufstellen
+2. Log-Likelihood ℓ(θ) = log L(θ) bilden
+3. ℓ'(θ) = 0 setzen und nach θ auflösen  ⇒  θ̂
+4. ℓ''(θ̂) < 0 zeigen (Maximum-Nachweis)
+5. SE(θ̂) = √(−1/ℓ''(θ̂))
+6. Wald-KI: θ̂ ± z(1−α/2) · SE(θ̂)          (gilt für JEDEN MLE, nicht nur π oder μ)</pre>
 
           <h4>Konfidenzintervall &amp; z-Test-Rezept</h4>
           <pre class="code">KI (σ bekannt):  x̄ ± z(1−α/2) · σ/√n
@@ -470,26 +638,39 @@ z-Test-Rezept:
 3. Mit kritischem Wert vergleichen (zweiseitig α=0.05: 1.96) — oder p-Wert = 2·Φ(−|z|) berechnen
 4. |z| > kritischer Wert (bzw. p < α)  ⇒  H0 ablehnen, sonst  ⇒  H0 beibehalten</pre>
 
+          <h4>Markov-Zustandsklassifikation</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>irreduzibel</td><td>alle Zustände erreichen sich gegenseitig (kommunizieren)</td></tr>
+              <tr><td>rekurrent</td><td>Rückkehr zum Zustand erfolgt fast sicher</td></tr>
+              <tr><td>transient</td><td>Rückkehr ist nicht sicher (Wahrscheinlichkeit &lt; 1)</td></tr>
+              <tr><td>absorbierend</td><td>p<sub>ii</sub> = 1 — der Zustand wird nie mehr verlassen</td></tr>
+              <tr><td>endliche irreduzible Kette</td><td>alle Zustände automatisch positiv rekurrent</td></tr>
+            </tbody>
+          </table></div>
+
           <h4>Markov-Ketten &amp; lineare Regression</h4>
           <div class="table-wrap"><table class="data">
             <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
             <tbody>
               <tr><td>Stationäre Verteilung</td><td>π = π·P, zusammen mit Σπi = 1</td></tr>
               <tr><td>n-Schritt-Übergang</td><td>Pⁿ (Matrixpotenz)</td></tr>
-              <tr><td>KQ-Steigung</td><td>β̂ = Sxy / Sxx</td></tr>
-              <tr><td>KQ-Achsenabschnitt</td><td>α̂ = ȳ − β̂·x̄  (Gerade läuft durch (x̄,ȳ))</td></tr>
-              <tr><td>Sxy</td><td>Σ(xi−x̄)(yi−ȳ)</td></tr>
-              <tr><td>Sxx</td><td>Σ(xi−x̄)²</td></tr>
+              <tr><td>KQ-Schätzer (multipel)</td><td>β̂ = (X'X)⁻¹X'Y</td></tr>
+              <tr><td>KQ-Steigung (einfach)</td><td>β̂ = Sxy / Sxx</td></tr>
+              <tr><td>t-Wert</td><td>t = Estimate / Std. Error</td></tr>
+              <tr><td>Fehlervarianz</td><td>σ̂² = ε̂'ε̂ / (n − p), p = Anzahl Koeffizienten</td></tr>
             </tbody>
           </table></div>
 
           <div class="callout callout-tip">
             <div class="c-title">Merksatz für die Klausur</div>
             <p>Laplace nur bei Gleichwahrscheinlichkeit, Bayes bei „verdrehter" bedingter Wahrscheinlichkeit.
-              Var(X+Y) nur bei Unabhängigkeit addieren. Dichte f(x) ist keine WK und darf &gt;1 sein — nur das
-              Integral zählt. Bei Varianzschätzung immer 1/(n−1), nicht 1/n. Stationäre Verteilung als
-              Gleichungssystem π=πP lösen, nicht durch Potenzieren. Regressionsgerade läuft immer durch (x̄,ȳ).
-              Tschebyschew funktioniert für jede Verteilung, liefert aber nur eine grobe Schranke.</p>
+              Var(X+Y) nur bei Unabhängigkeit addieren — Unkorreliertheit ist NICHT dasselbe wie Unabhängigkeit,
+              nur die Rückrichtung gilt immer. Dichte f(x) darf &gt;1 sein, nur das Integral zählt. SE(θ̂)=
+              √(−1/ℓ''(θ̂)) ⇒ Wald-KI θ̂±z·SE, das bei kleinem n über die Grenzen von θ hinausschießen kann.
+              Markov-Ketten zuerst auf absorbierende Zustände prüfen. t-Wert = Estimate/SE. Tschebyscheff gilt
+              für jede Verteilung, aber grob — ZGWS ist schärfer, nur approximativ.</p>
           </div>
         </div>
       </section>
@@ -497,205 +678,219 @@ z-Test-Rezept:
       <!-- ===== WISSENSCHECK ===== -->
       <section id="check" class="reveal">
         <h2>🧩 Wissenscheck</h2>
-        <p class="lead-in">15 Fragen zu den 10 Aufgaben oben plus drei Konzeptfragen zu den Top-5-Fehlerquellen.
-          Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du
-          die Erklärung.</p>
+        <p class="lead-in">16 Fragen, alle 1:1 aus den vier echten Klausuren (HK/NK SS 2024, HK/NK SS 2025) mit
+          Herkunftsangabe. Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit
+          „Lösung" siehst du die Erklärung.</p>
         <div class="quiz">
 
-          <div class="quiz-q" data-type="number" data-answer="0.1667" data-tol="0.002">
-            <p class="quiz-prompt"><span class="q-no">1.</span>🧮 Aufgabe 1: Was ist P(K|+) beim Medizintest
-              (Prävalenz 1%, Sensitivität 99%, Spezifität 95%)?</p>
+          <div class="quiz-q" data-type="number" data-answer="0.72" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>🎓 HK SS24, Aufgabe 1: Geschäft A hat 3% Ausfallrate
+              (70% Kaufanteil), Geschäft B 10% (30% Kaufanteil). Was ist P(A | funktionierend)?</p>
             <div class="quiz-input-row">
               <input type="text" class="quiz-input" placeholder="Zahl zwischen 0 und 1 …" aria-label="Antwort">
               <button class="quiz-check" type="button">Prüfen</button>
               <button class="quiz-reveal" type="button">Lösung</button>
             </div>
             <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>P(+) = 0.01·0.99 + 0.99·0.05 = 0.0594. P(K|+) = 0.0099/0.0594 = 1/6 ≈
-              <strong>0.1667</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.2335" data-tol="0.001">
-            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Aufgabe 2: X~Bin(10, 0.3) — was ist P(X=2)?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>P(X=2) = C(10,2)·0.3²·0.7⁸ = 45·0.09·0.05764801 ≈
-              <strong>0.2335</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.1353" data-tol="0.001">
-            <p class="quiz-prompt"><span class="q-no">3.</span>🧮 Aufgabe 3: Bei λ=2 Anrufen/Minute — was ist
-              P(X=0)?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>P(X=0) = e^(−2) ≈ <strong>0.1353</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.8647" data-tol="0.001">
-            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Aufgabe 3: Bei λ=2 Anrufen/Minute — was ist
-              P(X≥1)?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>P(X≥1) = 1 − P(X=0) = 1 − 0.1353 ≈ <strong>0.8647</strong> (über das
-              Gegenereignis).</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.9772" data-tol="0.001">
-            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Aufgabe 4: X~N(100,15²) — was ist P(X≤130)?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>z = (130−100)/15 = 2. P(X≤130) = Φ(2) ≈ <strong>0.9772</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.6827" data-tol="0.001">
-            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Aufgabe 4: X~N(100,15²) — was ist
-              P(85≤X≤115)?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>z-Grenzen ±1. P(85≤X≤115) = 2·Φ(1)−1 = 2·0.8413−1 ≈
-              <strong>0.6827</strong> — die „68%-Regel".</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.49" data-tol="0.005">
-            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Aufgabe 5: P(X=1)=0.2, P(X=2)=0.5, P(X=3)=0.3 —
-              was ist Var(X)?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>E[X]=2.1, E[X²]=4.9. Var(X) = E[X²]−(E[X])² = 4.9−4.41 =
-              <strong>0.49</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="51.96" data-tol="0.01">
-            <p class="quiz-prompt"><span class="q-no">8.</span>🧮 Aufgabe 6: n=100, x̄=50, σ=10 — wie lautet die
-              obere Grenze des 95%-Konfidenzintervalls?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>KI = 50 ± 1.96·10/√100 = 50 ± 1.96 = [48.04, 51.96]. Obere Grenze:
-              <strong>51.96</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="-2.5" data-tol="0.01">
-            <p class="quiz-prompt"><span class="q-no">9.</span>🧮 Aufgabe 7: n=25, x̄=490, μ0=500, σ=20 — wie groß
-              ist die Teststatistik z?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>z = (490−500)/(20/√25) = −10/4 = <strong>−2.5</strong>. Da |−2.5|&gt;1.96
-              wird H0 abgelehnt.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.8333" data-tol="0.005">
-            <p class="quiz-prompt"><span class="q-no">10.</span>🧮 Aufgabe 8: Übergangsmatrix P=[[0.9,0.1],[0.5,0.5]]
-              — wie groß ist πS (Sonne) in der stationären Verteilung?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>Aus 0.1·πS=0.5·πR folgt πS=5·πR; mit πS+πR=1 ergibt sich πS=5/6 ≈
-              <strong>0.8333</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="1.5" data-tol="0.01">
-            <p class="quiz-prompt"><span class="q-no">11.</span>🧮 Aufgabe 9: Punkte (1,2),(2,3),(3,5) — wie groß
-              ist die KQ-Steigung β̂?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>Sxy=3, Sxx=2. β̂ = Sxy/Sxx = 3/2 = <strong>1.5</strong>.</div>
-          </div>
-
-          <div class="quiz-q" data-type="number" data-answer="0.25" data-tol="0.005">
-            <p class="quiz-prompt"><span class="q-no">12.</span>🧮 Aufgabe 10: E[X]=50, Var(X)=25 — welche obere
-              Schranke liefert Tschebyschew für P(|X−50|≥10)?</p>
-            <div class="quiz-input-row">
-              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
-              <button class="quiz-check" type="button">Prüfen</button>
-              <button class="quiz-reveal" type="button">Lösung</button>
-            </div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>P(|X−50|≥10) ≤ Var(X)/k² = 25/10² = 25/100 = <strong>0.25</strong>.</div>
+            <div class="quiz-explain" hidden>P(+) = 1 − 0.051 = 0.949. P(A|+) = (0.97·0.7)/0.949 = 0.679/0.949 ≈
+              <strong>0.72</strong>.</div>
           </div>
 
           <div class="quiz-q" data-type="choice">
-            <p class="quiz-prompt"><span class="q-no">13.</span>Fehlerquelle 2: Welche Aussage zu P(A|B) und
-              P(B|A) ist richtig?</p>
+            <p class="quiz-prompt"><span class="q-no">2.</span>🎓 HK SS24, Aufgabe 1c: Sind „gekauft in Geschäft A"
+              und „funktionierende Glühbirne" stochastisch unabhängig?</p>
             <div class="quiz-choices">
-              <button class="quiz-choice" type="button" data-correct>Sie sind im Allgemeinen verschieden — nur der
-                Satz von Bayes verbindet sie.</button>
-              <button class="quiz-choice" type="button">Sie sind immer gleich, da beide von A und B abhängen.</button>
-              <button class="quiz-choice" type="button">P(A|B) ist immer größer als P(B|A).</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — P(A∩+)=0.679 ≠ P(A)·P(+)=0.6643.</button>
+              <button class="quiz-choice" type="button">Ja, weil beide Geschäfte unabhängig voneinander beliefert werden.</button>
+              <button class="quiz-choice" type="button">Das lässt sich ohne weitere Daten nicht bestimmen.</button>
             </div>
             <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>P(A|B) und P(B|A) sind unterschiedliche bedingte Wahrscheinlichkeiten.
-              Genau diese Verwechslung ist die häufigste Falle in Bayes-Aufgaben — wie in Aufgabe 1, wo 99%
-              Sensitivität eben <strong>nicht</strong> heißt, dass P(K|+) auch 99% ist.</div>
+            <div class="quiz-explain" hidden>P(A∩+) = P(+|A)·P(A) = 0.679, aber P(A)·P(+) = 0.7·0.949 = 0.6643.
+              Da beide Werte verschieden sind, sind die Ereignisse <strong>nicht unabhängig</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.16" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🎓 NK SS25, Aufgabe 1: Stadt-Sendungen (40%) sind mit
+              28% verspätet, Land-Sendungen (60%) mit 8%. Wie groß ist die Gesamtwahrscheinlichkeit für eine
+              Verspätung P(Z)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(Z) = 0.28·0.4 + 0.08·0.6 = 0.112 + 0.048 =
+              <strong>0.16</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 NK SS25, Aufgabe 2: X hat die Verteilungsfunktion
+              F(x)=1−x⁻³ᐟ² für x≥1. Was ist E[X]?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Mit f(x)=3/2·x⁻⁵ᐟ² folgt E[X] = ∫₁^∞ x·f(x)dx =
+              [−2x⁻¹ᐟ²·3/2]₁^∞ = <strong>3</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2.52" data-tol="0.03">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 NK SS25, Aufgabe 2d: Für dieselbe Verteilung —
+              wie groß ist das 75%-Quantil q₀.₇₅?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>1 − q⁻³ᐟ² = 0.75 ⇒ q³ᐟ² = 4 ⇒ q₀.₇₅ = 4^(2/3) ≈
+              <strong>2.52</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.3466" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 HK SS25, Aufgabe 1: X~U(2,4), Y=1/X. Was ist
+              E[Y]?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>f_Y(y)=1/(2y²) auf [1/4,1/2]. E[Y] = (1/2)[ln(1/2)−ln(1/4)] =
+              ln(2)/2 ≈ <strong>0.3466</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.3333" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🎓 HK SS25, Aufgabe 1e: Für dieselbe Verteilung Y —
+              wie groß ist der Median?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F_Y(m) = 2 − 1/(2m) = 1/2 ⇒ m = 1/3 ≈
+              <strong>0.3333</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.411" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 HK SS24, Aufgabe 2: Mit Cov(X,Y)=0.175,
+              Var(X)=0.725, Var(Y)=0.25 — wie groß ist die Korrelation ρ(X,Y)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ρ(X,Y) = 0.175/√(0.725·0.25) ≈ <strong>0.411</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.31" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 NK SS24, Aufgabe 4: In einer Kontingenztabelle
+              mit E[X]=0.3, E[Y]=0.7 und E[XY]=−0.1+θ — für welches θ sind X und Y unkorreliert?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Cov=0 ⇔ E[XY]=E[X]E[Y]=0.21. −0.1+θ=0.21 ⇒ θ =
+              <strong>0.31</strong> (die Variablen sind mit diesem θ trotzdem nicht unabhängig).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.145" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🎓 HK SS24, Aufgabe 4: Bernoulli-Stichprobe n=10
+              mit x̄=0.3 — wie groß ist SE(π̂) = √(π̂(1−π̂)/n)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>SE(π̂) = √(0.3·0.7/10) = √0.021 ≈ <strong>0.145</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.48" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">11.</span>🎓 HK SS24, Aufgabe 5: Gen-Markov-Kette (Aktiv/Inaktiv/Mutiert),
+              Start in Aktiv — wie groß ist P(X₂=Aktiv)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P² hat in der ersten Zeile (0.48, 0.33, 0.19); mit p₀=(1,0,0) ist
+              p₂=(0.48, 0.33, 0.19). P(X₂=Aktiv) = <strong>0.48</strong>.</div>
           </div>
 
           <div class="quiz-q" data-type="choice">
-            <p class="quiz-prompt"><span class="q-no">14.</span>Fehlerquelle 3: Wann gilt
-              Var(X+Y) = Var(X) + Var(Y)?</p>
+            <p class="quiz-prompt"><span class="q-no">12.</span>🎓 HK SS24, Aufgabe 5d: Ist diese Gen-Markov-Kette
+              (mit absorbierendem Zustand Mutiert) irreduzibel?</p>
             <div class="quiz-choices">
-              <button class="quiz-choice" type="button" data-correct>Nur wenn X und Y unabhängig sind (bzw.
-                unkorreliert, Cov(X,Y)=0).</button>
-              <button class="quiz-choice" type="button">Immer, für beliebige Zufallsvariablen X und Y.</button>
-              <button class="quiz-choice" type="button">Nur wenn X und Y beide normalverteilt sind.</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — Mutiert ist absorbierend, von dort ist kein anderer Zustand mehr erreichbar.</button>
+              <button class="quiz-choice" type="button">Ja, alle drei Zustände kommunizieren miteinander.</button>
+              <button class="quiz-choice" type="button">Nur wenn man in Mutiert startet.</button>
             </div>
             <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>Allgemein gilt Var(X+Y) = Var(X)+Var(Y)+2·Cov(X,Y). Der Zusatzterm
-              2·Cov(X,Y) verschwindet nur bei Unabhängigkeit (bzw. Unkorreliertheit) — <strong>nicht</strong> allein
-              wegen Normalverteilung.</div>
+            <div class="quiz-explain" hidden>Irreduzibilität würde verlangen, dass alle Zustände sich
+              gegenseitig erreichen. Da p<sub>MA</sub>=p<sub>MI</sub>=0, ist Mutiert absorbierend — die Kette
+              ist <strong>nicht irreduzibel</strong>.</div>
           </div>
 
-          <div class="quiz-q" data-type="choice">
-            <p class="quiz-prompt"><span class="q-no">15.</span>Fehlerquelle 4: Welche Aussage über die
-              Dichtefunktion f(x) einer stetigen Zufallsvariable stimmt?</p>
-            <div class="quiz-choices">
-              <button class="quiz-choice" type="button" data-correct>f(x) kann größer als 1 sein — nur die Fläche
-                unter f muss insgesamt 1 ergeben.</button>
-              <button class="quiz-choice" type="button">f(x) ist selbst eine Wahrscheinlichkeit und darf nie über 1
-                liegen.</button>
-              <button class="quiz-choice" type="button">f(x) muss für jedes x kleiner als 0.5 sein.</button>
+          <div class="quiz-q" data-type="number" data-answer="10.43" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">13.</span>🎓 NK SS25, Aufgabe 5: Koeffizient ps: Estimate =
+              85.5, Std. Error = 8.2 — wie groß ist der t-Wert?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
             </div>
             <div class="quiz-feedback" aria-live="polite"></div>
-            <div class="quiz-explain" hidden>Die Dichte f(x) ist kein Wahrscheinlichkeitswert, sondern beschreibt
-              nur die „Steilheit" der Verteilungsfunktion — bei kleiner Varianz kann f(x) durchaus &gt;1 sein. Nur
-              ∫f(x)dx über den gesamten Träger muss 1 ergeben.</div>
+            <div class="quiz-explain" hidden>t = Estimate/SE = 85.5/8.2 ≈ <strong>10.43</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="geometrisch|geometrische verteilung">
+            <p class="quiz-prompt"><span class="q-no">14.</span>🎓 HK SS25, Aufgabe 5c: Eine Nachtwächterin probiert
+              zufällig Schlüssel aus, vergisst bei Fehlversuchen was sie schon probiert hat, und wiederholt bis
+              zum Erfolg. Welche Verteilung passt zur Anzahl der Versuche?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Name der Verteilung …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Unabhängige Versuche mit konstanter Erfolgswahrscheinlichkeit bis
+              zum ersten Erfolg ⇒ <strong>geometrische Verteilung</strong>, hier G(0.1).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.025" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">15.</span>🎓 NK SS25, Aufgabe 4: S₈₁ ~ N(1620, 63²) unter
+              μ=20 — wie groß ist P(S₈₁ ≥ 1743.5)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>z = (1743.5−1620)/63 ≈ 1.96. P(S₈₁≥1743.5) ≈ 1−Φ(1.96) = 1−0.975 =
+              <strong>0.025</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.0909" data-tol="0.002">
+            <p class="quiz-prompt"><span class="q-no">16.</span>🎓 NK SS24, Aufgabe 5: Fnufnu-Test mit falsch-negativ-Rate
+              0%, falsch-positiv-Rate 1%, Prävalenz 0.1%. Wie groß ist P(K|T) — tatsächlich erkrankt bei
+              positivem Test?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(T)=0.001·1 + 0.999·0.01 ≈ 0.011. P(K|T) = 0.001/0.011 ≈
+              <strong>0.0909</strong> — trotz nur 1% falsch-positiv-Rate ist die Krankheit so selten, dass die
+              meisten positiv Getesteten gesund sind.</div>
           </div>
 
         </div>

@@ -53,6 +53,7 @@
         <li><a href="#theorie">Schätzer, MLE &amp; Konfidenzintervalle</a></li>
         <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#se-wald">Standardfehler &amp; Wald-KI</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
         <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
@@ -163,15 +164,16 @@ MSE:             MSE(θ̂) = Var(θ̂) + Bias(θ̂)²</span>
             unterschiedliche Zahlen aus denselben Daten, je nachdem, welchen Nenner du nimmst!</p>
         </div>
 
-        <h3>Maximum-Likelihood-Methode: das 4-Schritte-Rezept</h3>
+        <h3>Maximum-Likelihood-Methode: das 5-Schritte-Rezept</h3>
         <p>Die Idee: Wähle den Parameter θ, unter dem die <strong>beobachteten Daten am wahrscheinlichsten</strong>
           gewesen wären. Dazu maximierst du die Likelihood-Funktion L(θ) — in der Praxis über den Umweg des
-          Logarithmus, weil Summen einfacher abzuleiten sind als Produkte.</p>
+          Logarithmus, weil Summen einfacher abzuleiten sind als Produkte. Ein Schritt wird gerne vergessen, bringt
+          in der Klausur aber eigene Punkte: der <strong>Nachweis, dass wirklich ein Maximum</strong> vorliegt.</p>
 
         <!-- SVG 2: 4-Schritte-Rezept als Flussdiagramm -->
         <figure class="diagram">
-          <div class="diagram-title">Das MLE-Rezept: immer dieselben vier Schritte</div>
-          <svg viewBox="0 0 760 150" width="760" role="img" aria-label="Flussdiagramm der vier Schritte der Maximum-Likelihood-Methode">
+          <div class="diagram-title">Das MLE-Rezept: immer dieselben fünf Schritte</div>
+          <svg viewBox="0 0 945 150" width="945" role="img" aria-label="Flussdiagramm der fünf Schritte der Maximum-Likelihood-Methode">
             <defs>
               <marker id="mleArr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/></marker>
             </defs>
@@ -197,10 +199,16 @@ MSE:             MSE(θ̂) = Var(θ̂) + Bias(θ̂)²</span>
               <rect x="575" y="40" width="160" height="64" rx="10" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="1.6"/>
               <text x="655" y="66" text-anchor="middle" class="svg-ink" font-weight="800">4. = 0 setzen</text>
               <text x="655" y="86" text-anchor="middle" class="svg-soft" font-size="11.5">nach θ auflösen → θ̂</text>
+
+              <line x1="735" y1="72" x2="760" y2="72" stroke="#8a94a6" stroke-width="2" marker-end="url(#mleArr)"/>
+
+              <rect x="760" y="40" width="160" height="64" rx="10" fill="#12a150" fill-opacity="0.16" stroke="#12a150" stroke-width="1.6"/>
+              <text x="840" y="66" text-anchor="middle" class="svg-ink" font-weight="800">5. ℓ''(θ̂) &lt; 0?</text>
+              <text x="840" y="86" text-anchor="middle" class="svg-soft" font-size="11.5">Maximum bestätigen</text>
             </g>
           </svg>
-          <figcaption>Dieselben vier Schritte funktionieren für jedes Verteilungsmodell — nur die Dichte f(x;θ)
-            ändert sich.</figcaption>
+          <figcaption>Dieselben fünf Schritte funktionieren für jedes Verteilungsmodell — nur die Dichte f(x;θ)
+            ändert sich. Schritt 5 wird oft vergessen, ist in der Klausur aber eigenständig punktrelevant.</figcaption>
         </figure>
 
         <div class="table-wrap"><table class="data">
@@ -271,6 +279,8 @@ MSE:             MSE(θ̂) = Var(θ̂) + Bias(θ̂)²</span>
           <li><strong>Ableiten:</strong> dℓ/dp = k/p − (n−k)/(1−p)</li>
           <li><strong>Null setzen &amp; auflösen:</strong> k/p = (n−k)/(1−p) ⟹ k(1−p) = (n−k)p ⟹ k = np
             ⟹ <strong>p̂ = k/n</strong></li>
+          <li><strong>Maximum bestätigen (2. Ableitung):</strong> d²ℓ/dp² = −k/p² − (n−k)/(1−p)². Für k=7, n−k=3,
+            p̂=0.7: −7/0.7² − 3/0.3² = −14.29 − 33.33 = <strong>−47.62 &lt; 0</strong> ⟹ wirklich ein Maximum.</li>
         </ol>
         <div class="callout callout-tip">
           <div class="c-title">Eingesetzt</div>
@@ -330,6 +340,50 @@ MSE:             MSE(θ̂) = Var(θ̂) + Bias(θ̂)²</span>
         </div>
       </section>
 
+      <!-- ===== SE & WALD-KI ===== -->
+      <section id="se-wald" class="reveal">
+        <h2>Standardfehler &amp; Wald-Konfidenzintervall</h2>
+        <p>Die MLE-Rechnung liefert nicht nur den Schätzer θ̂, sondern über die <strong>Krümmung</strong> der
+          Log-Likelihood am Maximum auch gleich ein Maß für dessen Genauigkeit: Ist die Log-Likelihood dort stark
+          gekrümmt (ein "spitzer" Gipfel), ist θ̂ präzise bestimmt — ist sie eher flach, ist θ̂ unsicherer. Genau
+          diese Krümmung ℓ''(θ̂) steckt im <strong>Standardfehler</strong>.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Standardfehler &amp; Wald-Konfidenzintervall</div>
+          <span class="formula">SE(θ̂) = √(−1/ℓ''(θ̂))
+Wald-KI:  θ̂ ± z_{1−α/2} · SE(θ̂)</span>
+          <p>ℓ''(θ̂) ist die zweite Ableitung der Log-Likelihood, ausgewertet am Schätzer θ̂ — dieselbe Ableitung,
+            mit der du im MLE-Rezept (Schritt 5) das Maximum bestätigst. Je größer −ℓ''(θ̂) (je stärker die
+            Krümmung), desto kleiner der Standardfehler.</p>
+        </div>
+
+        <h3>Durchgerechnetes Klausurbeispiel: Bernoulli (🎓 Klausur SS 2024)</h3>
+        <p>Für Ber(π) mit π̂ = X̄ₙ gilt ℓ''(π̂) = −n/(π̂(1−π̂)), also SE(π̂) = √(π̂(1−π̂)/n). Stichprobe: n = 10 mit
+          3 Einsen.</p>
+        <ol class="steps">
+          <li><strong>Punktschätzer:</strong> π̂ = x̄ = 3/10 = 0.3</li>
+          <li><strong>Standardfehler:</strong> SE(π̂) = √(0.3·0.7/10) = √(0.21/10) = √0.021 ≈ <strong>0.145</strong></li>
+          <li><strong>z-Wert für 99%:</strong> z_{0.995} = 2.576</li>
+          <li><strong>Wald-KI:</strong> 0.3 ± 2.576·0.145 = 0.3 ± 0.373 = <strong>[−0.073, 0.673]</strong></li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Beliebte Verständnisfrage</div>
+          <p>Das Intervall reicht bis −0.073 — <strong>unter 0</strong>, obwohl π nur Werte in (0,1) annehmen kann!
+            Das ist kein Rechenfehler: Das Wald-KI ist eine <strong>Normalapproximation</strong> und kann bei
+            kleinem n oder π̂ nahe 0 bzw. 1 unsinnige Grenzen liefern — es garantiert nicht, im zulässigen Bereich
+            zu bleiben.</p>
+        </div>
+
+        <h3>Zweites Beispiel: Exponentialverteilung (🎓 Nachklausur SS 2024)</h3>
+        <p>Für f(x) = (1/β)·e^(−x/β) ist β̂ = x̄ der MLE, und man erhält SE(β̂) = x̄/√n.</p>
+        <div class="callout callout-info">
+          <div class="c-title">🎓 Nachklausur SS 2024 — kompakt</div>
+          <p>Mit n = 9 und x̄ = 3: SE = x̄/√n = 3/√9 = 1. 95%-Wald-KI: 3 ± 1.96·1 = <strong>[1.04, 4.96]</strong>.</p>
+          <p>Zusatzfrage aus der Klausur: Wann enthält das KI die 0 nicht? Untere Grenze &gt; 0
+            ⟺ x̄ − 1.96·x̄/√n &gt; 0 ⟺ 1.96/√n &lt; 1 ⟺ <strong>n ≥ 4</strong>.</p>
+        </div>
+      </section>
+
       <!-- ===== QUICKREF ===== -->
       <section id="quickref" class="reveal">
         <h2>Quick-Reference</h2>
@@ -364,7 +418,10 @@ MSE:             MSE(θ̂) = Var(θ̂) + Bias(θ̂)²</span>
           <h4>Merksätze</h4>
           <ul>
             <li><strong>1/(n−1)</strong> für erwartungstreue Varianz, <strong>1/n</strong> für den MLE-Schätzer</li>
-            <li>MLE-Rezept: <strong>L(θ) → log → ableiten → =0 setzen</strong> — immer dieselben vier Schritte</li>
+            <li>MLE-Rezept: <strong>L(θ) → log → ableiten → =0 setzen → ℓ''(θ̂) &lt; 0 prüfen</strong> — immer
+              dieselben fünf Schritte (Schritt 5 bringt eigene Punkte!)</li>
+            <li>SE(θ̂) = √(−1/ℓ''(θ̂)); Wald-KI: θ̂ ± z_{1−α/2}·SE(θ̂) — kann bei kleinem n unsinnige Grenzen
+              liefern</li>
             <li>Konfidenzintervall-Interpretation: nicht "P(μ im Intervall)", sondern "95% aller Intervalle
               treffen μ"</li>
             <li>σ bekannt → z; σ unbekannt → t (mit n−1 Freiheitsgraden)</li>
@@ -470,6 +527,32 @@ MSE:             MSE(θ̂) = Var(θ̂) + Bias(θ̂)²</span>
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>μ ist fest, nicht zufällig — das Intervall ist die Zufallsgröße.
               Bei hypothetischer Wiederholung würden 95% aller Intervalle μ enthalten.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.145" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Klausur SS24: Bernoulli-Stichprobe n=10, x̄=0.3.
+              Was ist SE(π̂)=√(π̂(1−π̂)/n)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>π̂(1−π̂)/n = 0.3·0.7/10 = 0.21/10 = 0.021. SE = √0.021 ≈
+              <strong>0.145</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4.96" data-tol="0.02">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Nachklausur SS24: Exponential-MLE β̂=x̄=3, n=9.
+              Was ist die obere Grenze des 95%-Wald-KI (z=1.96)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>SE = x̄/√n = 3/√9 = 1. Obere Grenze = β̂ + 1.96·SE = 3 + 1.96 =
+              <strong>4.96</strong>.</div>
           </div>
 
         </div>

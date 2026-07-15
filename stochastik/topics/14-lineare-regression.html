@@ -53,6 +53,7 @@
         <li><a href="#theorie">KQ-Schätzer &amp; R² im Bild</a></li>
         <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#multiple">Multiple Regression</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
         <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
@@ -279,6 +280,153 @@ R² = SSR/TSS = 1 − RSS/TSS   ∈ [0,1]</span>
         </div>
       </section>
 
+      <!-- ===== MULTIPLE ===== -->
+      <section id="multiple" class="reveal">
+        <h2>Multiple Regression &amp; die Koeffiziententabelle</h2>
+        <p class="lead-in">In der Klausur kommt fast nie nur <em>eine</em> Kovariable vor. Bei
+          <strong>multipler Regression</strong> schätzt man mehrere Koeffizienten gleichzeitig — und muss
+          lesen können, was R (oder die Klausuraufgabe) in einer <strong>Koeffiziententabelle</strong>
+          präsentiert.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Das multiple lineare Modell</div>
+          <span class="formula">Yᵢ = β₀ + β₁x₁ᵢ + β₂x₂ᵢ + ... + β_k x_kᵢ + Uᵢ
+
+Matrixnotation:  Y = X·β + U      β̂ = (XᵀX)⁻¹XᵀY</span>
+          <p>Dieselbe Formel wie bei der einfachen Regression, nur mit mehr Spalten in X — eine Spalte pro
+            Kovariable, plus die 1-Spalte für β₀.</p>
+        </div>
+
+        <h3>🎓 Nachklausur SS 2024: Mini-Regression mit 3 Patienten</h3>
+        <p>3 Patienten, Behandlungsdummy D = (0,1,0) (0 = Kontrolle, 1 = Behandlung), Blutdruck
+          Y = (130, 120, 135). Modell: Yᵢ = β₀ + β₁·Dᵢ + Uᵢ.</p>
+        <ol class="steps">
+          <li><strong>XᵀX aufstellen:</strong> X = [[1,0],[1,1],[1,0]] ⟹ XᵀX = [[3,1],[1,1]],
+            det = 3·1−1·1 = 2</li>
+          <li><strong>XᵀY aufstellen:</strong> XᵀY = (130+120+135, 120) = (385, 120)</li>
+          <li><strong>β̂ = (XᵀX)⁻¹XᵀY berechnen:</strong> (XᵀX)⁻¹ = ½·[[1,−1],[−1,3]] ⟹
+            β̂ = ½·(385−120, −385+3·120) = ½·(265, −25) = <strong>(132.5, −12.5)</strong></li>
+          <li><strong>Interpretation:</strong> β̂₀ = 132.5 ist der Kontrollgruppen-Mittelwert
+            ((130+135)/2), β̂₁ = −12.5 heißt: die Behandlungsgruppe liegt im Schnitt
+            <strong>12.5 niedriger</strong> (132.5−12.5 = 120 ✓).</li>
+          <li><strong>σ̂² berechnen:</strong> Residuen ε = (−2.5, 0, 2.5) ⟹ ε'ε = 6.25+0+6.25 = 12.5.
+            Mit n=3, p=1 (ein Prädiktor D): σ̂² = ε'ε/(n−p−1) = 12.5/1 = <strong>12.5</strong> ⟹
+            σ̂ = √12.5 ≈ <strong>3.54</strong></li>
+        </ol>
+
+        <h3>Die Koeffiziententabelle lesen (wie in R)</h3>
+        <p>R gibt dir für jeden Koeffizienten vier Spalten: den Schätzwert (<strong>Estimate</strong>),
+          seinen Standardfehler (<strong>Std. Error</strong>), die Teststatistik <strong>t value</strong>
+          und den <strong>p-Wert</strong>:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">t-Wert aus der Tabelle</div>
+          <span class="formula">t value = Estimate / Std. Error       (Test H₀: βⱼ = 0)</span>
+          <p>Ist |t| groß (bzw. p klein), ist der Koeffizient signifikant von 0 verschieden — die
+            Kovariable hat einen nachweisbaren Effekt.</p>
+        </div>
+
+        <h3>🎓 Nachklausur SS 2025: Gebrauchtwagenpreise (1:1 Klausurbeispiel)</h3>
+        <p>Modell: Preis = β₀ + β₁·km + β₂·PS + β₃·Premium + β₄·Baujahr + U (km in 1000er-Schritten,
+          Premium als 0/1-Dummy). Auszug aus der R-Ausgabe — ein t-Wert fehlt und soll berechnet werden:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Prädiktor</th><th>Estimate</th><th>Std. Error</th><th>t value</th></tr></thead>
+          <tbody>
+            <tr><td>(Intercept)</td><td>−425680</td><td>–</td><td>–</td></tr>
+            <tr><td>km</td><td>−140</td><td>–</td><td>−9.03</td></tr>
+            <tr><td>PS</td><td>85.50</td><td>8.20</td><td><strong>? (gesucht)</strong></td></tr>
+            <tr><td>Premium</td><td>4500</td><td>–</td><td>–</td></tr>
+            <tr><td>Baujahr</td><td>218</td><td>–</td><td>–</td></tr>
+          </tbody>
+        </table></div>
+
+        <ol class="steps">
+          <li><strong>Fehlenden t-Wert berechnen:</strong> t = Estimate/Std. Error = 85.50/8.20 ≈
+            <strong>10.43</strong></li>
+          <li><strong>km interpretieren:</strong> pro 1000 km mehr Laufleistung sinkt der Preis im Schnitt
+            um <strong>140 €</strong> (ceteris paribus).</li>
+          <li><strong>Premium interpretieren:</strong> eine Premium-Marke kostet ceteris paribus im
+            Schnitt <strong>4500 € mehr</strong>.</li>
+          <li><strong>Intercept einordnen:</strong> β̂₀ = −425680 ist <strong>nicht sinnvoll
+            interpretierbar</strong> — er entspräche 0 km, 0 PS, Baujahr 0: eine Situation, die es nicht
+            gibt, mit einem unrealistischen negativen Preis.</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Prognose</div>
+          <p>Premium-Wagen, Baujahr 2015, 120 PS, 80 000 km (also x_km = 80):<br>
+            Preis = −425680 + 80·(−140) + 120·85.5 + 4500 + 2015·218<br>
+            = −425680 − 11200 + 10260 + 4500 + 439270 = <strong>17150 €</strong></p>
+        </div>
+
+        <h3>Interaktionseffekte: unterschiedliche Steigungen je Gruppe</h3>
+        <p>Manchmal hängt die <strong>Steigung</strong> selbst vom Gruppen-Dummy ab — die Geraden für
+          beide Gruppen sind dann nicht parallel. Das modelliert man mit einem
+          <strong>Interaktionsterm</strong> D·A:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Modell mit Interaktion</div>
+          <span class="formula">Yᵢ = β₀ + β₁·Dᵢ + β₂·Aᵢ + β₃·(Dᵢ·Aᵢ) + Uᵢ</span>
+          <p>β₂ ist die Alters-Steigung in der Kontrollgruppe (D=0). In der Behandlungsgruppe (D=1) ist die
+            Alters-Steigung β₂+β₃ — β₃ ist also genau der <strong>Unterschied der Steigungen</strong>
+            zwischen den Gruppen (der Interaktionseffekt).</p>
+        </div>
+
+        <h3>🎓 Nachklausur SS 2024: Blutdruck-Beispiel mit Interaktion</h3>
+        <p>β̂₀=62.5, β̂₁=−9.5, β̂₂=1.3, β̂₃=−0.2 (Y=Blutdruck, D=Behandlung, A=Alter). Prognose für einen
+          65-Jährigen in der Behandlungsgruppe (D=1):</p>
+        <div class="callout callout-tip">
+          <div class="c-title">Ergebnis</div>
+          <p>Ŷ = 62.5 − 9.5 + 1.3·65 − 0.2·65 = 62.5 − 9.5 + 84.5 − 13 = <strong>124.5</strong>. Und
+            β₃ = −0.2 heißt: in der Behandlungsgruppe steigt der Blutdruck pro Lebensjahr um
+            <strong>0.2 langsamer</strong> als in der Kontrollgruppe (Steigung 1.3 vs. 1.3−0.2=1.1).</p>
+        </div>
+
+        <h3>🎓 Nachklausur SS 2025: Residuenplot-Diagnostik (Trichter &amp; Bogen)</h3>
+        <p>Ein Residuenplot (Residuen gegen einen Prädiktor, hier km) verrät auf einen Blick, ob
+          Modellannahmen verletzt sind:</p>
+
+        <!-- SVG 3: Residuenplot Trichter + Bogen -->
+        <figure class="diagram">
+          <div class="diagram-title">Residuenplot gegen km: Trichter (Varianz) + Bogen (Linearität)</div>
+          <svg viewBox="0 0 420 260" width="420" role="img" aria-label="Residuenplot gegen Kilometerstand: die Streuung der Punkte wächst nach rechts (Trichterform, Hinweis auf Varianzproblem) und ihr Mittelwert verläuft in einem Bogen erst über, dann unter der Nulllinie (Hinweis auf Linearitätsproblem)">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="40" y1="20" x2="40" y2="230" stroke="#8a94a6" stroke-width="1.3"/>
+              <line x1="40" y1="130" x2="395" y2="130" stroke="#8a94a6" stroke-width="1.6" stroke-dasharray="5 4"/>
+              <text x="10" y="26" class="svg-soft" font-size="11">Residuum</text>
+              <text x="399" y="134" class="svg-soft" font-size="11">0</text>
+              <text x="350" y="248" class="svg-soft" font-size="11">km →</text>
+
+              <path d="M58,128 L378,45" fill="none" stroke="#8a94a6" stroke-width="1" stroke-dasharray="2 4" opacity="0.55"/>
+              <path d="M58,132 L378,218" fill="none" stroke="#8a94a6" stroke-width="1" stroke-dasharray="2 4" opacity="0.55"/>
+              <path d="M58,124 C160,65 250,65 378,200" fill="none" stroke="#e0483d" stroke-width="2" stroke-dasharray="5 4" opacity="0.8"/>
+
+              <circle cx="65"  cy="120" r="4" fill="#f5810b"/>
+              <circle cx="100" cy="100" r="4" fill="#f5810b"/>
+              <circle cx="135" cy="82"  r="4" fill="#f5810b"/>
+              <circle cx="170" cy="103" r="4" fill="#f5810b"/>
+              <circle cx="205" cy="72"  r="4" fill="#f5810b"/>
+              <circle cx="240" cy="142" r="4" fill="#f5810b"/>
+              <circle cx="270" cy="108" r="4" fill="#f5810b"/>
+              <circle cx="300" cy="178" r="4" fill="#f5810b"/>
+              <circle cx="330" cy="152" r="4" fill="#f5810b"/>
+              <circle cx="360" cy="203" r="4" fill="#f5810b"/>
+              <circle cx="382" cy="168" r="4" fill="#f5810b"/>
+            </g>
+          </svg>
+          <figcaption>Zwei Probleme gleichzeitig: Die Punkte streuen mit wachsendem km immer weiter
+            (<strong>Trichterform</strong> → Varianzhomogenität verletzt), und ihr Mittelwert verläuft in
+            einem Bogen erst über, dann unter der Nulllinie (<strong>Bogenform</strong> →
+            Linearität/Unverzerrtheit verletzt, es fehlt vermutlich ein quadratischer Term).</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Merksatz</div>
+          <p><strong>Trichterform</strong> = Varianz-Problem (Heteroskedastizität, A3 verletzt).
+            <strong>Bogenform</strong> = Linearitäts-Problem (Modell falsch spezifiziert, A2 verletzt —
+            E[U]≠0 im Mittel).</p>
+        </div>
+      </section>
+
       <!-- ===== QUICKREF ===== -->
       <section id="quickref" class="reveal">
         <h2>Quick-Reference</h2>
@@ -406,6 +554,46 @@ A4  U ~ Normal         → t-Tests, Konfidenzintervalle</pre>
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Gauß-Markov gilt bereits unter A1–A3. A4 (Normalverteilung) wird
               erst für t-Tests und Konfidenzintervalle der Koeffizienten benötigt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="10.43" data-tol="0.02">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Nachklausur SS25: Estimate 85.50,
+              Std. Error 8.20. Was ist der t-Wert?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>t = Estimate/Std. Error = 85.50/8.20 ≈ <strong>10.43</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="17150" data-tol="10">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Nachklausur SS25: Prognose-Preis für einen
+              Premium-Wagen, Baujahr 2015, 120 PS, 80.000 km (Modell siehe Seite)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>−425680 + 80·(−140) + 120·85.5 + 4500 + 2015·218 =
+              <strong>17150</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🎓 Nachklausur SS24: Was misst der
+              Koeffizient β₃ des Terms D·A?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Den Interaktionseffekt — wie sich die
+                Alters-Steigung zwischen den Gruppen unterscheidet</button>
+              <button class="quiz-choice" type="button">Den Haupteffekt des Alters</button>
+              <button class="quiz-choice" type="button">Die Residualvarianz</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>β₃ ist der <strong>Interaktionseffekt</strong>: die
+              Alters-Steigung in der Behandlungsgruppe ist β₂+β₃, in der Kontrollgruppe nur β₂ — β₃ ist
+              genau die Differenz.</div>
           </div>
 
         </div>

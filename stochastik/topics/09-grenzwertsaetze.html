@@ -213,6 +213,13 @@ Approximation:  X̄ₙ ≈ N(μ, σ²/n)          Sₙ ≈ N(n·μ, n·σ²)</sp
           <p>Faustregel: n ≥ 30 reicht meist aus; bei stark schiefen Ausgangsverteilungen braucht es mehr.</p>
         </div>
 
+        <div class="callout callout-info">
+          <div class="c-title">🎓 Nachklausur SS 2025 — ZGWS auf eine Summe angewendet</div>
+          <p>X₁,…,X₈₁ i.i.d. mit E[Xᵢ] = μ = 20, Var(Xᵢ) = σ² = 49. Gesucht: P(S₈₁ ≥ 1743.5).</p>
+          <p>E(S₈₁) = 81·20 = 1620, &nbsp; sd(S₈₁) = √(81·49) = √3969 = 63.</p>
+          <p>P(S₈₁ ≥ 1743.5) = P(Z ≥ (1743.5−1620)/63) = P(Z ≥ 1.96) = 1 − Φ(1.96) = <strong>0.025</strong>.</p>
+        </div>
+
         <h3>Normalapproximation der Binomialverteilung</h3>
         <p>Eine der wichtigsten Anwendungen des ZGWS: X ~ B(n,p) lässt sich für großes n (Faustregel: np ≥ 5 und
           n(1−p) ≥ 5) durch eine Normalverteilung annähern.</p>
@@ -259,6 +266,24 @@ Mit Stetigkeitskorrektur (genauer):  P(X ≤ k) ≈ Φ((k + 0.5 − np) / √(np
           <li><strong>Nach n auflösen:</strong><br>
             n ≥ 1/(0.01·0.05) = 1/0.0005 = <strong>2000</strong></li>
         </ol>
+
+        <h3>🎓 Nachklausur SS 2025: Stichprobenumfang bestimmen — zwei Wege</h3>
+        <p>Gegeben: σ² = 49. Gesucht: kleinstes n, sodass P(|X̄ₙ − μ| ≤ 0.5) &gt; 0.9 gilt. Diesmal auf zwei Arten
+          gelöst — einmal konservativ über Tschebyschew, einmal schärfer über den ZGWS.</p>
+        <ol class="steps">
+          <li><strong>Weg 1 — Tschebyschew (gilt immer, ist aber grob):</strong><br>
+            P(|X̄ₙ−μ| ≥ 0.5) ≤ σ²/(n·0.5²) = 49/(0.25n). Bedingung: 1 − (49/n)/0.25 &gt; 0.9
+            ⟹ (49/n)/0.25 &lt; 0.1 ⟹ n &gt; 49/(0.1·0.25) = <strong>1960</strong> ⟹ n ≥ 1961</li>
+          <li><strong>Weg 2 — ZGWS (schärfere Näherung):</strong><br>
+            Mit X̄ₙ ≈ N(μ, σ²/n) gilt P(|X̄ₙ−μ| ≤ ε) ≈ 2Φ(ε√n/σ) − 1 &gt; 0.9 ⟹ ε√n/σ &gt; z₀.₉₅ = 1.645
+            ⟹ n &gt; (z₀.₉₅·σ/ε)² = (1.645·7/0.5)² ≈ <strong>530.4</strong> ⟹ n = 531</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p>Tschebyschew gilt <strong>immer</strong> (für jede Verteilung mit endlicher Varianz), ist aber grob —
+            hier n ≥ 1961. Die ZGWS-Näherung ist <strong>schärfer</strong> und liefert mit n = 531 einen deutlich
+            kleineren, realistischeren Stichprobenumfang.</p>
+        </div>
 
         <h3>🧮 Klausurtyp: ZGWS auf eine Summe anwenden</h3>
         <p>X₁,…,X₁₀₀ sind i.i.d. mit E[Xᵢ] = 2, Var(Xᵢ) = 9. Gesucht: P(S₁₀₀ &gt; 210).</p>
@@ -441,6 +466,32 @@ B(n,p) ≈ N(np, np(1−p))         Normalapproximation der Binomialvert.</pre>
             </div>
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>σ = √(100·0.4·0.6) = √24 ≈ <strong>4.9</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.025" data-tol="0.002">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Nachklausur SS25: S₈₁ mit E=1620, sd=63. Was ist
+              P(S₈₁ ≥ 1743.5)? (Tipp: standardisieren, Φ(1.96)=0.975)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(1743.5−1620)/63 = 1.96. P(Z≥1.96) = 1 − 0.975 =
+              <strong>0.025</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="531" data-tol="1">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Nachklausur SS25: Wie groß muss n mindestens
+              sein (ZGWS-Weg, z₀.₉₅=1.645, σ=7, ε=0.5)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>n &gt; (1.645·7/0.5)² = 23.03² ≈ 530.4 ⟹ n =
+              <strong>531</strong> (aufgerundet).</div>
           </div>
 
         </div>

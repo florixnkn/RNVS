@@ -53,6 +53,7 @@
         <li><a href="#theorie">Übergangsmatrix &amp; stationäre Verteilung</a></li>
         <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
         <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#klassifikation">Zustände klassifizieren</a></li>
         <li><a href="#quickref">Quick-Reference</a></li>
         <li><a href="#check">🧩 Wissenscheck</a></li>
       </ul>
@@ -282,6 +283,105 @@ Für irreduzible, aperiodische Ketten:  μ^(n) → π  für n → ∞  (unabhän
         </div>
       </section>
 
+      <!-- ===== KLASSIFIKATION ===== -->
+      <section id="klassifikation" class="reveal">
+        <h2>Zustände klassifizieren: rekurrent, transient, absorbierend</h2>
+        <p class="lead-in">Fast jede Markov-Klausuraufgabe fragt irgendwann: Ist dieser Zustand
+          <strong>rekurrent, transient oder absorbierend</strong>? Ist die Kette <strong>irreduzibel</strong>?
+          Diese Begriffe beschreiben, was langfristig mit einem Zustand passiert — unabhängig von den
+          konkreten Zahlenwerten.</p>
+
+        <div class="factgrid">
+          <div class="fact"><b>Rekurrent</b><span>man kommt immer wieder zurück — Rückkehr ist sicher (WK 1)</span></div>
+          <div class="fact"><b>Transient</b><span>irgendwann für immer weg — Rückkehr ist nicht sicher</span></div>
+          <div class="fact"><b>Absorbierend</b><span>"Hotel California": einchecken, nie wieder auschecken (p_ii=1)</span></div>
+          <div class="fact"><b>Irreduzibel</b><span>jeder Zustand ist von jedem Zustand aus erreichbar</span></div>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz (Klausur-Gold)</div>
+          <p>In einer <strong>endlichen irreduziblen</strong> Kette sind <strong>alle</strong> Zustände
+            (positiv) rekurrent. Ist die Kette dagegen nicht irreduzibel, lohnt sich der Blick auf die
+            <strong>Zerlegung des Zustandsraums</strong>.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Zerlegung des Zustandsraums</div>
+          <span class="formula">Zustandsraum = T ∪ C₁ ∪ C₂ ∪ ...
+
+T:  transiente Zustände (Menge, aus der man irgendwann für immer herausfällt)
+Cₖ: irreduzible, geschlossene Klassen (einmal drin, nie mehr raus — innen ist alles rekurrent)</span>
+          <p>"Geschlossen" heißt: aus Cₖ führt kein Pfeil mehr heraus. Ein absorbierender Zustand ist der
+            Spezialfall einer Klasse Cₖ mit nur einem Element.</p>
+        </div>
+
+        <h3>🎓 Klausur SS 2024: Gen-Modell (Zustandsklassifikation)</h3>
+        <p>Ein Gen kann drei Zustände annehmen: <strong>Aktiv (A)</strong>, <strong>Inaktiv (I)</strong> oder
+          <strong>Mutiert (M)</strong>. Ist das Gen einmal mutiert, bleibt es das für immer: p_MM = 1.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Übergangsmatrix P</div>
+          <span class="formula">        A     I     M
+     A ( 0.6   0.3   0.1 )
+     I ( 0.4   0.5   0.1 )
+     M (  0     0     1  )</span>
+        </div>
+
+        <ol class="steps">
+          <li><strong>M ist absorbierend:</strong> p_MM = 1 — von M führt kein Pfeil mehr weg.</li>
+          <li><strong>Irreduzibilität prüfen:</strong> Aus M kommt man nie wieder heraus, M erreicht also
+            weder A noch I zurück. Die Kette ist damit <strong>nicht irreduzibel</strong>.</li>
+          <li><strong>Langfristiges Verhalten:</strong> A und I wechseln mit positiver Wahrscheinlichkeit
+            nach M (p_AM=0.1, p_IM=0.1), und M wird nie wieder verlassen — die Kette landet für t→∞
+            <strong>fast sicher</strong> in M.</li>
+          <li><strong>Zerlegung:</strong> T = {A, I} (transient — beide werden irgendwann für immer
+            verlassen), C₁ = {M} (absorbierende Klasse mit einem Element).</li>
+        </ol>
+
+        <p>Zur Kontrolle die zweite Matrixpotenz (aus der Klausur gegeben):</p>
+        <div class="callout callout-formula">
+          <div class="c-title">P² (gerundet)</div>
+          <span class="formula">        A     I     M
+     A ( 0.48  0.33  0.19 )
+     I ( 0.44  0.37  0.19 )
+     M (  0     0     1   )</span>
+        </div>
+        <p>Startet die Kette sicher in A (μ^(0) = (1,0,0)), dann ist μ^(2) = μ^(0)·P² gerade die erste Zeile
+          von P²: (0.48, 0.33, 0.19). Bei t=2 ist <strong>Aktiv mit 0.48 am wahrscheinlichsten</strong> —
+          trotzdem "leckt" schon 19% Wahrscheinlichkeitsmasse unwiderruflich nach M ab.</p>
+
+        <h3>🎓 Nachklausur SS 2025: Kundenpräferenz (kompakt)</h3>
+        <p>Drei Marken A, U, B. Direkte Wechsel A↔B sind laut Angabe nicht möglich, aber beide kommunizieren
+          über U (A→U→B und B→U→A sind möglich). Damit erreicht <strong>jeder Zustand jeden anderen</strong>
+          — die Kette ist <strong>irreduzibel</strong>, also sind (endlich + irreduzibel) <strong>alle drei
+          Zustände rekurrent</strong>. Zerlegung: T = ∅, C₁ = {A, U, B} — eine einzige rekurrente Klasse, die
+          den gesamten Zustandsraum umfasst.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Beim Vervollständigen einer Übergangsmatrix
+            eine <strong>Spalte</strong> auf 1 auffüllen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es ist immer die <strong>Zeile</strong>, die
+            sich zu 1 summiert. Im NK25-Beispiel folgt aus "direkter Übergang A↔B nicht möglich" sofort
+            p_AB = p_BA = 0 — die restlichen Einträge holt man sich dann über Zeilensumme = 1.</div>
+        </div>
+
+        <h3>🎓 Klausur SS 2025 (Bonus): Pfadwahrscheinlichkeit über einen Zwischenschritt</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel</div>
+          <span class="formula">P(X₀=i, X₂=i) = P(X₀=i) · Σₛ p_is · p_si</span>
+          <p>Erst die Startwahrscheinlichkeit, dann über <strong>alle</strong> möglichen Zwischenzustände s
+            summieren.</p>
+        </div>
+        <p>Beispiel: Zustände U, V, W mit P = [[0.7,0.3,0],[0.3,0.5,0.2],[0.4,0.5,0.1]], μ^(0) = (0.5, 0.3,
+          0.2). Gesucht: P(X₀=V, X₂=V).</p>
+        <ol class="steps">
+          <li><strong>Startwahrscheinlichkeit:</strong> P(X₀=V) = μ^(0)(V) = 0.3</li>
+          <li><strong>Summe über Zwischenzustände:</strong> Σₛ p_Vs·p_sV = p_VU·p_UV + p_VV·p_VV + p_VW·p_WV
+            = 0.3·0.3 + 0.5·0.5 + 0.2·0.5 = 0.09+0.25+0.10 = <strong>0.44</strong></li>
+          <li><strong>Multiplizieren:</strong> P(X₀=V, X₂=V) = 0.3 · 0.44 = <strong>0.132</strong></li>
+        </ol>
+      </section>
+
       <!-- ===== QUICKREF ===== -->
       <section id="quickref" class="reveal">
         <h2>Quick-Reference</h2>
@@ -418,6 +518,45 @@ Für irreduzible, aperiodische Ketten:  μ^(n) → π  für n → ∞  (unabhän
             <div class="quiz-feedback" aria-live="polite"></div>
             <div class="quiz-explain" hidden>Irreduzibilität allein reicht nicht — eine periodische Kette
               oszilliert für immer. Erst <strong>irreduzibel + aperiodisch</strong> garantiert Konvergenz.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Klausur SS24: Das Gen-Modell hat p_MM = 1.
+              Wie nennt man so einen Zustand?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Absorbierend</button>
+              <button class="quiz-choice" type="button">Transient</button>
+              <button class="quiz-choice" type="button">Periodisch</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>p_MM = 1 heißt: einmal in M, für immer in M — genau das ist die
+              Definition von <strong>absorbierend</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Klausur SS24: Start (1,0,0), erste Zeile
+              von P² ist (0.48, 0.33, 0.19). Welcher Zustand ist bei t=2 am wahrscheinlichsten?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Aktiv</button>
+              <button class="quiz-choice" type="button">Inaktiv</button>
+              <button class="quiz-choice" type="button">Mutiert</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>μ^(2) = (0.48, 0.33, 0.19) für (A,I,M) — mit 0.48 ist
+              <strong>Aktiv</strong> am wahrscheinlichsten.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.132" data-tol="0.002">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🎓 Klausur SS25: Für P(X₀=V, X₂=V) gilt
+              μ^(0)(V)=0.3 und Σₛ p_Vs·p_sV = 0.44. Wie groß ist P(X₀=V, X₂=V)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X₀=V, X₂=V) = P(X₀=V) · Σₛ p_Vs·p_sV = 0.3 · 0.44 =
+              <strong>0.132</strong>.</div>
           </div>
 
         </div>
