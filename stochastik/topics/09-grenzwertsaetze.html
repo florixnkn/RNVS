@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Grenzwertsätze · P12 Stochastik</title>
+<meta name="description" content="Tschebyschew-Ungleichung, Gesetz der großen Zahlen und zentraler Grenzwertsatz bildlich erklärt: warum sich Stichprobenmittel stabilisieren und Summen vieler Zufallsvariablen normalverteilt aussehen – mit durchgerechneten Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Grenzwertsätze</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 09</div>
+    <span class="th-icon">🌊</span>
+    <h1>Grenzwertsätze</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 6</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Tschebyschew, GGZ &amp; ZGWS im Bild</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Was passiert, wenn du ein Zufallsexperiment nicht einmal, sondern <strong>sehr oft</strong>
+          wiederholst? Drei Sätze beantworten das aus verschiedenen Blickwinkeln: Die
+          <strong>Tschebyschew-Ungleichung</strong> gibt eine (grobe) Garantie für jede beliebige Verteilung, das
+          <strong>Gesetz der großen Zahlen</strong> sagt, dass sich dein Stichprobenmittel auf den wahren
+          Erwartungswert einpendelt, und der <strong>zentrale Grenzwertsatz</strong> verrät sogar, welche Form die
+          Verteilung der Summe annimmt: eine Glockenkurve.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du wirfst eine faire Münze. Nach 10 Würfen kann das Verhältnis Kopf:Zahl locker 7:3 sein — reiner
+            Zufall. Nach 10.000 Würfen wird es fast immer sehr nah an 50:50 liegen. Das ist das
+            <strong>Gesetz der großen Zahlen</strong> in Aktion: Je mehr Würfe, desto näher rückt die relative
+            Häufigkeit an die wahre Wahrscheinlichkeit 0.5. Zählst du stattdessen die absolute Anzahl der Köpfe,
+            wächst die mit jedem Wurf weiter — die <strong>Summe</strong> konvergiert nicht, nur der
+            <strong>Durchschnitt</strong> tut es.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Tschebyschew, GGZ &amp; ZGWS im Bild</h2>
+        <p>Ausgangspunkt für alle drei Sätze: X₁, X₂, … sind unabhängig und identisch verteilt (i.i.d.) mit
+          E[Xᵢ] = μ und Var(Xᵢ) = σ² (endlich). Definiert werden das Stichprobenmittel X̄ₙ = (X₁+…+Xₙ)/n und die
+          Partialsumme Sₙ = X₁+…+Xₙ.</p>
+
+        <h3>Tschebyschew-Ungleichung: eine Garantie für jede Verteilung</h3>
+        <p>Egal wie X verteilt ist — solange E[X] und Var(X) existieren, begrenzt die Tschebyschew-Ungleichung,
+          wie wahrscheinlich eine große Abweichung vom Mittelwert ist:</p>
+
+        <!-- SVG 1: Tschebyschew Sicherheitszone -->
+        <figure class="diagram">
+          <div class="diagram-title">Tschebyschew: Sicherheitszone [μ−ε, μ+ε] und die begrenzten Ränder</div>
+          <svg viewBox="0 0 520 170" width="520" role="img" aria-label="Zahlenstrahl mit Sicherheitszone um μ und begrenzten Randbereichen außerhalb von μ plus/minus ε">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <line x1="30" y1="100" x2="490" y2="100" stroke="#8a94a6" stroke-width="2"/>
+              <rect x="180" y="70" width="160" height="60" fill="#12b28c" fill-opacity="0.18"/>
+              <rect x="30" y="70" width="150" height="60" fill="#e0483d" fill-opacity="0.16"/>
+              <rect x="340" y="70" width="150" height="60" fill="#e0483d" fill-opacity="0.16"/>
+              <line x1="180" y1="65" x2="180" y2="135" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="340" y1="65" x2="340" y2="135" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="260" y1="60" x2="260" y2="140" stroke="#f5810b" stroke-width="2"/>
+              <text x="260" y="52" text-anchor="middle" fill="#f5810b" font-weight="800">μ</text>
+              <text x="180" y="52" text-anchor="middle" fill="#e0483d" font-size="11">μ−ε</text>
+              <text x="340" y="52" text-anchor="middle" fill="#e0483d" font-size="11">μ+ε</text>
+              <text x="260" y="118" text-anchor="middle" class="svg-ink" font-size="11.5">P(|X−μ|&lt;ε) ≥ 1−σ²/ε²</text>
+              <text x="105" y="105" text-anchor="middle" fill="#e0483d" font-size="11" font-weight="700">zusammen höchstens</text>
+              <text x="415" y="105" text-anchor="middle" fill="#e0483d" font-size="11" font-weight="700">σ²/ε²</text>
+              <text x="105" y="145" text-anchor="middle" class="svg-soft" font-size="10.5">P(|X−μ|≥ε)</text>
+            </g>
+          </svg>
+          <figcaption>Die rot markierten Randbereiche links und rechts der Zone [μ−ε, μ+ε] haben zusammen
+            höchstens Wahrscheinlichkeit σ²/ε² — egal welche Verteilung X hat. Das ist eine (oft grobe) obere
+            Schranke, kein exakter Wert!</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Tschebyschew-Ungleichung</div>
+          <span class="formula">P(|X − μ| ≥ ε) ≤ σ²/ε²        für alle ε > 0
+Äquivalent:  P(|X − μ| &lt; ε) ≥ 1 − σ²/ε²</span>
+          <p>Braucht nur E[X] und Var(X) — funktioniert für <strong>jede</strong> Verteilung mit endlicher
+            Varianz, liefert aber oft eine sehr grobe (pessimistische) Schranke.</p>
+        </div>
+
+        <h3>Gesetz der großen Zahlen: das Mittel stabilisiert sich</h3>
+        <p>Wiederholst du ein Experiment sehr oft und bildest den laufenden Durchschnitt X̄ₙ, schwankt dieser
+          anfangs stark und wird mit wachsendem n immer ruhiger — er konvergiert gegen μ.</p>
+
+        <!-- SVG 2: GGZ Simulation -->
+        <figure class="diagram">
+          <div class="diagram-title">Simulation: X̄ₙ pendelt sich mit wachsendem n auf μ ein</div>
+          <svg viewBox="0 0 520 190" width="520" role="img" aria-label="Kurve des laufenden Stichprobenmittels, die anfangs stark schwankt und sich mit wachsendem n an eine horizontale Linie bei μ annähert">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="40" y1="160" x2="490" y2="160" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="40" y="178" class="svg-soft" font-size="11">n=1</text>
+              <text x="490" y="178" text-anchor="end" class="svg-soft" font-size="11">n groß →</text>
+              <line x1="40" y1="90" x2="490" y2="90" stroke="#f5810b" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <text x="500" y="94" fill="#f5810b" font-weight="800" font-size="12">μ</text>
+              <polyline fill="none" stroke="#2f6df6" stroke-width="2"
+                points="40,40 60,140 80,55 100,120 120,70 150,105 180,60 220,100 260,80 300,96 340,84 380,94 420,88 460,92 490,89"/>
+              <text x="70" y="30" class="svg-ink" font-size="11">große Ausschläge bei kleinem n</text>
+              <text x="420" y="70" class="svg-ink" font-size="11" text-anchor="middle">ruhig nahe μ bei großem n</text>
+            </g>
+          </svg>
+          <figcaption>X̄ₙ = Sₙ/n schwankt bei kleinem n stark, dämpft sich aber mit wachsendem n immer weiter —
+            im Grenzwert n→∞ liegt X̄ₙ (fast sicher) exakt bei μ. Die Summe Sₙ selbst wächst dabei unbegrenzt weiter!</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Gesetz der großen Zahlen (GGZ)</div>
+          <span class="formula">Schwaches GGZ:  X̄ₙ →^P μ        d.h. P(|X̄ₙ − μ| ≥ ε) → 0 für n→∞
+Starkes GGZ:    X̄ₙ →^{f.s.} μ    d.h. P(lim_{n→∞} X̄ₙ = μ) = 1</span>
+          <p>Beweisidee des schwachen GGZ über Tschebyschew: P(|X̄ₙ−μ|≥ε) ≤ Var(X̄ₙ)/ε² = σ²/(n·ε²) → 0.</p>
+        </div>
+
+        <h3>Zentraler Grenzwertsatz: die Summe wird zur Glockenkurve</h3>
+        <p>Der ZGWS geht noch weiter als das GGZ: Er sagt nicht nur, dass sich X̄ₙ stabilisiert, sondern auch,
+          welche <strong>Form</strong> die (standardisierten) Abweichungen annehmen — nämlich näherungsweise
+          eine Standardnormalverteilung, unabhängig davon, wie X selbst verteilt ist.</p>
+
+        <!-- SVG 3: CLT Histogramme -->
+        <figure class="diagram">
+          <div class="diagram-title">ZGWS: mit wachsendem n wird die Verteilung von Sₙ glockenförmig</div>
+          <svg viewBox="0 0 520 190" width="520" role="img" aria-label="Vier Histogramm-Panele für n=1, 2, 10 und 30, die zunehmend einer Glockenkurve ähneln">
+            <g font-family="Segoe UI, sans-serif" font-size="11">
+              <!-- Panel n=1: flache/schiefe Verteilung -->
+              <text x="60" y="20" text-anchor="middle" class="svg-ink" font-weight="700">n=1</text>
+              <g fill="#e0483d" fill-opacity="0.55">
+                <rect x="20" y="120" width="14" height="30"/><rect x="36" y="90" width="14" height="60"/>
+                <rect x="52" y="130" width="14" height="20"/><rect x="68" y="110" width="14" height="40"/>
+                <rect x="84" y="140" width="14" height="10"/>
+              </g>
+              <!-- Panel n=2 -->
+              <text x="180" y="20" text-anchor="middle" class="svg-ink" font-weight="700">n=2</text>
+              <g fill="#f5810b" fill-opacity="0.55">
+                <rect x="140" y="130" width="12" height="20"/><rect x="154" y="100" width="12" height="50"/>
+                <rect x="168" y="80" width="12" height="70"/><rect x="182" y="95" width="12" height="55"/>
+                <rect x="196" y="120" width="12" height="30"/><rect x="210" y="138" width="12" height="12"/>
+              </g>
+              <!-- Panel n=10 -->
+              <text x="315" y="20" text-anchor="middle" class="svg-ink" font-weight="700">n=10</text>
+              <g fill="#8b5cf6" fill-opacity="0.55">
+                <rect x="260" y="140" width="11" height="10"/><rect x="273" y="115" width="11" height="35"/>
+                <rect x="286" y="90" width="11" height="60"/><rect x="299" y="75" width="11" height="75"/>
+                <rect x="312" y="90" width="11" height="60"/><rect x="325" y="115" width="11" height="35"/>
+                <rect x="338" y="140" width="11" height="10"/>
+              </g>
+              <!-- Panel n=30 -->
+              <text x="455" y="20" text-anchor="middle" class="svg-ink" font-weight="700">n=30</text>
+              <path d="M 400 150 Q 420 60 455 58 Q 490 60 510 150" fill="#12b28c" fill-opacity="0.28" stroke="#12b28c" stroke-width="2"/>
+              <g fill="#12b28c" fill-opacity="0.5">
+                <rect x="400" y="142" width="9" height="8"/><rect x="410" y="120" width="9" height="30"/>
+                <rect x="420" y="90" width="9" height="60"/><rect x="430" y="70" width="9" height="80"/>
+                <rect x="440" y="63" width="9" height="87"/><rect x="450" y="63" width="9" height="87"/>
+                <rect x="460" y="70" width="9" height="80"/><rect x="470" y="90" width="9" height="60"/>
+                <rect x="480" y="120" width="9" height="30"/><rect x="490" y="142" width="9" height="8"/>
+              </g>
+              <line x1="10" y1="150" x2="510" y2="150" stroke="#8a94a6" stroke-width="1"/>
+            </g>
+          </svg>
+          <figcaption>Egal wie schief die Ausgangsverteilung von X ist (Panel n=1): Die Verteilung der Summe
+            Sₙ = X₁+…+Xₙ nähert sich mit wachsendem n immer mehr einer Glockenkurve (Normalverteilung) an.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Zentraler Grenzwertsatz (ZGWS)</div>
+          <span class="formula">(X̄ₙ − μ) / (σ/√n)  →^d  N(0,1)          für n → ∞
+Approximation:  X̄ₙ ≈ N(μ, σ²/n)          Sₙ ≈ N(n·μ, n·σ²)</span>
+          <p>Faustregel: n ≥ 30 reicht meist aus; bei stark schiefen Ausgangsverteilungen braucht es mehr.</p>
+        </div>
+
+        <h3>Normalapproximation der Binomialverteilung</h3>
+        <p>Eine der wichtigsten Anwendungen des ZGWS: X ~ B(n,p) lässt sich für großes n (Faustregel: np ≥ 5 und
+          n(1−p) ≥ 5) durch eine Normalverteilung annähern.</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Normalapproximation</div>
+          <span class="formula">X ~ B(n,p),  μ = np,  σ² = np(1−p)
+X ≈ N(np, np(1−p))
+Standardisierung:  Z = (X − np) / √(np(1−p))  ≈  N(0,1)
+Mit Stetigkeitskorrektur (genauer):  P(X ≤ k) ≈ Φ((k + 0.5 − np) / √(np(1−p)))</span>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>f.s. ⟹ WK ⟹ Vert.</b><span>Hierarchie der Konvergenzbegriffe</span></div>
+          <div class="fact"><b>n ≥ 30</b><span>Faustregel für ZGWS-Approximation</span></div>
+          <div class="fact"><b>np≥5, n(1−p)≥5</b><span>Faustregel für Normalapprox. von B(n,p)</span></div>
+          <div class="fact"><b>σ² muss endlich sein</b><span>sonst gilt der ZGWS nicht (z.B. Cauchy)</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>Beispiel 1: Tschebyschew-Schranke berechnen</h3>
+        <p>Gegeben: E[X] = μ = 50, Var(X) = σ² = 25. Gesucht: eine Schranke für P(|X − 50| ≥ 10).</p>
+        <ol class="steps">
+          <li><strong>ε identifizieren:</strong> ε = 10 (die Abweichung, die uns interessiert).</li>
+          <li><strong>Formel einsetzen:</strong><br>
+            P(|X − 50| ≥ 10) ≤ σ²/ε² = 25/10² = 25/100 = <strong>0.25</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Zur Einordnung</div>
+          <p>Die Tschebyschew-Schranke sagt: Die Wahrscheinlichkeit einer Abweichung von mindestens 10 ist
+            <strong>höchstens</strong> 25% — sie könnte in Wirklichkeit deutlich kleiner sein. Das ist der Preis
+            dafür, dass die Schranke für <strong>jede</strong> Verteilung mit dieser Varianz gilt.</p>
+        </div>
+
+        <h3>Beispiel 2: Mindeststichprobengröße aus Tschebyschew</h3>
+        <p>Gegeben: σ² = 1. Wie groß muss n mindestens sein, damit P(|X̄ₙ − μ| ≥ 0.1) ≤ 0.05 gilt?</p>
+        <ol class="steps">
+          <li><strong>Var(X̄ₙ) einsetzen:</strong> Var(X̄ₙ) = σ²/n = 1/n, also<br>
+            P(|X̄ₙ − μ| ≥ 0.1) ≤ σ²/(n·0.1²) = 1/(0.01·n)</li>
+          <li><strong>Bedingung aufstellen:</strong> 1/(0.01·n) ≤ 0.05</li>
+          <li><strong>Nach n auflösen:</strong><br>
+            n ≥ 1/(0.01·0.05) = 1/0.0005 = <strong>2000</strong></li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: ZGWS auf eine Summe anwenden</h3>
+        <p>X₁,…,X₁₀₀ sind i.i.d. mit E[Xᵢ] = 2, Var(Xᵢ) = 9. Gesucht: P(S₁₀₀ &gt; 210).</p>
+        <ol class="steps">
+          <li><strong>ZGWS-Approximation für die Summe:</strong><br>
+            S₁₀₀ ≈ N(100·2, 100·9) = N(200, 900), also σ_S = √900 = 30</li>
+          <li><strong>Standardisieren:</strong><br>
+            P(S₁₀₀ &gt; 210) = P(Z &gt; (210−200)/30) = P(Z &gt; 1/3) = P(Z &gt; 0.33)</li>
+          <li><strong>Φ-Tabelle nutzen:</strong><br>
+            P(Z &gt; 0.33) = 1 − Φ(0.33) ≈ 1 − 0.629 = <strong>0.371</strong></li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: Normalapproximation einer Binomialverteilung</h3>
+        <p>X ~ B(100, 0.4). Gesucht: P(X ≤ 35).</p>
+        <ol class="steps">
+          <li><strong>μ und σ bestimmen:</strong><br>
+            μ = 100·0.4 = 40, &nbsp; σ = √(100·0.4·0.6) = √24 ≈ 4.899</li>
+          <li><strong>Standardisieren und Φ ablesen (ohne Stetigkeitskorrektur):</strong><br>
+            P(X ≤ 35) ≈ Φ((35−40)/4.899) = Φ(−1.02) = 1 − Φ(1.02) ≈ <strong>0.154</strong></li>
+          <li><strong>Mit Stetigkeitskorrektur (genauer):</strong><br>
+            P(X ≤ 35) ≈ Φ((35.5−40)/4.899) = Φ(−0.918) ≈ <strong>0.179</strong></li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Das GGZ sagt, dass die Summe Sₙ gegen μ
+            konvergiert.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es ist das <strong>Mittel</strong> X̄ₙ = Sₙ/n,
+            das gegen μ konvergiert. Die Summe Sₙ selbst wächst mit n → ∞ unbegrenzt weiter.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der ZGWS gilt für alle Verteilungen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der ZGWS braucht <strong>endliche Varianz σ²</strong>.
+            Bei der Cauchy-Verteilung z.B. existiert σ² nicht — der ZGWS gilt dort nicht.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Z = (X̄ₙ − μ) / (σ²/√n)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Z = (X̄ₙ − μ) / (σ/√n) — im Nenner steht die
+            <strong>Standardabweichung σ</strong>, nicht die Varianz σ²!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(|X − μ| ≥ ε) = σ²/ε² (exakter Wert)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Tschebyschew liefert nur eine
+            <strong>obere Schranke</strong>: P(|X−μ|≥ε) ≤ σ²/ε². Der tatsächliche Wert kann deutlich kleiner sein.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <pre class="code">P(|X−μ| ≥ ε) ≤ σ²/ε²           Tschebyschew (jede Verteilung mit endl. Varianz)
+X̄ₙ →^P μ                       Schwaches GGZ
+X̄ₙ →^{f.s.} μ                   Starkes GGZ
+(X̄ₙ−μ)/(σ/√n) →^d N(0,1)       Zentraler Grenzwertsatz
+X̄ₙ ≈ N(μ, σ²/n)                ZGWS-Approximation fürs Mittel
+Sₙ ≈ N(nμ, nσ²)                 ZGWS-Approximation für die Summe
+B(n,p) ≈ N(np, np(1−p))         Normalapproximation der Binomialvert.</pre>
+
+          <h4>Konvergenzbegriffe im Vergleich</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Symbol</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>Konvergenz in Wahrscheinlichkeit</td><td>→^P</td><td>P(|X̄ₙ−μ| ≥ ε) → 0</td></tr>
+              <tr><td>Fast sichere Konvergenz</td><td>→^{f.s.}</td><td>P(lim X̄ₙ = μ) = 1</td></tr>
+              <tr><td>Konvergenz in Verteilung</td><td>→^d</td><td>F_{Xₙ}(x) → F(x)</td></tr>
+            </tbody>
+          </table></div>
+          <p style="margin-top:6px">Hierarchie: <strong>fast sicher ⟹ in Wahrscheinlichkeit ⟹ in Verteilung</strong></p>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Mittel konvergiert, Summe wächst</strong> — GGZ gilt für X̄ₙ, nicht für Sₙ</li>
+            <li>Tschebyschew ist eine <strong>Schranke</strong>, kein exakter Wert</li>
+            <li>ZGWS braucht <strong>endliches σ²</strong> und i.i.d.</li>
+            <li>Standardisierung immer mit <strong>σ</strong> (nicht σ²) im Nenner</li>
+            <li>Normalapproximation von B(n,p) nur bei genügend großem n (np≥5, n(1−p)≥5)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.25" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>μ = 50, σ² = 25. Wie groß ist die
+              Tschebyschew-Schranke für P(|X−50| ≥ 10)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>σ²/ε² = 25/10² = 25/100 = <strong>0.25</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Var(X) = 8. Wie groß ist die
+              Tschebyschew-Schranke für P(|X−μ| ≥ 4)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>σ²/ε² = 8/4² = 8/16 = <strong>0.5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Was besagt das Gesetz der großen Zahlen?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Die Summe Sₙ konvergiert gegen μ.</button>
+              <button class="quiz-choice" type="button" data-correct>Das Stichprobenmittel X̄ₙ konvergiert gegen μ.</button>
+              <button class="quiz-choice" type="button">Var(X̄ₙ) wächst mit n gegen unendlich.</button>
+              <button class="quiz-choice" type="button">X̄ₙ konvergiert gegen eine Normalverteilung.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das GGZ betrifft das <strong>arithmetische Mittel</strong> X̄ₙ, das
+              gegen μ konvergiert — nicht die Summe (die wächst) und nicht die Verteilungsform (das ist der ZGWS).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2000">
+            <p class="quiz-prompt"><span class="q-no">4.</span>σ² = 1. Wie groß muss n mindestens sein, damit
+              P(|X̄ₙ−μ| ≥ 0.1) ≤ 0.05 gilt (Tschebyschew)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>n ≥ σ²/(ε²·δ) = 1/(0.1²·0.05) = 1/0.0005 = <strong>2000</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="zentraler grenzwertsatz|zgws">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt der Satz, der besagt, dass Summen
+              vieler unabhängiger Zufallsvariablen näherungsweise normalverteilt sind? (Abkürzung reicht)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der <strong>zentrale Grenzwertsatz (ZGWS)</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Was liefert die Tschebyschew-Ungleichung?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">den exakten Wert von P(|X−μ|≥ε)</button>
+              <button class="quiz-choice" type="button" data-correct>eine obere Schranke für P(|X−μ|≥ε)</button>
+              <button class="quiz-choice" type="button">eine untere Schranke für P(|X−μ|≥ε)</button>
+              <button class="quiz-choice" type="button">nur einen Wert für normalverteilte X</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Tschebyschew liefert eine <strong>obere Schranke</strong> — gültig
+              für jede Verteilung mit endlicher Varianz, aber oft nicht besonders scharf.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4.9" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: X ~ B(100, 0.4). Wie groß ist
+              σ = √(np(1−p)) für die Normalapproximation?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>σ = √(100·0.4·0.6) = √24 ≈ <strong>4.9</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="08-erwartungswert-varianz.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Erwartungswert &amp; Varianz</div>
+        </a>
+        <a class="next" href="10-kovarianz-korrelation.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Kovarianz &amp; Korrelation</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

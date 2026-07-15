@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stochastische Unabhängigkeit · P12 Stochastik</title>
+<meta name="description" content="Stochastische Unabhängigkeit bildlich erklärt: P(A∩B)=P(A)·P(B), der Unterschied zu Disjunktheit, paarweise vs. vollständige Unabhängigkeit am Bernstein-Beispiel und Hardy-Weinberg als Anwendung." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P12-Kursübersicht</a> › Thema 03</div>
+    <span class="th-icon">🔗</span>
+    <h1>Stochastische Unabhängigkeit</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-blatt">Klausur: mittel</span>
+      <span class="badge badge-blatt">Block 3</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie im Bild</a></li>
+        <li><a href="#rechnen">Beispiele Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Manche Ereignisse haben <strong>nichts miteinander zu tun</strong> — das Ergebnis des
+          einen verrät nichts über das andere. Andere Ereignisse hängen dagegen eng zusammen. Stochastische
+          Unabhängigkeit ist die präzise, nachrechenbare Definition für den ersten Fall — und wie du gleich sehen
+          wirst, liegt unsere Intuition dabei überraschend oft daneben.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du wirfst heute eine Münze, und eine Freundin in einer anderen Stadt wirft morgen ebenfalls eine
+            Münze. Ob <em>ihre</em> Münze Kopf zeigt, ändert nichts an der Wahrscheinlichkeit für <em>deine</em>
+            Münze — die beiden Würfe sind <strong>unabhängig</strong>. Anders bei: "Ich nehme einen Regenschirm mit"
+            und "es regnet heute" — wenn du weißt, dass es regnet, änderst du sofort deine Einschätzung zum
+            Regenschirm. Das ist <strong>Abhängigkeit</strong>. Die Formel dahinter: A und B sind unabhängig, wenn
+            das Wissen um B <em>nichts</em> an der Wahrscheinlichkeit von A ändert — P(A|B) bleibt einfach P(A).</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie im Bild</h2>
+
+        <h3>Definition: die Produktregel</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: stochastische Unabhängigkeit (zwei Ereignisse)</div>
+          <span class="formula">P(A ∩ B) = P(A) · P(B)
+
+Äquivalent (wenn P(B) &gt; 0 bzw. P(A) &gt; 0):
+P(A|B) = P(A)     [B liefert keine Information über A]
+P(B|A) = P(B)     [A liefert keine Information über B]</span>
+        </div>
+
+        <p>Der beste Weg, sich das vorzustellen: Wahrscheinlichkeit als <strong>Fläche</strong>. Wenn A und B
+          unabhängig sind, ist die Fläche ihrer Schnittmenge genau das Produkt der beiden Einzelflächen — wie bei
+          einem Rechteck, dessen Fläche = Breite × Höhe ist.</p>
+
+        <!-- SVG 1: Unabhängigkeit als Fläche -->
+        <figure class="diagram">
+          <div class="diagram-title">Zwei unabhängige Münzwürfe: A = "1. Wurf Kopf", B = "2. Wurf Kopf"</div>
+          <svg viewBox="0 0 380 340" width="380" role="img" aria-label="Quadrat, das den Grundraum darstellt, senkrecht geteilt nach Ereignis B und waagrecht nach Ereignis A, die Schnittfläche entspricht dem Produkt der beiden Wahrscheinlichkeiten">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="125" y="20" text-anchor="middle" fill="#2f6df6" font-weight="800">B (Kopf)</text>
+              <text x="255" y="20" text-anchor="middle" class="svg-soft" font-weight="800">Bᶜ (Zahl)</text>
+              <text x="345" y="95" fill="#12b28c" font-weight="800">A (Kopf)</text>
+              <text x="345" y="225" class="svg-soft" font-weight="800">Aᶜ (Zahl)</text>
+
+              <rect x="60" y="30" width="260" height="260" fill="none" stroke="#8a94a6" stroke-width="1.4"/>
+              <rect x="60" y="30" width="130" height="130" fill="#8b5cf6" fill-opacity="0.4"/>
+              <line x1="190" y1="30" x2="190" y2="290" stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <line x1="60" y1="160" x2="320" y2="160" stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="4 3"/>
+
+              <text x="125" y="100" text-anchor="middle" class="svg-ink" font-weight="800">A∩B</text>
+              <text x="125" y="118" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="12">0.25</text>
+
+              <text x="125" y="315" text-anchor="middle" class="svg-soft">P(B) = 0.5</text>
+              <text x="255" y="315" text-anchor="middle" class="svg-soft">P(Bᶜ) = 0.5</text>
+            </g>
+          </svg>
+          <figcaption>Die Fläche des Quadrats entspricht der Gesamtwahrscheinlichkeit 1. Die lila Schnittfläche
+            A∩B nimmt genau 0.5 × 0.5 = 0.25 der Gesamtfläche ein — Breite mal Höhe, wie bei einem Rechteck.
+            Das ist die Signatur von Unabhängigkeit.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Unabhängigkeit prüfen</div>
+          <span class="formula">P(A∩B) = P(A)·P(B) = 0.5 · 0.5 = 0.25 → passt zur Fläche → unabhängig ✓</span>
+        </div>
+
+        <h3>Unabhängigkeit ≠ Disjunktheit — die beliebteste Verwechslung</h3>
+        <p>Intuitiv klingt "die Ereignisse haben nichts miteinander zu tun" fast wie "sie schließen sich aus". Das
+          ist aber das <strong>Gegenteil</strong>: Disjunkte Ereignisse sind maximal <em>abhängig</em>, denn sobald
+          eines eintritt, ist das andere komplett ausgeschlossen — das ist die stärkste Form von Information, die
+          es gibt.</p>
+
+        <!-- SVG 2: Disjunkt vs. Unabhängig -->
+        <figure class="diagram">
+          <div class="diagram-title">Disjunkt (links) ist NICHT dasselbe wie unabhängig (rechts)</div>
+          <svg viewBox="0 0 620 260" width="620" role="img" aria-label="Links zwei getrennte Kreise ohne Überlappung, die zeigen dass disjunkte Ereignisse abhängig sind. Rechts zwei überlappende Kreise als Beispiel für unabhängige Ereignisse">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <text x="155" y="35" text-anchor="middle" fill="#e0483d" font-weight="800">Disjunkt: A ∩ B = ∅</text>
+              <circle cx="100" cy="140" r="60" fill="#2f6df6" fill-opacity="0.3" stroke="#2f6df6" stroke-width="1.6"/>
+              <circle cx="260" cy="140" r="60" fill="#f5810b" fill-opacity="0.3" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="100" y="145" text-anchor="middle" class="svg-ink" font-weight="800">A</text>
+              <text x="260" y="145" text-anchor="middle" class="svg-ink" font-weight="800">B</text>
+              <text x="180" y="210" text-anchor="middle" fill="#e0483d" font-size="11.5">P(A∩B)=0 ≠ P(A)·P(B)&gt;0</text>
+              <text x="180" y="228" text-anchor="middle" fill="#e0483d" font-weight="800">→ IMMER abhängig!</text>
+
+              <line x1="315" y1="20" x2="315" y2="250" stroke="#8a94a6" stroke-width="1" stroke-dasharray="5 4"/>
+
+              <text x="475" y="35" text-anchor="middle" fill="#12b28c" font-weight="800">Unabhängig (Beispiel)</text>
+              <circle cx="420" cy="140" r="65" fill="#12b28c" fill-opacity="0.28" stroke="#12b28c" stroke-width="1.6"/>
+              <circle cx="500" cy="140" r="65" fill="#12b28c" fill-opacity="0.28" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="395" y="145" text-anchor="middle" class="svg-ink" font-weight="800">A</text>
+              <text x="525" y="145" text-anchor="middle" class="svg-ink" font-weight="800">B</text>
+              <text x="460" y="215" text-anchor="middle" fill="#12b28c" font-size="11.5">P(A∩B) = P(A)·P(B)</text>
+              <text x="460" y="233" text-anchor="middle" fill="#12b28c" font-weight="800">z. B. zwei Münzwürfe</text>
+            </g>
+          </svg>
+          <figcaption>Disjunkte Kreise berühren sich nicht — trotzdem heißt das nicht "unabhängig", sondern das
+            genaue Gegenteil: maximale Abhängigkeit. Unabhängigkeit ist eine Aussage über die <em>Größe</em> der
+            Überlappung (Produktregel), nicht über ihre bloße Existenz.</figcaption>
+        </figure>
+
+        <h3>Mehrere Ereignisse: paarweise vs. vollständige Unabhängigkeit</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Unabhängigkeit bei n Ereignissen</div>
+          <span class="formula">Paarweise unabhängig: für alle i ≠ j gilt P(Aᵢ∩Aⱼ) = P(Aᵢ)·P(Aⱼ)
+
+Vollständig unabhängig: für JEDE Teilmenge I ⊆ {1,...,n} gilt
+P(∩ᵢ∈I Aᵢ) = ∏ᵢ∈I P(Aᵢ)</span>
+          <p>⚠️ <strong>Vollständige Unabhängigkeit ⟹ paarweise Unabhängigkeit — aber nicht umgekehrt!</strong>
+            Das folgende Gegenbeispiel (nach Bernstein) zeigt, dass paarweise unabhängig noch lange nicht
+            "alle zusammen unabhängig" bedeutet.</p>
+        </div>
+
+        <!-- SVG 3: Bernstein-Beispiel -->
+        <figure class="diagram">
+          <div class="diagram-title">Bernstein-Beispiel: Ω = {1,2,3,4} gleichwahrscheinlich, A={1,2}, B={1,3}, C={1,4}</div>
+          <svg viewBox="0 0 500 320" width="440" role="img" aria-label="Drei überlappende Kreise A, B und C, die sich alle in einem gemeinsamen Punkt 1 schneiden, die Punkte 2, 3 und 4 liegen jeweils nur in einem der drei Kreise">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <circle cx="220" cy="130" r="95" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c" stroke-width="1.6"/>
+              <circle cx="170" cy="210" r="95" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.6"/>
+              <circle cx="270" cy="210" r="95" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="1.6"/>
+
+              <text x="220" y="35" text-anchor="middle" fill="#12b28c" font-weight="800">A = {1,2}</text>
+              <text x="90" y="280" text-anchor="middle" fill="#2f6df6" font-weight="800">B = {1,3}</text>
+              <text x="350" y="280" text-anchor="middle" fill="#8b5cf6" font-weight="800">C = {1,4}</text>
+
+              <g font-family="JetBrains Mono, monospace" font-weight="800" class="svg-ink">
+                <circle cx="220" cy="175" r="15" fill="#f5810b" fill-opacity="0.85" stroke="#f5810b"/>
+                <text x="220" y="180" text-anchor="middle" fill="#fff">1</text>
+
+                <circle cx="220" cy="70" r="14" fill="#12b28c" fill-opacity="0.5" stroke="#12b28c"/>
+                <text x="220" y="75" text-anchor="middle">2</text>
+
+                <circle cx="110" cy="230" r="14" fill="#2f6df6" fill-opacity="0.5" stroke="#2f6df6"/>
+                <text x="110" y="235" text-anchor="middle">3</text>
+
+                <circle cx="330" cy="230" r="14" fill="#8b5cf6" fill-opacity="0.5" stroke="#8b5cf6"/>
+                <text x="330" y="235" text-anchor="middle">4</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>Punkt 1 liegt in allen drei Kreisen gleichzeitig — er sorgt dafür, dass jedes Paar (A,B),
+            (A,C), (B,C) unabhängig ist. Aber P(A∩B∩C) = P({1}) reicht nicht für vollständige Unabhängigkeit,
+            wie die Rechnung im nächsten Abschnitt zeigt.</figcaption>
+        </figure>
+
+        <h3>Eigenschaften bei Unabhängigkeit</h3>
+        <div class="factgrid">
+          <div class="fact"><b>A,B unabh. ⟹</b><span>A, Bᶜ auch unabhängig</span></div>
+          <div class="fact"><b>A,B unabh. ⟹</b><span>Aᶜ, B auch unabhängig</span></div>
+          <div class="fact"><b>A,B unabh. ⟹</b><span>Aᶜ, Bᶜ auch unabhängig</span></div>
+          <div class="fact"><b>Unabhängig ⟹</b><span>unkorreliert (nicht umgekehrt!)</span></div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Bedingte Unabhängigkeit — ein eigenes Konzept</div>
+          <p>A und B heißen bedingt unabhängig gegeben C, wenn P(A∩B|C) = P(A|C) · P(B|C) gilt. Das ist
+            <strong>nicht dasselbe</strong> wie (unbedingte) Unabhängigkeit: Ereignisse können unbedingt unabhängig,
+            aber bedingt auf C abhängig sein — oder umgekehrt.</p>
+        </div>
+
+        <h3>Anwendung: Hardy-Weinberg-Gleichgewicht</h3>
+        <p>In der Genetik nutzt man Unabhängigkeit, um Genotyp-Häufigkeiten vorherzusagen: Eine Population hat zwei
+          Allele A (Häufigkeit q) und a (Häufigkeit 1−q). Unter der Annahme <strong>zufälliger Paarung</strong> —
+          also Unabhängigkeit der beiden von den Eltern vererbten Allele — ergeben sich die Genotyp-Wahrscheinlichkeiten
+          direkt aus der Produktregel:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th></th><th>Allel A (q)</th><th>Allel a (1−q)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Allel A (q)</strong></td><td>AA: q²</td><td>Aa: q(1−q)</td></tr>
+            <tr><td><strong>Allel a (1−q)</strong></td><td>aA: (1−q)q</td><td>aa: (1−q)²</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Hardy-Weinberg</div>
+          <span class="formula">P(AA) = q²        P(Aa) = 2q(1−q)        P(aa) = (1−q)²
+
+Probe: q² + 2q(1−q) + (1−q)² = 1 ✓</span>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele Schritt für Schritt</h2>
+
+        <h3>Beispiel 1: Unabhängigkeit prüfen (Würfelwurf)</h3>
+        <p>A = {gerade Zahl}, B = {Zahl &gt; 3}. Sind A und B unabhängig?</p>
+        <ol class="steps">
+          <li><strong>Einzel-WK berechnen:</strong> P(A) = 3/6 = 1/2, &nbsp; P(B) = 3/6 = 1/2</li>
+          <li><strong>Schnitt berechnen:</strong> A∩B = {4,6}, also P(A∩B) = 2/6 = 1/3</li>
+          <li><strong>Vergleichen:</strong> P(A)·P(B) = 1/2 · 1/2 = 1/4 ≠ 1/3 = P(A∩B)</li>
+          <li><strong>Schluss:</strong> A und B sind <strong>ABHÄNGIG</strong> (obwohl "gerade" und "größer 3"
+            intuitiv nichts miteinander zu tun zu haben scheinen!)</li>
+        </ol>
+
+        <h3>Beispiel 2: zwei unabhängige Münzwürfe bestätigen</h3>
+        <p>A = {1. Wurf Kopf}, B = {2. Wurf Kopf}, beide Würfe unabhängig voneinander ausgeführt.</p>
+        <ol class="steps">
+          <li><strong>Einzel-WK:</strong> P(A) = 1/2, P(B) = 1/2</li>
+          <li><strong>Schnitt:</strong> P(A∩B) = 1/4 (nur "Kopf-Kopf" von 4 gleichwahrscheinlichen Ausgängen)</li>
+          <li><strong>Vergleich:</strong> P(A)·P(B) = 1/2 · 1/2 = 1/4 = P(A∩B) ✓ → <strong>unabhängig</strong></li>
+        </ol>
+
+        <h3>Beispiel 3: Bernstein-Beispiel komplett durchgerechnet</h3>
+        <p>Ω = {1,2,3,4}, alle gleichwahrscheinlich. A = {1,2}, B = {1,3}, C = {1,4}.</p>
+        <ol class="steps">
+          <li><strong>Einzel-WK:</strong> P(A) = P(B) = P(C) = 2/4 = 1/2</li>
+          <li><strong>Paare prüfen:</strong> P(A∩B) = P({1}) = 1/4 = P(A)·P(B) = 1/4 ✓ &nbsp;
+            P(A∩C) = 1/4 = P(A)·P(C) ✓ &nbsp; P(B∩C) = 1/4 = P(B)·P(C) ✓ &nbsp;
+            → <strong>paarweise unabhängig</strong></li>
+          <li><strong>Alle drei zusammen prüfen:</strong> P(A∩B∩C) = P({1}) = 1/4, aber
+            P(A)·P(B)·P(C) = 1/2·1/2·1/2 = 1/8</li>
+          <li><strong>Schluss:</strong> 1/4 ≠ 1/8 → <strong>NICHT vollständig unabhängig</strong>, obwohl alle
+            drei Paare für sich genommen unabhängig sind!</li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: nicht einmal paarweise unabhängig</h3>
+        <p>Fairer Würfel. A = {1,2,3,4}, B = {1,2,5,6}, C = {1,3,5,6}. Sind A und B unabhängig?</p>
+        <ol class="steps">
+          <li><strong>Einzel-WK:</strong> P(A) = P(B) = P(C) = 4/6 = 2/3</li>
+          <li><strong>Schnitt:</strong> A∩B = {1,2}, also P(A∩B) = 2/6 = 1/3</li>
+          <li><strong>Vergleich:</strong> P(A)·P(B) = 2/3 · 2/3 = 4/9. Ist 1/3 = 4/9? &nbsp;
+            1/3 = 3/9 ≠ 4/9</li>
+          <li><strong>Schluss:</strong> A und B sind schon <strong>nicht einmal paarweise unabhängig</strong> —
+            hier lohnt es sich also gar nicht erst, alle Teilmengen zu prüfen.</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p>Immer <strong>alle Bedingungen nachrechnen</strong> — nicht aus dem Gefühl heraus urteilen. Sobald
+            ein einziges Paar die Produktregel verletzt, ist die gesamte Sammlung nicht mehr (vollständig)
+            unabhängig.</p>
+        </div>
+
+        <h3>Beispiel: Hardy-Weinberg mit konkreter Allelhäufigkeit</h3>
+        <p>Gegeben: Allelhäufigkeit q = 0.3 (Allel A kommt bei 30 % der Allele vor).</p>
+        <ol class="steps">
+          <li><strong>P(AA) = q²</strong> = 0.3² = <strong>0.09</strong></li>
+          <li><strong>P(Aa) = 2q(1−q)</strong> = 2 · 0.3 · 0.7 = <strong>0.42</strong></li>
+          <li><strong>P(aa) = (1−q)²</strong> = 0.7² = <strong>0.49</strong></li>
+          <li><strong>Probe:</strong> 0.09 + 0.42 + 0.49 = <strong>1.00</strong> ✓</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"A und B sind disjunkt, also sind sie
+            unabhängig."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Disjunkte Ereignisse mit P(A), P(B) &gt; 0 sind
+            <strong>IMMER abhängig</strong>: P(A∩B) = P(∅) = 0 ≠ P(A)·P(B) &gt; 0. Disjunkt bedeutet "wenn A
+            eintritt, kann B nicht eintreten" — das ist maximale Abhängigkeit, nicht Unabhängigkeit!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"Alle Paare sind unabhängig, also sind alle
+            Ereignisse zusammen unabhängig."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das Bernstein-Gegenbeispiel zeigt: paarweise
+            Unabhängigkeit ist <strong>schwächer</strong> als vollständige Unabhängigkeit. Für vollständige
+            Unabhängigkeit müssen ALLE Teilmengen die Produktregel erfüllen, nicht nur Paare.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"Die Ereignisse hängen intuitiv nicht
+            zusammen, also sind sie unabhängig."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Unabhängigkeit ist keine Bauchgefühl-Frage,
+            sondern eine <strong>Rechnung</strong>: immer P(A∩B) = P(A)·P(B) explizit nachprüfen (siehe Würfel-Beispiel
+            "gerade" und "&gt;3" — klingt unabhängig, ist es aber nicht!).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"A, B unabhängig, also auch bedingt auf C
+            unabhängig — und umgekehrt."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Unbedingte und bedingte Unabhängigkeit sind
+            <strong>getrennte Eigenschaften</strong>. A, B können unbedingt unabhängig, aber bedingt auf C abhängig
+            sein (und umgekehrt) — das eine folgt nicht aus dem anderen.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Definitionen im Vergleich</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Eigenschaft</th><th>Bedingung</th></tr></thead>
+            <tbody>
+              <tr><td>A, B unabhängig</td><td>P(A∩B) = P(A)·P(B)</td></tr>
+              <tr><td>A, B disjunkt</td><td>A∩B = ∅, also P(A∩B) = 0</td></tr>
+              <tr><td>A, B unkorreliert</td><td>Cov(1_A, 1_B) = 0</td></tr>
+            </tbody>
+          </table></div>
+          <p><strong>Hierarchie:</strong> vollständig unabhängig ⟹ paarweise unabhängig ⟹ unkorreliert
+            (jeweils nicht umgekehrt!).</p>
+
+          <h4>Typische Aufgabentypen in der Klausur</h4>
+          <ul>
+            <li><strong>Unabhängigkeit prüfen</strong> → P(A∩B) = P(A)·P(B) nachrechnen, nicht raten</li>
+            <li><strong>Paarweise vs. vollständig</strong> → bei 3+ Ereignissen alle Teilmengen prüfen</li>
+            <li><strong>Hardy-Weinberg</strong> → Genotyp-Häufigkeiten aus Allelhäufigkeit q berechnen</li>
+            <li><strong>Bedingte Unabhängigkeit</strong> → P(A∩B|C) = P(A|C)·P(B|C) prüfen</li>
+          </ul>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Disjunkt ≠ unabhängig</strong> — disjunkte Ereignisse sind sogar maximal abhängig</li>
+            <li>Unabhängigkeit ist <strong>Fläche = Breite × Höhe</strong> — eine Rechenaussage, kein Bauchgefühl</li>
+            <li><strong>Paarweise ≠ vollständig</strong> — Bernstein-Beispiel als Gegenbeweis im Kopf behalten</li>
+            <li>Bei n Ereignissen: <strong>alle 2ⁿ Teilmengen</strong> müssten für vollständige Unabhängigkeit passen</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>A und B sind disjunkt, mit P(A) &gt; 0 und
+              P(B) &gt; 0. Sind A und B unabhängig?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, disjunkt heißt unabhängig</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, disjunkte Ereignisse sind immer abhängig</button>
+              <button class="quiz-choice" type="button">Kommt auf die Werte an</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(A∩B) = P(∅) = 0, aber P(A)·P(B) &gt; 0 — die Produktregel ist
+              verletzt. Disjunkte Ereignisse mit positiver Wahrscheinlichkeit sind <strong>immer abhängig</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.25" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Würfelwurf: A = {gerade Zahl}, B = {Zahl &gt; 3}.
+              Wie groß ist P(A)·P(B)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(A) = P(B) = 1/2, also P(A)·P(B) = 1/2 · 1/2 = <strong>0.25</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Für dasselbe Beispiel gilt P(A∩B) = 1/3 ≈ 0.333.
+              Sind A und B unabhängig?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, 0.333 ≈ 0.25</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, 1/3 ≠ 1/4</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(A∩B) = 1/3 ≠ P(A)·P(B) = 1/4 → A und B sind <strong>abhängig</strong>,
+              obwohl "gerade" und "größer 3" intuitiv unabhängig wirken.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.25" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Bernstein-Beispiel: Ω={1,2,3,4}, A={1,2}, B={1,3},
+              C={1,4}. Wie groß ist P(A∩B∩C)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>A∩B∩C = {1}, also P(A∩B∩C) = 1/4 = <strong>0.25</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Ist das Bernstein-Beispiel vollständig unabhängig?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, alle Teilmengen erfüllen die Produktregel</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, nur paarweise — P(A∩B∩C)=1/4 ≠ P(A)P(B)P(C)=1/8</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Alle drei Paare sind unabhängig (je 1/4 = 1/4), aber
+              P(A∩B∩C) = 1/4 ≠ P(A)·P(B)·P(C) = 1/8 → nicht vollständig unabhängig.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.42" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: Hardy-Weinberg mit q = 0.3.
+              Wie groß ist P(Aa) = 2q(1−q)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>2 · 0.3 · 0.7 = <strong>0.42</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="vollständig unabhängig|vollständige unabhängigkeit|gemeinsam unabhängig|vollstaendig unabhaengig">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Wie nennt man Ereignisse, bei denen die Produktregel
+              für JEDE Teilmenge gilt (stärker als paarweise)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das nennt man <strong>vollständige (stochastische) Unabhängigkeit</strong>
+              — stärker als bloß paarweise Unabhängigkeit.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="02-bedingte-wahrscheinlichkeit.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Bedingte Wahrscheinlichkeit &amp; Bayes</div>
+        </a>
+        <a class="next" href="04-diskrete-zv.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Diskrete Zufallsvariablen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

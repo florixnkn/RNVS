@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diskrete Zufallsvariablen · P12 Stochastik</title>
+<meta name="description" content="Zufallsvariablen als Übersetzer von Zufall in Zahlen: Träger, Wahrscheinlichkeitsfunktion p(x) und Verteilungsfunktion F(x) als Treppenfunktion – bildlich erklärt mit durchgerechneten Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Träger &amp; WK-Funktion</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 04</div>
+    <span class="th-icon">🎰</span>
+    <h1>Diskrete Zufallsvariablen</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Träger, WK-Funktion &amp; Verteilungsfunktion</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Eine <strong>Zufallsvariable</strong> X ist eigentlich nur ein <strong>Übersetzer</strong>:
+          Sie nimmt ein Zufallsergebnis — das kann alles Mögliche sein, Symbole, Farben, Ereignisse — und übersetzt
+          es in eine <strong>Zahl</strong>. Damit kannst du plötzlich rechnen, Mittelwerte bilden und
+          Wahrscheinlichkeiten vergleichen, egal wie kompliziert das ursprüngliche Zufallsexperiment war.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du wirfst <strong>dreimal eine Münze</strong>. Das Ergebnis eines einzelnen Wurfs ist "Kopf" (K) oder
+            "Zahl" (Z) — keine Zahl, mit der man vernünftig rechnen kann. Deine Wett-App interessiert aber nur
+            <strong>eine</strong> Zahl: wie oft insgesamt Kopf kam. Die Zufallsvariable X = "Anzahl Kopf bei 3
+            Würfen" ist genau dieser Übersetzer: Sie schaut sich das rohe Ergebnis ω ∈ Ω an (z. B. ω = KZK) und gibt
+            eine Zahl zurück (X(KZK) = 2). Ω bleibt das komplizierte Ur-Ergebnis, X macht daraus etwas, mit dem du
+            arbeiten kannst.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>X als Übersetzer, Träger &amp; Wahrscheinlichkeitsfunktion</h2>
+        <p>Formal ist eine Zufallsvariable eine Funktion <strong>X: Ω → ℝ</strong>, die jedem Ergebnis des
+          Zufallsexperiments eine reelle Zahl zuordnet. Sie heißt <strong>diskret</strong>, wenn sie nur abzählbar
+          viele Werte annehmen kann (z. B. {0,1,2,3} oder ganz ℕ) — im Gegensatz zu stetigen Zufallsvariablen, die
+          jeden Wert in einem Intervall annehmen können (dazu mehr in Thema 06).</p>
+
+        <!-- SVG 1: Ω -> X Übersetzer -->
+        <figure class="diagram">
+          <div class="diagram-title">X übersetzt jedes Münzwurf-Ergebnis in eine Zahl</div>
+          <svg viewBox="0 0 620 340" width="620" role="img" aria-label="Acht Ausgänge von drei Münzwürfen werden von der Zufallsvariable X auf die Zahlen 0 bis 3 abgebildet, je nachdem wie oft Kopf fiel">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <text x="85" y="20" text-anchor="middle" class="svg-soft" font-weight="700">Ω (Münzwurf-Ergebnis)</text>
+              <text x="560" y="20" text-anchor="middle" class="svg-soft" font-weight="700">X = Anzahl Kopf</text>
+
+              <g font-family="JetBrains Mono, monospace">
+                <rect x="30" y="34" width="110" height="26" rx="6" fill="#f5810b" fill-opacity="0.14" stroke="#f5810b"/>
+                <text x="85" y="52" text-anchor="middle" class="svg-ink">KKK</text>
+
+                <rect x="30" y="70" width="110" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6"/>
+                <text x="85" y="88" text-anchor="middle" class="svg-ink">KKZ</text>
+                <rect x="30" y="102" width="110" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6"/>
+                <text x="85" y="120" text-anchor="middle" class="svg-ink">KZK</text>
+                <rect x="30" y="134" width="110" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6"/>
+                <text x="85" y="152" text-anchor="middle" class="svg-ink">ZKK</text>
+
+                <rect x="30" y="166" width="110" height="26" rx="6" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c"/>
+                <text x="85" y="184" text-anchor="middle" class="svg-ink">KZZ</text>
+                <rect x="30" y="198" width="110" height="26" rx="6" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c"/>
+                <text x="85" y="216" text-anchor="middle" class="svg-ink">ZKZ</text>
+                <rect x="30" y="230" width="110" height="26" rx="6" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c"/>
+                <text x="85" y="248" text-anchor="middle" class="svg-ink">ZZK</text>
+
+                <rect x="30" y="264" width="110" height="26" rx="6" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6"/>
+                <text x="85" y="282" text-anchor="middle" class="svg-ink">ZZZ</text>
+              </g>
+
+              <g stroke-width="1.4">
+                <line x1="140" y1="47" x2="530" y2="60" stroke="#f5810b" stroke-opacity="0.55"/>
+
+                <line x1="140" y1="83" x2="530" y2="150" stroke="#8b5cf6" stroke-opacity="0.5"/>
+                <line x1="140" y1="115" x2="530" y2="150" stroke="#8b5cf6" stroke-opacity="0.5"/>
+                <line x1="140" y1="147" x2="530" y2="150" stroke="#8b5cf6" stroke-opacity="0.5"/>
+
+                <line x1="140" y1="179" x2="530" y2="240" stroke="#12b28c" stroke-opacity="0.5"/>
+                <line x1="140" y1="211" x2="530" y2="240" stroke="#12b28c" stroke-opacity="0.5"/>
+                <line x1="140" y1="243" x2="530" y2="240" stroke="#12b28c" stroke-opacity="0.5"/>
+
+                <line x1="140" y1="277" x2="530" y2="296" stroke="#2f6df6" stroke-opacity="0.55"/>
+              </g>
+
+              <g>
+                <circle cx="560" cy="60" r="26" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="1.5"/>
+                <text x="560" y="67" text-anchor="middle" font-weight="800" font-size="17" class="svg-ink">3</text>
+
+                <circle cx="560" cy="150" r="26" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.5"/>
+                <text x="560" y="157" text-anchor="middle" font-weight="800" font-size="17" class="svg-ink">2</text>
+
+                <circle cx="560" cy="240" r="26" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.5"/>
+                <text x="560" y="247" text-anchor="middle" font-weight="800" font-size="17" class="svg-ink">1</text>
+
+                <circle cx="560" cy="296" r="26" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="1.5"/>
+                <text x="560" y="303" text-anchor="middle" font-weight="800" font-size="17" class="svg-ink">0</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>Egal wie das Ur-Ergebnis ω aussieht (KKZ, ZKZ, …) — X(ω) macht daraus immer eine Zahl.
+            Mehrere ω können auf dieselbe Zahl abgebildet werden (z. B. alle drei "genau ein Kopf"-Fälle auf X=1).</figcaption>
+        </figure>
+
+        <h3>Träger: wo X überhaupt landen kann</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Träger</div>
+          <span class="formula">T_X = supp(X) = { x ∈ ℝ : P(X = x) &gt; 0 }</span>
+          <p>Der Träger ist die Menge aller Werte, die X mit <strong>positiver</strong> Wahrscheinlichkeit annimmt.
+            Bei unserem Münz-Beispiel: T_X = {0, 1, 2, 3}. Bei einem Würfelwurf: T_X = {1,2,3,4,5,6}. Bei "Anzahl
+            Würfe bis zur ersten 6": T_X = {1, 2, 3, …} = ℕ, also unendlich, aber immer noch abzählbar.</p>
+        </div>
+
+        <h3>Wahrscheinlichkeitsfunktion p(x)</h3>
+        <p>Die Wahrscheinlichkeitsfunktion (kurz WK-Funktion, meist f_X oder p_X genannt) ordnet jedem Wert im
+          Träger seine Wahrscheinlichkeit zu. Für unser Münz-Beispiel — 8 gleichwahrscheinliche Ausgänge, davon
+          1× "3 Kopf", 3× "2 Kopf", 3× "1 Kopf", 1× "0 Kopf":</p>
+
+        <!-- SVG 2: PMF bar chart -->
+        <figure class="diagram">
+          <div class="diagram-title">Wahrscheinlichkeitsfunktion p(x) — X = Anzahl Kopf bei 3 Münzwürfen</div>
+          <svg viewBox="0 0 460 260" width="460" role="img" aria-label="Balkendiagramm der Wahrscheinlichkeitsfunktion: 1/8, 3/8, 3/8, 1/8 für x=0,1,2,3">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <line x1="50" y1="210" x2="430" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+              <line x1="50" y1="30" x2="50" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <rect x="80" y="160" width="60" height="50" fill="#2f6df6" fill-opacity="0.55" stroke="#2f6df6" stroke-width="1.4"/>
+              <rect x="170" y="60" width="60" height="150" fill="#2f6df6" fill-opacity="0.55" stroke="#2f6df6" stroke-width="1.4"/>
+              <rect x="260" y="60" width="60" height="150" fill="#2f6df6" fill-opacity="0.55" stroke="#2f6df6" stroke-width="1.4"/>
+              <rect x="350" y="160" width="60" height="50" fill="#2f6df6" fill-opacity="0.55" stroke="#2f6df6" stroke-width="1.4"/>
+
+              <text x="110" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">1/8</text>
+              <text x="200" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">3/8</text>
+              <text x="290" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">3/8</text>
+              <text x="380" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">1/8</text>
+
+              <text x="110" y="228" text-anchor="middle" class="svg-soft">x=0</text>
+              <text x="200" y="228" text-anchor="middle" class="svg-soft">x=1</text>
+              <text x="290" y="228" text-anchor="middle" class="svg-soft">x=2</text>
+              <text x="380" y="228" text-anchor="middle" class="svg-soft">x=3</text>
+
+              <text x="42" y="214" text-anchor="end" class="svg-soft" font-size="11">0</text>
+              <text x="42" y="64" text-anchor="end" class="svg-soft" font-size="11">0.375</text>
+            </g>
+          </svg>
+          <figcaption>Balken statt Kurve — typisch für diskrete Verteilungen. Die Höhe jedes Balkens IST direkt
+            die Wahrscheinlichkeit P(X=x). Alle vier Balken zusammen ergeben 1/8+3/8+3/8+1/8 = 1.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Wahrscheinlichkeitsfunktion</div>
+          <span class="formula">f_X(x) = P(X = x) &nbsp;&nbsp;·&nbsp;&nbsp; f_X(x) ≥ 0 &nbsp;&nbsp;·&nbsp;&nbsp; Σ_{x ∈ T_X} f_X(x) = 1</span>
+          <p>Zwei Eigenschaften musst du bei jeder WK-Funktion checken: <strong>nirgendwo negativ</strong>, und die
+            <strong>Summe über den ganzen Träger ist genau 1</strong>. Das ist deine eingebaute Fehlerprobe.</p>
+        </div>
+
+        <h3>Verteilungsfunktion F(x): die Treppe</h3>
+        <p>Die Verteilungsfunktion sammelt die Wahrscheinlichkeiten von "links" auf: F_X(x) = P(X ≤ x). Bei einer
+          diskreten ZV ist das immer eine <strong>Treppenfunktion</strong> — konstant zwischen den Trägerpunkten,
+          mit Sprüngen genau dort, wo X einen Wert annehmen kann. Die Sprunghöhe an einer Stelle x entspricht exakt
+          f_X(x).</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Verteilungsfunktion</div>
+          <span class="formula">F_X(x) = P(X ≤ x) = Σ_{t ≤ x, t ∈ T_X} f_X(t)</span>
+          <p>Eigenschaften: monoton nicht-fallend, rechtsseitig stetig, F_X(x) → 0 für x → −∞ und F_X(x) → 1 für
+            x → +∞.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>P(a &lt; X ≤ b)</b><span>= F(b) − F(a)</span></div>
+          <div class="fact"><b>P(a ≤ X ≤ b)</b><span>= F(b) − F(a) + f(a)</span></div>
+          <div class="fact"><b>P(X &gt; a)</b><span>= 1 − F(a)</span></div>
+          <div class="fact"><b>P(X = a)</b><span>= F(a) − F(a⁻)</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Verteilungsfunktion aufstellen &amp; ablesen</h2>
+        <p>Nehmen wir eine ZV X mit Träger {1, 2, 3} und P(X=1) = 0.2, P(X=2) = 0.5, P(X=3) = 0.3.</p>
+
+        <ol class="steps">
+          <li><strong>Probe machen:</strong> 0.2 + 0.5 + 0.3 = 1.0 ✓ — passt.</li>
+          <li><strong>Trägerpunkte sortieren:</strong> 1 &lt; 2 &lt; 3.</li>
+          <li><strong>F_X als Stufenfunktion aufschreiben:</strong><br>
+            F_X(x) = 0 für x &lt; 1<br>
+            F_X(x) = 0.2 für 1 ≤ x &lt; 2<br>
+            F_X(x) = 0.7 für 2 ≤ x &lt; 3<br>
+            F_X(x) = 1.0 für x ≥ 3</li>
+          <li><strong>Probe:</strong> letzte Stufe = 1 ✓, alle Sprünge positiv (0.2, 0.5, 0.3) ✓</li>
+        </ol>
+
+        <!-- SVG 3: CDF step function -->
+        <figure class="diagram">
+          <div class="diagram-title">F_X(x) als Treppenfunktion — Stufen bei 0.2, 0.7 und 1.0</div>
+          <svg viewBox="0 0 460 260" width="460" role="img" aria-label="Verteilungsfunktion F(x) als Treppenfunktion mit Stufen bei 0.2, 0.7 und 1.0, offene Kreise markieren den linksseitigen Grenzwert vor jedem Sprung">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="40" y1="220" x2="440" y2="220" stroke="#8a94a6" stroke-width="1.2"/>
+              <line x1="40" y1="20" x2="40" y2="220" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <line x1="40" y1="182" x2="135" y2="182" stroke="#c9ccd6" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="40" y1="87" x2="230" y2="87" stroke="#c9ccd6" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="40" y1="30" x2="325" y2="30" stroke="#c9ccd6" stroke-width="1" stroke-dasharray="3,3"/>
+              <text x="34" y="224" text-anchor="end" class="svg-soft" font-size="11">0</text>
+              <text x="34" y="186" text-anchor="end" class="svg-soft" font-size="11">0.2</text>
+              <text x="34" y="91" text-anchor="end" class="svg-soft" font-size="11">0.7</text>
+              <text x="34" y="34" text-anchor="end" class="svg-soft" font-size="11">1.0</text>
+
+              <g stroke="#2f6df6" stroke-width="2.4" fill="none">
+                <line x1="40" y1="220" x2="135" y2="220"/>
+                <line x1="135" y1="182" x2="230" y2="182"/>
+                <line x1="230" y1="87" x2="325" y2="87"/>
+                <line x1="325" y1="30" x2="420" y2="30"/>
+              </g>
+              <g stroke="#2f6df6" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.5">
+                <line x1="135" y1="220" x2="135" y2="182"/>
+                <line x1="230" y1="182" x2="230" y2="87"/>
+                <line x1="325" y1="87" x2="325" y2="30"/>
+              </g>
+              <g fill="#fff" stroke="#2f6df6" stroke-width="2">
+                <circle cx="135" cy="220" r="4.5"/>
+                <circle cx="230" cy="182" r="4.5"/>
+                <circle cx="325" cy="87" r="4.5"/>
+              </g>
+              <g fill="#2f6df6">
+                <circle cx="135" cy="182" r="4.5"/>
+                <circle cx="230" cy="87" r="4.5"/>
+                <circle cx="325" cy="30" r="4.5"/>
+              </g>
+
+              <text x="135" y="238" text-anchor="middle" class="svg-ink">1</text>
+              <text x="230" y="238" text-anchor="middle" class="svg-ink">2</text>
+              <text x="325" y="238" text-anchor="middle" class="svg-ink">3</text>
+              <text x="430" y="238" text-anchor="middle" class="svg-soft" font-size="11">x</text>
+            </g>
+          </svg>
+          <figcaption>Gefüllte Punkte gehören zur Funktion (der Wert AN der Stelle), offene Kreise zeigen den
+            Grenzwert kurz davor. Zwischen den Trägerpunkten ist F_X konstant.</figcaption>
+        </figure>
+
+        <h3>Wahrscheinlichkeiten aus F_X ablesen</h3>
+        <div class="callout callout-warning">
+          <div class="c-title">Die größte Falle: ≤ vs. &lt;</div>
+          <p>F_X(x) = P(X ≤ x) — die Grenze ist <strong>immer inklusive</strong>. Für P(X &lt; 2) darfst du
+            <strong>nicht</strong> F_X(2) nehmen, sondern musst zur vorherigen Trägerstufe: F_X(1).</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>P(X ≤ 2) = F_X(2) = 0.7</strong></li>
+          <li><strong>P(X &lt; 2) = F_X(1) = 0.2</strong> (nicht F_X(2)!)</li>
+          <li><strong>P(X = 2) = F_X(2) − F_X(1) = 0.7 − 0.2 = 0.5</strong></li>
+          <li><strong>P(1 &lt; X ≤ 3) = F_X(3) − F_X(1) = 1.0 − 0.2 = 0.8</strong></li>
+        </ol>
+
+        <h3>Zweites Beispiel: die Inklusive-Untergrenze-Falle</h3>
+        <p>X hat Träger {0,1,2,3} mit p(0)=0.1, p(1)=0.3, p(2)=0.4, p(3)=0.2. Gesucht: P(1 ≤ X ≤ 3).</p>
+        <ol class="steps">
+          <li><strong>F_X aufstellen:</strong> F(0)=0.1, F(1)=0.4, F(2)=0.8, F(3)=1.0</li>
+          <li><strong>Naiv (falsch):</strong> F(3) − F(1) = 1.0 − 0.4 = 0.6 — das ist P(1 &lt; X ≤ 3), nicht
+            P(1 ≤ X ≤ 3)!</li>
+          <li><strong>Richtig:</strong> P(1 ≤ X ≤ 3) = F(3) − F(1) + f(1) = 0.6 + 0.3 = <strong>0.9</strong></li>
+          <li><strong>Gegenprobe direkt über die WK-Funktion:</strong> p(1)+p(2)+p(3) = 0.3+0.4+0.2 = 0.9 ✓</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(X &lt; 2) = F_X(2), weil "kleiner 2 ist doch
+            fast dasselbe wie kleiner gleich 2".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P(X &lt; 2) = F_X(1) bei einer diskreten ZV
+            mit Trägerpunkten in ℕ — du musst zur <strong>vorherigen</strong> Trägerstufe springen, nicht F_X(2)
+            nehmen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man vergisst, alle Trägerpunkte zu summieren,
+            und Σf_X(x) kommt nicht auf 1 — aber das fällt nicht auf.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Σ_{x∈T_X} f_X(x) = 1 muss <strong>immer</strong>
+            gelten — das ist deine Pflicht-Probe nach jeder Aufgabe.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>F_X verläuft zwischen den Trägerpunkten schräg
+            oder gekrümmt, so wie eine "normale" Funktion.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>F_X ist bei diskreten ZV eine
+            <strong>Treppenfunktion</strong>: konstant zwischen den Trägerpunkten, Sprung nur genau an ihnen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(1 ≤ X ≤ 3) = F_X(3) − F_X(1)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P(1 ≤ X ≤ 3) = F_X(3) − F_X(1) + f_X(1) — die
+            <strong>Untergrenze zählt mit</strong>, weil ≤ nicht &lt; heißt.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>f_X(x) = P(X = x)</td><td>Wahrscheinlichkeitsfunktion</td></tr>
+              <tr><td>Σ f_X(x) = 1</td><td>Normierung über den ganzen Träger</td></tr>
+              <tr><td>F_X(x) = P(X ≤ x)</td><td>Verteilungsfunktion (Treppenfunktion)</td></tr>
+              <tr><td>P(a &lt; X ≤ b) = F(b) − F(a)</td><td>WK aus VF</td></tr>
+              <tr><td>P(a ≤ X ≤ b) = F(b) − F(a) + f(a)</td><td>inklusive Untergrenze</td></tr>
+              <tr><td>P(X = a) = F(a) − F(a⁻)</td><td>Sprunghöhe an der Stelle a</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>≤ ist immer inklusive</strong> — F_X(x) = P(X ≤ x), nicht P(X &lt; x)</li>
+            <li><strong>F_X ist eine Treppenfunktion</strong> bei diskreten ZV — Sprunghöhe = f_X an der Stelle</li>
+            <li>Erst <strong>Trägerpunkte sortieren</strong>, dann F_X stufenweise aufschreiben</li>
+            <li>Immer <strong>Σf_X(x)=1 prüfen</strong> — die günstigste Fehlerkontrolle überhaupt</li>
+            <li>Bei P(a ≤ X ≤ b): <strong>Untergrenze extra addieren</strong> (f(a) dazu)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="text" data-answer="Träger|traeger|trager|support|supp">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wie heißt die Menge {x ∈ ℝ : P(X=x) &gt; 0}, also
+              alle Werte, die X mit positiver Wahrscheinlichkeit annimmt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist der <strong>Träger</strong> (support) von X, geschrieben
+              T_X oder supp(X).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.7" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">2.</span>X hat Träger {1,2,3} mit P(X=1)=0.2, P(X=2)=0.5,
+              P(X=3)=0.3. Wie groß ist F_X(2) = P(X ≤ 2)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F_X(2) = P(X=1)+P(X=2) = 0.2+0.5 = <strong>0.7</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.2" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Gleiches Beispiel: Wie groß ist P(X &lt; 2)?
+              Achtung, Falle!</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X&lt;2) = F_X(1) = <strong>0.2</strong> — nicht F_X(2)! Die Grenze
+              bei F ist inklusive (≤), also musst du zur vorherigen Stufe.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.8" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Gleiches Beispiel: Wie groß ist P(1 &lt; X ≤ 3)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F_X(3) − F_X(1) = 1.0 − 0.2 = <strong>0.8</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>F_X ist bei einer diskreten Zufallsvariable vom
+              Funktionstyp her eine …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Treppenfunktion</button>
+              <button class="quiz-choice" type="button">stetige, glatte Kurve</button>
+              <button class="quiz-choice" type="button">Gerade</button>
+              <button class="quiz-choice" type="button">Parabel</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F_X springt nur an Trägerpunkten und ist dazwischen konstant — eine
+              klassische <strong>Treppenfunktion</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Welche Aussage über eine diskrete Zufallsvariable
+              ist korrekt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>P(X = a) = F_X(a) − F_X(a⁻)</button>
+              <button class="quiz-choice" type="button">F_X ist stets stetig</button>
+              <button class="quiz-choice" type="button">f_X(x) darf größer als 1 sein</button>
+              <button class="quiz-choice" type="button">F_X ist monoton fallend</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Sprunghöhe von F_X an der Stelle a ist genau f_X(a) = P(X=a).
+              F_X ist monoton <strong>nicht-fallend</strong> (nicht fallend), und f_X(x) &gt; 1 gibt es bei
+              diskreten ZV nicht — das ist nur bei Dichten stetiger ZV möglich (Thema 06).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.9" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: X hat Träger {0,1,2,3} mit
+              p(0)=0.1, p(1)=0.3, p(2)=0.4, p(3)=0.2. Wie groß ist P(1 ≤ X ≤ 3)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F(3) − F(1) + f(1) = 1.0 − 0.4 + 0.3 = <strong>0.9</strong>.
+              Gegenprobe: p(1)+p(2)+p(3) = 0.3+0.4+0.2 = 0.9 ✓.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="03-unabhaengigkeit.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Stochastische Unabhängigkeit</div>
+        </a>
+        <a class="next" href="05-diskrete-verteilungen.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Diskrete Verteilungen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lineare Regression · P12 Stochastik</title>
+<meta name="description" content="Lineare Regression bildlich erklärt: die Kleinste-Quadrate-Idee, die Formeln β̂=Sxy/Sxx und α̂=ȳ−β̂x̄ komplett durchgerechnet, Bestimmtheitsmaß R² und das Gauß-Markov-Theorem." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 14</div>
+    <span class="th-icon">📈</span>
+    <h1>Lineare Regression</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 9</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">KQ-Schätzer &amp; R² im Bild</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Du hast Punkte (x,y) — zum Beispiel Lernzeit und Klausurnote, oder Werbebudget und
+          Umsatz — und willst wissen: <strong>Wie hängen sie zusammen?</strong> Lineare Regression legt die
+          <strong>am besten passende Gerade</strong> durch deine Punktwolke und liefert dir eine Formel, mit der
+          du für neue x-Werte einen y-Wert vorhersagen kannst.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du zeichnest Punkte "Berufserfahrung in Jahren" gegen "Gehalt" auf ein Blatt Papier. Die Punkte
+            streuen, aber ein Trend ist sichtbar: mehr Erfahrung, tendenziell mehr Gehalt. Jetzt legst du ein
+            Lineal so an, dass es "im Mittel" möglichst nah an allen Punkten vorbeiläuft. Genau das macht die
+            <strong>Kleinste-Quadrate-Methode</strong> — nur nicht nach Augenmaß, sondern durch Minimierung
+            der quadrierten senkrechten Abstände (Residuen) zwischen Punkten und Gerade.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>KQ-Schätzer &amp; R² im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Das lineare Modell (einfache Regression)</div>
+          <span class="formula">Yᵢ = β₀ + β₁·xᵢ + Uᵢ           i = 1,...,n
+
+xᵢ: feste Kovariable       Yᵢ: zufällige Antwort       Uᵢ: Störgröße (Fehler)</span>
+        </div>
+
+        <p>Mit mehreren Kovariablen x₁,…,x_k schreibt man das kompakt in Matrixform:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Matrixnotation (allgemeine Regression)</div>
+          <span class="formula">Y = X·β + U     Y∈ℝⁿ, X∈ℝ^{n×(k+1)}, β∈ℝ^{k+1}, U∈ℝⁿ
+
+β̂ = (XᵀX)⁻¹XᵀY        Ŷ = X·β̂ = H·Y        H = X(XᵀX)⁻¹Xᵀ</span>
+          <p>Die erste Spalte von X ist ein 1-Vektor für den Achsenabschnitt β₀. H heißt Hat-Matrix, weil sie aus
+            Y die "gehutzten" Werte Ŷ macht — ein orthogonaler Projektor auf den Spaltenraum von X. Für k=1
+            vereinfacht sich das zu den Formeln unten.</p>
+        </div>
+
+        <h3>Die Kleinste-Quadrate-Idee (KQ / OLS)</h3>
+        <p>Gesucht sind die Koeffizienten β̂₀, β̂₁, die die Summe der <strong>quadrierten</strong> Residuen
+          minimieren — quadriert, damit sich positive und negative Abweichungen nicht gegenseitig aufheben und
+          große Fehler stärker bestraft werden:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: KQ-Schätzer (einfache Regression)</div>
+          <span class="formula">β̂₁ = Sxy / Sxx     mit  Sxy = Σ(xᵢ−x̄)(Yᵢ−Ȳ),  Sxx = Σ(xᵢ−x̄)²
+β̂₀ = Ȳ − β̂₁·x̄</span>
+        </div>
+
+        <!-- SVG 1: Punktwolke + Gerade -->
+        <figure class="diagram">
+          <div class="diagram-title">Punktwolke, beste Gerade und Residuen</div>
+          <svg viewBox="0 0 400 300" width="400" role="img" aria-label="Punktwolke mit eingezeichneter Regressionsgerade und gestrichelten Residuen-Linien zwischen Datenpunkten und Gerade">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="40" y1="20" x2="40" y2="260" stroke="#8a94a6" stroke-width="1.3"/>
+              <line x1="40" y1="260" x2="340" y2="260" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="345" y="264" class="svg-soft">x</text>
+              <text x="30" y="18" class="svg-soft">y</text>
+
+              <line x1="40" y1="247" x2="291" y2="42" stroke="#2f6df6" stroke-width="2.4"/>
+              <text x="230" y="35" fill="#2f6df6" font-weight="800" font-size="13">ŷ = 1/3 + 1.5x</text>
+
+              <line x1="110" y1="184" x2="110" y2="190" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="180" y1="146" x2="180" y2="133" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="250" y1="70"  x2="250" y2="76"  stroke="#e0483d" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+              <circle cx="110" cy="184" r="6" fill="#f5810b" stroke="#fff" stroke-width="1.5"/>
+              <text x="118" y="180" class="svg-ink" font-size="11">(1,2)</text>
+              <circle cx="180" cy="146" r="6" fill="#f5810b" stroke="#fff" stroke-width="1.5"/>
+              <text x="188" y="142" class="svg-ink" font-size="11">(2,3)</text>
+              <circle cx="250" cy="70" r="6" fill="#f5810b" stroke="#fff" stroke-width="1.5"/>
+              <text x="258" y="66" class="svg-ink" font-size="11">(3,5)</text>
+            </g>
+          </svg>
+          <figcaption>Die roten gestrichelten Linien sind die Residuen (Ŷᵢ−Yᵢ) — genau ihre <strong>quadrierte</strong>
+            Summe minimiert die Kleinste-Quadrate-Methode.</figcaption>
+        </figure>
+
+        <h3>Bestimmtheitsmaß R²: wie viel erklärt das Modell?</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Quadratsummenzerlegung</div>
+          <span class="formula">TSS = Σ(Yᵢ−Ȳ)²   (Gesamtvariation)
+SSR = Σ(Ŷᵢ−Ȳ)²   (durchs Modell erklärt)
+RSS = Σ(Yᵢ−Ŷᵢ)²  (Rest, Residuen)
+
+TSS = SSR + RSS
+R² = SSR/TSS = 1 − RSS/TSS   ∈ [0,1]</span>
+        </div>
+
+        <!-- SVG 2: TSS = SSR + RSS Balken -->
+        <figure class="diagram">
+          <div class="diagram-title">Quadratsummenzerlegung am Mini-Beispiel: TSS = SSR + RSS</div>
+          <svg viewBox="0 0 260 260" width="260" role="img" aria-label="Gestapeltes Balkendiagramm, das die Gesamtvarianz TSS in erklärten Anteil SSR und Rest RSS aufteilt">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="40" y1="230" x2="220" y2="230" stroke="#8a94a6" stroke-width="1.3"/>
+              <rect x="90" y="37" width="60" height="193" fill="#12b28c" fill-opacity="0.75" stroke="#12b28c"/>
+              <rect x="90" y="30" width="60" height="7" fill="#e0483d" fill-opacity="0.85" stroke="#e0483d"/>
+              <text x="165" y="130" fill="#12a150" font-weight="800" font-size="13">SSR</text>
+              <text x="165" y="146" class="svg-soft" font-size="11">≈ 96.4% (= R²)</text>
+              <text x="165" y="26" fill="#e0483d" font-weight="800" font-size="12">RSS ≈ 3.6%</text>
+              <text x="120" y="250" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">TSS</text>
+            </g>
+          </svg>
+          <figcaption>Im Mini-Beispiel (1,2),(2,3),(3,5) erklärt die Gerade rund 96.4% der Gesamtvariation — nur
+            ein winziger roter Streifen bleibt als Rest (RSS) übrig.</figcaption>
+        </figure>
+
+        <h3>Gauß-Markov-Theorem (kurz)</h3>
+        <div class="callout callout-tip">
+          <div class="c-title">BLUE — Best Linear Unbiased Estimator</div>
+          <p>Unter den Annahmen A1 (Vollrang von X), A2 (E[U]=0) und A3 (Cov(U)=σ²I) ist der KQ-Schätzer β̂
+            <strong>BLUE</strong>: der beste (kleinste Varianz) unter allen linearen, erwartungstreuen
+            Schätzern. <strong>Normalverteilung (A4) ist dafür nicht nötig</strong> — die braucht man erst für
+            t-Tests und Konfidenzintervalle der Koeffizienten.</p>
+        </div>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Annahme</th><th>Nötig für</th></tr></thead>
+          <tbody>
+            <tr><td>A1: Vollrang X</td><td>KQ-Schätzer existiert eindeutig</td></tr>
+            <tr><td>A2: E[U] = 0</td><td>Erwartungstreue von β̂</td></tr>
+            <tr><td>A3: Cov(U) = σ²I</td><td>Gauß-Markov (BLUE)</td></tr>
+            <tr><td>A4: U ~ Normal</td><td>t-Tests, Konfidenzintervalle</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Mini-Beispiel komplett durchgerechnet</h2>
+
+        <p>Daten: (x,y) = (1,2), (2,3), (3,5). Gesucht: die Regressionsgerade ŷ = β̂₀ + β̂₁·x.</p>
+        <ol class="steps">
+          <li><strong>Mittelwerte berechnen:</strong> x̄ = (1+2+3)/3 = 2, &nbsp; ȳ = (2+3+5)/3 = 10/3 ≈ 3.333</li>
+          <li><strong>Sxx berechnen:</strong> Sxx = (1−2)²+(2−2)²+(3−2)² = 1+0+1 = <strong>2</strong></li>
+          <li><strong>Sxy berechnen:</strong><br>
+            Sxy = (1−2)(2−10/3) + (2−2)(3−10/3) + (3−2)(5−10/3)<br>
+            = (−1)(−4/3) + 0 + (1)(5/3) = 4/3 + 5/3 = 9/3 = <strong>3</strong></li>
+          <li><strong>β̂₁ berechnen:</strong> β̂₁ = Sxy/Sxx = 3/2 = <strong>1.5</strong></li>
+          <li><strong>β̂₀ berechnen:</strong> β̂₀ = ȳ − β̂₁·x̄ = 10/3 − 1.5·2 = 10/3 − 3 = 1/3 ≈ <strong>0.333</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Ergebnis</div>
+          <p>Regressionsgerade: <strong>ŷ = 1/3 + 1.5·x</strong>. Interpretation von β̂₁: Steigt x um 1 Einheit,
+            steigt der erwartete y-Wert im Schnitt um 1.5 Einheiten (ceteris paribus).</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: R² für dasselbe Beispiel berechnen</h3>
+        <ol class="steps">
+          <li><strong>Fitted values Ŷᵢ = 1/3 + 1.5·xᵢ berechnen:</strong><br>
+            Ŷ(1) = 1/3+1.5 = 11/6 ≈ 1.833, &nbsp; Ŷ(2) = 1/3+3 = 10/3 ≈ 3.333, &nbsp;
+            Ŷ(3) = 1/3+4.5 = 29/6 ≈ 4.833</li>
+          <li><strong>RSS berechnen:</strong> (2−1.833)² + (3−3.333)² + (5−4.833)²
+            = (1/6)² + (1/3)² + (1/6)² = 1/36+4/36+1/36 = 6/36 = <strong>1/6 ≈ 0.1667</strong></li>
+          <li><strong>TSS berechnen:</strong> (2−10/3)² + (3−10/3)² + (5−10/3)²
+            = 16/9+1/9+25/9 = 42/9 = <strong>14/3 ≈ 4.667</strong></li>
+          <li><strong>R² berechnen:</strong> R² = 1 − RSS/TSS = 1 − (1/6)/(14/3) = 1 − 1/28
+            = <strong>27/28 ≈ 0.964</strong></li>
+        </ol>
+        <div class="callout callout-info">
+          <div class="c-title">Einordnung</div>
+          <p>R² ≈ 0.964 bedeutet: 96.4% der Streuung in y wird durch die Gerade erklärt — bei nur 3 Datenpunkten
+            ist das allerdings kein Wunder, mit so wenigen Punkten liegt R² fast automatisch hoch.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: t-Test für einen Regressionskoeffizienten</h3>
+        <p>Eine größere Studie (n=20, k=1) liefert β̂₁ = 0.82 mit Standardfehler SE(β̂₁) = 0.31. Test H₀: β₁=0
+          vs. H₁: β₁≠0 bei α = 0.05 — hat die Kovariable überhaupt einen Einfluss?</p>
+        <ol class="steps">
+          <li><strong>Teststatistik:</strong> T = β̂₁/SE(β̂₁) = 0.82/0.31 ≈ <strong>2.645</strong></li>
+          <li><strong>Freiheitsgrade:</strong> df = n−k−1 = 20−1−1 = 18</li>
+          <li><strong>Kritischen Wert nachschlagen:</strong> t_{0.025, 18} ≈ 2.101</li>
+          <li><strong>Entscheidung:</strong> |T| = 2.645 &gt; 2.101 → <strong>H₀ ablehnen</strong> — β₁ ist
+            signifikant von 0 verschieden, die Kovariable hat einen nachweisbaren Einfluss</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>σ̂² = RSS/n</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>σ̂² = RSS/(n−k−1). Bei einfacher Regression
+            (k=1): RSS/(n−2) — zwei Freiheitsgrade gehen für β̂₀ und β̂₁ verloren.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>R² = 0.8 ist grundsätzlich "schlecht".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>R² ist kontextabhängig: In den
+            Sozialwissenschaften gilt 0.5 oft als gut, in der Physik erwartet man dagegen häufig 0.99+.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein hohes R² beweist, dass alle Kovariablen
+            wichtig sind.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>R² kann beim Hinzufügen weiterer Variablen
+            <strong>nie sinken</strong> — auch nutzlose Variablen erhöhen R² leicht. Für Modellvergleiche nutzt
+            man das korrigierte R̄² = 1 − (1−R²)·(n−1)/(n−k−1).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Gauß-Markov (BLUE) gilt nur, wenn die Fehler
+            normalverteilt sind.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Gauß-Markov gilt bereits unter A1–A3 — ganz
+            <strong>ohne</strong> Normalverteilungsannahme. A4 (Normalverteilung) brauchst du erst für t-Tests
+            und Konfidenzintervalle.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>β̂₁ &gt; 0 bedeutet, x <strong>verursacht</strong>
+            y.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Regression zeigt <strong>Assoziation</strong>,
+            keine Kausalität. Ein positiver Zusammenhang kann auch durch Drittvariablen oder Zufall entstehen.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>β̂ = (XᵀX)⁻¹XᵀY</td><td>KQ-Schätzer, allgemein (Matrixform)</td></tr>
+              <tr><td>β̂₁ = Sxy/Sxx</td><td>KQ-Steigung, einfache Regression</td></tr>
+              <tr><td>β̂₀ = Ȳ − β̂₁·x̄</td><td>Achsenabschnitt, einfache Regression</td></tr>
+              <tr><td>σ̂² = RSS/(n−k−1)</td><td>Varianzschätzung</td></tr>
+              <tr><td>R² = 1 − RSS/TSS</td><td>Bestimmtheitsmaß</td></tr>
+              <tr><td>T = β̂ⱼ/SE(β̂ⱼ) ~ t_{n−k−1}</td><td>t-Test für einen Koeffizienten</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Modellannahmen auf einen Blick</h4>
+          <pre class="code">A1  Vollrang X        → KQ-Schätzer existiert eindeutig
+A2  E[U] = 0           → Erwartungstreue
+A3  Cov(U) = σ²I       → Gauß-Markov (BLUE)
+A4  U ~ Normal         → t-Tests, Konfidenzintervalle</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li>β̂₁ = Sxy/Sxx zuerst, dann β̂₀ = Ȳ − β̂₁·x̄ — <strong>immer in dieser Reihenfolge</strong></li>
+            <li>TSS = SSR + RSS, R² = 1 − RSS/TSS</li>
+            <li>R² steigt fast automatisch mit mehr Variablen → R̄² für fairen Modellvergleich</li>
+            <li>Gauß-Markov braucht <strong>keine</strong> Normalverteilung — die kommt erst bei Tests/KI ins Spiel</li>
+            <li>Regression ≠ Kausalität</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Daten (1,2),(2,3),(3,5): Wie groß ist
+              Sxx = Σ(xᵢ−x̄)²?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x̄=2. (1−2)²+(2−2)²+(3−2)² = 1+0+1 = <strong>2</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Gleiche Daten: Wie groß ist Sxy =
+              Σ(xᵢ−x̄)(yᵢ−ȳ)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ȳ=10/3. (−1)(−4/3)+0·(−1/3)+(1)(5/3) = 4/3+5/3 = <strong>3</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie groß ist β̂₁ = Sxy/Sxx?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>β̂₁ = 3/2 = <strong>1.5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.333" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Klausurtyp: Wie groß ist β̂₀ = ȳ − β̂₁·x̄?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>β̂₀ = 10/3 − 1.5·2 = 10/3 − 3 = 1/3 ≈ <strong>0.333</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Kleinste-Quadrate-Methode|Methode der kleinsten Quadrate|KQ-Methode|Kleinste Quadrate|OLS|Kleinste-Quadrate-Schätzer">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt das Verfahren, das β̂ durch Minimierung
+              der <strong>quadrierten</strong> Residuen bestimmt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Kleinste-Quadrate-Methode</strong> (KQ, englisch OLS).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Was bedeutet β̂₁ = 1.5 korrekt interpretiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Steigt x um 1 Einheit, steigt der
+                erwartete y-Wert im Schnitt um 1.5 Einheiten.</button>
+              <button class="quiz-choice" type="button">x verursacht einen Anstieg von y um 1.5 Einheiten.</button>
+              <button class="quiz-choice" type="button">Jeder einzelne y-Wert steigt exakt um 1.5, wenn x um 1
+                steigt.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Regression beschreibt einen Zusammenhang im <strong>Erwartungswert</strong>
+              — keine deterministische und keine kausale Aussage.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Welche Annahmen braucht das Gauß-Markov-Theorem
+              (β̂ ist BLUE)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>A1–A3 (Vollrang, E[U]=0, Cov(U)=σ²I) —
+                keine Normalverteilung nötig</button>
+              <button class="quiz-choice" type="button">A1–A4, insbesondere Normalverteilung der Fehler</button>
+              <button class="quiz-choice" type="button">Nur A4 (Normalverteilung reicht allein)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Gauß-Markov gilt bereits unter A1–A3. A4 (Normalverteilung) wird
+              erst für t-Tests und Konfidenzintervalle der Koeffizienten benötigt.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="13-markov-ketten.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Markov-Ketten</div>
+        </a>
+        <a class="next" href="15-klausurtraining.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Klausurtraining</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stetige Zufallsvariablen · P12 Stochastik</title>
+<meta name="description" content="Dichte statt Wahrscheinlichkeitsfunktion: warum f(x) keine Wahrscheinlichkeit ist, P(X=x)=0 gilt, und wie die Gleichverteilung auf [a,b] komplett durchgerechnet wird – bildlich erklärt." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Dichte &amp; VF</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 06</div>
+    <span class="th-icon">📏</span>
+    <h1>Stetige Zufallsvariablen</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Dichte &amp; Verteilungsfunktion</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Bei diskreten Zufallsvariablen war p(x) direkt eine Wahrscheinlichkeit. Bei
+          <strong>stetigen</strong> Zufallsvariablen — Größen wie Zeit, Gewicht oder Länge, die jeden Wert in einem
+          Intervall annehmen können — funktioniert das nicht mehr: Es gibt <strong>unendlich viele</strong> mögliche
+          Werte, jeder einzelne hat Wahrscheinlichkeit 0. Statt einer WK-Funktion arbeitest du jetzt mit einer
+          <strong>Dichte</strong> — und die ist etwas grundlegend anderes.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… eine <strong>Bevölkerungsdichte</strong>-Karte: "12.000 Einwohner pro km²" in der Innenstadt. Diese
+            Zahl ist riesig — viel größer als 1 — aber sie verletzt keine Regel, denn sie ist keine
+            "Wahrscheinlichkeit, dass da jemand wohnt", sondern eine <strong>Dichte</strong>: Erst wenn du sie mit
+            einer <strong>Fläche</strong> multiplizierst (bzw. integrierst), bekommst du eine echte Anzahl Menschen.
+            Genauso ist es mit der Dichtefunktion f(x) einer stetigen Zufallsvariable: f(x) selbst ist keine
+            Wahrscheinlichkeit und darf über 1 liegen. Erst die <strong>Fläche unter der Kurve</strong> — das
+            Integral über ein Intervall — ergibt eine echte Wahrscheinlichkeit.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Dichte f(x) &amp; Verteilungsfunktion F(x)</h2>
+        <p>X heißt stetig verteilt, wenn es eine Funktion f_X: ℝ → [0,∞) gibt, die <strong>Dichtefunktion</strong>,
+          sodass für jede messbare Menge B gilt: P(X ∈ B) = ∫<sub>B</sub> f_X(x) dx. Für ein Intervall bedeutet das
+          ganz konkret: die Wahrscheinlichkeit ist die <strong>Fläche unter der Kurve</strong> von f_X.</p>
+
+        <!-- SVG 1: Fläche unter der Kurve -->
+        <figure class="diagram">
+          <div class="diagram-title">P(a ≤ X ≤ b) = Fläche unter f(x) zwischen a und b</div>
+          <svg viewBox="0 0 460 250" width="460" role="img" aria-label="Glockenähnliche Dichtekurve mit schraffierter Fläche zwischen a und b, die die Wahrscheinlichkeit P(a≤X≤b) darstellt">
+            <defs>
+              <clipPath id="s6clip"><rect x="150" y="0" width="150" height="210"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <line x1="30" y1="210" x2="430" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+              <line x1="30" y1="20" x2="30" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <path d="M40,210 C110,210 130,60 230,60 C330,60 350,210 420,210 Z" fill="#2f6df6" fill-opacity="0.12" stroke="#2f6df6" stroke-width="2"/>
+              <path d="M40,210 C110,210 130,60 230,60 C330,60 350,210 420,210 Z" fill="#f5810b" fill-opacity="0.55" clip-path="url(#s6clip)"/>
+
+              <line x1="150" y1="210" x2="150" y2="108" stroke="#f5810b" stroke-width="1.3" stroke-dasharray="3,3"/>
+              <line x1="300" y1="210" x2="300" y2="95" stroke="#f5810b" stroke-width="1.3" stroke-dasharray="3,3"/>
+
+              <text x="150" y="226" text-anchor="middle" fill="#f5810b" font-weight="800">a</text>
+              <text x="300" y="226" text-anchor="middle" fill="#f5810b" font-weight="800">b</text>
+              <text x="225" y="150" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="13">P(a≤X≤b)</text>
+              <text x="225" y="166" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="12">= Fläche</text>
+              <text x="230" y="45" text-anchor="middle" class="svg-soft">f(x)</text>
+            </g>
+          </svg>
+          <figcaption>Die Höhe der Kurve an einer Stelle x ist NICHT die Wahrscheinlichkeit — nur die
+            eingefärbte <strong>Fläche</strong> zwischen a und b entspricht P(a≤X≤b).</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Eigenschaften der Dichte</div>
+          <span class="formula">(1) f_X(x) ≥ 0 für alle x &nbsp;·&nbsp; (2) ∫<tspan dy="4">−∞</tspan><tspan dy="-4">∞</tspan> f_X(x) dx = 1</span>
+          <p><strong>Wichtig:</strong> P(X = x) = 0 für jeden einzelnen Punkt x — und f_X(x) <strong>darf größer
+            als 1</strong> sein! f_X ist eine Dichte, keine Wahrscheinlichkeit.</p>
+        </div>
+
+        <!-- SVG 2: Dichte darf > 1 sein -->
+        <figure class="diagram">
+          <div class="diagram-title">Zwei gültige Dichten mit Fläche = 1 — trotz sehr unterschiedlicher Höhe</div>
+          <svg viewBox="0 0 460 220" width="460" role="img" aria-label="Links eine schmale hohe Dichte f(x)=5 auf dem Intervall 0 bis 0.2, rechts eine breite flache Dichte f(x)=0.5 auf dem Intervall 0 bis 2 - beide haben Flaeche 1 und sind gueltige Dichten">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="40" y1="190" x2="420" y2="190" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <rect x="60" y="40" width="20" height="150" fill="#2f6df6" fill-opacity="0.5" stroke="#2f6df6" stroke-width="1.6"/>
+              <text x="70" y="30" text-anchor="middle" class="svg-ink" font-size="11">f(x)=5 auf [0, 0.2]</text>
+              <text x="70" y="207" text-anchor="middle" class="svg-soft" font-size="11">Fläche = 5·0.2 = 1 ✓</text>
+
+              <rect x="200" y="175" width="200" height="15" fill="#12b28c" fill-opacity="0.5" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="300" y="30" text-anchor="middle" class="svg-ink" font-size="11">f(x)=0.5 auf [0, 2]</text>
+              <text x="300" y="207" text-anchor="middle" class="svg-soft" font-size="11">Fläche = 0.5·2 = 1 ✓</text>
+            </g>
+          </svg>
+          <figcaption>Beide Rechtecke sind gültige Dichten (Fläche = 1), obwohl die linke Dichte mit f(x)=5 weit
+            über 1 liegt. Nur die Fläche zählt, nicht die Höhe.</figcaption>
+        </figure>
+
+        <h3>Verteilungsfunktion: das Integral von −∞ bis x</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Verteilungsfunktion</div>
+          <span class="formula">F_X(x) = P(X ≤ x) = ∫<tspan dy="4">−∞</tspan><tspan dy="-4">x</tspan> f_X(t) dt &nbsp;·&nbsp; f_X(x) = F_X'(x)</span>
+          <p>Anders als bei diskreten ZV ist F_X hier <strong>stetig</strong> (kein Sprung!), monoton nicht-fallend,
+            mit F_X(x)→0 für x→−∞ und F_X(x)→1 für x→+∞. Ableiten und Integrieren sind zueinander invers: F ist
+            das Integral von f, f ist die Ableitung von F.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>P(a≤X≤b) = P(a&lt;X&lt;b)</b><span>alle Varianten gleich (Punkte zählen nicht)</span></div>
+          <div class="fact"><b>= F(b) − F(a)</b><span>egal ob mit oder ohne Rand</span></div>
+          <div class="fact"><b>Quantil x_p</b><span>F(x_p) = p, also x_p = F⁻¹(p)</span></div>
+          <div class="fact"><b>Median</b><span>x_{0.5}, das 50%-Quantil</span></div>
+        </div>
+
+        <h3>Gleichverteilung U(a,b) — die einfachste stetige Verteilung</h3>
+        <p>Alle Werte in [a,b] sind gleich wahrscheinlich — die Dichte ist ein flaches Rechteck:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Gleichverteilung</div>
+          <span class="formula">f(x) = 1/(b−a) auf [a,b] &nbsp;·&nbsp; E[X] = (a+b)/2 &nbsp;·&nbsp; Var(X) = (b−a)²/12</span>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Gleichverteilung komplett durchrechnen</h2>
+        <p>X ~ U(2, 6). Gesucht: die Dichte, die Verteilungsfunktion, und P(3 ≤ X ≤ 5).</p>
+
+        <ol class="steps">
+          <li><strong>Dichte aufstellen:</strong> f(x) = 1/(6−2) = 1/4 für x ∈ [2,6], sonst 0</li>
+          <li><strong>Verteilungsfunktion integrieren:</strong> F(x) = 0 für x&lt;2; F(x) = (x−2)/4 für 2≤x≤6;
+            F(x) = 1 für x&gt;6</li>
+          <li><strong>P(3≤X≤5) über die Dichte:</strong> ∫<sub>3</sub><sup>5</sup> (1/4) dx = (1/4)·(5−3) =
+            2/4 = <strong>0.5</strong></li>
+          <li><strong>Gegenprobe über F:</strong> F(5)−F(3) = (5−2)/4 − (3−2)/4 = 3/4 − 1/4 = 2/4 =
+            <strong>0.5</strong> ✓</li>
+        </ol>
+
+        <!-- SVG 3: U(2,6) Dichte + VF -->
+        <figure class="diagram">
+          <div class="diagram-title">U(2,6): Dichte (Rechteck) und Verteilungsfunktion (Rampe)</div>
+          <svg viewBox="0 0 480 260" width="480" role="img" aria-label="Links die konstante Dichte 1/4 auf dem Intervall 2 bis 6 mit hervorgehobener Flaeche zwischen 3 und 5, rechts die linear ansteigende Verteilungsfunktion mit den Punkten F(3)=0.25 und F(5)=0.75">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <!-- Panel 1: Dichte -->
+              <text x="120" y="15" text-anchor="middle" class="svg-soft" font-weight="700">Dichte f(x)</text>
+              <line x1="20" y1="210" x2="220" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <line x1="20" y1="20" x2="20" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <rect x="40" y="130" width="160" height="80" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.4"/>
+              <rect x="80" y="130" width="80" height="80" fill="#f5810b" fill-opacity="0.55" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="120" y="122" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">f(x)=1/4</text>
+              <text x="40" y="224" text-anchor="middle" class="svg-soft">2</text>
+              <text x="80" y="224" text-anchor="middle" fill="#f5810b" font-weight="800">3</text>
+              <text x="160" y="224" text-anchor="middle" fill="#f5810b" font-weight="800">5</text>
+              <text x="200" y="224" text-anchor="middle" class="svg-soft">6</text>
+
+              <!-- Panel 2: VF -->
+              <text x="360" y="15" text-anchor="middle" class="svg-soft" font-weight="700">Verteilungsfunktion F(x)</text>
+              <line x1="260" y1="210" x2="460" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <line x1="260" y1="20" x2="260" y2="210" stroke="#8a94a6" stroke-width="1.1"/>
+              <polyline points="260,210 300,210 420,30 460,30" fill="none" stroke="#2f6df6" stroke-width="2"/>
+              <line x1="330" y1="165" x2="390" y2="75" stroke="#f5810b" stroke-width="2.6"/>
+              <line x1="330" y1="210" x2="330" y2="165" stroke="#f5810b" stroke-width="1" stroke-dasharray="2,3"/>
+              <line x1="390" y1="210" x2="390" y2="75" stroke="#f5810b" stroke-width="1" stroke-dasharray="2,3"/>
+              <line x1="260" y1="165" x2="330" y2="165" stroke="#f5810b" stroke-width="1" stroke-dasharray="2,3"/>
+              <line x1="260" y1="75" x2="390" y2="75" stroke="#f5810b" stroke-width="1" stroke-dasharray="2,3"/>
+              <circle cx="330" cy="165" r="4" fill="#f5810b"/>
+              <circle cx="390" cy="75" r="4" fill="#f5810b"/>
+              <text x="254" y="169" text-anchor="end" fill="#f5810b" font-size="10.5">0.25</text>
+              <text x="254" y="79" text-anchor="end" fill="#f5810b" font-size="10.5">0.75</text>
+              <text x="300" y="224" text-anchor="middle" class="svg-soft">2</text>
+              <text x="330" y="224" text-anchor="middle" fill="#f5810b" font-weight="800">3</text>
+              <text x="390" y="224" text-anchor="middle" fill="#f5810b" font-weight="800">5</text>
+              <text x="420" y="224" text-anchor="middle" class="svg-soft">6</text>
+            </g>
+          </svg>
+          <figcaption>Links: die Fläche zwischen 3 und 5 unter der konstanten Dichte. Rechts: derselbe Wert als
+            Höhendifferenz F(5)−F(3) = 0.75−0.25 = 0.5 auf der Rampe — zwei Wege, dasselbe Ergebnis.</figcaption>
+        </figure>
+
+        <h3>Normierungskonstante bestimmen</h3>
+        <p>f(x) = c·x² für x ∈ [0,1], sonst 0. Bestimme c so, dass f eine gültige Dichte ist.</p>
+        <ol class="steps">
+          <li><strong>Bedingung aufstellen:</strong> ∫<sub>0</sub><sup>1</sup> c·x² dx = 1</li>
+          <li><strong>Integrieren:</strong> c · [x³/3]<sub>0</sub><sup>1</sup> = c · 1/3 = 1</li>
+          <li><strong>Auflösen:</strong> c = <strong>3</strong></li>
+        </ol>
+
+        <h3>Verteilungsfunktion aus der Dichte bestimmen</h3>
+        <p>Mit c=3 ist f(x) = 3x² für x ∈ [0,1]. Bestimme F(x).</p>
+        <ol class="steps">
+          <li><strong>Integrieren:</strong> F(x) = ∫<sub>0</sub><sup>x</sup> 3t² dt = [t³]<sub>0</sub><sup>x</sup> =
+            x³ für x ∈ [0,1]</li>
+          <li><strong>Vollständig hinschreiben:</strong> F(x)=0 für x&lt;0; F(x)=x³ für 0≤x≤1; F(x)=1 für x&gt;1</li>
+          <li><strong>Beispielwert:</strong> F(0.5) = 0.5³ = <strong>0.125</strong></li>
+        </ol>
+
+        <h3>Quantil berechnen: F umkehren statt einsetzen</h3>
+        <p>Mit F(x)=x³ auf [0,1]: gesucht ist der Median x<sub>0.5</sub>, also die Stelle, an der genau die
+          Hälfte der Fläche links liegt.</p>
+        <ol class="steps">
+          <li><strong>Quantilgleichung aufstellen:</strong> F(x<sub>0.5</sub>) = x<sub>0.5</sub>³ = 0.5</li>
+          <li><strong>Nach x auflösen (dritte Wurzel ziehen):</strong> x<sub>0.5</sub> = 0.5<sup>1/3</sup></li>
+          <li><strong>Auswerten:</strong> x<sub>0.5</sub> ≈ <strong>0.794</strong></li>
+          <li><strong>Plausibilitäts-Check:</strong> Bei f(x)=3x² ist mehr Masse in der Nähe von x=1 (die Dichte
+            wächst dort an) — deshalb liegt der Median mit ≈0.794 über der "geometrischen Mitte" 0.5 des
+            Intervalls. Bei der Gleichverteilung dagegen ist der Median immer exakt (a+b)/2, weil die Dichte dort
+            konstant ist.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei f(x)=3x² ist P(X=0.5) = f(0.5) = 3·0.25 =
+            0.75.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P(X=0.5) = <strong>0</strong> — bei einer
+            stetigen ZV hat jeder einzelne Punkt Wahrscheinlichkeit 0. f(x) ist eine Dichte, keine WK. Nur
+            Integrale (Flächen) geben Wahrscheinlichkeiten!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"f(x)=5 ist ungültig, eine Wahrscheinlichkeit
+            kann nicht größer als 1 sein."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>f(x)=5 auf [0, 0.2] ist völlig gültig! Das
+            Integral (die Fläche) ergibt 5·0.2 = 1 ✓. Nur die <strong>Fläche</strong> muss 1 sein, nicht die Höhe.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei stetigen ZV ist P(a&lt;X&lt;b) etwas anderes
+            als P(a≤X≤b).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Beide sind <strong>gleich</strong>! Da einzelne
+            Punkte Wahrscheinlichkeit 0 haben, ändert es nichts, ob die Ränder mitgezählt werden oder nicht.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>F(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt reicht
+            als vollständige Antwort, egal für welches x.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>F muss <strong>stückweise</strong> angegeben
+            werden: 0 für x unterhalb des Trägers, das Integral innerhalb, 1 für x oberhalb — sonst fehlt die
+            vollständige Definition auf ganz ℝ.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Diskret vs. Stetig im Vergleich</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Eigenschaft</th><th>Diskret</th><th>Stetig</th></tr></thead>
+            <tbody>
+              <tr><td>Grundobjekt</td><td>WK-Funktion f(x)=P(X=x)</td><td>Dichte f(x) ≥ 0</td></tr>
+              <tr><td>f(x) ≤ 1?</td><td>Ja</td><td>Nein, f(x) kann &gt; 1 sein!</td></tr>
+              <tr><td>P(X=x)</td><td>f(x) &gt; 0 möglich</td><td>immer = 0</td></tr>
+              <tr><td>Verteilungsfunktion</td><td>Stufenfunktion</td><td>stetig, kein Sprung</td></tr>
+              <tr><td>WK berechnen</td><td>Σ f(x_i)</td><td>∫ f(x) dx</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Kernformeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>∫ f(x) dx = 1</td><td>Normierung der Dichte</td></tr>
+              <tr><td>P(a≤X≤b) = ∫<sub>a</sub><sup>b</sup> f(x) dx</td><td>WK aus Dichte</td></tr>
+              <tr><td>F(x) = ∫<sub>−∞</sub><sup>x</sup> f(t) dt</td><td>VF aus Dichte</td></tr>
+              <tr><td>f(x) = F'(x)</td><td>Dichte aus VF</td></tr>
+              <tr><td>f(x) = 1/(b−a) auf [a,b]</td><td>Gleichverteilung U(a,b)</td></tr>
+              <tr><td>E[X]=(a+b)/2, Var(X)=(b−a)²/12</td><td>Gleichverteilung: Kennzahlen</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>f(x) ist eine Dichte, keine WK</strong> — sie darf &gt; 1 sein</li>
+            <li><strong>P(X=x) = 0</strong> für jeden Einzelpunkt bei stetigen ZV</li>
+            <li><strong>Nur die Fläche zählt</strong> — die Höhe von f(x) allein sagt nichts</li>
+            <li>≤ und &lt; sind bei stetigen ZV <strong>austauschbar</strong></li>
+            <li>F immer <strong>stückweise vollständig</strong> hinschreiben (vor / im / nach dem Träger)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>X ~ U(2, 6). Wie groß ist P(3 ≤ X ≤ 5)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>f(x)=1/4 auf [2,6]. (1/4)·(5−3) = <strong>0.5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">2.</span>f(x) = c·x² für x ∈ [0,1], sonst 0. Wie muss c
+              gewählt werden, damit f eine gültige Dichte ist?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>∫₀¹ c·x² dx = c/3 = 1 → c = <strong>3</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.125" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Mit f(x)=3x² auf [0,1] ist F(x)=x³. Wie groß ist
+              F(0.5)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F(0.5) = 0.5³ = <strong>0.125</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>X ist stetig verteilt. Wie groß ist P(X = 3)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>0</button>
+              <button class="quiz-choice" type="button">f(3)</button>
+              <button class="quiz-choice" type="button">1</button>
+              <button class="quiz-choice" type="button">nicht definiert</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei stetigen ZV hat jeder Einzelpunkt Wahrscheinlichkeit
+              <strong>0</strong> — egal wie groß f(3) ist.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>f(x)=5 auf [0, 0.2], sonst 0. Ist f eine gültige
+              Dichte?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja, das Integral (die Fläche) ist 1</button>
+              <button class="quiz-choice" type="button">Nein, weil f(x) &gt; 1 nicht erlaubt ist</button>
+              <button class="quiz-choice" type="button">Nein, weil der Träger zu klein ist</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>∫₀^0.2 5 dx = 5·0.2 = 1 ✓. Die Höhe f(x) darf &gt; 1 sein, solange die
+              Fläche 1 ergibt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="dichte|dichtefunktion">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie heißt f_X(x) bei einer stetigen ZV — die
+              Funktion, die selbst keine Wahrscheinlichkeit ist, aber über ein Integral eine WK ergibt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Dichtefunktion</strong> (Dichte, pdf).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: X ~ U(2, 6). Wie groß ist der Median
+              (das 0.5-Quantil)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>F(m) = (m−2)/4 = 0.5 → m = <strong>4</strong>. Bei der Gleichverteilung
+              ist der Median immer der Mittelpunkt (a+b)/2.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="05-diskrete-verteilungen.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Diskrete Verteilungen</div>
+        </a>
+        <a class="next" href="07-stetige-verteilungen.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Stetige Verteilungen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

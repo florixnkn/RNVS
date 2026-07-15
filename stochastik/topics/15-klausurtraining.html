@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klausurtraining: von Bayes bis Regression · P12</title>
+<meta name="description" content="Klausurtraining für P12 Stochastik &amp; Statistik: eine selbst konstruierte Probeklausur mit 10 klausurtypischen Aufgaben von Bayes über Verteilungen bis Regression, komplett durchgerechnet — plus Quick-Reference und Wissenscheck." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Ablauf</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P12-Kursübersicht</a> › Thema 15</div>
+    <span class="th-icon">🎯</span>
+    <h1>Klausurtraining: von Bayes bis Regression</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Probeklausur</span>
+      <span class="badge badge-soft">Keine Altklausur verfügbar – selbst konstruiert</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">So trainierst du am besten</a></li>
+        <li><a href="#bayes">1 · Bayes (Medizintest)</a></li>
+        <li><a href="#binomial">2 · Binomialverteilung</a></li>
+        <li><a href="#poisson">3 · Poisson-Verteilung</a></li>
+        <li><a href="#normalverteilung">4 · Normalverteilung</a></li>
+        <li><a href="#erwartungswert">5 · Erwartungswert &amp; Varianz</a></li>
+        <li><a href="#konfidenzintervall">6 · Konfidenzintervall</a></li>
+        <li><a href="#ztest">7 · z-Test</a></li>
+        <li><a href="#markov">8 · Markov-Kette</a></li>
+        <li><a href="#regression">9 · Lineare Regression</a></li>
+        <li><a href="#tschebyschew">10 · Tschebyschew-Ungleichung</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>So trainierst du am besten</h2>
+        <p class="lead-in">P12 ist mit <strong>9 ECTS</strong> das formelreichste Modul des Semesters — Theorie,
+          Rechnen und Beweisen in einem Fach. Diese Seite ist kein neuer Stoff, sondern <strong>Training</strong>:
+          10 klausurtypische Aufgaben, quer durch alle 14 Themen, komplett durchgerechnet.</p>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Ehrlich gesagt: Für P12 gibt es (noch) keine Altklausuren</div>
+          <p>Anders als bei älteren Modulen liegen für P12 aktuell <strong>keine echten Altklausuren</strong> vor.
+            Alle 10 Aufgaben auf dieser Seite sind deshalb <strong>selbst konstruiert</strong> — eine Probeklausur
+            im Stil des Moduls, mit klausurtypischen Aufgabenformaten und sorgfältig durchgerechneten,
+            verifizierten Zahlen. Sie ersetzt keine offiziellen Übungsklausuren, ist aber ein guter Gradmesser,
+            ob du die Rechenwege wirklich beherrschst.</p>
+        </div>
+
+        <h3>Deine Strategie</h3>
+        <ol class="steps">
+          <li><strong>Erst selbst rechnen, dann vergleichen:</strong> Lies die Aufgabenstellung, rechne sie komplett
+            auf einem Blatt durch — und schau erst danach in den Lösungskasten. Reines Mitlesen ohne eigenes
+            Rechnen bringt für eine Formel-Klausur wie diese fast nichts.</li>
+          <li><strong>Formel zuerst hinschreiben, dann erst Zahlen einsetzen:</strong> In fast jeder Aufgabe unten
+            steht die allgemeine Formel als erster Lösungsschritt — genau das ist auch in einer echten Klausur
+            oft schon die Voraussetzung für Teilpunkte, selbst wenn du dich beim Einsetzen verrechnest.</li>
+          <li><strong>Zwischenschritte aufschreiben, nicht im Kopf rechnen:</strong> Gerade bei Bayes, Tests und
+            Regression gibt es mehrere Zwischengrößen (z. B. P(+), die Teststatistik z, Sxy) — schreib sie einzeln
+            hin, dann findest du Rechenfehler viel schneller.</li>
+          <li><strong>Zum Schluss den Wissenscheck als Zeitdruck-Test nutzen:</strong> Wenn du alle 10 Aufgaben
+            durchgerechnet hast, arbeite den Wissenscheck unten am Stück durch, ohne vorher nochmal nachzuschlagen.</li>
+        </ol>
+
+        <h3>Die Top-5-Fehlerquellen des Moduls</h3>
+        <p>Diese fünf Fallen tauchen in P12 immer wieder auf — quasi in jeder zweiten Aufgabe steckt mindestens
+          eine davon versteckt. Achte in den 10 Aufgaben unten gezielt darauf, wo sie zuschlagen könnten.</p>
+        <div class="factgrid">
+          <div class="fact"><b>1 · Laplace</b><span>nur bei Gleichwahrscheinlichkeit anwendbar</span></div>
+          <div class="fact"><b>2 · P(A|B)≠P(B|A)</b><span>Bayes-Verwechslung, die häufigste Falle überhaupt</span></div>
+          <div class="fact"><b>3 · Var(X+Y)</b><span>=Var(X)+Var(Y) nur bei Unabhängigkeit</span></div>
+          <div class="fact"><b>4 · f(x) ist keine WK</b><span>Dichte bei stetigen ZV darf &gt; 1 sein</span></div>
+          <div class="fact"><b>5 · 1/(n−1)</b><span>für erwartungstreue Varianzschätzung, nicht 1/n</span></div>
+        </div>
+      </section>
+
+      <!-- ===== 1 BAYES ===== -->
+      <section id="bayes" class="reveal">
+        <h2>Aufgabentyp 1: Bayes (Medizintest)</h2>
+        <p>Der Klassiker unter den P12-Fallen: Ein Test klingt sehr zuverlässig (hohe Sensitivität, hohe
+          Spezifität) — trotzdem ist die Wahrscheinlichkeit, bei positivem Test wirklich krank zu sein, oft
+          erstaunlich niedrig. Der Grund liegt in der <strong>Prävalenz</strong>: Ist eine Krankheit selten, gibt
+          es unter allen positiv Getesteten mehr falsch-positive Gesunde als richtig-positive Kranke.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Der Test hat 99% Sensitivität, also bin ich bei
+            positivem Ergebnis auch zu etwa 99% krank."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Sensitivität P(+|K) und die gesuchte Größe
+            P(K|+) sind <strong>zwei verschiedene bedingte Wahrscheinlichkeiten</strong> — P(A|B) ≠ P(B|A). Erst
+            der Satz von Bayes rechnet die eine in die andere um, und dabei spielt die Prävalenz P(K) eine
+            entscheidende Rolle.</div>
+        </div>
+
+        <h3>🧮 Aufgabe 1: Wie zuverlässig ist ein positiver Medizintest wirklich?</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Eine Krankheit K hat in der Bevölkerung eine Prävalenz von <strong>P(K) = 0.01</strong> (1% sind
+            erkrankt). Ein Test hat eine Sensitivität von <strong>P(+|K) = 0.99</strong> (99% der Erkrankten testen
+            positiv) und eine Spezifität von <strong>P(−|G) = 0.95</strong>, wobei G = „gesund" das
+            Komplementärereignis zu K ist (95% der Gesunden testen negativ). Gesucht: <strong>P(K|+)</strong> — wie
+            wahrscheinlich ist es, tatsächlich krank zu sein, wenn der Test positiv ausfällt?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Formel von Bayes aufschreiben:</strong> P(K|+) = P(+|K) · P(K) / P(+).</li>
+          <li><strong>P(+) fehlt noch — totale Wahrscheinlichkeit:</strong> P(+) = P(+|K)·P(K) + P(+|G)·P(G).
+            Dafür brauchst du P(+|G) = 1 − P(−|G) = 1 − 0.95 = 0.05 und P(G) = 1 − P(K) = 0.99.</li>
+          <li><strong>P(+) berechnen:</strong> P(+) = 0.01·0.99 + 0.99·0.05 = 0.0099 + 0.0495 = <strong>0.0594</strong>.</li>
+          <li><strong>Bayes einsetzen:</strong> P(K|+) = 0.0099 / 0.0594 = 1/6 ≈ <strong>0.1667</strong>.</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Warum das Ergebnis so klein ist</div>
+          <p>Trotz 99% Sensitivität und 95% Spezifität liegt P(K|+) nur bei rund <strong>16.7%</strong> — mehr als
+            5 von 6 positiv Getesteten sind also tatsächlich gesund. Das liegt allein an der niedrigen Prävalenz:
+            unter 10 000 Personen sind nur 100 wirklich krank (davon testen ~99 positiv), aber unter den 9 900
+            Gesunden testen trotz 95% Spezifität noch ~495 fälschlich positiv. Absolut gesehen gibt es also mehr
+            falsch-positive als richtig-positive Fälle.</p>
+        </div>
+      </section>
+
+      <!-- ===== 2 BINOMIAL ===== -->
+      <section id="binomial" class="reveal">
+        <h2>Aufgabentyp 2: Binomialverteilung</h2>
+        <p>Immer dasselbe Muster: <strong>n</strong> unabhängige Versuche mit fester Erfolgswahrscheinlichkeit
+          <strong>p</strong>, gesucht ist die Wahrscheinlichkeit für genau <strong>k</strong> Erfolge — plus meist
+          Erwartungswert und Varianz der Verteilung.</p>
+
+        <h3>🧮 Aufgabe 2: Genau 2 Treffer bei 10 Versuchen</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>X ~ Bin(n=10, p=0.3), z. B. die Anzahl Treffer bei 10 unabhängigen Versuchen mit Trefferwahrscheinlichkeit
+            30%. Berechne <strong>P(X=2)</strong> sowie <strong>E[X]</strong> und <strong>Var(X)</strong>.</p>
+        </div>
+        <pre class="code">P(X=k) = C(n,k) · p^k · (1−p)^(n−k)
+
+P(X=2) = C(10,2) · 0.3² · 0.7⁸
+        = 45 · 0.09 · 0.05764801
+        ≈ 0.2335
+
+E[X]   = n·p       = 10 · 0.3 = 3
+Var(X) = n·p·(1−p) = 10 · 0.3 · 0.7 = 2.1</pre>
+        <p>C(10,2) = 45 ist die Anzahl der Möglichkeiten, welche 2 der 10 Versuche die Treffer sind; 0.3² ist die
+          Wahrscheinlichkeit für genau diese 2 Treffer, 0.7⁸ die Wahrscheinlichkeit für die übrigen 8 Nieten.
+          Erwartungswert und Varianz folgen direkt aus den Standardformeln der Binomialverteilung — hier musst du
+          nichts summieren.</p>
+      </section>
+
+      <!-- ===== 3 POISSON ===== -->
+      <section id="poisson" class="reveal">
+        <h2>Aufgabentyp 3: Poisson-Verteilung</h2>
+        <p>Die Poisson-Verteilung modelliert seltene Ereignisse pro Zeiteinheit (Anrufe, Unfälle, Tippfehler …) mit
+          nur einem Parameter <strong>λ</strong> — der mittleren Anzahl Ereignisse in der betrachteten Einheit.
+          Praktischer Trick: P(X≥1) ist fast immer leichter über das Gegenereignis P(X=0) zu berechnen.</p>
+
+        <h3>🧮 Aufgabe 3: Anrufe an einer Hotline</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>An einer Hotline treffen im Mittel <strong>λ = 2</strong> Anrufe pro Minute ein (Poisson-verteilt).
+            Berechne <strong>P(X=0)</strong> (keine Anrufe in einer Minute) und <strong>P(X≥1)</strong> (mindestens
+            ein Anruf).</p>
+        </div>
+        <pre class="code">P(X=k) = e^(−λ) · λ^k / k!
+
+P(X=0) = e^(−2) · 2⁰/0! = e^(−2) ≈ 0.1353
+
+P(X≥1) = 1 − P(X=0) = 1 − 0.1353 ≈ 0.8647   (Gegenereignis!)</pre>
+        <p>P(X≥1) direkt auszusummieren würde P(X=1)+P(X=2)+P(X=3)+… bis unendlich bedeuten — über das
+          Gegenereignis 1−P(X=0) ist es eine einzige Zeile.</p>
+      </section>
+
+      <!-- ===== 4 NORMALVERTEILUNG ===== -->
+      <section id="normalverteilung" class="reveal">
+        <h2>Aufgabentyp 4: Normalverteilung</h2>
+        <p>Bei X~N(μ,σ²) rechnest du nie direkt mit X, sondern <strong>standardisierst</strong> zuerst:
+          Z = (X−μ)/σ ~ N(0,1). Danach liest du die Werte für die Standardnormalverteilung Φ aus der Tabelle ab —
+          Φ(z) ist dabei die Verteilungsfunktion (kumulative Wahrscheinlichkeit), nicht die Dichte.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Die Dichte f(x) ist eine Wahrscheinlichkeit,
+            deshalb darf f(x) nie größer als 1 sein."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>f(x) ist eine <strong>Dichte</strong>, keine
+            Wahrscheinlichkeit — bei kleiner Varianz (steile, schmale Glockenkurve) kann f(x) durchaus über 1
+            liegen. Nur die <strong>Fläche</strong> unter f (also ein Integral) muss insgesamt 1 ergeben, niemals
+            ein einzelner Funktionswert.</div>
+        </div>
+
+        <h3>🧮 Aufgabe 4: Wahrscheinlichkeiten bei normalverteilten Werten</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>X ~ N(100, 15²) — z. B. Testergebnisse mit Mittelwert 100 und Standardabweichung 15. Berechne
+            <strong>P(X≤130)</strong> und <strong>P(85≤X≤115)</strong>.</p>
+        </div>
+        <pre class="code">Standardisieren: Z = (X−μ)/σ
+
+P(X≤130):  z = (130−100)/15 = 2
+           P(X≤130) = Φ(2) ≈ 0.9772
+
+P(85≤X≤115): z-Grenzen: (85−100)/15 = −1,  (115−100)/15 = 1
+           P(85≤X≤115) = Φ(1) − Φ(−1) = 2·Φ(1) − 1
+                        = 2 · 0.8413 − 1 ≈ 0.6827   (die „68%-Regel")</pre>
+        <p>Die zweite Rechnung nutzt die Symmetrie der Standardnormalverteilung: Φ(−1) = 1−Φ(1), daher
+          Φ(1)−Φ(−1) = 2Φ(1)−1. Das Ergebnis 0.6827 ist kein Zufall — es ist genau die bekannte „68% liegen
+          innerhalb einer Standardabweichung"-Faustregel.</p>
+      </section>
+
+      <!-- ===== 5 ERWARTUNGSWERT/VARIANZ ===== -->
+      <section id="erwartungswert" class="reveal">
+        <h2>Aufgabentyp 5: Erwartungswert &amp; Varianz (diskret)</h2>
+        <p>Für eine diskrete Zufallsvariable mit gegebener Wahrscheinlichkeitsfunktion berechnest du E[X] als
+          gewichteten Mittelwert und Var(X) am schnellsten über den Verschiebungssatz
+          Var(X) = E[X²] − (E[X])².</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Var(X+Y) = Var(X) + Var(Y) gilt immer, für
+            beliebige Zufallsvariablen."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Diese Additivität gilt nur, wenn X und Y
+            <strong>unabhängig</strong> sind (bzw. zumindest unkorreliert, Cov(X,Y)=0). Allgemein gilt
+            Var(X+Y) = Var(X) + Var(Y) + 2·Cov(X,Y).</div>
+        </div>
+
+        <h3>🧮 Aufgabe 5: E[X] und Var(X) aus einer Wahrscheinlichkeitsfunktion</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Eine diskrete Zufallsvariable X hat P(X=1)=0.2, P(X=2)=0.5, P(X=3)=0.3. Berechne <strong>E[X]</strong>,
+            <strong>Var(X)</strong> und die Standardabweichung <strong>σ</strong>.</p>
+        </div>
+        <pre class="code">E[X]  = Σ x·P(X=x) = 1·0.2 + 2·0.5 + 3·0.3 = 0.2+1.0+0.9 = 2.1
+
+E[X²] = Σ x²·P(X=x) = 1·0.2 + 4·0.5 + 9·0.3 = 0.2+2.0+2.7 = 4.9
+
+Var(X) = E[X²] − (E[X])² = 4.9 − 2.1² = 4.9 − 4.41 = 0.49
+
+σ = √Var(X) = √0.49 = 0.7</pre>
+        <p>Der Verschiebungssatz Var(X)=E[X²]−(E[X])² ist fast immer schneller als die direkte Definition
+          Var(X)=Σ(x−E[X])²·P(X=x) — vor allem, wenn E[X] keine „schöne" Zahl ist.</p>
+      </section>
+
+      <!-- ===== 6 KONFIDENZINTERVALL ===== -->
+      <section id="konfidenzintervall" class="reveal">
+        <h2>Aufgabentyp 6: Konfidenzintervall</h2>
+        <p>Ein Konfidenzintervall gibt einen Bereich an, in dem der wahre Parameter (hier μ) mit einer bestimmten
+          Sicherheit (z. B. 95%) liegt. Bei bekanntem σ verwendest du die Standardnormalverteilung, das
+          Grundgerüst ist immer: <strong>Schätzer ± kritischer Wert · Standardfehler</strong>.</p>
+
+        <h3>🧮 Aufgabe 6: 95%-Konfidenzintervall für μ (σ bekannt)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Eine Stichprobe hat n=100, Stichprobenmittel x̄=50 und bekannte Standardabweichung σ=10. Bestimme das
+            <strong>95%-Konfidenzintervall</strong> für μ.</p>
+        </div>
+        <pre class="code">KI = x̄ ± z(1−α/2) · σ/√n         (95% ⇒ z(0.975) = 1.96)
+
+Standardfehler: σ/√n = 10/√100 = 10/10 = 1
+Fehlerspanne:   1.96 · 1 = 1.96
+
+KI = [50 − 1.96, 50 + 1.96] = [48.04, 51.96]</pre>
+        <div class="callout callout-tip">
+          <div class="c-title">Was, wenn σ nicht bekannt ist?</div>
+          <p>Ist σ unbekannt, schätzt du es aus der Stichprobe mit der <strong>erwartungstreuen</strong>
+            Stichprobenvarianz s² = 1/(n−1) · Σ(xi−x̄)² — bewusst mit <strong>1/(n−1)</strong>, nicht 1/n, sonst
+            wäre der Schätzer im Mittel zu klein (verzerrt). Zusätzlich ersetzt du z(1−α/2) durch den kritischen
+            Wert der t-Verteilung mit n−1 Freiheitsgraden, weil die zusätzliche Unsicherheit aus der
+            σ-Schätzung berücksichtigt werden muss.</p>
+        </div>
+      </section>
+
+      <!-- ===== 7 Z-TEST ===== -->
+      <section id="ztest" class="reveal">
+        <h2>Aufgabentyp 7: z-Test</h2>
+        <p>Fester Ablauf bei jedem Hypothesentest: Hypothesen aufstellen, Teststatistik berechnen, mit dem
+          kritischen Wert vergleichen (oder p-Wert berechnen), Entscheidung treffen. Bei bekanntem σ ist die
+          Teststatistik z-verteilt.</p>
+
+        <h3>🧮 Aufgabe 7: Zweiseitiger z-Test</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>H0: μ=500 gegen H1: μ≠500 (zweiseitig), mit n=25, x̄=490, σ=20 bekannt und Signifikanzniveau
+            α=0.05. Führe den Test durch und triff eine Entscheidung.</p>
+        </div>
+        <pre class="code">Teststatistik: z = (x̄ − μ0) / (σ/√n) = (490 − 500) / (20/√25) = −10/4 = −2.5
+
+Kritischer Wert (zweiseitig, α=0.05):  z(1−α/2) = 1.96
+
+Vergleich: |z| = 2.5  >  1.96   ⇒  H0 wird abgelehnt
+
+p-Wert = 2·Φ(−2.5) ≈ 2·0.0062 = 0.0124</pre>
+        <ol class="steps">
+          <li><strong>Teststatistik berechnen:</strong> z = −2.5 — der Stichprobenmittelwert liegt 2.5
+            Standardfehler unter dem hypothetischen μ0=500.</li>
+          <li><strong>Mit dem kritischen Wert vergleichen:</strong> |−2.5| = 2.5 ist größer als die Grenze 1.96 für
+            den zweiseitigen 5%-Test → das Ergebnis liegt im Ablehnungsbereich.</li>
+          <li><strong>Entscheidung:</strong> H0 wird zum Niveau α=0.05 abgelehnt — der beobachtete Unterschied ist
+            statistisch signifikant.</li>
+          <li><strong>Gegenprobe über den p-Wert:</strong> p≈0.0124 ist kleiner als α=0.05 — das bestätigt die
+            Ablehnung von H0 über den zweiten möglichen Rechenweg.</li>
+        </ol>
+      </section>
+
+      <!-- ===== 8 MARKOV ===== -->
+      <section id="markov" class="reveal">
+        <h2>Aufgabentyp 8: Markov-Kette</h2>
+        <p>Für die <strong>stationäre Verteilung</strong> π einer Markov-Kette löst du die Fixpunktgleichung
+          π = π·P zusammen mit der Normierung Σπi = 1 — nicht durch Potenzieren von P für „viele Schritte", sondern
+          direkt als lineares Gleichungssystem.</p>
+
+        <h3>🧮 Aufgabe 8: Stationäre Verteilung eines Wettermodells</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Ein einfaches Wettermodell mit den Zuständen Sonne (S) und Regen (R) hat die Übergangsmatrix</p>
+          <span class="formula">P = [ [0.9, 0.1], [0.5, 0.5] ]</span>
+          <p>(Zeile = aktueller Zustand, Spalte = Folgezustand: von Sonne bleibt es mit 0.9 sonnig, von Regen wird
+            es mit 0.5 sonnig). Berechne die <strong>stationäre Verteilung</strong> π = (πS, πR).</p>
+        </div>
+        <pre class="code">Fixpunktgleichung: π = π·P, zusammen mit πS + πR = 1
+
+Spalte "Sonne":  πS = πS·0.9 + πR·0.5
+              ⇒  πS − 0.9·πS = 0.5·πR
+              ⇒  0.1·πS = 0.5·πR
+              ⇒  πS = 5·πR
+
+Normierung:  5·πR + πR = 1  ⇒  6·πR = 1  ⇒  πR = 1/6
+             πS = 5/6
+
+π = (5/6, 1/6) ≈ (0.8333, 0.1667)</pre>
+        <p>Langfristig ist es also an etwa <strong>83.3%</strong> der Tage sonnig und an <strong>16.7%</strong>
+          regnerisch — unabhängig davon, mit welchem Wetter die Kette gestartet ist.</p>
+      </section>
+
+      <!-- ===== 9 REGRESSION ===== -->
+      <section id="regression" class="reveal">
+        <h2>Aufgabentyp 9: Lineare Regression</h2>
+        <p>Die Kleinste-Quadrate-Gerade ŷ = α̂ + β̂x läuft immer über denselben festen Ablauf: Mittelwerte
+          bestimmen, dann Sxy (Kovarianz-Summe) und Sxx (Varianz-Summe) berechnen, daraus die Steigung β̂ = Sxy/Sxx
+          und den Achsenabschnitt α̂ = ȳ − β̂·x̄.</p>
+
+        <h3>🧮 Aufgabe 9: KQ-Regressionsgerade durch drei Punkte</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben die Datenpunkte (1,2), (2,3), (3,5). Bestimme die Kleinste-Quadrate-Regressionsgerade
+            ŷ = α̂ + β̂x.</p>
+        </div>
+        <pre class="code">Mittelwerte: x̄ = (1+2+3)/3 = 2,   ȳ = (2+3+5)/3 = 10/3
+
+Sxy = Σ(xi−x̄)(yi−ȳ)
+    = (1−2)(2−10/3) + (2−2)(3−10/3) + (3−2)(5−10/3)
+    = (−1)(−4/3)   +   0·(−1/3)     +   (1)(5/3)
+    = 4/3 + 0 + 5/3 = 9/3 = 3
+
+Sxx = Σ(xi−x̄)² = (−1)² + 0² + 1² = 1+0+1 = 2
+
+β̂ = Sxy/Sxx = 3/2 = 1.5
+α̂ = ȳ − β̂·x̄ = 10/3 − 1.5·2 = 10/3 − 3 = 1/3
+
+⇒ ŷ = 1/3 + 1.5x</pre>
+        <p>Kontrollprobe: Für x=2 liefert die Gerade ŷ = 1/3 + 1.5·2 = 1/3 + 3 = 10/3 = ȳ — jede KQ-Gerade läuft
+          exakt durch den Punkt (x̄, ȳ), das ist eine gute Selbstkontrolle für jede Regressionsaufgabe.</p>
+      </section>
+
+      <!-- ===== 10 TSCHEBYSCHEW ===== -->
+      <section id="tschebyschew" class="reveal">
+        <h2>Aufgabentyp 10: Tschebyschew-Ungleichung</h2>
+        <p>Die Tschebyschew-Ungleichung liefert eine <strong>obere Schranke</strong> für die Wahrscheinlichkeit,
+          weit vom Erwartungswert abzuweichen — und das, ohne irgendetwas über die genaue Verteilung von X zu
+          wissen (nicht einmal Normalverteilung ist nötig). Der Preis dafür: Die Schranke ist meist recht grob.</p>
+
+        <h3>🧮 Aufgabe 10: Obere Schranke ohne Verteilungsannahme</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Eine Zufallsvariable X hat E[X]=50 und Var(X)=25 (die genaue Verteilung ist nicht bekannt). Schätze mit
+            der Tschebyschew-Ungleichung eine obere Schranke für <strong>P(|X−50|≥10)</strong>.</p>
+        </div>
+        <pre class="code">Tschebyschew-Ungleichung:  P(|X − E[X]| ≥ k)  ≤  Var(X) / k²
+
+Hier: k=10, Var(X)=25
+
+P(|X−50| ≥ 10)  ≤  25 / 10²  =  25/100  =  0.25</pre>
+        <p>Egal wie X konkret verteilt ist: Die Wahrscheinlichkeit, mehr als 10 vom Erwartungswert entfernt zu
+          liegen, ist höchstens 25%. Bei einer bekannten Normalverteilung wäre die tatsächliche Wahrscheinlichkeit
+          meist deutlich kleiner — Tschebyschew garantiert nur die (grobe) Worst-Case-Schranke, die für
+          <em>jede</em> Verteilung mit dieser Varianz gilt.</p>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <div class="factgrid">
+            <div class="fact"><b>Laplace</b><span>nur bei Gleichwahrscheinlichkeit: P(A)=|A|/|Ω|</span></div>
+            <div class="fact"><b>Bayes</b><span>P(A|B)=P(B|A)·P(A)/P(B), niemals P(A|B)=P(B|A)</span></div>
+            <div class="fact"><b>Var(X+Y)</b><span>nur additiv bei Unabhängigkeit</span></div>
+            <div class="fact"><b>Dichte f(x)</b><span>keine WK, darf &gt; 1 sein — nur ∫f=1 zählt</span></div>
+            <div class="fact"><b>1/(n−1)</b><span>erwartungstreue Varianzschätzung</span></div>
+            <div class="fact"><b>π=πP</b><span>stationäre Verteilung als Gleichungssystem lösen</span></div>
+            <div class="fact"><b>β̂=Sxy/Sxx</b><span>KQ-Steigung, Gerade durch (x̄,ȳ)</span></div>
+            <div class="fact"><b>Tschebyschew</b><span>P(|X−E[X]|≥k) ≤ Var(X)/k², verteilungsfrei</span></div>
+          </div>
+
+          <h4>Grundlagen: Laplace, Bayes, totale Wahrscheinlichkeit</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>Laplace (Gleichwahrscheinlichkeit!)</td><td>P(A) = |A| / |Ω|</td></tr>
+              <tr><td>Bedingte Wahrscheinlichkeit</td><td>P(A|B) = P(A∩B) / P(B)</td></tr>
+              <tr><td>Multiplikationssatz</td><td>P(A∩B) = P(A|B)·P(B)</td></tr>
+              <tr><td>Totale Wahrscheinlichkeit</td><td>P(B) = Σi P(B|Ai)·P(Ai)</td></tr>
+              <tr><td>Satz von Bayes</td><td>P(A|B) = P(B|A)·P(A) / P(B)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Verteilungs-Steckbriefe</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Verteilung</th><th>E[X]</th><th>Var(X)</th></tr></thead>
+            <tbody>
+              <tr><td>Bernoulli(p)</td><td>p</td><td>p(1−p)</td></tr>
+              <tr><td>Binomial(n,p)</td><td>np</td><td>np(1−p)</td></tr>
+              <tr><td>Geometrisch(p)</td><td>1/p</td><td>(1−p)/p²</td></tr>
+              <tr><td>Poisson(λ)</td><td>λ</td><td>λ</td></tr>
+              <tr><td>Gleichverteilung U(a,b)</td><td>(a+b)/2</td><td>(b−a)²/12</td></tr>
+              <tr><td>Exponential(λ)</td><td>1/λ</td><td>1/λ²</td></tr>
+              <tr><td>Normalverteilung N(μ,σ²)</td><td>μ</td><td>σ²</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Standardisierung &amp; Tschebyschew</h4>
+          <span class="formula">Z = (X − μ) / σ ~ N(0,1)          P(|X−E[X]| ≥ k) ≤ Var(X)/k²</span>
+
+          <h4>Konfidenzintervall &amp; z-Test-Rezept</h4>
+          <pre class="code">KI (σ bekannt):  x̄ ± z(1−α/2) · σ/√n
+KI (σ unbekannt): x̄ ± t(n−1, 1−α/2) · s/√n   mit s² = 1/(n−1)·Σ(xi−x̄)²
+
+z-Test-Rezept:
+1. H0 und H1 aufstellen
+2. Teststatistik z = (x̄ − μ0) / (σ/√n) berechnen
+3. Mit kritischem Wert vergleichen (zweiseitig α=0.05: 1.96) — oder p-Wert = 2·Φ(−|z|) berechnen
+4. |z| > kritischer Wert (bzw. p < α)  ⇒  H0 ablehnen, sonst  ⇒  H0 beibehalten</pre>
+
+          <h4>Markov-Ketten &amp; lineare Regression</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>Stationäre Verteilung</td><td>π = π·P, zusammen mit Σπi = 1</td></tr>
+              <tr><td>n-Schritt-Übergang</td><td>Pⁿ (Matrixpotenz)</td></tr>
+              <tr><td>KQ-Steigung</td><td>β̂ = Sxy / Sxx</td></tr>
+              <tr><td>KQ-Achsenabschnitt</td><td>α̂ = ȳ − β̂·x̄  (Gerade läuft durch (x̄,ȳ))</td></tr>
+              <tr><td>Sxy</td><td>Σ(xi−x̄)(yi−ȳ)</td></tr>
+              <tr><td>Sxx</td><td>Σ(xi−x̄)²</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="callout callout-tip">
+            <div class="c-title">Merksatz für die Klausur</div>
+            <p>Laplace nur bei Gleichwahrscheinlichkeit, Bayes bei „verdrehter" bedingter Wahrscheinlichkeit.
+              Var(X+Y) nur bei Unabhängigkeit addieren. Dichte f(x) ist keine WK und darf &gt;1 sein — nur das
+              Integral zählt. Bei Varianzschätzung immer 1/(n−1), nicht 1/n. Stationäre Verteilung als
+              Gleichungssystem π=πP lösen, nicht durch Potenzieren. Regressionsgerade läuft immer durch (x̄,ȳ).
+              Tschebyschew funktioniert für jede Verteilung, liefert aber nur eine grobe Schranke.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">15 Fragen zu den 10 Aufgaben oben plus drei Konzeptfragen zu den Top-5-Fehlerquellen.
+          Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du
+          die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.1667" data-tol="0.002">
+            <p class="quiz-prompt"><span class="q-no">1.</span>🧮 Aufgabe 1: Was ist P(K|+) beim Medizintest
+              (Prävalenz 1%, Sensitivität 99%, Spezifität 95%)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl zwischen 0 und 1 …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(+) = 0.01·0.99 + 0.99·0.05 = 0.0594. P(K|+) = 0.0099/0.0594 = 1/6 ≈
+              <strong>0.1667</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.2335" data-tol="0.001">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Aufgabe 2: X~Bin(10, 0.3) — was ist P(X=2)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X=2) = C(10,2)·0.3²·0.7⁸ = 45·0.09·0.05764801 ≈
+              <strong>0.2335</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.1353" data-tol="0.001">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🧮 Aufgabe 3: Bei λ=2 Anrufen/Minute — was ist
+              P(X=0)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X=0) = e^(−2) ≈ <strong>0.1353</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.8647" data-tol="0.001">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Aufgabe 3: Bei λ=2 Anrufen/Minute — was ist
+              P(X≥1)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X≥1) = 1 − P(X=0) = 1 − 0.1353 ≈ <strong>0.8647</strong> (über das
+              Gegenereignis).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.9772" data-tol="0.001">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Aufgabe 4: X~N(100,15²) — was ist P(X≤130)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>z = (130−100)/15 = 2. P(X≤130) = Φ(2) ≈ <strong>0.9772</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.6827" data-tol="0.001">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Aufgabe 4: X~N(100,15²) — was ist
+              P(85≤X≤115)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>z-Grenzen ±1. P(85≤X≤115) = 2·Φ(1)−1 = 2·0.8413−1 ≈
+              <strong>0.6827</strong> — die „68%-Regel".</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.49" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Aufgabe 5: P(X=1)=0.2, P(X=2)=0.5, P(X=3)=0.3 —
+              was ist Var(X)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>E[X]=2.1, E[X²]=4.9. Var(X) = E[X²]−(E[X])² = 4.9−4.41 =
+              <strong>0.49</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="51.96" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🧮 Aufgabe 6: n=100, x̄=50, σ=10 — wie lautet die
+              obere Grenze des 95%-Konfidenzintervalls?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>KI = 50 ± 1.96·10/√100 = 50 ± 1.96 = [48.04, 51.96]. Obere Grenze:
+              <strong>51.96</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-2.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🧮 Aufgabe 7: n=25, x̄=490, μ0=500, σ=20 — wie groß
+              ist die Teststatistik z?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>z = (490−500)/(20/√25) = −10/4 = <strong>−2.5</strong>. Da |−2.5|&gt;1.96
+              wird H0 abgelehnt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.8333" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🧮 Aufgabe 8: Übergangsmatrix P=[[0.9,0.1],[0.5,0.5]]
+              — wie groß ist πS (Sonne) in der stationären Verteilung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Aus 0.1·πS=0.5·πR folgt πS=5·πR; mit πS+πR=1 ergibt sich πS=5/6 ≈
+              <strong>0.8333</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">11.</span>🧮 Aufgabe 9: Punkte (1,2),(2,3),(3,5) — wie groß
+              ist die KQ-Steigung β̂?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Sxy=3, Sxx=2. β̂ = Sxy/Sxx = 3/2 = <strong>1.5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.25" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">12.</span>🧮 Aufgabe 10: E[X]=50, Var(X)=25 — welche obere
+              Schranke liefert Tschebyschew für P(|X−50|≥10)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(|X−50|≥10) ≤ Var(X)/k² = 25/10² = 25/100 = <strong>0.25</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">13.</span>Fehlerquelle 2: Welche Aussage zu P(A|B) und
+              P(B|A) ist richtig?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Sie sind im Allgemeinen verschieden — nur der
+                Satz von Bayes verbindet sie.</button>
+              <button class="quiz-choice" type="button">Sie sind immer gleich, da beide von A und B abhängen.</button>
+              <button class="quiz-choice" type="button">P(A|B) ist immer größer als P(B|A).</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(A|B) und P(B|A) sind unterschiedliche bedingte Wahrscheinlichkeiten.
+              Genau diese Verwechslung ist die häufigste Falle in Bayes-Aufgaben — wie in Aufgabe 1, wo 99%
+              Sensitivität eben <strong>nicht</strong> heißt, dass P(K|+) auch 99% ist.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">14.</span>Fehlerquelle 3: Wann gilt
+              Var(X+Y) = Var(X) + Var(Y)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Nur wenn X und Y unabhängig sind (bzw.
+                unkorreliert, Cov(X,Y)=0).</button>
+              <button class="quiz-choice" type="button">Immer, für beliebige Zufallsvariablen X und Y.</button>
+              <button class="quiz-choice" type="button">Nur wenn X und Y beide normalverteilt sind.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Allgemein gilt Var(X+Y) = Var(X)+Var(Y)+2·Cov(X,Y). Der Zusatzterm
+              2·Cov(X,Y) verschwindet nur bei Unabhängigkeit (bzw. Unkorreliertheit) — <strong>nicht</strong> allein
+              wegen Normalverteilung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">15.</span>Fehlerquelle 4: Welche Aussage über die
+              Dichtefunktion f(x) einer stetigen Zufallsvariable stimmt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>f(x) kann größer als 1 sein — nur die Fläche
+                unter f muss insgesamt 1 ergeben.</button>
+              <button class="quiz-choice" type="button">f(x) ist selbst eine Wahrscheinlichkeit und darf nie über 1
+                liegen.</button>
+              <button class="quiz-choice" type="button">f(x) muss für jedes x kleiner als 0.5 sein.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Dichte f(x) ist kein Wahrscheinlichkeitswert, sondern beschreibt
+              nur die „Steilheit" der Verteilungsfunktion — bei kleiner Varianz kann f(x) durchaus &gt;1 sein. Nur
+              ∫f(x)dx über den gesamten Träger muss 1 ergeben.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="14-lineare-regression.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Lineare Regression</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Zur Übersicht →</div>
+          <div class="pn-title">Zurück zur Kursübersicht</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

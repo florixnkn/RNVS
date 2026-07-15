@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Erwartungswert &amp; Varianz · P12 Stochastik</title>
+<meta name="description" content="Erwartungswert E[X] und Varianz Var(X) bildlich erklärt: Schwerpunkt einer Balkenwaage, Verschiebungssatz, Rechenregeln für Linearität und Skalierung – mit durchgerechneten Beispielen und der Falle Var(X+Y) ≠ Var(X)+Var(Y)." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Kennzahlen</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 08</div>
+    <span class="th-icon">⚖️</span>
+    <h1>Erwartungswert &amp; Varianz</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 5–6</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">E[X] &amp; Var(X) im Bild</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Eine Zufallsvariable X nimmt viele verschiedene Werte an — aber wenn du sie
+          <strong>auf eine einzige Zahl zusammenfassen</strong> müsstest, welche wäre das? Der
+          <strong>Erwartungswert E[X]</strong> ist genau diese Zahl: der mit Wahrscheinlichkeiten gewichtete
+          Durchschnitt. Die <strong>Varianz Var(X)</strong> beantwortet die nächste Frage: Wie stark
+          <strong>streuen</strong> die Werte typischerweise um diesen Durchschnitt?</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du spielst ein Würfelspiel, bei dem du je nach Wurf 1€, 2€ oder 3€ gewinnst — und zwar mit
+            unterschiedlicher Wahrscheinlichkeit: 1€ mit 20%, 2€ mit 50%, 3€ mit 30%. Spielst du das Spiel sehr
+            oft, pendelt sich dein <strong>durchschnittlicher Gewinn pro Runde</strong> auf einen festen Wert
+            ein — das ist E[X]. Manchmal gewinnst du deutlich mehr, manchmal weniger; wie stark diese
+            Ausschläge im Schnitt sind, misst Var(X). Ein Spiel mit E[X]=2€ kann trotzdem sehr
+            unterschiedlich "riskant" sein, je nachdem wie breit die Auszahlungen streuen.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Erwartungswert &amp; Varianz im Bild</h2>
+        <p>Der Erwartungswert ist im Kern ein <strong>Schwerpunkt</strong>: Denk an eine Wippe (Balkenwaage) auf
+          dem Zahlenstrahl, an der bei jedem möglichen Wert x ein Gewicht der Größe P(X=x) hängt. E[X] ist genau
+          der Punkt, an dem die Wippe im Gleichgewicht ist.</p>
+
+        <!-- SVG 1: Balkenwaage / Schwerpunkt -->
+        <figure class="diagram">
+          <div class="diagram-title">E[X] als Schwerpunkt — X ∈ {1,2,3} mit P = 0.2, 0.5, 0.3</div>
+          <svg viewBox="0 0 520 200" width="520" role="img" aria-label="Zahlenstrahl mit drei Gewichten bei 1, 2 und 3, im Gleichgewicht auf einem Balkenpunkt bei 2.1">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <line x1="40" y1="140" x2="480" y2="140" stroke="#8a94a6" stroke-width="2"/>
+              <g class="svg-soft" font-family="JetBrains Mono, monospace" font-size="12">
+                <line x1="40" y1="135" x2="40" y2="145" stroke="#8a94a6"/><text x="40" y="160" text-anchor="middle">0</text>
+                <line x1="150" y1="135" x2="150" y2="145" stroke="#8a94a6"/><text x="150" y="160" text-anchor="middle">1</text>
+                <line x1="260" y1="135" x2="260" y2="145" stroke="#8a94a6"/><text x="260" y="160" text-anchor="middle">2</text>
+                <line x1="370" y1="135" x2="370" y2="145" stroke="#8a94a6"/><text x="370" y="160" text-anchor="middle">3</text>
+                <line x1="480" y1="135" x2="480" y2="145" stroke="#8a94a6"/><text x="480" y="160" text-anchor="middle">4</text>
+              </g>
+              <!-- Gewichte -->
+              <circle cx="150" cy="102" r="14" fill="#8b5cf6" fill-opacity="0.55" stroke="#8b5cf6" stroke-width="1.5"/>
+              <circle cx="260" cy="94" r="22" fill="#8b5cf6" fill-opacity="0.55" stroke="#8b5cf6" stroke-width="1.5"/>
+              <circle cx="370" cy="99" r="17" fill="#8b5cf6" fill-opacity="0.55" stroke="#8b5cf6" stroke-width="1.5"/>
+              <line x1="150" y1="116" x2="150" y2="140" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="2 2"/>
+              <line x1="260" y1="116" x2="260" y2="140" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="2 2"/>
+              <line x1="370" y1="116" x2="370" y2="140" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="2 2"/>
+              <text x="150" y="60" text-anchor="middle" class="svg-ink" font-weight="700">x=1</text>
+              <text x="150" y="75" text-anchor="middle" class="svg-soft" font-size="11">p=0.2</text>
+              <text x="260" y="52" text-anchor="middle" class="svg-ink" font-weight="700">x=2</text>
+              <text x="260" y="67" text-anchor="middle" class="svg-soft" font-size="11">p=0.5</text>
+              <text x="370" y="58" text-anchor="middle" class="svg-ink" font-weight="700">x=3</text>
+              <text x="370" y="73" text-anchor="middle" class="svg-soft" font-size="11">p=0.3</text>
+              <!-- Fulcrum -->
+              <polygon points="271,140 256,168 286,168" fill="#f5810b"/>
+              <text x="271" y="188" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="14">E[X] = 2.1</text>
+            </g>
+          </svg>
+          <figcaption>Je größer die Wahrscheinlichkeit, desto größer das Gewicht. Der Auflagepunkt, an dem die
+            Wippe balanciert, liegt bei E[X] = 1·0.2 + 2·0.5 + 3·0.3 = 2.1 — näher an 2 (dem schwersten Gewicht)
+            als am ungewichteten Mittel 2.0.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Erwartungswert</div>
+          <span class="formula">Diskret:  E[X] = Σ x · P(X=x)
+Stetig:   E[X] = ∫ x · f(x) dx</span>
+          <p>Existiert nur, wenn diese Summe/dieses Integral <strong>absolut konvergiert</strong> — bei
+            Verteilungen mit sehr "schweren" Rändern kann E[X] auch undefiniert sein.</p>
+        </div>
+
+        <h3>Rechenregeln: Linearität</h3>
+        <p>E[X] verhält sich <strong>linear</strong> — das macht es zum bequemsten Werkzeug der ganzen Stochastik.
+          Diese Regel gilt <strong>immer</strong>, egal ob X und Y unabhängig sind oder nicht:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Regel</th><th>Gilt …</th></tr></thead>
+          <tbody>
+            <tr><td>E[aX + b] = a·E[X] + b</td><td>immer</td></tr>
+            <tr><td>E[X + Y] = E[X] + E[Y]</td><td>immer — auch bei Abhängigkeit!</td></tr>
+            <tr><td>E[aX + bY] = a·E[X] + b·E[Y]</td><td>immer (allgemeine Linearität)</td></tr>
+            <tr><td>E[X·Y] = E[X]·E[Y]</td><td>nur bei Unabhängigkeit von X, Y</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">LOTUS: Erwartungswert einer Funktion von X</div>
+          <p>Willst du E[g(X)] berechnen (z.B. E[X²]), musst du <strong>nicht</strong> erst die Verteilung von
+            g(X) herleiten. Du kannst g(x) direkt in die Summe/das Integral einsetzen:</p>
+          <span class="formula">E[g(X)] = Σ g(x)·P(X=x)      bzw.      E[g(X)] = ∫ g(x)·f(x) dx</span>
+          <p>Achtung: <strong>E[g(X)] ≠ g(E[X])</strong> im Allgemeinen — insbesondere ist E[X²] ≠ (E[X])²!</p>
+        </div>
+
+        <h3>Varianz: wie stark streut X?</h3>
+        <p>Var(X) misst den <strong>mittleren quadrierten Abstand</strong> zum Erwartungswert. Quadriert wird,
+          damit sich positive und negative Abweichungen nicht gegenseitig aufheben.</p>
+
+        <!-- SVG 2: Abweichungen vom Mittelwert -->
+        <figure class="diagram">
+          <div class="diagram-title">Abweichungen von μ = E[X] = 2.1 — Basis der Varianz</div>
+          <svg viewBox="0 0 520 200" width="520" role="img" aria-label="Zahlenstrahl mit drei Punkten und ihren Abständen zum Mittelwert 2.1, mit quadrierten Abweichungen">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="40" y1="150" x2="480" y2="150" stroke="#8a94a6" stroke-width="2"/>
+              <circle cx="150" cy="150" r="6" fill="#2f6df6"/>
+              <circle cx="260" cy="150" r="6" fill="#2f6df6"/>
+              <circle cx="370" cy="150" r="6" fill="#2f6df6"/>
+              <!-- Mittelwertlinie -->
+              <line x1="271" y1="30" x2="271" y2="165" stroke="#f5810b" stroke-width="2" stroke-dasharray="4 3"/>
+              <text x="271" y="22" text-anchor="middle" fill="#f5810b" font-weight="800">μ = 2.1</text>
+
+              <!-- Abweichung x=1 -->
+              <line x1="150" y1="80" x2="271" y2="80" stroke="#e0483d" stroke-width="1.5"/>
+              <line x1="150" y1="74" x2="150" y2="86" stroke="#e0483d" stroke-width="1.5"/>
+              <line x1="271" y1="74" x2="271" y2="86" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="210" y="72" text-anchor="middle" fill="#e0483d" font-size="11">x−μ = −1.1</text>
+              <text x="150" y="105" text-anchor="middle" class="svg-soft" font-size="11">(x−μ)² = 1.21</text>
+
+              <!-- Abweichung x=2 -->
+              <line x1="260" y1="110" x2="271" y2="110" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="265" y="103" text-anchor="middle" fill="#12b28c" font-size="10.5">−0.1</text>
+              <text x="260" y="125" text-anchor="middle" class="svg-soft" font-size="11">(x−μ)² = 0.01</text>
+
+              <!-- Abweichung x=3 -->
+              <line x1="271" y1="80" x2="370" y2="80" stroke="#8b5cf6" stroke-width="1.5"/>
+              <line x1="271" y1="74" x2="271" y2="86" stroke="#8b5cf6" stroke-width="1.5"/>
+              <line x1="370" y1="74" x2="370" y2="86" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="325" y="72" text-anchor="middle" fill="#8b5cf6" font-size="11">x−μ = +0.9</text>
+              <text x="370" y="105" text-anchor="middle" class="svg-soft" font-size="11">(x−μ)² = 0.81</text>
+
+              <text x="30" y="150" text-anchor="end" class="svg-soft" font-size="11">x</text>
+              <text x="271" y="187" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">
+                Var(X) = 0.2·1.21 + 0.5·0.01 + 0.3·0.81 = 0.49
+              </text>
+            </g>
+          </svg>
+          <figcaption>Jede quadrierte Abweichung wird mit ihrer Wahrscheinlichkeit gewichtet und aufsummiert —
+            das ist die Definition Var(X) = E[(X−E[X])²]. In der Praxis rechnet man fast immer über den
+            gleichwertigen, aber einfacheren Verschiebungssatz.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Varianz &amp; Verschiebungssatz</div>
+          <span class="formula">Definition:        Var(X) = E[(X − E[X])²]
+Verschiebungssatz: Var(X) = E[X²] − (E[X])²      ← einfacher zu berechnen!
+Standardabw.:      σ_X = √Var(X)</span>
+          <p>Der Verschiebungssatz ist rechnerisch fast immer der bequemere Weg: erst E[X] und E[X²]
+            bestimmen (beides über LOTUS), dann subtrahieren.</p>
+        </div>
+
+        <h3>Eigenschaften der Varianz</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Regel</th><th>Bemerkung</th></tr></thead>
+          <tbody>
+            <tr><td>Var(aX + b) = a²·Var(X)</td><td>additive Konstante b fällt weg, a wird <strong>quadriert</strong></td></tr>
+            <tr><td>Var(X + Y) = Var(X) + Var(Y)</td><td><strong>nur</strong> bei Unabhängigkeit von X, Y</td></tr>
+            <tr><td>Var(X + Y) = Var(X) + Var(Y) + 2·Cov(X,Y)</td><td>allgemein (siehe Thema 10)</td></tr>
+            <tr><td>Var(X) ≥ 0</td><td>immer — Quadrate sind nie negativ</td></tr>
+            <tr><td>Var(X) = 0 ⟺ X = c</td><td>X ist dann deterministisch (eine Konstante)</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="factgrid">
+          <div class="fact"><b>σ = √Var(X)</b><span>Standardabweichung, gleiche Einheit wie X</span></div>
+          <div class="fact"><b>E[X²] ≥ (E[X])²</b><span>Gleichheit nur bei Var(X)=0</span></div>
+          <div class="fact"><b>Var = 2. Moment</b><span>zentriert um E[X]</span></div>
+          <div class="fact"><b>Median</b><span>0.5-Quantil, P(X≤x₀.₅)=0.5</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>Beispiel 1: E[X] und Var(X) diskret berechnen</h3>
+        <p>X nimmt die Werte {1,2,3} an mit P(X=1)=0.2, P(X=2)=0.5, P(X=3)=0.3 (das Beispiel von oben).</p>
+        <ol class="steps">
+          <li><strong>E[X] berechnen:</strong><br>
+            E[X] = 1·0.2 + 2·0.5 + 3·0.3 = 0.2 + 1.0 + 0.9 = <strong>2.1</strong></li>
+          <li><strong>E[X²] berechnen (LOTUS mit g(x)=x²):</strong><br>
+            E[X²] = 1²·0.2 + 2²·0.5 + 3²·0.3 = 0.2 + 2.0 + 2.7 = <strong>4.9</strong></li>
+          <li><strong>Verschiebungssatz anwenden:</strong><br>
+            Var(X) = E[X²] − (E[X])² = 4.9 − 2.1² = 4.9 − 4.41 = <strong>0.49</strong></li>
+          <li><strong>Standardabweichung:</strong><br>
+            σ_X = √0.49 = <strong>0.7</strong></li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Direkt weiterrechnen mit den Rechenregeln</div>
+          <p>Für Y = 3X + 2 brauchst du <strong>keine</strong> neue Rechnung von vorn:<br>
+            E[Y] = 3·E[X] + 2 = 3·2.1 + 2 = <strong>8.3</strong><br>
+            Var(Y) = 3²·Var(X) = 9·0.49 = <strong>4.41</strong> (die additive 2 fällt komplett weg!)</p>
+        </div>
+
+        <h3>Beispiel 2: E[X] stetig berechnen</h3>
+        <p>X hat die Dichte f(x) = 3x² auf [0,1]. Gesucht: E[X].</p>
+        <ol class="steps">
+          <li><strong>LOTUS für stetige ZV einsetzen:</strong><br>
+            E[X] = ∫₀¹ x · 3x² dx = ∫₀¹ 3x³ dx</li>
+          <li><strong>Integrieren:</strong><br>
+            = 3 · [x⁴/4]₀¹ = 3 · (1/4 − 0) = <strong>3/4 = 0.75</strong></li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: Erwartungswert &amp; Varianz einer Summe unabhängiger Binomialverteilungen</h3>
+        <p>Ein Versandhändler verschickt N = 950 Pakete, davon 570 aufs Land und 380 in die Stadt. Ein Paket
+          vom Land verspätet sich mit Wahrscheinlichkeit 0.08, eines aus der Stadt mit Wahrscheinlichkeit 0.28
+          — unabhängig voneinander. V = Gesamtzahl verspäteter Pakete. Gesucht: E[V] und Var(V).</p>
+        <ol class="steps">
+          <li><strong>Aufteilen:</strong> V = V_Land + V_Stadt, mit V_Land ~ B(570, 0.08) und
+            V_Stadt ~ B(380, 0.28), unabhängig.</li>
+          <li><strong>Kennzahlen der Binomialverteilung einsetzen</strong> (E[X]=np, Var(X)=np(1−p)):<br>
+            E[V_Land] = 570·0.08 = 45.6 &nbsp;·&nbsp; Var(V_Land) = 570·0.08·0.92 = 41.952<br>
+            E[V_Stadt] = 380·0.28 = 106.4 &nbsp;·&nbsp; Var(V_Stadt) = 380·0.28·0.72 = 76.608</li>
+          <li><strong>Linearität von E (immer!) und Var (weil unabhängig!) anwenden:</strong><br>
+            E[V] = 45.6 + 106.4 = <strong>152</strong><br>
+            Var(V) = 41.952 + 76.608 = <strong>118.56</strong></li>
+        </ol>
+        <div class="callout callout-info">
+          <div class="c-title">Warum darf man Var(V_Land) + Var(V_Stadt) addieren?</div>
+          <p>Weil Land- und Stadt-Verspätungen hier <strong>unabhängig</strong> sind. Ohne diese Annahme müsste
+            man Var(V) = Var(V_Land) + Var(V_Stadt) + 2·Cov(V_Land, V_Stadt) rechnen (siehe Thema 10).</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Var(X+Y) = Var(X) + Var(Y) — immer.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das gilt <strong>nur bei Unabhängigkeit</strong>.
+            Allgemein: Var(X+Y) = Var(X) + Var(Y) + 2·Cov(X,Y).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Var(3X + 2) = 3·Var(X) + 2</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Var(3X + 2) = 3²·Var(X) = 9·Var(X) — die
+            additive Konstante <strong>fällt weg</strong>, der Faktor wird <strong>quadriert</strong>.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>E[X²] = (E[X])²</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>E[X²] = (E[X])² + Var(X) ≥ (E[X])² — Gleichheit
+            gilt nur, wenn Var(X) = 0 ist (X ist dann konstant).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>E[X·Y] = E[X]·E[Y] — für beliebige X, Y.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das gilt nur, wenn X und Y <strong>unabhängig</strong>
+            (oder zumindest unkorreliert) sind.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Um E[3X+5] zu berechnen, muss ich erst die
+            Verteilung von 3X+5 herleiten und neu integrieren.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Linearität direkt nutzen:
+            E[3X+5] = 3·E[X] + 5 — keine neue Rechnung nötig.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <pre class="code">E[X]        = Σ x·P(X=x)                    (diskret)
+E[aX+b]     = a·E[X] + b                    (Linearität, immer)
+E[X+Y]      = E[X] + E[Y]                   (immer, auch abhängig)
+Var(X)      = E[X²] − (E[X])²               (Verschiebungssatz)
+Var(aX+b)   = a²·Var(X)                     (b fällt weg, a wird quadriert)
+Var(X+Y)    = Var(X)+Var(Y)                 (NUR bei Unabhängigkeit)
+σ_X         = √Var(X)                       (Standardabweichung)</pre>
+
+          <h4>E[X] und Var(X) der wichtigsten Verteilungen</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Verteilung</th><th>E[X]</th><th>Var(X)</th></tr></thead>
+            <tbody>
+              <tr><td>Ber(p)</td><td>p</td><td>p(1−p)</td></tr>
+              <tr><td>B(n,p)</td><td>np</td><td>np(1−p)</td></tr>
+              <tr><td>Geom(p)</td><td>1/p</td><td>(1−p)/p²</td></tr>
+              <tr><td>Poi(λ)</td><td>λ</td><td>λ</td></tr>
+              <tr><td>U(a,b)</td><td>(a+b)/2</td><td>(b−a)²/12</td></tr>
+              <tr><td>Exp(λ)</td><td>1/λ</td><td>1/λ²</td></tr>
+              <tr><td>N(μ,σ²)</td><td>μ</td><td>σ²</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>E ist immer linear</strong> — E[X+Y]=E[X]+E[Y] gilt unabhängig von Abhängigkeit</li>
+            <li><strong>Var braucht Unabhängigkeit</strong>, um additiv zu sein</li>
+            <li>Bei Var(aX+b): <strong>a² · Var(X)</strong>, b verschwindet komplett</li>
+            <li>Verschiebungssatz statt Definition rechnen: <strong>Var(X) = E[X²] − (E[X])²</strong></li>
+            <li>Erst prüfen ob E[X²] endlich ist, bevor du Var(X) berechnest</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>X ist eine faire Münze: P(X=0)=0.5, P(X=1)=0.5
+              (Bernoulli mit p=0.5). Wie groß ist E[X]?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>E[X] = 0·0.5 + 1·0.5 = <strong>0.5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.25" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Für dieselbe faire Münze (Bernoulli p=0.5):
+              wie groß ist Var(X)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Var(X) = p(1−p) = 0.5·0.5 = <strong>0.25</strong>. Über den
+              Verschiebungssatz: E[X²] = 0.5, Var(X) = 0.5 − 0.5² = 0.25.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Welche Formel für Var(aX+b) ist korrekt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>a²·Var(X)</button>
+              <button class="quiz-choice" type="button">a·Var(X) + b</button>
+              <button class="quiz-choice" type="button">a·Var(X)</button>
+              <button class="quiz-choice" type="button">Var(X) + b²</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Var(aX+b) = <strong>a²·Var(X)</strong> — die additive Konstante b
+              fällt weg, der Faktor a wird quadriert.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="36">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Gegeben Var(X) = 4. Wie groß ist Var(3X + 5)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Var(3X+5) = 3²·Var(X) = 9·4 = <strong>36</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="nein">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Gilt Var(X+Y) = Var(X) + Var(Y) für beliebige X
+              und Y (ja/nein)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="ja / nein …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Nein</strong> — nur bei Unabhängigkeit. Allgemein gilt
+              Var(X+Y) = Var(X) + Var(Y) + 2·Cov(X,Y).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.7" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: X∈{1,2,3} mit P=0.2, 0.5, 0.3
+              (E[X]=2.1, Var(X)=0.49, wie im Beispiel oben). Wie groß ist die Standardabweichung σ_X?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>σ_X = √Var(X) = √0.49 = <strong>0.7</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: Wann gilt E[X·Y] = E[X]·E[Y]?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">immer, für beliebige X, Y</button>
+              <button class="quiz-choice" type="button" data-correct>nur wenn X, Y unabhängig sind</button>
+              <button class="quiz-choice" type="button">nie</button>
+              <button class="quiz-choice" type="button">nur bei stetigen Zufallsvariablen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>E[XY] = E[X]·E[Y] gilt <strong>nur bei Unabhängigkeit</strong>
+              (bzw. Unkorreliertheit) von X und Y — im Gegensatz zu E[X+Y]=E[X]+E[Y], das immer gilt.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="07-stetige-verteilungen.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Stetige Verteilungen</div>
+        </a>
+        <a class="next" href="09-grenzwertsaetze.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Grenzwertsätze</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

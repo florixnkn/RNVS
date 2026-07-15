@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wahrscheinlichkeitsgrundlagen · P12 Stochastik</title>
+<meta name="description" content="Laplace-Wahrscheinlichkeit, die Kolmogorov-Axiome und Ereignisse als Mengen bildlich erklärt – mit Venn-Diagrammen, durchgerechneten Würfel-Beispielen und den typischen Fallen beim Additionssatz." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P12-Kursübersicht</a> › Thema 01</div>
+    <span class="th-icon">🎲</span>
+    <h1>Wahrscheinlichkeitsgrundlagen</h1>
+    <div class="th-meta">
+      <span class="stars">★☆☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 1</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie im Bild</a></li>
+        <li><a href="#rechnen">Beispiele Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Wahrscheinlichkeitsrechnung beginnt mit einer simplen Frage: <strong>Wie sicher ist ein
+          Ereignis?</strong> Dafür brauchen wir erstmal Vokabular — welche Ergebnisse sind überhaupt möglich, und
+          wie zählen wir die "günstigen" davon. Die gesamte restliche Stochastik-Vorlesung baut auf diesen wenigen
+          Grundbegriffen auf, deshalb lohnt es sich, sie wirklich sauber zu verstehen statt nur auswendig zu lernen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du greifst blind in eine Schüssel mit 6 nummerierten Gummibärchen (1 bis 6) und ziehst eins. Die
+            Schüssel mit <em>allen möglichen Ergebnissen</em> nennen wir <strong>Grundraum Ω</strong>. Ein einzelnes
+            gezogenes Gummibärchen ist ein <strong>Elementarereignis ω</strong>. "Ich ziehe eine gerade Zahl"
+            ist ein <strong>Ereignis A</strong> — eine ganze Teilmenge von Ω, nämlich A = {2,4,6}. Und jetzt kommt der
+            entscheidende Punkt: Die Formel <strong>P(A) = |A| / |Ω|</strong> ("günstige durch mögliche") funktioniert
+            nur, wenn jedes Gummibärchen <em>gleich wahrscheinlich</em> gezogen wird. Wenn die Schüssel schräg
+            gefüllt ist — mehr rote (gerade) Gummibärchen als andere — dann ist die Formel wertlos. Genau dieser
+            eine Punkt ist die häufigste Fehlerquelle der ganzen Vorlesung.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie im Bild</h2>
+
+        <h3>Grundbegriffe</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Begriff</th><th>Symbol</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Grundraum</strong></td><td>Ω</td><td>Menge aller möglichen Ergebnisse</td></tr>
+            <tr><td><strong>Elementarereignis</strong></td><td>ω ∈ Ω</td><td>Ein einzelnes mögliches Ergebnis</td></tr>
+            <tr><td><strong>Ereignis</strong></td><td>A ⊆ Ω</td><td>Menge von Elementarereignissen</td></tr>
+            <tr><td><strong>Sicheres Ereignis</strong></td><td>Ω</td><td>Tritt immer ein</td></tr>
+            <tr><td><strong>Unmögliches Ereignis</strong></td><td>∅</td><td>Tritt nie ein</td></tr>
+            <tr><td><strong>Komplement</strong></td><td>Aᶜ = Ω \ A</td><td>A tritt nicht ein</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 1: Grundraum, Ereignis, Komplement am Würfel -->
+        <figure class="diagram">
+          <div class="diagram-title">Ω = {1,...,6}, Ereignis A = {2,4,6} ("gerade Zahl"), Komplement Aᶜ = {1,3,5}</div>
+          <svg viewBox="0 0 640 280" width="640" role="img" aria-label="Grundraum als Kasten mit sechs Elementen, Ereignis A als grüner Kreis um die geraden Zahlen, Komplement außerhalb des Kreises">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="30" y="30" width="580" height="210" rx="14" fill="none" stroke="#8a94a6" stroke-width="1.3" stroke-dasharray="5 4"/>
+              <text x="46" y="55" class="svg-soft" font-weight="700">Ω = {1,2,3,4,5,6}</text>
+
+              <circle cx="230" cy="155" r="78" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="230" y="90" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="14">A = {2,4,6}</text>
+
+              <g font-family="JetBrains Mono, monospace" font-weight="700">
+                <circle cx="200" cy="140" r="16" fill="#12b28c" fill-opacity="0.35" stroke="#12b28c"/>
+                <text x="200" y="145" text-anchor="middle" class="svg-ink">2</text>
+                <circle cx="235" cy="185" r="16" fill="#12b28c" fill-opacity="0.35" stroke="#12b28c"/>
+                <text x="235" y="190" text-anchor="middle" class="svg-ink">4</text>
+                <circle cx="265" cy="135" r="16" fill="#12b28c" fill-opacity="0.35" stroke="#12b28c"/>
+                <text x="265" y="140" text-anchor="middle" class="svg-ink">6</text>
+
+                <circle cx="470" cy="80" r="16" fill="#8a94a6" fill-opacity="0.25" stroke="#8a94a6"/>
+                <text x="470" y="85" text-anchor="middle" class="svg-ink">1</text>
+                <circle cx="510" cy="155" r="16" fill="#8a94a6" fill-opacity="0.25" stroke="#8a94a6"/>
+                <text x="510" y="160" text-anchor="middle" class="svg-ink">3</text>
+                <circle cx="470" cy="220" r="16" fill="#8a94a6" fill-opacity="0.25" stroke="#8a94a6"/>
+                <text x="470" y="225" text-anchor="middle" class="svg-ink">5</text>
+              </g>
+              <text x="470" y="45" text-anchor="middle" class="svg-soft" font-weight="700">Aᶜ = {1,3,5}</text>
+
+              <text x="320" y="270" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">P(A) = |A| / |Ω| = 3 / 6 = 1/2</text>
+            </g>
+          </svg>
+          <figcaption>Der grüne Kreis fasst genau die Elemente von A zusammen. Alles, was im Kasten Ω, aber nicht im
+            Kreis liegt, gehört zu Aᶜ. Weil hier jede Zahl gleich wahrscheinlich ist, dürfen wir einfach zählen.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Laplace-Wahrscheinlichkeit</div>
+          <span class="formula">P(A) = |A| / |Ω|</span>
+          <p>Gilt <strong>nur</strong>, wenn (1) Ω endlich ist und (2) alle Elementarereignisse gleich wahrscheinlich
+            sind. Bei einem gezinkten Würfel, einer unfairen Münze oder Menschen mit unterschiedlichen Vorlieben ist
+            diese Formel <strong>nicht anwendbar</strong> — dann brauchst du die tatsächliche Verteilung.</p>
+        </div>
+
+        <h3>Die Kolmogorov-Axiome</h3>
+        <p>Damit "Wahrscheinlichkeit" überhaupt ein wohldefinierter Begriff ist, muss P drei Grundregeln erfüllen —
+          alle anderen Rechenregeln lassen sich aus diesen drei Axiomen herleiten:</p>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Axiom</th><th>Aussage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>(K1)</strong></td><td>P(A) ≥ 0 für alle A ⊆ Ω — keine negativen Wahrscheinlichkeiten</td></tr>
+            <tr><td><strong>(K2)</strong></td><td>P(Ω) = 1 — irgendetwas aus Ω tritt garantiert ein</td></tr>
+            <tr><td><strong>(K3)</strong></td><td>P(A ∪ B) = P(A) + P(B) für <strong>disjunkte</strong> A, B
+              (σ-Additivität für abzählbar viele Ereignisse)</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="factgrid">
+          <div class="fact"><b>P(Aᶜ) = 1 − P(A)</b><span>Gegenwahrscheinlichkeit</span></div>
+          <div class="fact"><b>P(∅) = 0</b><span>das unmögliche Ereignis</span></div>
+          <div class="fact"><b>A ⊆ B ⟹ P(A) ≤ P(B)</b><span>Monotonie</span></div>
+          <div class="fact"><b>P(A\B) = P(A) − P(A∩B)</b><span>Differenz-Regel</span></div>
+        </div>
+
+        <h3>Der Additionssatz: wenn sich Ereignisse überlappen</h3>
+        <p>K3 gilt nur für <strong>disjunkte</strong> Ereignisse. Überlappen sich A und B, würdest du die
+          Schnittmenge sonst doppelt zählen — deshalb muss sie einmal wieder abgezogen werden:</p>
+
+        <!-- SVG 2: Additionssatz Venn -->
+        <figure class="diagram">
+          <div class="diagram-title">P(A) = 0.4, P(B) = 0.5, P(A∩B) = 0.2 — die Überlappung nicht doppelt zählen</div>
+          <svg viewBox="0 0 420 230" width="420" role="img" aria-label="Zwei überlappende Kreise A und B mit eingezeichneter Schnittfläche, die die Überschneidung der Wahrscheinlichkeiten zeigt">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <circle cx="165" cy="120" r="80" fill="#2f6df6" fill-opacity="0.28" stroke="#2f6df6" stroke-width="1.6"/>
+              <circle cx="255" cy="120" r="80" fill="#f5810b" fill-opacity="0.28" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="110" y="70" fill="#2f6df6" font-weight="800">A</text>
+              <text x="310" y="70" fill="#f5810b" font-weight="800">B</text>
+              <text x="120" y="125" text-anchor="middle" class="svg-ink" font-weight="700">P(A)\P(B)</text>
+              <text x="120" y="142" text-anchor="middle" class="svg-ink" font-size="12">= 0.2</text>
+              <text x="210" y="118" text-anchor="middle" class="svg-ink" font-weight="800">A∩B</text>
+              <text x="210" y="135" text-anchor="middle" class="svg-ink" font-size="12">= 0.2</text>
+              <text x="300" y="125" text-anchor="middle" class="svg-ink" font-weight="700">P(B)\P(A)</text>
+              <text x="300" y="142" text-anchor="middle" class="svg-ink" font-size="12">= 0.3</text>
+              <text x="210" y="215" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-family="JetBrains Mono, monospace">P(A∪B) = 0.4+0.5−0.2 = 0.7</text>
+            </g>
+          </svg>
+          <figcaption>Addierst du P(A) und P(B) einfach, zählst du die lilane Schnittfläche A∩B zweimal — deshalb
+            wird sie einmal wieder abgezogen.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Additionssatz &amp; Siebformel</div>
+          <span class="formula">P(A ∪ B) = P(A) + P(B) − P(A ∩ B)
+P(A ∪ B ∪ C) = P(A)+P(B)+P(C) − P(A∩B)−P(A∩C)−P(B∩C) + P(A∩B∩C)</span>
+          <p>Nur wenn A und B <strong>disjunkt</strong> sind (A∩B = ∅), darfst du zur einfachen Version
+            P(A∪B) = P(A) + P(B) zurückkehren.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele Schritt für Schritt</h2>
+
+        <h3>Beispiel 1: Laplace am fairen Würfel</h3>
+        <p>Ein fairer Würfel wird geworfen. Gesucht: P(gerade Zahl).</p>
+        <ol class="steps">
+          <li><strong>Ω bestimmen:</strong> Ω = {1,2,3,4,5,6}, also |Ω| = 6</li>
+          <li><strong>Ereignis A beschreiben:</strong> A = {2,4,6}, also |A| = 3</li>
+          <li><strong>P(A) berechnen:</strong> P(A) = 3/6 = <strong>1/2 = 0.5</strong></li>
+        </ol>
+
+        <h3>Beispiel 2: Zwei Würfel — Vorsicht bei |Ω|</h3>
+        <p>Zwei faire Würfel werden geworfen. Gesucht: P(Augensumme = 7).</p>
+        <ol class="steps">
+          <li><strong>Ω bestimmen:</strong> Ω = {(1,1),(1,2),...,(6,6)} — <strong>geordnete Paare</strong>, da beide
+            Würfel unterscheidbar sind. |Ω| = 6 · 6 = 36, <em>nicht</em> 6!</li>
+          <li><strong>Ereignis A beschreiben:</strong> A = {(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)}, |A| = 6</li>
+          <li><strong>P(A) berechnen:</strong> P(A) = 6/36 = <strong>1/6 ≈ 0.167</strong></li>
+        </ol>
+
+        <!-- SVG 3: 6x6 Gitter für zwei Würfel -->
+        <figure class="diagram">
+          <div class="diagram-title">Ω bei zwei Würfeln: 6 × 6 = 36 geordnete Paare, hervorgehoben Summe = 7</div>
+          <svg viewBox="0 0 380 380" width="340" role="img" aria-label="6 mal 6 Gitter aller Würfelpaare, die Diagonale mit Augensumme 7 ist hervorgehoben">
+            <g font-family="JetBrains Mono, monospace" font-size="12">
+              <text x="200" y="20" text-anchor="middle" class="svg-soft">2. Würfel →</text>
+              <text x="20" y="200" text-anchor="middle" class="svg-soft" transform="rotate(-90 20 200)">1. Würfel →</text>
+              <g class="svg-soft" font-weight="700">
+                <text x="80" y="45">1</text><text x="130" y="45">2</text><text x="180" y="45">3</text>
+                <text x="230" y="45">4</text><text x="280" y="45">5</text><text x="330" y="45">6</text>
+                <text x="45" y="80">1</text><text x="45" y="130">2</text><text x="45" y="180">3</text>
+                <text x="45" y="230">4</text><text x="45" y="280">5</text><text x="45" y="330">6</text>
+              </g>
+              <g>
+                <!-- 36 Punkte, Diagonale Summe=7 (i+j=7) in orange -->
+                <circle cx="80" cy="330" r="10" fill="#f5810b"/><circle cx="130" cy="280" r="10" fill="#f5810b"/>
+                <circle cx="180" cy="230" r="10" fill="#f5810b"/><circle cx="230" cy="180" r="10" fill="#f5810b"/>
+                <circle cx="280" cy="130" r="10" fill="#f5810b"/><circle cx="330" cy="80" r="10" fill="#f5810b"/>
+
+                <g fill="#2f6df6" fill-opacity="0.3">
+                  <circle cx="80" cy="80" r="8"/><circle cx="130" cy="80" r="8"/><circle cx="180" cy="80" r="8"/><circle cx="230" cy="80" r="8"/><circle cx="280" cy="80" r="8"/><circle cx="330" cy="80" r="8" fill-opacity="0"/>
+                  <circle cx="80" cy="130" r="8"/><circle cx="130" cy="130" r="8"/><circle cx="180" cy="130" r="8"/><circle cx="230" cy="130" r="8"/><circle cx="280" cy="130" r="8" fill-opacity="0"/><circle cx="330" cy="130" r="8"/>
+                  <circle cx="80" cy="180" r="8"/><circle cx="130" cy="180" r="8"/><circle cx="180" cy="180" r="8"/><circle cx="230" cy="180" r="8" fill-opacity="0"/><circle cx="280" cy="180" r="8"/><circle cx="330" cy="180" r="8"/>
+                  <circle cx="80" cy="230" r="8"/><circle cx="130" cy="230" r="8"/><circle cx="180" cy="230" r="8" fill-opacity="0"/><circle cx="230" cy="230" r="8"/><circle cx="280" cy="230" r="8"/><circle cx="330" cy="230" r="8"/>
+                  <circle cx="80" cy="280" r="8"/><circle cx="130" cy="280" r="8" fill-opacity="0"/><circle cx="180" cy="280" r="8"/><circle cx="230" cy="280" r="8"/><circle cx="280" cy="280" r="8"/><circle cx="330" cy="280" r="8"/>
+                  <circle cx="80" cy="330" r="8" fill-opacity="0"/><circle cx="130" cy="330" r="8"/><circle cx="180" cy="330" r="8"/><circle cx="230" cy="330" r="8"/><circle cx="280" cy="330" r="8"/><circle cx="330" cy="330" r="8"/>
+                </g>
+              </g>
+              <text x="200" y="368" text-anchor="middle" fill="#f5810b" font-weight="800">6 orange Punkte von 36 → P(Summe=7) = 6/36 = 1/6</text>
+            </g>
+          </svg>
+          <figcaption>Jeder Punkt ist ein gleich wahrscheinliches Ergebnis (Würfel 1, Würfel 2). Die Diagonale mit
+            Summe 7 hat genau 6 Treffer — deshalb muss |Ω| = 36 sein, nicht 6.</figcaption>
+        </figure>
+
+        <h3>Beispiel 3: Additionssatz einsetzen</h3>
+        <p>Gegeben: P(A) = 0.4, P(B) = 0.5, P(A∩B) = 0.2. Gesucht: P(A∪B).</p>
+        <ol class="steps">
+          <li><strong>Additionssatz aufschreiben:</strong> P(A∪B) = P(A) + P(B) − P(A∩B)</li>
+          <li><strong>Einsetzen:</strong> = 0.4 + 0.5 − 0.2 = <strong>0.7</strong></li>
+          <li><strong>Plausibilitätsprobe:</strong> 0 ≤ 0.7 ≤ 1 ✓ (jede Wahrscheinlichkeit muss in diesem Bereich liegen)</li>
+        </ol>
+
+        <h3>Beispiel 4: Gegenwahrscheinlichkeit bei "mindestens"</h3>
+        <p>Ein Würfel wird 3-mal geworfen. Gesucht: P(mindestens eine 6).</p>
+        <div class="callout callout-tip">
+          <div class="c-title">Wann Gegenereignis nutzen?</div>
+          <p>Sobald "mindestens eines" oder "nicht alle" gefragt ist, ist das Komplement fast immer leichter zu
+            zählen als das Ereignis direkt.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Komplement bestimmen:</strong> "keine 6 bei 3 Würfen"</li>
+          <li><strong>P(keine 6) berechnen:</strong> bei jedem Wurf 5 von 6 Möglichkeiten, alle drei Würfe
+            unabhängig: (5/6)³ = 125/216</li>
+          <li><strong>Gegenwahrscheinlichkeit anwenden:</strong> P(mind. eine 6) = 1 − 125/216 = 91/216
+            ≈ <strong>0.421</strong></li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: Additionssatz mit Karten</h3>
+        <p>Aus 40 Karten (4 Farben × 10 Werte) wird zufällig eine gezogen. A = "Herz" (10 Karten), B = "Bild"
+          (Bube/Dame/König/As, 4 pro Farbe = 16 Karten). Gesucht: P(A∪B).</p>
+        <ol class="steps">
+          <li><strong>Einzel-WK:</strong> P(A) = 10/40 = 1/4, &nbsp; P(B) = 16/40 = 2/5</li>
+          <li><strong>Schnitt bestimmen:</strong> P(A∩B) = P(Herz-Bild) = 4/40 = 1/10 (die 4 Herz-Bildkarten)</li>
+          <li><strong>Additionssatz:</strong> P(A∪B) = 10/40 + 16/40 − 4/40 = 22/40 = <strong>11/20 = 0.55</strong></li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei einem gezinkten Würfel gilt automatisch
+            P(6) = 1/6, weil er ja 6 Seiten hat.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Laplace gilt <strong>nur bei gleichwahrscheinlichen
+            Ergebnissen</strong>. Beim gezinkten Würfel musst du die tatsächliche Verteilung kennen — reines Zählen
+            funktioniert nicht.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(A∪B) = P(A) + P(B) — immer.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das gilt nur für <strong>disjunkte</strong>
+            Ereignisse. Sonst: P(A∪B) = P(A) + P(B) − P(A∩B), sonst zählst du die Überlappung doppelt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>K3 (P(A∪B)=P(A)+P(B)) auf beliebige, sich
+            überlappende Ereignisse anwenden.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>K3 ist explizit nur für <strong>disjunkte</strong>
+            A, B formuliert (A∩B = ∅). Bei Überlappung brauchst du den Additionssatz.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(Aᶜ) = P(A)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P(Aᶜ) = <strong>1 − P(A)</strong> — das Komplement
+            und das Ereignis selbst ergänzen sich zu 1, sind aber i.A. nicht gleich groß.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei "2 Würfeln" ist |Ω| = 6, weil es ja nur die
+            Zahlen 1–6 gibt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>|Ω| = 6 × 6 = <strong>36</strong> — jeder Würfel
+            liefert unabhängig ein Ergebnis, die Paare sind geordnet und unterscheidbar.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Name</th></tr></thead>
+            <tbody>
+              <tr><td>P(A) = |A| / |Ω|</td><td>Laplace-WK (nur bei Gleichwahrscheinlichkeit!)</td></tr>
+              <tr><td>P(Aᶜ) = 1 − P(A)</td><td>Gegenwahrscheinlichkeit</td></tr>
+              <tr><td>P(A∪B) = P(A)+P(B)−P(A∩B)</td><td>Additionssatz (allgemein)</td></tr>
+              <tr><td>P(A∪B) = P(A)+P(B)</td><td>nur wenn A∩B = ∅ (disjunkt)</td></tr>
+              <tr><td>P(∅) = 0, &nbsp; P(Ω) = 1</td><td>Kolmogorov K1 + K2</td></tr>
+              <tr><td>A ⊆ B ⟹ P(A) ≤ P(B)</td><td>Monotonie</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Typische Aufgabentypen in der Klausur</h4>
+          <ul>
+            <li><strong>Laplace berechnen</strong> → Ω und A zählen, P = |A|/|Ω| (immer erst prüfen: gleichwahrscheinlich?)</li>
+            <li><strong>Additionssatz</strong> → P(A)+P(B)−P(A∩B), Schnitt nie vergessen</li>
+            <li><strong>Gegenwahrscheinlichkeit</strong> → bei "mindestens"-Aufgaben mit 1−P(Aᶜ) rechnen</li>
+            <li><strong>Siebformel</strong> → bei 3+ Ereignissen mit Überlappungen</li>
+            <li><strong>Axiome prüfen</strong> → ist das überhaupt ein gültiges WK-Maß?</li>
+          </ul>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Laplace nur bei Gleichwahrscheinlichkeit</strong> — die mit Abstand häufigste Fehlerquelle</li>
+            <li>Bei mehreren Würfen/Ziehungen: <strong>|Ω| als Produkt</strong> zählen, nicht die Einzelwerte</li>
+            <li><strong>"Mindestens"</strong> → fast immer über das Gegenereignis rechnen</li>
+            <li>Additionssatz nur ohne Korrekturterm, wenn <strong>disjunkt</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Ein fairer Würfel wird geworfen. Wie groß ist
+              P(gerade Zahl)? (als Dezimalzahl)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>A = {2,4,6}, |A|=3, |Ω|=6 → P(A) = 3/6 = <strong>0.5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Bei einem gezinkten Würfel gilt automatisch
+              P(6) = 1/6.</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Richtig</button>
+              <button class="quiz-choice" type="button" data-correct>Falsch</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Laplace gilt nur bei <strong>gleichwahrscheinlichen</strong>
+              Ergebnissen. Beim gezinkten Würfel ist die Formel P=|A|/|Ω| nicht anwendbar.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.7" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">3.</span>P(A) = 0.4, P(B) = 0.5, P(A∩B) = 0.2. Wie groß
+              ist P(A∪B)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Additionssatz: 0.4 + 0.5 − 0.2 = <strong>0.7</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="36">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Zwei faire Würfel werden geworfen. Wie groß ist |Ω|?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>|Ω| = 6 · 6 = <strong>36</strong> — geordnete Paare, nicht nur 6
+              Einzelwerte.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="gegenwahrscheinlichkeit|komplementregel">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt die Regel P(Aᶜ) = 1 − P(A)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist die <strong>Gegenwahrscheinlichkeit</strong> (auch
+              Komplementregel genannt).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.421" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: Ein Würfel wird 3-mal geworfen.
+              Wie groß ist P(mindestens eine 6)? (als Dezimalzahl, 3 Nachkommastellen)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(keine 6) = (5/6)³ = 125/216. P(mind. eine 6) = 1 − 125/216 =
+              91/216 ≈ <strong>0.421</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: 40 Karten, A = "Herz" (10 Karten),
+              B = "Bild" (16 Karten), A∩B = 4 Karten (Herz-Bilder). Wie groß ist P(A∪B)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>0.55</button>
+              <button class="quiz-choice" type="button">0.65</button>
+              <button class="quiz-choice" type="button">0.10</button>
+              <button class="quiz-choice" type="button">0.26</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(A∪B) = 10/40 + 16/40 − 4/40 = 22/40 = <strong>0.55</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="../index.html">
+          <div class="pn-label">← Übersicht</div>
+          <div class="pn-title">Zur P12-Kursübersicht</div>
+        </a>
+        <a class="next" href="02-bedingte-wahrscheinlichkeit.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Bedingte Wahrscheinlichkeit &amp; Bayes</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

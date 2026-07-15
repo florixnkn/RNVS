@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stetige Verteilungen · P12 Stochastik</title>
+<meta name="description" content="Normalverteilung mit Standardisierung und der 68-95-99.7-Regel, Exponentialverteilung mit Gedächtnislosigkeit, kurz Gamma- und Beta-Verteilung – mit Φ-Tabelle und durchgerechneten Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Normal &amp; Exponential</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 07</div>
+    <span class="th-icon">🔔</span>
+    <h1>Stetige Verteilungen</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Normal-, Exponential-, Gamma- &amp; Beta-Verteilung</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Die <strong>Normalverteilung</strong> ist die Pflichtübung dieses Moduls — sie taucht in
+          fast jeder Klausur auf, meist kombiniert mit der Standardisierung und dem Ablesen aus einer Φ-Tabelle.
+          Daneben lernst du die <strong>Exponentialverteilung</strong> für Wartezeiten kennen, und kurz Gamma- und
+          Beta-Verteilung als deren Verwandte.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… die <strong>Körpergröße</strong> aller Erwachsenen in Deutschland. Die meisten Menschen liegen nah
+            am Durchschnitt (sagen wir 170 cm), nur wenige sind extrem klein oder extrem groß — und die Verteilung
+            ist symmetrisch um den Mittelwert. Genau das ist das Bild der <strong>Normalverteilung</strong>: eine
+            Glockenkurve, die um μ zentriert ist und mit der Streuung σ breiter oder schmaler wird. Die
+            <strong>Exponentialverteilung</strong> beschreibt dagegen etwas anderes: Wartezeiten, bei denen kurze
+            Wartezeiten viel wahrscheinlicher sind als lange — wie die Zeit, bis der nächste Bus kommt.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Normalverteilung, Exponentialverteilung &amp; Co.</h2>
+
+        <h3>Normalverteilung N(μ, σ²)</h3>
+        <p>Die Normalverteilung ist symmetrisch um μ und wird durch zwei Parameter festgelegt: den Erwartungswert
+          μ und die <strong>Varianz</strong> σ² (nicht die Standardabweichung!).</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Normalverteilung</div>
+          <span class="formula">f(x) = 1/(σ√(2π)) · exp[−(x−μ)² / (2σ²)] &nbsp;·&nbsp; E[X] = μ &nbsp;·&nbsp; Var(X) = σ²</span>
+        </div>
+
+        <!-- SVG 1: Glockenkurve mit 68-95-99.7 Regel -->
+        <figure class="diagram">
+          <div class="diagram-title">Die 68-95-99.7-Regel — Flächenanteile unter der Glockenkurve</div>
+          <svg viewBox="0 0 560 260" width="560" role="img" aria-label="Glockenkurve der Normalverteilung mit drei ineinander verschachtelten Bereichen: 68 Prozent innerhalb einer Standardabweichung, 95 Prozent innerhalb zwei Standardabweichungen, 99.7 Prozent innerhalb drei Standardabweichungen">
+            <defs>
+              <clipPath id="s7clipOuter"><rect x="110" y="0" width="300" height="205"/></clipPath>
+              <clipPath id="s7clipMid"><rect x="160" y="0" width="200" height="205"/></clipPath>
+              <clipPath id="s7clipInner"><rect x="210" y="0" width="100" height="205"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="11">
+              <line x1="30" y1="205" x2="470" y2="205" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <path id="s7bell" d="M50,205 C110,205 150,42 260,32 C370,42 410,205 470,205 Z" fill="none" stroke="#2f6df6" stroke-width="2"/>
+              <use href="#s7bell" fill="#2f6df6" fill-opacity="0.12" clip-path="url(#s7clipOuter)"/>
+              <use href="#s7bell" fill="#2f6df6" fill-opacity="0.16" clip-path="url(#s7clipMid)"/>
+              <use href="#s7bell" fill="#2f6df6" fill-opacity="0.22" clip-path="url(#s7clipInner)"/>
+
+              <g stroke="#8a94a6" stroke-width="1" stroke-dasharray="2,3">
+                <line x1="110" y1="205" x2="110" y2="185"/>
+                <line x1="160" y1="205" x2="160" y2="140"/>
+                <line x1="210" y1="205" x2="210" y2="90"/>
+                <line x1="260" y1="205" x2="260" y2="32"/>
+                <line x1="310" y1="205" x2="310" y2="90"/>
+                <line x1="360" y1="205" x2="360" y2="140"/>
+                <line x1="410" y1="205" x2="410" y2="185"/>
+              </g>
+
+              <text x="110" y="220" text-anchor="middle" class="svg-soft" font-size="9.5">μ−3σ</text>
+              <text x="160" y="220" text-anchor="middle" class="svg-soft" font-size="9.5">μ−2σ</text>
+              <text x="210" y="220" text-anchor="middle" class="svg-ink" font-weight="700">μ−σ</text>
+              <text x="260" y="220" text-anchor="middle" class="svg-ink" font-weight="800">μ</text>
+              <text x="310" y="220" text-anchor="middle" class="svg-ink" font-weight="700">μ+σ</text>
+              <text x="360" y="220" text-anchor="middle" class="svg-soft" font-size="9.5">μ+2σ</text>
+              <text x="410" y="220" text-anchor="middle" class="svg-soft" font-size="9.5">μ+3σ</text>
+
+              <rect x="478" y="35" width="72" height="80" rx="6" fill="var(--c-surface)" stroke="#c9ccd6" stroke-width="1"/>
+              <rect x="486" y="44" width="12" height="12" fill="#2f6df6" fill-opacity="0.34"/>
+              <text x="502" y="54" font-size="10" class="svg-ink">68% (±1σ)</text>
+              <rect x="486" y="64" width="12" height="12" fill="#2f6df6" fill-opacity="0.22"/>
+              <text x="502" y="74" font-size="10" class="svg-ink">95% (±2σ)</text>
+              <rect x="486" y="84" width="12" height="12" fill="#2f6df6" fill-opacity="0.12"/>
+              <text x="502" y="94" font-size="9.3" class="svg-ink">99.7% (±3σ)</text>
+            </g>
+          </svg>
+          <figcaption>Je dunkler die Fläche, desto enger der Bereich um μ — und desto kleiner der
+            Wahrscheinlichkeits-Anteil, der dort hineinfällt, obwohl die Fläche selbst am größten Anteil des
+            "Kerns" liegt: 68% liegen schon innerhalb von nur einer Standardabweichung.</figcaption>
+        </figure>
+
+        <h3>Standardisierung: der wichtigste Trick überhaupt</h3>
+        <p>Egal welche konkreten μ und σ² eine Normalverteilung hat — durch die Standardisierung wird jede
+          Fragestellung auf die immer gleiche <strong>Standardnormalverteilung</strong> Z ~ N(0,1) zurückgeführt,
+          für die es fertige Tabellen gibt.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Standardisierung</div>
+          <span class="formula">X ~ N(μ,σ²) &nbsp;⟹&nbsp; Z = (X−μ)/σ ~ N(0,1)</span><br>
+          <span class="formula">P(X≤x) = Φ((x−μ)/σ) &nbsp;·&nbsp; Φ(−z) = 1 − Φ(z)</span>
+          <p>Φ(z) = P(Z≤z) liest du aus einer Tabelle ab. Für negative z nutzt du die <strong>Symmetrie</strong>
+            Φ(−z) = 1 − Φ(z), weil negative z in den meisten Tabellen gar nicht erst aufgeführt sind.</p>
+        </div>
+
+        <!-- SVG 2: Standardisierung X -> Z -->
+        <figure class="diagram">
+          <div class="diagram-title">Standardisieren: X ~ N(100, 15²) wird zu Z ~ N(0,1)</div>
+          <svg viewBox="0 0 560 210" width="560" role="img" aria-label="Links die Glockenkurve von X mit Erwartungswert 100 und Standardabweichung 15, Flaeche bis 130 eingefaerbt, Pfeil zur rechten Glockenkurve von Z mit Standardnormalverteilung, Flaeche bis z=2 eingefaerbt - beide Flaechen sind gleich gross">
+            <defs>
+              <clipPath id="s7xclip"><rect x="30" y="0" width="167" height="190"/></clipPath>
+              <clipPath id="s7zclip"><rect x="320" y="0" width="167" height="190"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <text x="130" y="15" text-anchor="middle" class="svg-soft" font-weight="700">X ~ N(100, 15²)</text>
+              <line x1="30" y1="190" x2="230" y2="190" stroke="#8a94a6" stroke-width="1.1"/>
+              <path id="s7curveX" d="M30,190 C70,190 90,45 130,35 C170,45 190,190 230,190 Z" fill="none" stroke="#2f6df6" stroke-width="1.8"/>
+              <use href="#s7curveX" fill="#f5810b" fill-opacity="0.5" clip-path="url(#s7xclip)"/>
+              <text x="130" y="204" text-anchor="middle" class="svg-ink" font-weight="700">100</text>
+              <text x="197" y="204" text-anchor="middle" fill="#f5810b" font-weight="800">130</text>
+              <text x="130" y="175" text-anchor="middle" fill="#f5810b" font-size="10.5" font-weight="700">P(X≤130)</text>
+
+              <g stroke="#8a94a6" stroke-width="1.6" fill="none" marker-end="url(#s7arrow)">
+                <line x1="245" y1="100" x2="305" y2="100"/>
+              </g>
+              <defs>
+                <marker id="s7arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#8a94a6"/>
+                </marker>
+              </defs>
+              <text x="275" y="88" text-anchor="middle" class="svg-soft" font-size="10" font-family="JetBrains Mono, monospace">Z=(X−μ)/σ</text>
+
+              <text x="420" y="15" text-anchor="middle" class="svg-soft" font-weight="700">Z ~ N(0,1)</text>
+              <line x1="320" y1="190" x2="520" y2="190" stroke="#8a94a6" stroke-width="1.1"/>
+              <path id="s7curveZ" d="M320,190 C360,190 380,45 420,35 C460,45 480,190 520,190 Z" fill="none" stroke="#2f6df6" stroke-width="1.8"/>
+              <use href="#s7curveZ" fill="#f5810b" fill-opacity="0.5" clip-path="url(#s7zclip)"/>
+              <text x="420" y="204" text-anchor="middle" class="svg-ink" font-weight="700">0</text>
+              <text x="487" y="204" text-anchor="middle" fill="#f5810b" font-weight="800">2</text>
+              <text x="420" y="175" text-anchor="middle" fill="#f5810b" font-size="10.5" font-weight="700">Φ(2)≈0.9772</text>
+            </g>
+          </svg>
+          <figcaption>Dieselbe eingefärbte Fläche — nur die Skala hat sich geändert. Deshalb reicht eine einzige
+            Φ-Tabelle für JEDE Normalverteilung, egal welche μ und σ sie hat.</figcaption>
+        </figure>
+
+        <h4>Kleine Φ-Tabelle</h4>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>z</th><th>Φ(z)</th></tr></thead>
+          <tbody>
+            <tr><td>1.0</td><td>0.8413</td></tr>
+            <tr><td>1.5</td><td>0.9332</td></tr>
+            <tr><td>1.645</td><td>0.9500</td></tr>
+            <tr><td>1.96</td><td>0.9750</td></tr>
+            <tr><td>2.0</td><td>0.9772</td></tr>
+            <tr><td>2.576</td><td>0.9950</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Exponentialverteilung Exp(λ) — Wartezeiten</h3>
+        <p>Beschreibt Wartezeiten und Lebensdauern: λ ist die Rate (z. B. Ereignisse pro Zeiteinheit), 1/λ die
+          erwartete Wartezeit.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Exponentialverteilung</div>
+          <span class="formula">f(x) = λ·e<tspan dy="-4" font-size="9">−λx</tspan><tspan dy="4"> </tspan> für x≥0 &nbsp;·&nbsp; F(x) = 1 − e<tspan dy="-4" font-size="9">−λx</tspan><tspan dy="4"> </tspan> &nbsp;·&nbsp; E[X] = 1/λ &nbsp;·&nbsp; Var(X) = 1/λ²</span>
+        </div>
+
+        <!-- SVG 3: Exponential decay -->
+        <figure class="diagram">
+          <div class="diagram-title">Exp(0.1) — Dichte mit Restwahrscheinlichkeits-Fläche ab t=20</div>
+          <svg viewBox="0 0 480 220" width="480" role="img" aria-label="Fallende Dichtekurve der Exponentialverteilung mit Rate 0.1, schraffierte Flaeche rechts von t=20 zeigt P(X groesser 20) ungefaehr 0.135">
+            <defs>
+              <clipPath id="s7expclip"><rect x="240" y="0" width="240" height="190"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <line x1="40" y1="190" x2="470" y2="190" stroke="#8a94a6" stroke-width="1.2"/>
+              <line x1="40" y1="20" x2="40" y2="190" stroke="#8a94a6" stroke-width="1.2"/>
+              <path id="s7expcurve" d="M40,50 C120,50 160,140 220,165 C300,182 380,189 460,189 L460,190 L40,190 Z" fill="none" stroke="#2f6df6" stroke-width="2"/>
+              <use href="#s7expcurve" fill="#2f6df6" fill-opacity="0.12"/>
+              <use href="#s7expcurve" fill="#f5810b" fill-opacity="0.5" clip-path="url(#s7expclip)"/>
+              <line x1="240" y1="190" x2="240" y2="172" stroke="#f5810b" stroke-width="1.3" stroke-dasharray="2,3"/>
+              <text x="240" y="205" text-anchor="middle" fill="#f5810b" font-weight="800">t=20</text>
+              <text x="350" y="150" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="12">P(X&gt;20)</text>
+              <text x="350" y="165" text-anchor="middle" fill="#f5810b" font-weight="700" font-size="12">≈ 0.135</text>
+              <text x="60" y="40" class="svg-soft" font-size="11">f(x)=λe⁻ᵏˣ</text>
+            </g>
+          </svg>
+          <figcaption>Kurze Wartezeiten sind am wahrscheinlichsten — die Dichte fällt monoton. Die Fläche rechts
+            von t=20 ist die Restwahrscheinlichkeit P(X&gt;20).</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Gedächtnislosigkeit</div>
+          <p>Die Exponentialverteilung "vergisst" bereits verstrichene Zeit: P(X&gt;s+t | X&gt;s) = P(X&gt;t) für
+            alle s,t&gt;0. Wenn ein Bauteil bereits 10 Stunden gehalten hat, ist die Wahrscheinlichkeit, dass es
+            weitere 20 Stunden hält, genau dieselbe wie am Anfang für 20 Stunden — es gibt keinen "Verschleiß"
+            im Modell. Das ist unter allen <strong>stetigen</strong> Verteilungen ein Alleinstellungsmerkmal von
+            Exp(λ).</p>
+        </div>
+
+        <h3>Kurz: Gamma- und Beta-Verteilung</h3>
+        <p>Zwei Verwandte, die in der Klausur meist nur am Rand auftauchen. Die <strong>Gammaverteilung</strong>
+          Γ(α,β) verallgemeinert die Exponentialverteilung (Wartezeit bis zum α-ten Ereignis statt nur dem
+          ersten). Die <strong>Betaverteilung</strong> Beta(α,β) lebt auf [0,1] und wird oft als Modell für
+          unsichere Wahrscheinlichkeiten selbst verwendet (z. B. als Bayesianischer Prior für ein unbekanntes p).</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Gamma &amp; Beta (kompakt)</div>
+          <span class="formula">Γ(α,β): f(x)=[β<tspan font-size="9" dy="-4">α</tspan><tspan dy="4">/</tspan>Γ(α)]·x<tspan font-size="9" dy="-4">α−1</tspan><tspan dy="4">·</tspan>e<tspan font-size="9" dy="-4">−βx</tspan><tspan dy="4"> </tspan>, E[X]=α/β, Var(X)=α/β²</span><br>
+          <span class="formula">Beta(α,β): Träger (0,1), E[X]=α/(α+β)</span>
+          <p>Spezialfälle zum Merken: <strong>Γ(1,λ) = Exp(λ)</strong> und <strong>Beta(1,1) = U(0,1)</strong> —
+            beide Familien enthalten also Verteilungen, die du schon kennst, als Sonderfall.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Standardisieren &amp; Ablesen</h2>
+
+        <h3>Beispiel 1: X ~ N(100, 15²). Berechne P(X ≤ 130).</h3>
+        <ol class="steps">
+          <li><strong>σ bestimmen:</strong> σ² = 225 (nicht 15!), also σ = 15</li>
+          <li><strong>Standardisieren:</strong> Z = (130 − 100)/15 = 30/15 = 2</li>
+          <li><strong>Aus Φ-Tabelle ablesen:</strong> Φ(2) ≈ <strong>0.9772</strong></li>
+        </ol>
+
+        <h3>Beispiel 2: X ~ N(5, 4). Berechne P(3 ≤ X ≤ 9).</h3>
+        <ol class="steps">
+          <li><strong>σ bestimmen:</strong> σ² = 4, also σ = 2</li>
+          <li><strong>Beide Grenzen standardisieren:</strong> Z₁ = (3−5)/2 = −1, Z₂ = (9−5)/2 = 2</li>
+          <li><strong>Als Φ-Differenz schreiben:</strong> P(3≤X≤9) = Φ(2) − Φ(−1)</li>
+          <li><strong>Symmetrie nutzen:</strong> Φ(−1) = 1 − Φ(1) = 1 − 0.8413 = 0.1587</li>
+          <li><strong>Ergebnis:</strong> 0.9772 − 0.1587 = <strong>0.8185</strong></li>
+        </ol>
+
+        <h3>Beispiel 3: X ~ Exp(0.1). Berechne P(X &gt; 20).</h3>
+        <ol class="steps">
+          <li><strong>Formel für die Restwahrscheinlichkeit:</strong> P(X&gt;t) = 1 − F(t) = e<sup>−λt</sup></li>
+          <li><strong>Einsetzen:</strong> P(X&gt;20) = e<sup>−0.1·20</sup> = e⁻²</li>
+          <li><strong>Auswerten:</strong> e⁻² ≈ <strong>0.135</strong></li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Gedächtnislosigkeit anwenden</div>
+          <p>Gesucht: P(X&gt;30 | X&gt;10) für dasselbe Exp(0.1). Wegen der Gedächtnislosigkeit ist das identisch
+            zu P(X&gt;20) — du musst also gar nicht neu rechnen: P(X&gt;30|X&gt;10) = P(X&gt;20) = e⁻² ≈
+            <strong>0.135</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>X ~ N(0, 4) bedeutet σ = 4, also
+            Standardisierung (X−0)/4.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>X ~ N(0, 4) bedeutet <strong>σ² = 4</strong>,
+            also σ = 2. Standardisierung: (X−0)/2. In N(μ,σ²) ist der zweite Parameter immer die
+            <strong>Varianz</strong>, nicht die Standardabweichung!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(Z ≤ −1.5) direkt aus der Tabelle ablesen (oft
+            gar nicht vorhanden).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P(Z ≤ −1.5) = 1 − P(Z ≤ 1.5) = 1 − Φ(1.5) —
+            über die <strong>Symmetrie</strong> auf positive z zurückrechnen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Z = (μ − X)/σ</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Z = <strong>(X − μ)/σ</strong> — X minus
+            Erwartungswert, geteilt durch Standardabweichung, nicht umgekehrt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>X ~ Exp(2), also ist E[X] = 2.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>E[X] = <strong>1/λ</strong>. Bei X ~ Exp(2)
+            ist E[X] = 1/2 = 0.5 — λ ist die Rate, nicht der Erwartungswert.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Auch die Normalverteilung ist gedächtnislos,
+            "weil sie ja auch stetig ist".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Gedächtnislosigkeit ist unter allen stetigen
+            Verteilungen <strong>einzigartig für die Exponentialverteilung</strong>. Andere Verteilungen, auch
+            die Normalverteilung, haben diese Eigenschaft nicht.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Alle stetigen Verteilungen im Vergleich</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Verteilung</th><th>Parameter</th><th>E[X]</th><th>Var(X)</th><th>Träger</th></tr></thead>
+            <tbody>
+              <tr><td>U(a,b)</td><td>a,b</td><td>(a+b)/2</td><td>(b−a)²/12</td><td>[a,b]</td></tr>
+              <tr><td>Exp(λ)</td><td>λ</td><td>1/λ</td><td>1/λ²</td><td>[0,∞)</td></tr>
+              <tr><td>Γ(α,β)</td><td>α,β</td><td>α/β</td><td>α/β²</td><td>(0,∞)</td></tr>
+              <tr><td>N(μ,σ²)</td><td>μ,σ²</td><td>μ</td><td>σ²</td><td>ℝ</td></tr>
+              <tr><td>Beta(α,β)</td><td>α,β</td><td>α/(α+β)</td><td>komplex</td><td>(0,1)</td></tr>
+              <tr><td>Cauchy</td><td>–</td><td>existiert nicht</td><td>existiert nicht</td><td>ℝ</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Φ-Tabelle (wichtigste Werte)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>z</th><th>Φ(z)</th></tr></thead>
+            <tbody>
+              <tr><td>1.0</td><td>0.8413</td></tr>
+              <tr><td>1.5</td><td>0.9332</td></tr>
+              <tr><td>1.645</td><td>0.9500</td></tr>
+              <tr><td>1.96</td><td>0.9750</td></tr>
+              <tr><td>2.0</td><td>0.9772</td></tr>
+              <tr><td>2.576</td><td>0.9950</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>68-95-99.7-Regel</h4>
+          <pre class="code">P(μ−σ  ≤ X ≤ μ+σ)  ≈ 0.6827   (68%)
+P(μ−2σ ≤ X ≤ μ+2σ) ≈ 0.9545   (95%)
+P(μ−3σ ≤ X ≤ μ+3σ) ≈ 0.9973   (99.7%)</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>σ² ist die Varianz</strong>, nicht σ — bei N(μ,σ²) immer Wurzel ziehen für σ</li>
+            <li><strong>Z = (X−μ)/σ</strong> — standardisieren geht immer zuerst</li>
+            <li><strong>Φ(−z) = 1 − Φ(z)</strong> — Symmetrie für negative z nutzen</li>
+            <li><strong>Exp(λ): E[X] = 1/λ</strong> — nicht λ selbst</li>
+            <li>Gedächtnislosigkeit ist ein <strong>Alleinstellungsmerkmal von Exp(λ)</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.9772" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>X ~ N(100, 225). Wie groß ist P(X ≤ 130)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Z=(130−100)/15=2. Φ(2) ≈ <strong>0.9772</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="15">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Gleiches Beispiel, X ~ N(100, 225): wie groß ist
+              σ (nicht σ²)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>σ² = 225, also σ = √225 = <strong>15</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>In der Schreibweise N(μ, σ²) ist der zweite
+              Parameter …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>die Varianz</button>
+              <button class="quiz-choice" type="button">die Standardabweichung</button>
+              <button class="quiz-choice" type="button">der Median</button>
+              <button class="quiz-choice" type="button">die Spannweite</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>σ² ist die <strong>Varianz</strong>. Für die Standardisierung
+              brauchst du σ = √(σ²).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.135" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">4.</span>X ~ Exp(0.1). Wie groß ist P(X &gt; 20)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X&gt;20) = e<sup>−0.1·20</sup> = e⁻² ≈ <strong>0.135</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="gedächtnislosigkeit|gedaechtnislosigkeit|memorylessness">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt die Eigenschaft P(X&gt;s+t | X&gt;s) =
+              P(X&gt;t), die einzigartig für die Exponentialverteilung ist?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Gedächtnislosigkeit</strong> — die verstrichene Zeit
+              beeinflusst die Restwahrscheinlichkeit nicht.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.9545" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">6.</span>68-95-99.7-Regel: wie groß ist ungefähr
+              P(μ−2σ ≤ X ≤ μ+2σ)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Innerhalb von zwei Standardabweichungen liegen etwa
+              <strong>0.9545</strong> (95%) aller Werte.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.8185" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: X ~ N(5, 4). Wie groß ist
+              P(3 ≤ X ≤ 9)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>σ=2. Φ(2) − Φ(−1) = 0.9772 − (1−0.8413) = 0.9772 − 0.1587 =
+              <strong>0.8185</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="06-stetige-zv.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Stetige Zufallsvariablen</div>
+        </a>
+        <a class="next" href="08-erwartungswert-varianz.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Erwartungswert &amp; Varianz</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

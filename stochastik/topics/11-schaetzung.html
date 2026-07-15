@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Statistische Schätzung · P12 Stochastik</title>
+<meta name="description" content="Punktschätzer, Erwartungstreue und die Maximum-Likelihood-Methode als 4-Schritte-Rezept, dazu Konfidenzintervalle Schritt für Schritt – bildlich erklärt, mit durchgerechneten Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 11</div>
+    <span class="th-icon">🔭</span>
+    <h1>Statistische Schätzung</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 7</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Schätzer, MLE &amp; Konfidenzintervalle</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Du kennst die <strong>ganze Grundgesamtheit</strong> so gut wie nie — du hast nur eine
+          <strong>Stichprobe</strong>. Statistische Schätzung ist die Kunst, aus dieser Stichprobe eine möglichst
+          gute Vermutung über einen unbekannten Parameter der Grundgesamtheit (z. B. einen Mittelwert μ oder eine
+          Wahrscheinlichkeit p) abzuleiten — und zusätzlich ehrlich zu sagen, <strong>wie sicher</strong> diese
+          Vermutung ist.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du willst wissen, wie viele Gummibärchen in einem riesigen Glas stecken, ohne sie zu zählen.
+            Du nimmst eine Handvoll (Stichprobe), zählst die Farben und rechnest hoch. Das Ergebnis ist dein
+            <strong>Punktschätzer</strong> — eine einzelne Zahl. Aber du weißt: Bei einer anderen Handvoll käme
+            vielleicht eine leicht andere Zahl raus. Deshalb gibst du zusätzlich einen <strong>Bereich</strong> an,
+            in dem die wahre Anzahl mit hoher Sicherheit liegt — das <strong>Konfidenzintervall</strong>. Die
+            <strong>Maximum-Likelihood-Methode</strong> ist dabei die Faustregel, mit der du aus der Handvoll die
+            plausibelste Gesamtzusammensetzung ableitest.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Schätzer, Maximum-Likelihood &amp; Konfidenzintervalle im Bild</h2>
+
+        <p>Ein <strong>Schätzer</strong> θ̂ = T(X₁,…,Xₙ) ist einfach eine Funktion deiner Daten, die eine Zahl
+          ausspuckt. Damit er etwas taugt, brauchst du zwei Gütekriterien:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Gütekriterien</div>
+          <span class="formula">Erwartungstreue:  E[θ̂] = θ            (im Schnitt richtig)
+Bias:            Bias(θ̂) = E[θ̂] − θ
+MSE:             MSE(θ̂) = Var(θ̂) + Bias(θ̂)²</span>
+          <p>Ein Schätzer kann <strong>im Mittel richtig, aber trotzdem instabil</strong> sein (hohe Varianz) —
+            oder <strong>stabil, aber systematisch daneben</strong> (Bias). Beides zusammen zeigt der MSE.</p>
+        </div>
+
+        <!-- SVG 1: Zielscheiben Bias/Varianz -->
+        <figure class="diagram">
+          <div class="diagram-title">Erwartungstreue vs. Varianz — vier Zielscheiben</div>
+          <svg viewBox="0 0 560 460" width="560" role="img" aria-label="Vier Zielscheiben zeigen die Kombinationen aus erwartungstreu/verzerrt und niedriger/hoher Varianz eines Schätzers">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <text x="140" y="26" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="13">erwartungstreu · niedrige Varianz</text>
+              <circle cx="140" cy="130" r="88" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="140" cy="130" r="58" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="140" cy="130" r="28" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="132" y1="130" x2="148" y2="130" stroke="#1b2431" stroke-width="2"/>
+              <line x1="140" y1="122" x2="140" y2="138" stroke="#1b2431" stroke-width="2"/>
+              <g fill="#12b28c">
+                <circle cx="136" cy="127" r="4"/><circle cx="144" cy="124" r="4"/><circle cx="133" cy="135" r="4"/>
+                <circle cx="146" cy="134" r="4"/><circle cx="139" cy="121" r="4"/><circle cx="142" cy="137" r="4"/><circle cx="137" cy="132" r="4"/>
+              </g>
+
+              <text x="420" y="26" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="13">erwartungstreu · hohe Varianz</text>
+              <circle cx="420" cy="130" r="88" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="420" cy="130" r="58" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="420" cy="130" r="28" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="412" y1="130" x2="428" y2="130" stroke="#1b2431" stroke-width="2"/>
+              <line x1="420" y1="122" x2="420" y2="138" stroke="#1b2431" stroke-width="2"/>
+              <g fill="#2f6df6">
+                <circle cx="380" cy="150" r="4"/><circle cx="455" cy="105" r="4"/><circle cx="400" cy="170" r="4"/>
+                <circle cx="445" cy="160" r="4"/><circle cx="375" cy="115" r="4"/><circle cx="460" cy="140" r="4"/>
+                <circle cx="410" cy="85" r="4"/><circle cx="430" cy="175" r="4"/>
+              </g>
+
+              <text x="140" y="266" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="13">verzerrt · niedrige Varianz</text>
+              <circle cx="140" cy="370" r="88" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="140" cy="370" r="58" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="140" cy="370" r="28" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="132" y1="370" x2="148" y2="370" stroke="#1b2431" stroke-width="2"/>
+              <line x1="140" y1="362" x2="140" y2="378" stroke="#1b2431" stroke-width="2"/>
+              <g fill="#f5810b">
+                <circle cx="98" cy="345" r="4"/><circle cx="104" cy="352" r="4"/><circle cx="95" cy="360" r="4"/>
+                <circle cx="101" cy="340" r="4"/><circle cx="108" cy="358" r="4"/><circle cx="93" cy="350" r="4"/><circle cx="106" cy="344" r="4"/>
+              </g>
+
+              <text x="420" y="266" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="13">verzerrt · hohe Varianz</text>
+              <circle cx="420" cy="370" r="88" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="420" cy="370" r="58" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <circle cx="420" cy="370" r="28" fill="none" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="412" y1="370" x2="428" y2="370" stroke="#1b2431" stroke-width="2"/>
+              <line x1="420" y1="362" x2="420" y2="378" stroke="#1b2431" stroke-width="2"/>
+              <g fill="#e0483d">
+                <circle cx="470" cy="330" r="4"/><circle cx="495" cy="380" r="4"/><circle cx="460" cy="410" r="4"/>
+                <circle cx="480" cy="290" r="4"/><circle cx="500" cy="345" r="4"/><circle cx="450" cy="395" r="4"/>
+                <circle cx="490" cy="410" r="4"/><circle cx="465" cy="355" r="4"/>
+              </g>
+            </g>
+          </svg>
+          <figcaption>Das Kreuz in der Mitte ist der wahre Parameter θ, jeder Punkt ein Schätzwert θ̂ aus einer
+            anderen Stichprobe. Nur oben links ist der Schätzer zuverlässig — treffsicher <em>und</em> stabil.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Die Top-Fehlerquelle: 1/n vs. 1/(n−1)</div>
+          <p>Die <strong>MLE-Varianz</strong> σ̂²_MLE = (1/n)·Σ(Xᵢ−X̄)² ist <strong>nicht erwartungstreu</strong> —
+            sie unterschätzt σ² systematisch. Erwartungstreu ist erst die <strong>Stichprobenvarianz</strong>
+            S² = (1/(n−1))·Σ(Xᵢ−X̄)², weil ein Freiheitsgrad durch das Schätzen von X̄ "verbraucht" wird.</p>
+          <p>Kleines Beispiel: Stichprobe {2, 4, 6}, n = 3, X̄ = 4. Σ(Xᵢ−X̄)² = 4+0+4 = 8.<br>
+            MLE-Variante: 8/3 ≈ <strong>2.667</strong> — Stichprobenvarianz: 8/2 = <strong>4</strong>. Zwei
+            unterschiedliche Zahlen aus denselben Daten, je nachdem, welchen Nenner du nimmst!</p>
+        </div>
+
+        <h3>Maximum-Likelihood-Methode: das 4-Schritte-Rezept</h3>
+        <p>Die Idee: Wähle den Parameter θ, unter dem die <strong>beobachteten Daten am wahrscheinlichsten</strong>
+          gewesen wären. Dazu maximierst du die Likelihood-Funktion L(θ) — in der Praxis über den Umweg des
+          Logarithmus, weil Summen einfacher abzuleiten sind als Produkte.</p>
+
+        <!-- SVG 2: 4-Schritte-Rezept als Flussdiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Das MLE-Rezept: immer dieselben vier Schritte</div>
+          <svg viewBox="0 0 760 150" width="760" role="img" aria-label="Flussdiagramm der vier Schritte der Maximum-Likelihood-Methode">
+            <defs>
+              <marker id="mleArr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="20" y="40" width="160" height="64" rx="10" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="100" y="66" text-anchor="middle" class="svg-ink" font-weight="800">1. L(θ)</text>
+              <text x="100" y="86" text-anchor="middle" class="svg-soft" font-size="11.5">aufstellen (Produkt)</text>
+
+              <line x1="180" y1="72" x2="205" y2="72" stroke="#8a94a6" stroke-width="2" marker-end="url(#mleArr)"/>
+
+              <rect x="205" y="40" width="160" height="64" rx="10" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.6"/>
+              <text x="285" y="66" text-anchor="middle" class="svg-ink" font-weight="800">2. ℓ(θ)=log L(θ)</text>
+              <text x="285" y="86" text-anchor="middle" class="svg-soft" font-size="11.5">Summe statt Produkt</text>
+
+              <line x1="365" y1="72" x2="390" y2="72" stroke="#8a94a6" stroke-width="2" marker-end="url(#mleArr)"/>
+
+              <rect x="390" y="40" width="160" height="64" rx="10" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="1.6"/>
+              <text x="470" y="66" text-anchor="middle" class="svg-ink" font-weight="800">3. dℓ/dθ</text>
+              <text x="470" y="86" text-anchor="middle" class="svg-soft" font-size="11.5">ableiten</text>
+
+              <line x1="550" y1="72" x2="575" y2="72" stroke="#8a94a6" stroke-width="2" marker-end="url(#mleArr)"/>
+
+              <rect x="575" y="40" width="160" height="64" rx="10" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="655" y="66" text-anchor="middle" class="svg-ink" font-weight="800">4. = 0 setzen</text>
+              <text x="655" y="86" text-anchor="middle" class="svg-soft" font-size="11.5">nach θ auflösen → θ̂</text>
+            </g>
+          </svg>
+          <figcaption>Dieselben vier Schritte funktionieren für jedes Verteilungsmodell — nur die Dichte f(x;θ)
+            ändert sich.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Modell</th><th>MLE-Schätzer</th></tr></thead>
+          <tbody>
+            <tr><td>N(μ, σ²)</td><td>μ̂ = X̄ₙ, &nbsp; σ̂² = (1/n)·Σ(Xᵢ−X̄)²</td></tr>
+            <tr><td>Ber(p)</td><td>p̂ = X̄ₙ = k/n &nbsp;(Trefferquote)</td></tr>
+            <tr><td>Poi(λ)</td><td>λ̂ = X̄ₙ</td></tr>
+            <tr><td>Exp(λ)</td><td>λ̂ = 1/X̄ₙ</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Konfidenzintervalle: der ehrliche Unsicherheitsbereich</h3>
+        <p>Ein Punktschätzer ist nur eine Zahl — ein <strong>(1−α)-Konfidenzintervall</strong> [L, U] gibt zusätzlich
+          an, wie unsicher diese Zahl ist. Bei bekanntem σ gilt für den Mittelwert:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Konfidenzintervall für μ (σ bekannt)</div>
+          <span class="formula">X̄ₙ ± z_{α/2} · σ/√n</span>
+          <p>Bei unbekanntem σ ersetzt du z_{α/2} durch t_{α/2, n−1} (t-Verteilung) und σ durch die
+            Stichprobenstandardabweichung S.</p>
+        </div>
+
+        <!-- SVG 3: Glockenkurve mit KI -->
+        <figure class="diagram">
+          <div class="diagram-title">95%-Konfidenzintervall auf der Glockenkurve von X̄</div>
+          <svg viewBox="0 0 640 260" width="640" role="img" aria-label="Normalverteilungskurve von X̄ mit schattiertem 95%-Konfidenzintervall zwischen z=-1.96 und z=+1.96">
+            <defs>
+              <clipPath id="s11bell"><path d="M60,210 C110,210 150,50 320,50 C490,50 530,210 580,210 Z"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <text x="320" y="26" text-anchor="middle" class="svg-ink" font-weight="800" font-size="14">Verteilung von X̄ um μ</text>
+              <path d="M60,210 C110,210 150,50 320,50 C490,50 530,210 580,210 Z" fill="none" stroke="#2f6df6" stroke-width="2"/>
+              <rect x="220" y="0" width="200" height="260" fill="#12b28c" fill-opacity="0.35" clip-path="url(#s11bell)"/>
+              <line x1="60" y1="210" x2="580" y2="210" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="220" y1="45" x2="220" y2="215" stroke="#12a150" stroke-dasharray="4 3" stroke-width="1.5"/>
+              <line x1="420" y1="45" x2="420" y2="215" stroke="#12a150" stroke-dasharray="4 3" stroke-width="1.5"/>
+              <text x="220" y="232" text-anchor="middle" class="svg-soft">z = −1.96</text>
+              <text x="420" y="232" text-anchor="middle" class="svg-soft">z = +1.96</text>
+              <text x="320" y="180" text-anchor="middle" fill="#12a150" font-weight="800" font-size="14">95%</text>
+            </g>
+          </svg>
+          <figcaption>95% aller Stichproben liefern ein X̄, das innerhalb von ±1.96 Standardfehlern um μ liegt —
+            genau deshalb funktioniert die Formel X̄ ± 1.96·σ/√n als 95%-Konfidenzintervall.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Niveau</th><th>z_{α/2}</th></tr></thead>
+          <tbody>
+            <tr><td>90%</td><td>1.645</td></tr>
+            <tr><td>95%</td><td>1.96</td></tr>
+            <tr><td>99%</td><td>2.576</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele durchgerechnet</h2>
+
+        <h3>Durchgerechnetes Beispiel: MLE für eine Trefferquote (Bernoulli)</h3>
+        <p>Ein Basketballspieler wirft n = 10 Freiwürfe, davon k = 7 Treffer. Wie lautet der Maximum-Likelihood-
+          Schätzer für die Trefferwahrscheinlichkeit p?</p>
+        <ol class="steps">
+          <li><strong>Likelihood aufstellen:</strong> Jeder Wurf ist Bernoulli-verteilt (Treffer = 1 mit WK p).
+            Für k Treffer aus n Würfen: L(p) = p^k · (1−p)^(n−k)</li>
+          <li><strong>Logarithmieren:</strong> ℓ(p) = k·log(p) + (n−k)·log(1−p)</li>
+          <li><strong>Ableiten:</strong> dℓ/dp = k/p − (n−k)/(1−p)</li>
+          <li><strong>Null setzen &amp; auflösen:</strong> k/p = (n−k)/(1−p) ⟹ k(1−p) = (n−k)p ⟹ k = np
+            ⟹ <strong>p̂ = k/n</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Eingesetzt</div>
+          <p>p̂ = k/n = 7/10 = <strong>0.7</strong> — der MLE-Schätzer ist hier genau die beobachtete
+            <strong>Trefferquote</strong>. Das ist kein Zufall: Für Bernoulli/Binomial ist p̂ = X̄ₙ immer die
+            relative Häufigkeit.</p>
+        </div>
+
+        <h3>Durchgerechnetes Beispiel: 95%-Konfidenzintervall</h3>
+        <p>Eine Stichprobe von n = 100 Messungen liefert X̄ = 50 bei bekanntem σ = 10. Gesucht: 95%-KI für μ.</p>
+        <ol class="steps">
+          <li><strong>Passenden z-Wert wählen:</strong> Für 95% ist z_{0.025} = 1.96</li>
+          <li><strong>Standardfehler berechnen:</strong> σ/√n = 10/√100 = 10/10 = 1</li>
+          <li><strong>Halbbreite berechnen:</strong> z_{α/2} · σ/√n = 1.96 · 1 = 1.96</li>
+          <li><strong>Intervall bilden:</strong> [50 − 1.96, &nbsp; 50 + 1.96] = <strong>[48.04, 51.96]</strong></li>
+        </ol>
+        <div class="callout callout-info">
+          <div class="c-title">🧮 Klausurtyp: Stichprobengröße bestimmen</div>
+          <p>Häufige Variante: "Wie groß muss n sein, damit das 95%-KI höchstens Breite 2 hat, bei σ = 5?"
+            Halbbreite ≤ 1: 1.96·5/√n ≤ 1 ⟹ √n ≥ 9.8 ⟹ n ≥ 96.04 ⟹ <strong>n ≥ 97</strong> (immer aufrunden,
+            sonst wird das Intervall zu breit!).</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Stichprobenvarianz = (1/n)·Σ(Xᵢ−X̄)²</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Erwartungstreue</strong>
+            Stichprobenvarianz: S² = (1/(n−1))·Σ(Xᵢ−X̄)². Die (1/n)-Variante ist der MLE-Schätzer, aber
+            <strong>nicht erwartungstreu</strong>.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"Mit 95% Wahrscheinlichkeit liegt μ im
+            berechneten Intervall."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>μ ist eine feste (wenn auch unbekannte) Zahl —
+            das Intervall ist zufällig. Richtig: "95% aller so konstruierten Intervalle enthalten den wahren
+            Wert μ."</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Für ein Konfidenzintervall immer z_{α/2}
+            verwenden.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>σ <strong>bekannt</strong> → z_{α/2}. σ
+            <strong>unbekannt</strong> → t_{α/2, n−1} (t-Verteilung, breiter als die Normalverteilung).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Maximum-Likelihood-Schätzer ist immer
+            optimal — auch für σ².</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>σ̂²_MLE = (1/n)·Σ(Xᵢ−X̄)² ist
+            <strong>verzerrt</strong> (unterschätzt σ² im Schnitt). MLE-Optimalität bezieht sich auf andere
+            Eigenschaften (z. B. Konsistenz), nicht automatisch auf Erwartungstreue.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>MLE-Übersicht</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Modell</th><th>MLE</th></tr></thead>
+            <tbody>
+              <tr><td>N(μ,σ²)</td><td>μ̂ = X̄, σ̂² = (1/n)Σ(Xᵢ−X̄)²</td></tr>
+              <tr><td>Ber(p)</td><td>p̂ = X̄ = k/n</td></tr>
+              <tr><td>Poi(λ)</td><td>λ̂ = X̄</td></tr>
+              <tr><td>Exp(λ)</td><td>λ̂ = 1/X̄</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Konfidenzintervall-Übersicht</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>σ bekannt</td><td>X̄ ± z_{α/2}·σ/√n</td></tr>
+              <tr><td>σ unbekannt</td><td>X̄ ± t_{α/2,n−1}·S/√n</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>z-Werte für Konfidenzintervalle</h4>
+          <pre class="code">90%-KI  →  z = 1.645
+95%-KI  →  z = 1.96
+99%-KI  →  z = 2.576</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>1/(n−1)</strong> für erwartungstreue Varianz, <strong>1/n</strong> für den MLE-Schätzer</li>
+            <li>MLE-Rezept: <strong>L(θ) → log → ableiten → =0 setzen</strong> — immer dieselben vier Schritte</li>
+            <li>Konfidenzintervall-Interpretation: nicht "P(μ im Intervall)", sondern "95% aller Intervalle
+              treffen μ"</li>
+            <li>σ bekannt → z; σ unbekannt → t (mit n−1 Freiheitsgraden)</li>
+            <li>Bei Ber(p)/Binomial ist p̂ immer einfach die <strong>relative Häufigkeit</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.7" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Bei n = 10 Freiwürfen gelingen k = 7 Treffer.
+              Wie lautet der MLE-Schätzer p̂ für die Trefferwahrscheinlichkeit?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>p̂ = k/n = 7/10 = <strong>0.7</strong> — die MLE-Rechnung liefert bei
+              Bernoulli/Binomial immer die relative Häufigkeit.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welcher Nenner macht die Stichprobenvarianz
+              erwartungstreu?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">n</button>
+              <button class="quiz-choice" type="button" data-correct>n − 1</button>
+              <button class="quiz-choice" type="button">n + 1</button>
+              <button class="quiz-choice" type="button">2n</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>S² = (1/(n−1))·Σ(Xᵢ−X̄)² ist erwartungstreu, weil ein Freiheitsgrad
+              durch die Schätzung von X̄ verloren geht. Mit 1/n bekommst du den (verzerrten) MLE-Schätzer.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2.667" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Stichprobe {2, 4, 6}: Wie groß ist die
+              MLE-Varianz σ̂² = (1/n)·Σ(Xᵢ−X̄)²?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>X̄ = 4, Σ(Xᵢ−X̄)² = 4+0+4 = 8. σ̂² = 8/3 ≈ <strong>2.667</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Maximum-Likelihood-Methode|Maximum-Likelihood|ML-Methode|Maximum-Likelihood-Schätzung|MLE">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie heißt das Verfahren, das genau den Parameter
+              θ wählt, unter dem die beobachteten Daten am wahrscheinlichsten gewesen wären?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Maximum-Likelihood-Methode</strong> (MLE) — Likelihood
+              aufstellen, logarithmieren, ableiten, gleich null setzen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="51.96" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Klausurtyp: n=100, X̄=50, σ=10, 95%-KI für μ.
+              Wie lautet die <strong>obere</strong> Grenze?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>50 + 1.96·(10/√100) = 50 + 1.96 = <strong>51.96</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="48.04" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Gleiches Beispiel: Wie lautet die
+              <strong>untere</strong> Grenze des 95%-KI?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>50 − 1.96·(10/√100) = 50 − 1.96 = <strong>48.04</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Was bedeutet ein 95%-Konfidenzintervall korrekt
+              interpretiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Mit 95% Wahrscheinlichkeit liegt μ im berechneten
+                Intervall.</button>
+              <button class="quiz-choice" type="button" data-correct>95% aller so konstruierten Intervalle
+                enthalten den wahren Parameter μ.</button>
+              <button class="quiz-choice" type="button">In 95% der Stichprobe liegt der Mittelwert.</button>
+              <button class="quiz-choice" type="button">μ ändert sich in 95% der Fälle.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>μ ist fest, nicht zufällig — das Intervall ist die Zufallsgröße.
+              Bei hypothetischer Wiederholung würden 95% aller Intervalle μ enthalten.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="10-kovarianz-korrelation.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Kovarianz &amp; Korrelation</div>
+        </a>
+        <a class="next" href="12-tests.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Statistische Tests</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

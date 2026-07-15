@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diskrete Verteilungen · P12 Stochastik</title>
+<meta name="description" content="Bernoulli, Binomial, geometrisch, hypergeometrisch und Poisson – die fünf wichtigsten diskreten Verteilungen mit Entscheidungshilfe, Balkendiagrammen und durchgerechneten Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Verteilungen</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 05</div>
+    <span class="th-icon">📊</span>
+    <h1>Diskrete Verteilungen</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Die fünf Verteilungen</a></li>
+        <li><a href="#rechnen">Durchgerechnete Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Fast jede Klausuraufgabe zu Zufallsvariablen läuft auf dieselbe erste Frage hinaus:
+          <strong>welche der fünf Standard-Verteilungen passt hier?</strong> Erkennst du das Muster richtig, ist
+          der Rest nur noch Formel einsetzen. Erkennst du es falsch, rechnest du mit der komplett falschen
+          Formel weiter — deshalb ist dieses Thema eines der klausurrelevantesten im ganzen Modul.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du hast einen <strong>Werkzeugkasten</strong> mit fünf Werkzeugen, und jedes passt nur zu einer
+            bestimmten Art von Schraube. Ein einzelner Handgriff (ein Versuch, ja/nein) → <strong>Bernoulli</strong>.
+            Mehrmals dasselbe unabhängig wiederholen und Erfolge zählen → <strong>Binomial</strong>. Weiterarbeiten,
+            bis es endlich klappt → <strong>Geometrisch</strong>. Aus einer begrenzten Kiste ohne Zurücklegen
+            ziehen → <strong>Hypergeometrisch</strong>. Seltene Ereignisse über die Zeit zählen (E-Mails pro
+            Stunde) → <strong>Poisson</strong>. Die Klausur testet vor allem, ob du das richtige Werkzeug aus dem
+            Kasten nimmst.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die fünf diskreten Standard-Verteilungen</h2>
+
+        <h3>Welche Verteilung wann? — die wichtigste Frage der Klausur</h3>
+        <p>Bevor du irgendetwas berechnest, sortiere die Situation in eine dieser fünf Schubladen ein:</p>
+
+        <!-- SVG 1: Entscheidungsbaum -->
+        <figure class="diagram">
+          <div class="diagram-title">Entscheidungshilfe: Welche Verteilung passt zur Situation?</div>
+          <svg viewBox="0 0 820 260" width="820" role="img" aria-label="Entscheidungsbaum: je nach Situation Hypergeometrisch, Bernoulli, Binomial, Geometrisch oder Poisson wählen">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <rect x="350" y="14" width="220" height="36" rx="8" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="460" y="37" text-anchor="middle" class="svg-ink" font-weight="800">Welche Verteilung?</text>
+
+              <g stroke="#8a94a6" stroke-width="1.2" fill="none">
+                <line x1="460" y1="50" x2="100" y2="140"/>
+                <line x1="460" y1="50" x2="260" y2="140"/>
+                <line x1="460" y1="50" x2="420" y2="140"/>
+                <line x1="460" y1="50" x2="580" y2="140"/>
+                <line x1="460" y1="50" x2="740" y2="140"/>
+              </g>
+
+              <text x="100" y="106" text-anchor="middle" class="svg-soft" font-size="10.3">ohne Zurücklegen,</text>
+              <text x="100" y="118" text-anchor="middle" class="svg-soft" font-size="10.3">endl. Population</text>
+              <rect x="35" y="140" width="130" height="46" rx="8" fill="#e0483d" fill-opacity="0.14" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="100" y="159" text-anchor="middle" class="svg-ink" font-weight="700">Hypergeom.</text>
+              <text x="100" y="176" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="10.5">H(N,M,n)</text>
+
+              <text x="260" y="106" text-anchor="middle" class="svg-soft" font-size="10.3">nur EIN</text>
+              <text x="260" y="118" text-anchor="middle" class="svg-soft" font-size="10.3">Versuch</text>
+              <rect x="195" y="140" width="130" height="46" rx="8" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="260" y="159" text-anchor="middle" class="svg-ink" font-weight="700">Bernoulli</text>
+              <text x="260" y="176" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="10.5">Ber(p)</text>
+
+              <text x="420" y="106" text-anchor="middle" class="svg-soft" font-size="10.3">feste Anzahl,</text>
+              <text x="420" y="118" text-anchor="middle" class="svg-soft" font-size="10.3">zähle Erfolge</text>
+              <rect x="355" y="140" width="130" height="46" rx="8" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="420" y="159" text-anchor="middle" class="svg-ink" font-weight="700">Binomial</text>
+              <text x="420" y="176" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="10.5">B(n,p)</text>
+
+              <text x="580" y="106" text-anchor="middle" class="svg-soft" font-size="10.3">warte bis zum</text>
+              <text x="580" y="118" text-anchor="middle" class="svg-soft" font-size="10.3">1. Erfolg</text>
+              <rect x="515" y="140" width="130" height="46" rx="8" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="580" y="159" text-anchor="middle" class="svg-ink" font-weight="700">Geometrisch</text>
+              <text x="580" y="176" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="10.5">Geom(p)</text>
+
+              <text x="740" y="106" text-anchor="middle" class="svg-soft" font-size="10.3">seltenes Ereignis /</text>
+              <text x="740" y="118" text-anchor="middle" class="svg-soft" font-size="10.3">Intensität</text>
+              <rect x="675" y="140" width="130" height="46" rx="8" fill="#f5810b" fill-opacity="0.14" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="740" y="159" text-anchor="middle" class="svg-ink" font-weight="700">Poisson</text>
+              <text x="740" y="176" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="10.5">Poi(λ)</text>
+
+              <text x="410" y="215" text-anchor="middle" class="svg-soft" font-size="11">Faustregel: Binomial mit N ≫ n approximiert Hypergeometrisch; B(n,p) mit n→∞, p→0, np→λ approximiert Poisson</text>
+            </g>
+          </svg>
+          <figcaption>Zuerst prüfen: wird ohne Zurücklegen aus einer begrenzten Menge gezogen? Wenn nicht, ist die
+            nächste Frage, WAS genau gezählt wird — ein Versuch, mehrere Erfolge, Versuche bis zum Erfolg, oder
+            seltene Ereignisse pro Zeit-/Raumeinheit.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Situation</th><th>Verteilung</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td>Ohne Zurücklegen aus endlicher Population</td><td><strong>Hypergeometrisch</strong> H(N,M,n)</td><td>5 Karten aus 52, wie viele Asse?</td></tr>
+            <tr><td>Nur ein einzelner Versuch (ja/nein)</td><td><strong>Bernoulli</strong> Ber(p)</td><td>Ein Münzwurf, ein übertragenes Bit</td></tr>
+            <tr><td>Feste Anzahl unabhängiger Versuche, zähle Erfolge</td><td><strong>Binomial</strong> B(n,p)</td><td>10 Münzwürfe, wie viele Köpfe?</td></tr>
+            <tr><td>Wiederholen bis zum ERSTEN Erfolg</td><td><strong>Geometrisch</strong> Geom(p)</td><td>Wie oft würfeln bis zur ersten 6?</td></tr>
+            <tr><td>Seltenes Ereignis / Intensität pro Zeit- oder Raumeinheit</td><td><strong>Poisson</strong> Poi(λ)</td><td>Anzahl E-Mails pro Stunde</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Verteilung</th><th>Parameter</th><th>Träger</th><th>P(X=k)</th><th>E[X]</th><th>Var(X)</th></tr></thead>
+          <tbody>
+            <tr><td>Ber(p)</td><td>p</td><td>{0,1}</td><td>p<sup>k</sup>(1−p)<sup>1−k</sup></td><td>p</td><td>p(1−p)</td></tr>
+            <tr><td>Geom(p)</td><td>p</td><td>{1,2,3,…}</td><td>(1−p)<sup>k−1</sup>·p</td><td>1/p</td><td>(1−p)/p²</td></tr>
+            <tr><td>B(n,p)</td><td>n,p</td><td>{0,…,n}</td><td>C(n,k)·p<sup>k</sup>(1−p)<sup>n−k</sup></td><td>np</td><td>np(1−p)</td></tr>
+            <tr><td>H(N,M,n)</td><td>N,M,n</td><td>{max(0,n+M−N),…,min(n,M)}</td><td>C(M,k)·C(N−M,n−k)/C(N,n)</td><td>n·M/N</td><td>komplex</td></tr>
+            <tr><td>Poi(λ)</td><td>λ</td><td>{0,1,2,…}</td><td>e<sup>−λ</sup>·λ<sup>k</sup>/k!</td><td>λ</td><td>λ</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Bernoulli Ber(p) — der einzelne Versuch</h3>
+        <p>Der Grundbaustein von allem: ein einziger Versuch mit Erfolg (1) oder Misserfolg (0). Münzwurf, ein
+          übertragenes Bit, ein Kunde kauft oder kauft nicht.</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Bernoulli</div>
+          <span class="formula">P(X=1) = p &nbsp;·&nbsp; P(X=0) = 1−p =: q &nbsp;·&nbsp; E[X] = p &nbsp;·&nbsp; Var(X) = p(1−p)</span>
+        </div>
+
+        <h3>Geometrisch Geom(p) — bis zum ersten Erfolg</h3>
+        <p>Zählt die Anzahl Versuche bis (und mit) dem ersten Erfolg — <strong>Träger startet bei 1</strong>, nicht
+          bei 0! Eine Besonderheit: die geometrische Verteilung ist <strong>gedächtnislos</strong> — egal wie oft du
+          schon erfolglos warst, die Restwahrscheinlichkeit sieht immer gleich aus: P(X&gt;m+n | X&gt;m) = P(X&gt;n).</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Geometrisch</div>
+          <span class="formula">P(X=k) = (1−p)<sup>k−1</sup>·p &nbsp;für k=1,2,3,… &nbsp;·&nbsp; E[X] = 1/p &nbsp;·&nbsp; Var(X) = (1−p)/p²</span>
+        </div>
+
+        <h3>Binomial B(n,p) — n unabhängige Bernoulli-Versuche</h3>
+        <p>Die Summe von n unabhängigen Ber(p)-Versuchen: X = X₁+…+Xₙ. Zählt, wie viele von n Versuchen erfolgreich
+          waren. Spezialfall B(1,p) = Ber(p).</p>
+
+        <!-- SVG 2: Binomial bar chart -->
+        <figure class="diagram">
+          <div class="diagram-title">B(10, 0.3) — Wahrscheinlichkeitsfunktion für k = 0 bis 10</div>
+          <svg viewBox="0 0 560 240" width="560" role="img" aria-label="Balkendiagramm der Binomialverteilung B(10, 0.3): Balken für k=0 bis 10, Balken bei k=2 orange hervorgehoben mit ungefähr 0.2335, Maximum bei k=3">
+            <g font-family="Segoe UI, sans-serif" font-size="10.5">
+              <line x1="40" y1="210" x2="530" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+              <line x1="40" y1="20" x2="40" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <rect x="52" y="194" width="30" height="16" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="96" y="142" width="30" height="68" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="140" y="79" width="30" height="131" fill="#f5810b" fill-opacity="0.6" stroke="#f5810b" stroke-width="2"/>
+              <rect x="184" y="60" width="30" height="150" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="228" y="98" width="30" height="112" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="272" y="152" width="30" height="58" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="316" y="189" width="30" height="21" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="360" y="205" width="30" height="5" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="404" y="209" width="30" height="1" fill="#2f6df6" fill-opacity="0.4" stroke="#2f6df6" stroke-width="1"/>
+              <rect x="448" y="209" width="30" height="1" fill="#2f6df6" fill-opacity="0.25" stroke="#2f6df6" stroke-width="1"/>
+              <rect x="492" y="209" width="30" height="1" fill="#2f6df6" fill-opacity="0.25" stroke="#2f6df6" stroke-width="1"/>
+
+              <text x="67" y="224" text-anchor="middle" class="svg-soft">0</text>
+              <text x="111" y="224" text-anchor="middle" class="svg-soft">1</text>
+              <text x="155" y="224" text-anchor="middle" fill="#f5810b" font-weight="800">2</text>
+              <text x="199" y="224" text-anchor="middle" class="svg-soft">3</text>
+              <text x="243" y="224" text-anchor="middle" class="svg-soft">4</text>
+              <text x="287" y="224" text-anchor="middle" class="svg-soft">5</text>
+              <text x="331" y="224" text-anchor="middle" class="svg-soft">6</text>
+              <text x="375" y="224" text-anchor="middle" class="svg-soft">7</text>
+              <text x="419" y="224" text-anchor="middle" class="svg-soft">8</text>
+              <text x="463" y="224" text-anchor="middle" class="svg-soft">9</text>
+              <text x="507" y="224" text-anchor="middle" class="svg-soft">10</text>
+
+              <text x="155" y="70" text-anchor="middle" fill="#f5810b" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">≈0.2335</text>
+              <text x="285" y="35" text-anchor="middle" class="svg-soft" font-size="11">k = Anzahl Erfolge</text>
+            </g>
+          </svg>
+          <figcaption>Auch wenn E[X]=np=3 ist (Maximum bei k=3), ist k=2 nicht viel unwahrscheinlicher — typisch
+            für die eher symmetrische Form der Binomialverteilung bei p=0.3.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Binomial</div>
+          <span class="formula">P(X=k) = C(n,k)·p<sup>k</sup>·(1−p)<sup>n−k</sup> &nbsp;·&nbsp; E[X] = np &nbsp;·&nbsp; Var(X) = np(1−p)</span>
+        </div>
+
+        <h3>Hypergeometrisch H(N,M,n) — ziehen ohne Zurücklegen</h3>
+        <p>N = Größe der Gesamtpopulation, M = Anzahl "Erfolgs"-Elemente darin, n = Stichprobengröße. Weil ohne
+          Zurücklegen gezogen wird, hängen die einzelnen Ziehungen voneinander ab — deshalb ist die Formel
+          komplizierter als bei Binomial. Ist N sehr viel größer als n, macht es kaum noch einen Unterschied, ob
+          zurückgelegt wird oder nicht: H(N,M,n) ≈ B(n, M/N).</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Hypergeometrisch</div>
+          <span class="formula">P(X=k) = C(M,k)·C(N−M,n−k) / C(N,n) &nbsp;·&nbsp; E[X] = n·M/N</span>
+        </div>
+
+        <h3>Poisson Poi(λ) — seltene Ereignisse zählen</h3>
+        <p>λ ist die erwartete Anzahl Ereignisse im betrachteten Intervall (Zeit, Fläche, …). Poisson entsteht als
+          Grenzfall der Binomialverteilung, wenn n sehr groß und p sehr klein wird, aber n·p ≈ λ konstant bleibt —
+          genau das Muster von "seltenen" Ereignissen bei "vielen" Gelegenheiten.</p>
+
+        <!-- SVG 3: Poisson bar chart -->
+        <figure class="diagram">
+          <div class="diagram-title">Poi(2) — Wahrscheinlichkeitsfunktion für k = 0 bis 6</div>
+          <svg viewBox="0 0 560 240" width="560" role="img" aria-label="Balkendiagramm der Poisson-Verteilung mit Lambda=2: Balken für k=0 bis 6, Balken bei k=0 orange hervorgehoben mit ungefähr 0.1353, Maximum gleichmäßig bei k=1 und k=2">
+            <g font-family="Segoe UI, sans-serif" font-size="10.5">
+              <line x1="40" y1="210" x2="530" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+              <line x1="40" y1="20" x2="40" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <rect x="55" y="136" width="30" height="74" fill="#f5810b" fill-opacity="0.6" stroke="#f5810b" stroke-width="2"/>
+              <rect x="125" y="61" width="30" height="149" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="195" y="61" width="30" height="149" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="265" y="111" width="30" height="99" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="335" y="160" width="30" height="50" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="405" y="190" width="30" height="20" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+              <rect x="475" y="203" width="30" height="7" fill="#2f6df6" fill-opacity="0.45" stroke="#2f6df6" stroke-width="1.2"/>
+
+              <text x="70" y="224" text-anchor="middle" fill="#f5810b" font-weight="800">0</text>
+              <text x="140" y="224" text-anchor="middle" class="svg-soft">1</text>
+              <text x="210" y="224" text-anchor="middle" class="svg-soft">2</text>
+              <text x="280" y="224" text-anchor="middle" class="svg-soft">3</text>
+              <text x="350" y="224" text-anchor="middle" class="svg-soft">4</text>
+              <text x="420" y="224" text-anchor="middle" class="svg-soft">5</text>
+              <text x="490" y="224" text-anchor="middle" class="svg-soft">6</text>
+
+              <text x="70" y="128" text-anchor="middle" fill="#f5810b" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">≈0.1353</text>
+              <text x="280" y="35" text-anchor="middle" class="svg-soft" font-size="11">k = Anzahl Ereignisse</text>
+            </g>
+          </svg>
+          <figcaption>Bei Poi(2) sind k=1 und k=2 gleich wahrscheinlich (beide 2e⁻²) — das Maximum liegt bei ⌊λ⌋.
+            Charakteristisch: die Verteilung ist rechtsschief, mit einem langen, dünnen Auslauf nach rechts.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Poisson</div>
+          <span class="formula">P(X=k) = e<sup>−λ</sup>·λ<sup>k</sup>/k! &nbsp;·&nbsp; E[X] = λ &nbsp;·&nbsp; Var(X) = λ</span>
+          <p>Einzigartig unter allen Standardverteilungen: <strong>E[X] = Var(X) = λ</strong>. Das ist ein starkes
+            Erkennungsmerkmal — wenn in einer Aufgabe E[X] ≠ Var(X) herauskommt, ist es keine Poisson-Verteilung.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Durchgerechnete Beispiele</h2>
+
+        <h3>Binomial: X ~ B(10, 0.3). Berechne P(X=2).</h3>
+        <ol class="steps">
+          <li><strong>Binomialkoeffizient:</strong> C(10,2) = 10!/(2!·8!) = 45</li>
+          <li><strong>p-Potenz:</strong> 0.3² = 0.09</li>
+          <li><strong>(1−p)-Potenz:</strong> 0.7⁸ ≈ 0.057648</li>
+          <li><strong>Alles multiplizieren:</strong> P(X=2) = 45 · 0.09 · 0.057648 ≈ <strong>0.2335</strong></li>
+        </ol>
+
+        <h3>Poisson: X ~ Poi(2). Berechne P(X=0).</h3>
+        <ol class="steps">
+          <li><strong>Formel einsetzen:</strong> P(X=0) = e⁻²·2⁰/0! = e⁻²·1/1</li>
+          <li><strong>e⁻² auswerten:</strong> e⁻² ≈ 0.13534</li>
+          <li><strong>Ergebnis:</strong> P(X=0) ≈ <strong>0.1353</strong></li>
+        </ol>
+
+        <h3>Hypergeometrisch: 20 Kugeln, 8 rot, 12 blau. Ziehe 5 ohne Zurücklegen. P(genau 2 rot)?</h3>
+        <ol class="steps">
+          <li><strong>Parameter identifizieren:</strong> N=20, M=8 (rot), n=5, k=2</li>
+          <li><strong>Zähler:</strong> C(8,2)·C(12,3) = 28 · 220 = 6160</li>
+          <li><strong>Nenner:</strong> C(20,5) = 15504</li>
+          <li><strong>Ergebnis:</strong> P(X=2) = 6160/15504 ≈ <strong>0.3974</strong></li>
+        </ol>
+
+        <h3>Weiteres Beispiel: Binomial mit kumulierter Wahrscheinlichkeit</h3>
+        <p>10 Pakete werden verschickt, jedes unabhängig mit P=0.16 verspätet. X = Anzahl verspäteter Pakete,
+          X ~ B(10, 0.16). Gesucht: P(X ≤ 1), sowie E[X] und Var(X).</p>
+        <ol class="steps">
+          <li><strong>P(X=0):</strong> 0.84¹⁰ ≈ 0.1749</li>
+          <li><strong>P(X=1):</strong> C(10,1)·0.16·0.84⁹ = 10·0.16·0.2082 ≈ 0.3331</li>
+          <li><strong>P(X ≤ 1) = P(X=0) + P(X=1):</strong> 0.1749 + 0.3331 ≈ <strong>0.508</strong></li>
+          <li><strong>E[X] = np:</strong> 10·0.16 = <strong>1.6</strong></li>
+          <li><strong>Var(X) = np(1−p):</strong> 10·0.16·0.84 = <strong>1.344</strong></li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>"5 Karten aus 52 ziehen" → einfach Binomial
+            verwenden, weil es die bekannteste Formel ist.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ohne Zurücklegen aus einer endlichen Population
+            → <strong>Hypergeometrisch</strong>. Nur wenn N ≫ n gilt, ist die Binomial-Näherung akzeptabel.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei Geom(p) ist P(X=0) = (1−p)⁰·p = p der erste
+            Term.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Träger startet bei <strong>1</strong>, nicht
+            bei 0 — der erste Term ist P(X=1) = p. (Es gibt eine alternative Variante mit Träger {0,1,…} für die
+            Anzahl <em>Misserfolge</em> — im Zweifel steht dabei, welche gemeint ist.)</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(X=3) = p³·(1−p)^{n−3} — den
+            Binomialkoeffizienten vergisst man leicht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P(X=3) = <strong>C(n,3)</strong>·p³·(1−p)^{n−3}
+            — der Koeffizient zählt, auf wie viele Arten die 3 Erfolge unter n Versuchen verteilt sein können.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>E[X] = Var(X) gilt ungefähr bei jeder
+            Verteilung mit kleinen Werten.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Diese Gleichheit ist <strong>einzigartig für
+            Poisson</strong>. Kommt in einer Aufgabe E[X] ≠ Var(X) heraus, ist Poisson die falsche Wahl.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Träger der Hypergeometrischen ist immer
+            {0, 1, …, n}, genau wie bei Binomial.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Untere Grenze ist max(0, n+M−N) — wenn n+M &gt;
+            N, müssen zwangsläufig mindestens n+M−N Erfolge gezogen werden, weil sonst nicht genug
+            "Nicht-Erfolge" übrig wären.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Alle fünf Verteilungen im Vergleich</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Verteilung</th><th>Parameter</th><th>P(X=k)</th><th>E[X]</th><th>Var(X)</th></tr></thead>
+            <tbody>
+              <tr><td>Ber(p)</td><td>p</td><td>p<sup>k</sup>·(1−p)<sup>1−k</sup>, k∈{0,1}</td><td>p</td><td>p(1−p)</td></tr>
+              <tr><td>Geom(p)</td><td>p</td><td>(1−p)<sup>k−1</sup>·p, k≥1</td><td>1/p</td><td>(1−p)/p²</td></tr>
+              <tr><td>B(n,p)</td><td>n,p</td><td>C(n,k)·p<sup>k</sup>(1−p)<sup>n−k</sup></td><td>np</td><td>np(1−p)</td></tr>
+              <tr><td>H(N,M,n)</td><td>N,M,n</td><td>C(M,k)·C(N−M,n−k)/C(N,n)</td><td>nM/N</td><td>komplex</td></tr>
+              <tr><td>Poi(λ)</td><td>λ</td><td>e<sup>−λ</sup>·λ<sup>k</sup>/k!</td><td>λ</td><td>λ</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Entscheidungshilfe</h4>
+          <pre class="code">Ohne Zurücklegen, endliche Population?    → Hypergeometrisch H(N,M,n)
+Nur EIN Versuch?                          → Bernoulli Ber(p)
+Feste Anzahl Versuche, zähle Erfolge?     → Binomial B(n,p)
+Bis zum ERSTEN Erfolg?                    → Geometrisch Geom(p)
+Seltenes Ereignis / Intensität?           → Poisson Poi(λ)</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Erste Frage immer:</strong> mit oder ohne Zurücklegen?</li>
+            <li><strong>Poisson:</strong> E[X] = Var(X) = λ — einzigartiges Erkennungsmerkmal</li>
+            <li><strong>Geometrisch startet bei k=1</strong>, nicht bei k=0</li>
+            <li>Binomialkoeffizient C(n,k) <strong>nie vergessen</strong> bei Binomial und Hypergeometrisch</li>
+            <li>Approximationen: H(N,M,n) ≈ B(n,M/N) für N≫n &nbsp;·&nbsp; B(n,p) ≈ Poi(np) für n groß, p klein</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Du ziehst 5 Karten aus einem 52er-Kartendeck OHNE
+              Zurücklegen und zählst die Asse. Welche Verteilung?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Hypergeometrisch</button>
+              <button class="quiz-choice" type="button">Binomial</button>
+              <button class="quiz-choice" type="button">Poisson</button>
+              <button class="quiz-choice" type="button">Geometrisch</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ohne Zurücklegen aus einer endlichen Population (52 Karten) →
+              <strong>Hypergeometrisch</strong> H(52, 4, 5).</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="geometrisch|geometrische verteilung|geom">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welche Verteilung hat Träger {1,2,3,…} und
+              beschreibt die Anzahl Versuche bis zum ERSTEN Erfolg?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Verteilung …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>geometrische Verteilung</strong> Geom(p) — zählt die
+              Versuche bis (und mit) dem ersten Erfolg.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">3.</span>X ~ B(10, 0.3). Wie groß ist E[X]?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>E[X] = n·p = 10·0.3 = <strong>3</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.2335" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">4.</span>X ~ B(10, 0.3). Wie groß ist P(X=2)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>C(10,2)·0.3²·0.7⁸ = 45 · 0.09 · 0.05765 ≈ <strong>0.2335</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.1353" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">5.</span>X ~ Poi(2). Wie groß ist P(X=0)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X=0) = e⁻²·2⁰/0! = e⁻² ≈ <strong>0.1353</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Bei welcher Verteilung gilt IMMER E[X] = Var(X)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Poisson-Verteilung</button>
+              <button class="quiz-choice" type="button">Binomialverteilung</button>
+              <button class="quiz-choice" type="button">Geometrische Verteilung</button>
+              <button class="quiz-choice" type="button">Bernoulli-Verteilung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nur bei der <strong>Poisson-Verteilung</strong> gilt immer E[X] =
+              Var(X) = λ — bei den anderen vier sind Erwartungswert und Varianz strukturell verschieden.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.3974" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: 20 Kugeln, 8 rot, 12 blau. Du ziehst
+              5 ohne Zurücklegen. Wie groß ist P(genau 2 rot)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(X=2) = C(8,2)·C(12,3)/C(20,5) = 28·220/15504 = 6160/15504 ≈
+              <strong>0.3974</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="04-diskrete-zv.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Diskrete Zufallsvariablen</div>
+        </a>
+        <a class="next" href="06-stetige-zv.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Stetige Zufallsvariablen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bedingte Wahrscheinlichkeit &amp; Bayes · P12 Stochastik</title>
+<meta name="description" content="Bedingte Wahrscheinlichkeit, Multiplikationssatz, totale Wahrscheinlichkeit und der Satz von Bayes bildlich erklärt – mit Baumdiagramm und dem klassischen medizinischen Test-Beispiel (Bayes-Schock)." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P12-Kursübersicht</a> › Thema 02</div>
+    <span class="th-icon">🔍</span>
+    <h1>Bedingte Wahrscheinlichkeit &amp; Bayes</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 2</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie im Bild</a></li>
+        <li><a href="#rechnen">Beispiele Schritt für Schritt</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Bedingte Wahrscheinlichkeit beantwortet die Frage: <strong>Wie ändert sich meine
+          Einschätzung, wenn ich schon etwas weiß?</strong> Das ist der Kern von "aus Daten lernen" — und der
+          Grund, warum medizinische Tests, Spamfilter und Diagnosesysteme alle im Kern Bayes-Rechnungen sind.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du suchst deinen Wohnungsschlüssel. Ohne weitere Information könnte er überall in der Wohnung sein
+            — dein "Suchraum" ist die ganze Wohnung. Jetzt erinnerst du dich: <strong>"Ich war seit dem
+            Heimkommen nur in Flur und Küche."</strong> Sofort schrumpft dein Suchraum auf diese zwei Zimmer — alle
+            anderen Räume fallen komplett weg. Genau das macht <strong>P(A | B)</strong>: Es schränkt den
+            Grundraum auf B ein ("ich weiß, B ist eingetreten") und fragt, wie groß der Anteil von A
+            <em>innerhalb</em> von B ist. Nicht mehr der ganze Raum Ω zählt, sondern nur noch das Teilstück B.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie im Bild</h2>
+
+        <h3>Definition: den Grundraum einschränken</h3>
+        <!-- SVG 1: Venn -> Zoom in B -->
+        <figure class="diagram">
+          <div class="diagram-title">P(A|B): der Grundraum wird auf B eingeschränkt</div>
+          <svg viewBox="0 0 700 250" width="700" role="img" aria-label="Links ein Venn-Diagramm mit Ω, A und B, rechts ein gezoomtes Bild, in dem nur noch B als neuer Grundraum gilt und der A-Anteil darin hervorgehoben ist">
+            <defs>
+              <clipPath id="p2clipB"><circle cx="290" cy="120" r="72"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="20" y="25" width="380" height="190" rx="12" fill="none" stroke="#8a94a6" stroke-dasharray="5 4"/>
+              <text x="34" y="46" class="svg-soft" font-weight="700">Ω</text>
+              <circle cx="200" cy="120" r="72" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="1.6"/>
+              <circle cx="290" cy="120" r="72" fill="#f5810b" fill-opacity="0.22" stroke="#f5810b" stroke-width="1.6"/>
+              <circle cx="200" cy="120" r="72" fill="#8b5cf6" fill-opacity="0.4" clip-path="url(#p2clipB)"/>
+              <text x="155" y="70" fill="#2f6df6" font-weight="800">A</text>
+              <text x="330" y="70" fill="#f5810b" font-weight="800">B</text>
+
+              <path d="M410 120 L470 120" stroke="#8a94a6" stroke-width="2" marker-end="url(#p2arrow)"/>
+              <defs>
+                <marker id="p2arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L6,3 L0,6 Z" fill="#8a94a6"/>
+                </marker>
+              </defs>
+              <text x="440" y="100" text-anchor="middle" class="svg-soft" font-size="12">"gegeben B"</text>
+
+              <rect x="490" y="45" width="190" height="150" rx="12" fill="#f5810b" fill-opacity="0.12" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="585" y="65" text-anchor="middle" fill="#f5810b" font-weight="800">neues Ω' = B</text>
+              <path d="M490 130 L680 130 L680 195 L490 195 Z" fill="#8b5cf6" fill-opacity="0.45"/>
+              <text x="585" y="167" text-anchor="middle" class="svg-ink" font-weight="700">A ∩ B</text>
+              <text x="585" y="220" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">P(A|B) = Anteil von A∩B in B</text>
+            </g>
+          </svg>
+          <figcaption>Links: normales Venn-Diagramm mit A, B und der Schnittfläche A∩B (lila). Rechts: Sobald wir wissen,
+            dass B eingetreten ist, wird B selbst zum neuen "ganzen Raum" — P(A|B) ist der Anteil, den A∩B davon einnimmt.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: bedingte Wahrscheinlichkeit</div>
+          <span class="formula">P(A | B) = P(A ∩ B) / P(B)          nur definiert für P(B) &gt; 0</span>
+          <p>Lies: "Wahrscheinlichkeit von A, gegeben dass B bereits eingetreten ist."</p>
+        </div>
+
+        <h3>Multiplikationssatz: die Formel umstellen</h3>
+        <p>Stellt man die Definition nach P(A∩B) um, bekommt man eine Formel, um Schnittwahrscheinlichkeiten aus
+          bedingten Wahrscheinlichkeiten zu berechnen — praktisch für Baumdiagramme:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Multiplikationssatz &amp; Kettenregel</div>
+          <span class="formula">P(A ∩ B) = P(A|B) · P(B) = P(B|A) · P(A)
+
+Kettenregel: P(A₁∩A₂∩...∩Aₙ) = P(A₁) · P(A₂|A₁) · P(A₃|A₁∩A₂) · ...</span>
+        </div>
+
+        <h3>Satz der totalen Wahrscheinlichkeit: Ω in Stücke teilen</h3>
+        <p>Wenn B₁, ..., Bₙ eine <strong>Partition</strong> von Ω bilden (paarweise disjunkt, vollständig,
+          alle P(Bᵢ) &gt; 0), lässt sich P(A) aus den Teilstücken zusammensetzen:</p>
+
+        <!-- SVG 2: Partition -->
+        <figure class="diagram">
+          <div class="diagram-title">Ω zerlegt in B₁, B₂, B₃ — A (gestrichelt) läuft durch alle drei Stücke</div>
+          <svg viewBox="0 0 600 230" width="600" role="img" aria-label="Grundraum Ω in drei farbige Streifen B1 B2 B3 unterteilt, eine gestrichelte Ellipse A überlagert alle drei Streifen">
+            <defs>
+              <clipPath id="p2band1"><rect x="20" y="30" width="186" height="180"/></clipPath>
+              <clipPath id="p2band2"><rect x="206" y="30" width="186" height="180"/></clipPath>
+              <clipPath id="p2band3"><rect x="392" y="30" width="188" height="180"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="20" y="30" width="186" height="180" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c"/>
+              <rect x="206" y="30" width="186" height="180" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6"/>
+              <rect x="392" y="30" width="188" height="180" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6"/>
+              <text x="113" y="50" text-anchor="middle" fill="#12b28c" font-weight="800">B₁</text>
+              <text x="299" y="50" text-anchor="middle" fill="#2f6df6" font-weight="800">B₂</text>
+              <text x="486" y="50" text-anchor="middle" fill="#8b5cf6" font-weight="800">B₃</text>
+
+              <ellipse cx="300" cy="140" rx="190" ry="62" fill="#f5810b" fill-opacity="0.16" clip-path="url(#p2band1)"/>
+              <ellipse cx="300" cy="140" rx="190" ry="62" fill="#f5810b" fill-opacity="0.16" clip-path="url(#p2band2)"/>
+              <ellipse cx="300" cy="140" rx="190" ry="62" fill="#f5810b" fill-opacity="0.16" clip-path="url(#p2band3)"/>
+              <ellipse cx="300" cy="140" rx="190" ry="62" fill="none" stroke="#f5810b" stroke-width="1.8" stroke-dasharray="6 4"/>
+              <text x="300" y="205" text-anchor="middle" fill="#f5810b" font-weight="800">A</text>
+
+              <text x="300" y="225" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="12">P(A) = P(A|B₁)P(B₁) + P(A|B₂)P(B₂) + P(A|B₃)P(B₃)</text>
+            </g>
+          </svg>
+          <figcaption>A besteht aus drei Teilstücken — je einem Anteil in B₁, B₂ und B₃. Summiert man die
+            Wahrscheinlichkeit dieser drei Teilstücke, erhält man P(A) insgesamt.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: totale Wahrscheinlichkeit &amp; Satz von Bayes</div>
+          <span class="formula">P(A) = Σᵢ P(A|Bᵢ) · P(Bᵢ)
+
+P(Bᵢ|A) = P(A|Bᵢ) · P(Bᵢ) / Σⱼ P(A|Bⱼ) · P(Bⱼ)  =  P(A|Bᵢ) · P(Bᵢ) / P(A)</span>
+          <p>P(Bᵢ) heißt <strong>a-priori-Wahrscheinlichkeit</strong> (Vorwissen), P(A|Bᵢ) heißt
+            <strong>Likelihood</strong> (Beobachtung unter der Hypothese Bᵢ), und das Ergebnis P(Bᵢ|A) heißt
+            <strong>a-posteriori-Wahrscheinlichkeit</strong> (aktualisiertes Wissen nach der Beobachtung).</p>
+        </div>
+
+        <h3>Das Baumdiagramm: Bayes visuell durchrechnen</h3>
+        <p>Ein Baumdiagramm macht totale Wahrscheinlichkeit und Bayes greifbar: erste Ebene = Partition, zweite
+          Ebene = bedingte Wahrscheinlichkeit von A. Jeder Pfad zu einem Blatt wird <strong>multipliziert</strong>
+          (Multiplikationssatz), und für Bayes teilt man den gesuchten Pfad durch die <strong>Summe aller Pfade,
+          die zu A⁺ führen</strong>.</p>
+
+        <!-- SVG 3: Baumdiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Baumdiagramm: Krankheit K vs. Test T⁺ (Prävalenz 1 %, Sensitivität 99 %, Spezifität 95 %)</div>
+          <svg viewBox="0 0 640 300" width="640" role="img" aria-label="Baumdiagramm mit erster Ebene krank/gesund und zweiter Ebene Test positiv/negativ, alle Pfadwahrscheinlichkeiten sind beschriftet">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <circle cx="40" cy="150" r="6" fill="#8a94a6"/>
+              <text x="20" y="175" class="svg-soft">Ω</text>
+
+              <line x1="40" y1="150" x2="220" y2="60" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="120" y="90" fill="#12b28c" font-weight="700">P(K)=0.01</text>
+              <line x1="40" y1="150" x2="220" y2="240" stroke="#8a94a6" stroke-width="1.6"/>
+              <text x="110" y="215" class="svg-soft" font-weight="700">P(K̄)=0.99</text>
+
+              <circle cx="220" cy="60" r="5" fill="#12b28c"/>
+              <text x="234" y="55" fill="#12b28c" font-weight="800">K</text>
+              <circle cx="220" cy="240" r="5" fill="#8a94a6"/>
+              <text x="234" y="235" class="svg-soft" font-weight="800">K̄</text>
+
+              <line x1="220" y1="60" x2="420" y2="20" stroke="#2f6df6" stroke-width="1.6"/>
+              <text x="270" y="24" fill="#2f6df6" font-size="11.5">P(T⁺|K)=0.99</text>
+              <line x1="220" y1="60" x2="420" y2="100" stroke="#8a94a6" stroke-width="1.6"/>
+              <text x="270" y="98" class="svg-soft" font-size="11.5">P(T⁻|K)=0.01</text>
+
+              <line x1="220" y1="240" x2="420" y2="200" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="264" y="198" fill="#f5810b" font-size="11.5">P(T⁺|K̄)=0.05</text>
+              <line x1="220" y1="240" x2="420" y2="280" stroke="#8a94a6" stroke-width="1.6"/>
+              <text x="264" y="278" class="svg-soft" font-size="11.5">P(T⁻|K̄)=0.95</text>
+
+              <g font-family="JetBrains Mono, monospace" font-weight="700">
+                <text x="430" y="24" fill="#2f6df6">K∩T⁺ = 0.0099</text>
+                <text x="430" y="104" class="svg-soft">K∩T⁻ = 0.0001</text>
+                <text x="430" y="204" fill="#f5810b">K̄∩T⁺ = 0.0495</text>
+                <text x="430" y="284" class="svg-soft">K̄∩T⁻ = 0.9405</text>
+              </g>
+
+              <rect x="420" y="150" width="210" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6"/>
+              <text x="525" y="171" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-family="JetBrains Mono, monospace">P(T⁺) = 0.0594</text>
+            </g>
+          </svg>
+          <figcaption>Jeder Pfad zum Blatt wird multipliziert (Multiplikationssatz). P(T⁺) ist die Summe der beiden
+            Pfade, die zu T⁺ führen: 0.0099 + 0.0495 = 0.0594.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele Schritt für Schritt</h2>
+
+        <h3>Beispiel 1: der Bayes-Schock am medizinischen Test</h3>
+        <p>Ein Test auf Krankheit K hat Sensitivität P(T⁺|K) = 99 %, Spezifität P(T⁻|K̄) = 95 %, und die Krankheit
+          betrifft P(K) = 1 % der Bevölkerung (Prävalenz). Gesucht: P(K|T⁺) — wie krank bin ich wirklich, wenn
+          der Test positiv ausfällt?</p>
+        <ol class="steps">
+          <li><strong>Partition prüfen:</strong> {K, K̄} partitioniert Ω ✓</li>
+          <li><strong>Alle benötigten WK notieren:</strong> P(K)=0.01, P(K̄)=0.99, P(T⁺|K)=0.99,
+            P(T⁺|K̄) = 1 − 0.95 = 0.05 (Spezifität ist P(T⁻|K̄), nicht P(T⁺|K̄)!)</li>
+          <li><strong>Totale Wahrscheinlichkeit für P(T⁺):</strong><br>
+            P(T⁺) = P(T⁺|K)·P(K) + P(T⁺|K̄)·P(K̄) = 0.99·0.01 + 0.05·0.99 = 0.0099 + 0.0495 = <strong>0.0594</strong></li>
+          <li><strong>Bayes anwenden:</strong><br>
+            P(K|T⁺) = P(T⁺|K)·P(K) / P(T⁺) = 0.0099 / 0.0594 = <strong>1/6 ≈ 16.7 %</strong></li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Der Bayes-Schock</div>
+          <p>Trotz eines augenscheinlich sehr guten Tests (99 % Sensitivität, 95 % Spezifität) ist ein positiv
+            getesteter Mensch nur mit <strong>16.7 %</strong> Wahrscheinlichkeit tatsächlich krank — weil die
+            Krankheit so selten ist (nur 1 % Prävalenz), dass die vielen falsch-positiven Ergebnisse aus der riesigen
+            gesunden Gruppe die wenigen echten Treffer zahlenmäßig überwältigen. Das ist der Grund, warum
+            Reihenuntersuchungen bei seltenen Krankheiten immer einen zweiten, unabhängigen Test nachschalten.</p>
+        </div>
+
+        <h3>Beispiel 2: Urnen-Aufgabe</h3>
+        <p>2 Urnen: U₁ enthält 3 rote und 2 blaue Kugeln, U₂ enthält 1 rote und 4 blaue Kugeln. Zufällig wird eine
+          Urne gewählt, daraus eine Kugel gezogen — sie ist rot. Aus welcher Urne stammt sie wahrscheinlicher?</p>
+        <ol class="steps">
+          <li><strong>Partition:</strong> {U₁, U₂}, P(U₁) = P(U₂) = 0.5 (zufällige Urnenwahl)</li>
+          <li><strong>Likelihoods:</strong> P(rot|U₁) = 3/5, &nbsp; P(rot|U₂) = 1/5</li>
+          <li><strong>Totale WK:</strong> P(rot) = 0.5·3/5 + 0.5·1/5 = 3/10 + 1/10 = 4/10</li>
+          <li><strong>Bayes:</strong> P(U₁|rot) = (3/5 · 1/2) / (4/10) = (3/10) / (4/10) = <strong>3/4 = 0.75</strong></li>
+        </ol>
+        <p>Die rote Kugel stammt mit 75 % Wahrscheinlichkeit aus Urne U₁ — plausibel, da U₁ deutlich mehr rote
+          Kugeln enthält.</p>
+
+        <h3>🧮 Klausurtyp: Paketdepot (totale Wahrscheinlichkeit)</h3>
+        <p>Ein Depot verschickt Pakete: 60 % gehen aufs Land, 40 % in die Stadt. Verspätungswahrscheinlichkeit:
+          P(Verspätung|Land) = 8 %, P(Verspätung|Stadt) = 28 %. Gesucht: die Gesamtwahrscheinlichkeit einer
+          Verspätung.</p>
+        <ol class="steps">
+          <li><strong>Partition:</strong> {Land, Stadt}, P(Land)=0.6, P(Stadt)=0.4</li>
+          <li><strong>Totale Wahrscheinlichkeit:</strong><br>
+            P(Z) = P(Z|Stadt)·P(Stadt) + P(Z|Land)·P(Land) = 0.28·0.40 + 0.08·0.60 = 0.112 + 0.048 = <strong>0.16</strong></li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(Krankheit | Test⁺) = P(Test⁺ | Krankheit)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>P(A|B) ≠ P(B|A)</strong> — das sind
+            verschiedene Größen! Der Satz von Bayes dreht die Bedingungsrichtung explizit um. Merksatz: "Wer bedingt
+            wen?" — das Gegebene steht immer rechts vom |.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nur B₁ und B₂ als Partition betrachten, obwohl
+            es noch ein B₃ gibt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Alle Bᵢ müssen zusammen ganz Ω abdecken:
+            B₁∪...∪Bₙ = Ω. <strong>Probe:</strong> die Summe aller P(Bᵢ) muss 1 ergeben.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P(B₁|A) = P(A|B₁)·P(B₁) — fertig.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Nenner fehlt! P(B₁|A) = P(A|B₁)·P(B₁) /
+            P(A), wobei P(A) über den <strong>Satz der totalen Wahrscheinlichkeit</strong> berechnet wird.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Spezifität = P(T⁺|K̄)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Spezifität = P(T⁻|K̄) ("richtig negativ").
+            Für den Baum brauchst du oft die Gegenwahrscheinlichkeit: P(T⁺|K̄) = 1 − Spezifität.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nach der Bayes-Rechnung nicht mehr prüfen, ob
+            das Ergebnis plausibel ist.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Immer eine <strong>Probe</strong> machen:
+            P(B₁|A) + P(B₂|A) + ... + P(Bₙ|A) muss 1 ergeben. Wenn nicht, ist ein Rechenfehler passiert.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>P(A|B) = P(A∩B) / P(B)</td><td>Definition bedingte WK</td></tr>
+              <tr><td>P(A∩B) = P(A|B)·P(B)</td><td>Multiplikationssatz</td></tr>
+              <tr><td>P(A) = Σᵢ P(A|Bᵢ)·P(Bᵢ)</td><td>Totale Wahrscheinlichkeit</td></tr>
+              <tr><td>P(Bᵢ|A) = P(A|Bᵢ)·P(Bᵢ) / P(A)</td><td>Satz von Bayes</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Diagnostischer Test — Sprachkonventionen</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>Sensitivität</td><td>P(T⁺ | krank)</td></tr>
+              <tr><td>Spezifität</td><td>P(T⁻ | gesund)</td></tr>
+              <tr><td>Prävalenz</td><td>P(krank)</td></tr>
+              <tr><td>Positiver Vorhersagewert</td><td>P(krank | T⁺) ← das will man eigentlich wissen!</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Typische Aufgabentypen in der Klausur</h4>
+          <ul>
+            <li><strong>Diagnostischer Test</strong> → Bayes mit Sensitivität/Spezifität/Prävalenz, Baum zeichnen</li>
+            <li><strong>Urnen-Aufgabe</strong> → Baumdiagramm + totale WK + Bayes</li>
+            <li><strong>Bedingte WK berechnen</strong> → Definition P(A|B) = P(A∩B)/P(B)</li>
+            <li><strong>Multiplikationssatz</strong> → P(A∩B) aus bedingten WK zusammensetzen</li>
+            <li><strong>Partition prüfen</strong> → disjunkt? vollständig? Summe = 1?</li>
+          </ul>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>P(A|B) ≠ P(B|A)</strong> — Bayes dreht die Richtung um</li>
+            <li>Baumdiagramm zeichnen, sobald mehr als eine bedingte Wahrscheinlichkeit im Spiel ist</li>
+            <li>Bei "wie wahrscheinlich ist Hypothese X, gegeben Beobachtung Y" → das ist Bayes</li>
+            <li>Immer die <strong>Probe</strong> machen: alle a-posteriori-WK summieren sich zu 1</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.5" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>P(A∩B) = 0.2, P(B) = 0.4. Wie groß ist P(A|B)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(A|B) = P(A∩B)/P(B) = 0.2/0.4 = <strong>0.5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Was gilt im Allgemeinen für P(A|B) und P(B|A)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Sie sind immer gleich</button>
+              <button class="quiz-choice" type="button" data-correct>Sie können unterschiedlich sein</button>
+              <button class="quiz-choice" type="button">P(A|B) ist immer größer</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(A|B) und P(B|A) sind unterschiedliche Größen — das Gegebene steht
+              jeweils rechts vom |. Der Satz von Bayes rechnet zwischen beiden um.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="16.7" data-tol="0.3">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🧮 Klausurtyp: Prävalenz 1 %, Sensitivität 99 %,
+              Spezifität 95 %. Wie viel Prozent der positiv Getesteten sind wirklich krank? (eine Nachkommastelle)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(T⁺) = 0.99·0.01 + 0.05·0.99 = 0.0594. P(K|T⁺) = 0.0099/0.0594 =
+              1/6 ≈ <strong>16.7 %</strong> — der Bayes-Schock.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.75" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Urnen-Beispiel: U₁ (3 rot, 2 blau), U₂ (1 rot,
+              4 blau), je 50 % Wahl. Gezogen wurde rot. Wie groß ist P(U₁|rot)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(rot) = 0.5·3/5 + 0.5·1/5 = 4/10. P(U₁|rot) = (3/10)/(4/10) =
+              <strong>0.75</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="a-priori-wahrscheinlichkeit|apriori|a priori wahrscheinlichkeit|prior">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt P(Bᵢ) im Kontext von Bayes — das Vorwissen
+              vor der Beobachtung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist die <strong>a-priori-Wahrscheinlichkeit</strong> — das Wissen,
+              bevor A beobachtet wurde.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie ist die Spezifität eines Tests definiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">P(T⁺ | krank)</button>
+              <button class="quiz-choice" type="button" data-correct>P(T⁻ | gesund)</button>
+              <button class="quiz-choice" type="button">P(krank | T⁺)</button>
+              <button class="quiz-choice" type="button">P(T⁺ | gesund)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Spezifität = <strong>P(T⁻ | gesund)</strong> — "richtig negativ".
+              P(T⁺|gesund) ist ihr Gegenteil, nämlich 1 − Spezifität.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.16" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: Paketdepot — 60 % Land (8 %
+              Verspätung), 40 % Stadt (28 % Verspätung). Wie groß ist die Gesamtwahrscheinlichkeit einer
+              Verspätung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(Z) = 0.28·0.40 + 0.08·0.60 = 0.112 + 0.048 = <strong>0.16</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="01-wahrscheinlichkeit.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Wahrscheinlichkeitsgrundlagen</div>
+        </a>
+        <a class="next" href="03-unabhaengigkeit.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Stochastische Unabhängigkeit</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

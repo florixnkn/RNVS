@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Markov-Ketten · P12 Stochastik</title>
+<meta name="description" content="Markov-Ketten bildlich erklärt: Gedächtnislosigkeit, Übergangsmatrix, mehrschrittige Übergänge als Matrixpotenz und die stationäre Verteilung – mit durchgerechnetem Wetter-Beispiel." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 13</div>
+    <span class="th-icon">⛓️</span>
+    <h1>Markov-Ketten</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 8</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Übergangsmatrix &amp; stationäre Verteilung</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Eine <strong>Markov-Kette</strong> ist ein Zufallsprozess mit einer sehr angenehmen
+          Eigenschaft: Um vorherzusagen, was als Nächstes passiert, musst du <strong>nur den aktuellen Zustand</strong>
+          kennen — die komplette Vorgeschichte ist irrelevant. Das nennt man <strong>Gedächtnislosigkeit</strong>.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… das Wetter von morgen. Ob es morgen regnet, hängt (in diesem vereinfachten Modell) nur davon ab,
+            ob es <strong>heute</strong> regnet oder sonnig ist — nicht davon, wie das Wetter letzte Woche war.
+            "Heute sonnig" plus eine feste Übergangsregel reicht, um die Wahrscheinlichkeit für "morgen sonnig"
+            zu berechnen. Diese Übergangsregel — mit welcher Wahrscheinlichkeit du von einem Zustand in einen
+            anderen wechselst — ist das Herzstück jeder Markov-Kette: die <strong>Übergangsmatrix</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Übergangsmatrix &amp; stationäre Verteilung im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Markov-Eigenschaft</div>
+          <span class="formula">P(X_{n+1}=j | X₀=i₀,...,X_n=iₙ) = P(X_{n+1}=j | X_n=iₙ)</span>
+          <p>"Nur der aktuelle Zustand bestimmt die Zukunft — die Vergangenheit ist bedingt irrelevant."</p>
+        </div>
+
+        <p>Die <strong>Übergangsmatrix</strong> P sammelt alle Übergangswahrscheinlichkeiten p_ij = P(X_{n+1}=j |
+          X_n=i). Zwei Eigenschaften muss jede gültige Übergangsmatrix erfüllen: alle Einträge ≥ 0, und
+          <strong>jede Zeile summiert sich zu 1</strong> (von jedem Zustand aus musst du ja irgendwohin
+          wechseln — auch "bleiben" zählt als Übergang).</p>
+
+        <p>Unser Wetter-Beispiel für den Rest der Seite: zwei Zustände, <strong>Sonnig (S)</strong> und
+          <strong>Regen (R)</strong>, mit Übergangsmatrix:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Übergangsmatrix P</div>
+          <span class="formula">        S     R
+     S ( 0.9   0.1 )
+     R ( 0.5   0.5 )</span>
+          <p>Von Sonnig aus bleibt es zu 90% sonnig, springt zu 10% auf Regen. Von Regen aus ist es 50/50.
+            Zeilensummen: 0.9+0.1=1 ✓, 0.5+0.5=1 ✓.</p>
+        </div>
+
+        <!-- SVG 1: Übergangsgraph -->
+        <figure class="diagram">
+          <div class="diagram-title">Übergangsgraph: Zustände als Kreise, Wahrscheinlichkeiten als Pfeile</div>
+          <svg viewBox="0 0 600 300" width="600" role="img" aria-label="Übergangsgraph einer Markov-Kette mit zwei Zuständen Sonnig und Regen, inklusive Selbstschleifen und Übergangswahrscheinlichkeiten">
+            <defs>
+              <marker id="mkO" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/></marker>
+              <marker id="mkB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <path d="M126,108 C104,44 196,44 174,108" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#mkO)"/>
+              <text x="150" y="34" text-anchor="middle" fill="#f5810b" font-weight="800">0.9</text>
+
+              <path d="M426,108 C404,44 496,44 474,108" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#mkB)"/>
+              <text x="450" y="34" text-anchor="middle" fill="#2f6df6" font-weight="800">0.5</text>
+
+              <path d="M198,128 C300,64 300,64 402,128" fill="none" stroke="#f5810b" stroke-width="2.2" marker-end="url(#mkO)"/>
+              <text x="300" y="72" text-anchor="middle" fill="#f5810b" font-weight="800">0.1</text>
+
+              <path d="M402,172 C300,236 300,236 198,172" fill="none" stroke="#2f6df6" stroke-width="2.2" marker-end="url(#mkB)"/>
+              <text x="300" y="252" text-anchor="middle" fill="#2f6df6" font-weight="800">0.5</text>
+
+              <circle cx="150" cy="150" r="50" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="2"/>
+              <text x="150" y="145" text-anchor="middle" class="svg-ink" font-weight="800" font-size="16">S</text>
+              <text x="150" y="163" text-anchor="middle" class="svg-soft" font-size="11">Sonnig</text>
+
+              <circle cx="450" cy="150" r="50" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="2"/>
+              <text x="450" y="145" text-anchor="middle" class="svg-ink" font-weight="800" font-size="16">R</text>
+              <text x="450" y="163" text-anchor="middle" class="svg-soft" font-size="11">Regen</text>
+            </g>
+          </svg>
+          <figcaption>Die Schleifen oben an jedem Kreis sind die "Bleib im gleichen Zustand"-Wahrscheinlichkeiten
+            p_ii. Jede Zeile der Matrix entspricht allen aus einem Knoten herausgehenden Pfeilen — sie summieren
+            sich zu 1.</figcaption>
+        </figure>
+
+        <h3>Mehrschrittige Übergänge = Matrixpotenz</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Chapman-Kolmogorov</div>
+          <span class="formula">p_ij^(n) = P(X_{n+m}=j | X_m=i) = [P^n]_ij
+
+μ^(n) = μ^(0) · P^n     (Verteilung nach n Schritten, μ^(0) = Startverteilung)</span>
+          <p>P^n ist die <strong>n-te Matrizenpotenz</strong> von P (Matrixmultiplikation!) — nicht n·P.</p>
+        </div>
+
+        <h3>Stationäre Verteilung: der Gleichgewichtszustand</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Definition &amp; Grenzwertsatz</div>
+          <span class="formula">π ist stationär, wenn:  π · P = π,   Σⱼ πⱼ = 1,  πⱼ ≥ 0
+
+Für irreduzible, aperiodische Ketten:  μ^(n) → π  für n → ∞  (unabhängig vom Start!)</span>
+          <p>π ist ein <strong>Linkseigenvektor</strong> von P zum Eigenwert 1 — π steht links, nicht rechts von P.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>Irreduzibel</b><span>alle Zustände erreichen sich gegenseitig</span></div>
+          <div class="fact"><b>Aperiodisch</b><span>kein fester Rhythmus, d(i)=1</span></div>
+          <div class="fact"><b>Absorbierend</b><span>p_ii=1 — Zustand wird nie verlassen</span></div>
+          <div class="fact"><b>Rekurrent</b><span>Rückkehr zum Zustand ist sicher (WK 1)</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele durchgerechnet</h2>
+
+        <h3>Durchgerechnetes Beispiel: 2-Schritt-Wahrscheinlichkeit</h3>
+        <p>Wie hoch ist die Wahrscheinlichkeit, dass es <strong>übermorgen regnet</strong>, wenn es
+          <strong>heute sonnig</strong> ist? Gesucht: [P²]_{S,R}.</p>
+        <ol class="steps">
+          <li><strong>P² = P · P aufstellen</strong> (Matrizenprodukt, nicht Skalarmultiplikation!)</li>
+          <li><strong>[P²]_{S,S} berechnen:</strong> 0.9·0.9 + 0.1·0.5 = 0.81 + 0.05 = 0.86</li>
+          <li><strong>[P²]_{S,R} berechnen:</strong> 0.9·0.1 + 0.1·0.5 = 0.09 + 0.05 = <strong>0.14</strong></li>
+          <li><strong>Zur Kontrolle — [P²]_{R,S} und [P²]_{R,R}:</strong> 0.5·0.9+0.5·0.5 = 0.70,
+            0.5·0.1+0.5·0.5 = 0.30. Zeilensummen: 0.86+0.14=1 ✓, 0.70+0.30=1 ✓</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Ergebnis</div>
+          <p>P(übermorgen Regen | heute sonnig) = [P²]_{S,R} = <strong>0.14</strong> = 14%.</p>
+        </div>
+
+        <h3>Durchgerechnetes Beispiel: Stationäre Verteilung</h3>
+        <p>Wie sieht das Wetter <strong>langfristig</strong> aus, unabhängig davon, wie es heute war?</p>
+        <ol class="steps">
+          <li><strong>Gleichungssystem π·P = π aufstellen:</strong><br>
+            π_S = 0.9·π_S + 0.5·π_R &nbsp;⟹&nbsp; 0.1·π_S = 0.5·π_R &nbsp;⟹&nbsp; π_S = 5·π_R<br>
+            (die zweite Gleichung π_R = 0.1·π_S + 0.5·π_R ist linear abhängig von der ersten — wie immer bei
+            2 Zuständen)</li>
+          <li><strong>Normierung statt der abhängigen Gleichung:</strong> π_S + π_R = 1</li>
+          <li><strong>Einsetzen &amp; auflösen:</strong> 5·π_R + π_R = 1 ⟹ 6·π_R = 1 ⟹
+            π_R = <strong>1/6 ≈ 0.1667</strong>, π_S = 5·(1/6) = <strong>5/6 ≈ 0.8333</strong></li>
+          <li><strong>Probe:</strong> π_S·0.9 + π_R·0.5 = (5/6)·0.9 + (1/6)·0.5 = 0.75 + 0.0833 = 0.8333 = π_S ✓</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Interpretation</div>
+          <p>Egal ob es heute sonnig oder regnerisch ist — langfristig ist es an <strong>5/6 ≈ 83.3%</strong> der
+            Tage sonnig und an 1/6 ≈ 16.7% der Tage regnerisch. Diese Konvergenz gilt, weil die Kette
+            <strong>irreduzibel</strong> ist (S und R erreichen sich gegenseitig) und <strong>aperiodisch</strong>
+            (p_SS = 0.9 &gt; 0 reicht dafür bereits aus).</p>
+        </div>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Schritt n</th><th>P(sonnig) bei Start "heute sonnig"</th></tr></thead>
+          <tbody>
+            <tr><td>n = 0 (heute)</td><td>1.0</td></tr>
+            <tr><td>n = 1</td><td>0.9</td></tr>
+            <tr><td>n = 2</td><td>0.86</td></tr>
+            <tr><td>n → ∞</td><td>0.833 (= π_S)</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 2: Konvergenz-Balkendiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Konvergenz gegen die stationäre Verteilung — unabhängig vom Start</div>
+          <svg viewBox="0 0 460 250" width="460" role="img" aria-label="Balkendiagramm zeigt, wie P(sonnig) mit jedem Schritt näher an die stationäre Wahrscheinlichkeit 5/6 heranrückt, wenn die Kette bei heute sonnig startet">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <line x1="20" y1="200" x2="420" y2="200" stroke="#8a94a6" stroke-width="1.3"/>
+
+              <rect x="30" y="40" width="70" height="160" fill="#f5810b" fill-opacity="0.75" stroke="#f5810b"/>
+              <text x="65" y="32" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">1.0</text>
+              <text x="65" y="218" text-anchor="middle" class="svg-soft" font-size="11">n=0</text>
+
+              <rect x="130" y="56" width="70" height="144" fill="#f5810b" fill-opacity="0.6" stroke="#f5810b"/>
+              <text x="165" y="48" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">0.9</text>
+              <text x="165" y="218" text-anchor="middle" class="svg-soft" font-size="11">n=1</text>
+
+              <rect x="230" y="62" width="70" height="138" fill="#f5810b" fill-opacity="0.45" stroke="#f5810b"/>
+              <text x="265" y="54" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">0.86</text>
+              <text x="265" y="218" text-anchor="middle" class="svg-soft" font-size="11">n=2</text>
+
+              <rect x="330" y="67" width="70" height="133" fill="#12a150" fill-opacity="0.55" stroke="#12a150"/>
+              <text x="365" y="59" text-anchor="middle" fill="#12a150" font-weight="800" font-size="12">0.833</text>
+              <text x="365" y="218" text-anchor="middle" class="svg-soft" font-size="11">n→∞ (π_S)</text>
+            </g>
+          </svg>
+          <figcaption>Egal wie das Wetter heute ist — die Verteilung nähert sich mit jedem Schritt der stationären
+            Verteilung π an. Schon nach 2 Tagen ist man mit 0.86 nah an 5/6 ≈ 0.833.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P² = 2·P</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>P² = P·P — <strong>Matrizenprodukt</strong>,
+            keine Skalarmultiplikation!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>P·π = π (π von rechts multiplizieren)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>π·P = π — π ist ein
+            <strong>Zeilenvektor links</strong> von P (Linkseigenvektor zum Eigenwert 1).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Übergangsmatrix nicht auf Zeilensummen
+            geprüft.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Immer prüfen: Σⱼ p_ij = 1 für <strong>jede
+            Zeile</strong> i. Stimmt das nicht, ist die Matrix fehlerhaft.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Jede irreduzible Markov-Kette konvergiert
+            gegen ihre stationäre Verteilung.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur <strong>irreduzible UND aperiodische</strong>
+            Ketten konvergieren. Periodische Ketten oszillieren stattdessen für immer.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>μ^(2) = μ^(0)·P² gilt immer, auch wenn kein
+            μ^(0) gegeben ist.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>p_ij^(n) = [P^n]_ij ist die
+            <strong>bedingte</strong> WK bei Start in i. μ^(n) = μ^(0)·P^n brauchst du nur, wenn eine konkrete
+            <strong>unbedingte</strong> Startverteilung gegeben ist.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>Σⱼ p_ij = 1</td><td>Zeilensummen der Übergangsmatrix</td></tr>
+              <tr><td>p_ij^(n) = [P^n]_ij</td><td>n-Schritt-WK via Matrixpotenz</td></tr>
+              <tr><td>μ^(n) = μ^(0)·P^n</td><td>Zeitliche Entwicklung der Verteilung</td></tr>
+              <tr><td>π·P = π, Σπⱼ=1</td><td>Stationäre Verteilung</td></tr>
+              <tr><td>P^n → Π (Zeilen = π)</td><td>Grenzwertsatz (irreduzibel + aperiodisch)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Klassifikation auf einen Blick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>Irreduzibel</td><td>alle Zustände kommunizieren</td></tr>
+              <tr><td>Rekurrent</td><td>Kette kehrt sicher zurück</td></tr>
+              <tr><td>Transient</td><td>Kette kann den Zustand endgültig verlassen</td></tr>
+              <tr><td>Absorbierend</td><td>p_ii = 1, kann nicht verlassen werden</td></tr>
+              <tr><td>Aperiodisch</td><td>d(i) = 1, kein fester Rhythmus</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>P^n ist Matrixpotenz</strong> — Matrizenprodukt, nicht n·P</li>
+            <li><strong>π·P = π</strong> — π steht links, nicht rechts</li>
+            <li>Zeilensummen der Übergangsmatrix immer = 1 — guter Rechen-Check</li>
+            <li>Konvergenz gegen π nur bei <strong>irreduzibel + aperiodisch</strong></li>
+            <li>Bei 2 Zuständen ist eine der beiden π·P=π-Gleichungen immer redundant → durch Σπⱼ=1 ersetzen</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0.14" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>P = [[0.9,0.1],[0.5,0.5]] (S,R). Wie hoch ist
+              [P²]_{S,R} — die Wahrscheinlichkeit, in 2 Schritten von Sonnig nach Regen zu wechseln?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>0.9·0.1 + 0.1·0.5 = 0.09 + 0.05 = <strong>0.14</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.833" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Klausurtyp: Wie groß ist π_S (stationärer
+              Anteil "sonnig") für dieselbe Matrix?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>π_S = 5/6 ≈ <strong>0.833</strong> (aus 0.1π_S = 0.5π_R und
+              π_S+π_R=1).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.167" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Und wie groß ist π_R?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>π_R = 1/6 ≈ <strong>0.167</strong> (π_S + π_R = 1, π_S = 5·π_R).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie ist die stationäre Verteilung π richtig
+              definiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>π · P = π (π als Zeilenvektor links von P)</button>
+              <button class="quiz-choice" type="button">P · π = π (π als Spaltenvektor rechts von P)</button>
+              <button class="quiz-choice" type="button">π = P² (π ist einfach die quadrierte Matrix)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>π ist ein <strong>Linkseigenvektor</strong> von P zum Eigenwert 1:
+              π·P = π.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Was müssen die Zeilensummen einer gültigen
+              Übergangsmatrix sein?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>1</button>
+              <button class="quiz-choice" type="button">0</button>
+              <button class="quiz-choice" type="button">beliebig, solange &gt; 0</button>
+              <button class="quiz-choice" type="button">gleich der Anzahl der Zustände</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Von jedem Zustand aus muss man irgendwohin wechseln (auch
+              "bleiben" zählt) — daher Σⱼ p_ij = <strong>1</strong> für jede Zeile.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Markov-Eigenschaft|Gedächtnislosigkeit|Markovsche Eigenschaft|Markov-Eigenschaft (Gedächtnislosigkeit)">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie heißt die Eigenschaft, dass nur der aktuelle
+              Zustand die Zukunft bestimmt — die Vergangenheit aber nicht?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Markov-Eigenschaft</strong>, umgangssprachlich auch
+              "Gedächtnislosigkeit" genannt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Unter welcher Bedingung konvergiert μ^(n) für
+              n→∞ garantiert gegen π — unabhängig vom Startzustand?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Die Kette muss nur irreduzibel sein.</button>
+              <button class="quiz-choice" type="button" data-correct>Die Kette muss irreduzibel UND
+                aperiodisch sein.</button>
+              <button class="quiz-choice" type="button">Die Kette muss mindestens 3 Zustände haben.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Irreduzibilität allein reicht nicht — eine periodische Kette
+              oszilliert für immer. Erst <strong>irreduzibel + aperiodisch</strong> garantiert Konvergenz.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="12-tests.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Statistische Tests</div>
+        </a>
+        <a class="next" href="14-lineare-regression.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Lineare Regression</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

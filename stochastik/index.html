@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stochastik &amp; Statistik – bildlich erklärt</title>
+<meta name="description" content="Stochastik und Statistik verständlich und visuell erklärt – von Laplace und Bayes über Verteilungen und Grenzwertsätze bis zu Schätzern, Tests, Markov-Ketten und Regression. Für Einsteiger ohne Vorwissen." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Vorlesungen</a>
+      <a href="#phase-1">Wahrscheinlichkeit</a>
+      <a href="#phase-2">Zufallsvariablen</a>
+      <a href="#phase-3">Kennzahlen</a>
+      <a href="#phase-4">Statistik</a>
+      <a href="#phase-5">Klausurtraining</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <h1>Stochastik &amp; Statistik,<br><span class="grad">endlich bildlich erklärt.</span></h1>
+    <p class="lead">Vom ersten Würfelwurf bis zum Hypothesentest — jedes Thema auf einer eigenen Seite,
+      mit Diagrammen, Alltags-Vergleichen und Schritt-für-Schritt-Rechnungen. Das 9-ECTS-Modul mit den
+      meisten Formeln des Semesters, gemacht für alle, die <strong>noch kaum Ahnung</strong> davon haben.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#phase-1">🚀 Bei der Wahrscheinlichkeit starten</a>
+      <a class="btn btn-ghost" href="topics/07-stetige-verteilungen.html">🔔 Direkt zur Normalverteilung</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>15</b><span>Themen-Seiten</span></div>
+      <div class="stat"><b>5</b><span>Lernphasen</span></div>
+      <div class="stat"><b>0</b><span>Vorwissen nötig</span></div>
+      <div class="stat"><b>9</b><span>ECTS im Modul P 12</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- ===== PHASE 1 ===== -->
+  <section class="phase" id="phase-1">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat1)">1</div>
+      <div><h2>Wahrscheinlichkeit</h2><p>Die Grundbegriffe: Laplace, Kolmogorov, bedingte Wahrscheinlichkeit und Unabhängigkeit.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/01-wahrscheinlichkeit.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🎲</span><span class="tc-no">01</span></div>
+        <h3>Wahrscheinlichkeitsgrundlagen</h3>
+        <p>Laplace-Experimente, die Kolmogorov-Axiome und Rechnen mit Ereignissen als Mengen.</p>
+        <div class="tc-meta"><span class="stars">★☆☆</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/02-bedingte-wahrscheinlichkeit.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🔍</span><span class="tc-no">02</span></div>
+        <h3>Bedingte Wahrscheinlichkeit &amp; Bayes</h3>
+        <p>P(A|B), Multiplikationssatz, totale Wahrscheinlichkeit und der Satz von Bayes — mit Baumdiagrammen.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/03-unabhaengigkeit.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🔗</span><span class="tc-no">03</span></div>
+        <h3>Stochastische Unabhängigkeit</h3>
+        <p>Wann beeinflussen sich Ereignisse nicht? Produktformel, paarweise vs. gemeinsame Unabhängigkeit.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-blatt">Klausur: mittel</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 2 ===== -->
+  <section class="phase" id="phase-2">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat2)">2</div>
+      <div><h2>Zufallsvariablen &amp; Verteilungen</h2><p>Diskret und stetig: von der Wahrscheinlichkeitsfunktion bis zur Normalverteilung.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/04-diskrete-zv.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🎰</span><span class="tc-no">04</span></div>
+        <h3>Diskrete Zufallsvariablen</h3>
+        <p>Träger, Wahrscheinlichkeitsfunktion und Verteilungsfunktion — Zufall in Zahlen übersetzt.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/05-diskrete-verteilungen.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">📊</span><span class="tc-no">05</span></div>
+        <h3>Diskrete Verteilungen</h3>
+        <p>Bernoulli, Binomial, geometrisch, Poisson &amp; Co. — welche Verteilung passt zu welcher Situation?</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/06-stetige-zv.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">📏</span><span class="tc-no">06</span></div>
+        <h3>Stetige Zufallsvariablen</h3>
+        <p>Dichte statt Wahrscheinlichkeit: Integrale, Verteilungsfunktion und die Gleichverteilung.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/07-stetige-verteilungen.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🔔</span><span class="tc-no">07</span></div>
+        <h3>Stetige Verteilungen</h3>
+        <p>Normalverteilung mit Standardisierung, Exponential-, Gamma- und Beta-Verteilung.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 3 ===== -->
+  <section class="phase" id="phase-3">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat3)">3</div>
+      <div><h2>Kennzahlen &amp; Grenzwerte</h2><p>Erwartungswert, Varianz, Kovarianz — und was bei unendlich vielen Versuchen passiert.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/08-erwartungswert-varianz.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">⚖️</span><span class="tc-no">08</span></div>
+        <h3>Erwartungswert &amp; Varianz</h3>
+        <p>E[X] und Var(X) berechnen, Rechenregeln — und die Falle Var(X+Y) ≠ Var(X)+Var(Y).</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/09-grenzwertsaetze.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🌊</span><span class="tc-no">09</span></div>
+        <h3>Grenzwertsätze</h3>
+        <p>Tschebyschew-Ungleichung, Gesetz der großen Zahlen und der zentrale Grenzwertsatz.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/10-kovarianz-korrelation.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🤝</span><span class="tc-no">10</span></div>
+        <h3>Kovarianz &amp; Korrelation</h3>
+        <p>Wie zwei Zufallsvariablen zusammenhängen: Cov(X,Y), Korrelationskoeffizient, bivariate Normalverteilung.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 4 ===== -->
+  <section class="phase" id="phase-4">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat4)">4</div>
+      <div><h2>Statistik &amp; Prozesse</h2><p>Aus Daten schließen: Schätzer, Konfidenzintervalle, Tests — plus Markov-Ketten und Regression.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/11-schaetzung.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🔭</span><span class="tc-no">11</span></div>
+        <h3>Statistische Schätzung</h3>
+        <p>Maximum-Likelihood-Schätzer Schritt für Schritt, Erwartungstreue und Konfidenzintervalle.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/12-tests.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🧪</span><span class="tc-no">12</span></div>
+        <h3>Statistische Tests</h3>
+        <p>Hypothesen, Fehler 1. &amp; 2. Art, p-Wert und der Chi-Quadrat-Test — das Gerichtsverfahren der Statistik.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/13-markov-ketten.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">⛓️</span><span class="tc-no">13</span></div>
+        <h3>Markov-Ketten</h3>
+        <p>Übergangsmatrizen, mehrschrittige Übergänge und die stationäre Verteilung — Zufall mit Gedächtnisverlust.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/14-lineare-regression.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">📈</span><span class="tc-no">14</span></div>
+        <h3>Lineare Regression</h3>
+        <p>Die beste Gerade durch die Punktwolke: KQ-Schätzer, Bestimmtheitsmaß und Gauß-Markov.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 5 ===== -->
+  <section class="phase" id="phase-5">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat1)">5</div>
+      <div><h2>Klausurtraining</h2><p>Klausurtypische Aufgaben zu allen Themen — komplett durchgerechnet und zum Selbst-Lösen.</p></div>
+    </div>
+    <div class="topic-grid">
+      <a class="topic-card reveal" href="topics/15-klausurtraining.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🎯</span><span class="tc-no">15</span></div>
+        <h3>Klausurtraining: von Bayes bis Regression</h3>
+        <p>Eine komplette Probeklausur im Stil des Moduls — Bayes, Verteilungen, Konfidenzintervall, Test, Markov-Kette &amp; Co.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span><span class="badge badge-blatt">Probeklausur</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Lernpfad-Hinweis -->
+  <div class="callout callout-tip reveal" style="margin: 40px 0;">
+    <div class="c-title">So nutzt du diese Seite am besten</div>
+    <p>Arbeite die Themen <strong>der Reihe nach</strong> durch (01 → 14) — jedes baut auf dem vorherigen auf.
+      Stochastik ist mit <strong>9 ECTS das formelreichste Modul</strong> des Semesters: Die Quick-Reference
+      am Ende jeder Seite sammelt genau die Formeln, die du auswendig können musst. Jede Seite endet mit
+      einem interaktiven <strong>Wissenscheck</strong>, und das Klausurtraining (15) spielt zum Schluss eine
+      komplette Probeklausur durch. Oben rechts kannst du zwischen hellem und dunklem Design wechseln.</p>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zu allen Vorlesungen</a> · © <span data-year>2026</span></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

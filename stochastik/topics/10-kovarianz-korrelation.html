@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kovarianz &amp; Korrelation · P12 Stochastik</title>
+<meta name="description" content="Kovarianz Cov(X,Y) und Korrelationskoeffizient ρ bildlich erklärt: Streudiagramme für positive, keine und negative Korrelation, Korrelation ≠ Kausalität, und warum unkorreliert nicht dasselbe wie unabhängig ist – mit durchgerechneten Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f59e0b'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>σ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">σ</span>
+      <span>P12 · Stochastik<small>Stochastik &amp; Statistik, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Kovarianz</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Stochastik-Kursübersicht</a> › Thema 10</div>
+    <span class="th-icon">🤝</span>
+    <h1>Kovarianz &amp; Korrelation</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Block 6</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Kovarianz &amp; Korrelation im Bild</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Bisher hast du einzelne Zufallsvariablen betrachtet. Jetzt geht es um <strong>zwei
+          gleichzeitig</strong>: Hängen X und Y zusammen? Steigt Y tendenziell, wenn X steigt (oder fällt)? Die
+          <strong>Kovarianz Cov(X,Y)</strong> misst diesen Zusammenhang als Zahl, der
+          <strong>Korrelationskoeffizient ρ</strong> normiert sie auf eine leicht interpretierbare Skala
+          zwischen −1 und 1.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… jemand zeigt dir eine Statistik: An Tagen mit mehr <strong>Eisverkäufen</strong> ertrinken auch
+            mehr Menschen. Bedeutet das, Eis essen sei gefährlich? Nein — beides hängt von einer dritten Größe
+            ab, der <strong>Temperatur</strong>: An heißen Tagen wird mehr Eis gegessen <em>und</em> mehr
+            geschwommen (und damit steigt auch das Ertrinkungsrisiko). Eisverkäufe und Ertrinken sind
+            <strong>korreliert</strong>, aber keins verursacht das andere — das ist der Kern von
+            "Korrelation ≠ Kausalität", einer der wichtigsten Lehren dieses Themas.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Kovarianz &amp; Korrelation im Bild</h2>
+        <p>Die Kovarianz vergleicht für jeden Messpunkt, ob X und Y <strong>gemeinsam</strong> über oder unter
+          ihrem jeweiligen Mittelwert liegen. Liegen beide meistens auf derselben Seite (beide über oder beide
+          unter dem Mittel), ist Cov(X,Y) positiv; liegen sie meist auf entgegengesetzten Seiten, ist sie negativ.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Kovarianz</div>
+          <span class="formula">Cov(X,Y) = E[(X − E[X])(Y − E[Y])]
+           = E[XY] − E[X]·E[Y]        ← Rechenschema (Verschiebungssatz)</span>
+          <p>Cov(X,Y) &gt; 0: X und Y steigen/fallen tendenziell zusammen. Cov(X,Y) &lt; 0: wenn X steigt, fällt
+            Y tendenziell. Cov(X,Y) = 0: X und Y sind <strong>unkorreliert</strong>.</p>
+        </div>
+
+        <!-- SVG 1: Streudiagramme für ρ≈1, ρ≈0, ρ≈-1 -->
+        <figure class="diagram">
+          <div class="diagram-title">Streudiagramme: ρ ≈ 1, ρ ≈ 0 und ρ ≈ −1</div>
+          <svg viewBox="0 0 520 210" width="520" role="img" aria-label="Drei Streudiagramme: stark positiv korrelierte Punkte entlang einer steigenden Gerade, unkorrelierte Punktwolke, stark negativ korrelierte Punkte entlang einer fallenden Gerade">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Panel 1: rho ~ 1 -->
+              <text x="80" y="20" text-anchor="middle" fill="#12b28c" font-weight="800">ρ ≈ 1</text>
+              <line x1="20" y1="170" x2="150" y2="170" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="20" y1="170" x2="20" y2="40" stroke="#8a94a6" stroke-width="1"/>
+              <g fill="#12b28c">
+                <circle cx="30" cy="158" r="4"/><circle cx="42" cy="150" r="4"/><circle cx="50" cy="140" r="4"/>
+                <circle cx="63" cy="132" r="4"/><circle cx="72" cy="120" r="4"/><circle cx="85" cy="112" r="4"/>
+                <circle cx="95" cy="100" r="4"/><circle cx="108" cy="90" r="4"/><circle cx="118" cy="80" r="4"/>
+                <circle cx="130" cy="68" r="4"/><circle cx="140" cy="58" r="4"/>
+              </g>
+              <line x1="25" y1="162" x2="145" y2="55" stroke="#12b28c" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.6"/>
+
+              <!-- Panel 2: rho ~ 0 -->
+              <text x="260" y="20" text-anchor="middle" fill="#2f6df6" font-weight="800">ρ ≈ 0</text>
+              <line x1="200" y1="170" x2="330" y2="170" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="200" y1="170" x2="200" y2="40" stroke="#8a94a6" stroke-width="1"/>
+              <g fill="#2f6df6">
+                <circle cx="215" cy="90" r="4"/><circle cx="230" cy="140" r="4"/><circle cx="245" cy="70" r="4"/>
+                <circle cx="255" cy="120" r="4"/><circle cx="265" cy="60" r="4"/><circle cx="275" cy="150" r="4"/>
+                <circle cx="285" cy="100" r="4"/><circle cx="295" cy="80" r="4"/><circle cx="305" cy="130" r="4"/>
+                <circle cx="315" cy="55" r="4"/><circle cx="320" cy="110" r="4"/>
+              </g>
+
+              <!-- Panel 3: rho ~ -1 -->
+              <text x="440" y="20" text-anchor="middle" fill="#e0483d" font-weight="800">ρ ≈ −1</text>
+              <line x1="380" y1="170" x2="510" y2="170" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="380" y1="170" x2="380" y2="40" stroke="#8a94a6" stroke-width="1"/>
+              <g fill="#e0483d">
+                <circle cx="390" cy="58" r="4"/><circle cx="402" cy="68" r="4"/><circle cx="412" cy="80" r="4"/>
+                <circle cx="423" cy="90" r="4"/><circle cx="433" cy="100" r="4"/><circle cx="445" cy="112" r="4"/>
+                <circle cx="455" cy="122" r="4"/><circle cx="465" cy="132" r="4"/><circle cx="478" cy="145" r="4"/>
+                <circle cx="490" cy="155" r="4"/><circle cx="500" cy="163" r="4"/>
+              </g>
+              <line x1="385" y1="55" x2="505" y2="165" stroke="#e0483d" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.6"/>
+            </g>
+          </svg>
+          <figcaption>Bei ρ≈1 liegen die Punkte fast auf einer steigenden Geraden, bei ρ≈−1 auf einer fallenden.
+            Bei ρ≈0 gibt es keinen erkennbaren linearen Trend — eine reine Punktwolke.</figcaption>
+        </figure>
+
+        <h3>Eigenschaften der Kovarianz</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Regel</th><th>Bemerkung</th></tr></thead>
+          <tbody>
+            <tr><td>Cov(X,X) = Var(X)</td><td>Kovarianz mit sich selbst ist die Varianz</td></tr>
+            <tr><td>Cov(X,Y) = Cov(Y,X)</td><td>Symmetrie</td></tr>
+            <tr><td>Cov(aX+b, cY+d) = a·c·Cov(X,Y)</td><td>bilinear — additive Konstanten fallen weg</td></tr>
+            <tr><td>Cov(X, Y+Z) = Cov(X,Y) + Cov(X,Z)</td><td>Bilinearität in beiden Argumenten</td></tr>
+            <tr><td>X, Y unabhängig ⟹ Cov(X,Y) = 0</td><td>aber <strong>nicht</strong> umgekehrt!</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Korrelationskoeffizient: die normierte Version</h3>
+        <p>Die Kovarianz hängt von den Einheiten von X und Y ab (z.B. cm vs. m) — das macht sie schwer
+          vergleichbar. Der Korrelationskoeffizient ρ normiert die Kovarianz auf das Intervall [−1,1]:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Korrelationskoeffizient (Pearson)</div>
+          <span class="formula">ρ_{XY} = Cor(X,Y) = Cov(X,Y) / (σ_X · σ_Y)
+
+−1 ≤ ρ ≤ 1                                immer!
+ρ = 1   ⟺  Y = aX + b mit a &gt; 0        perfekte positive lineare Abhängigkeit
+ρ = −1  ⟺  Y = aX + b mit a &lt; 0        perfekte negative lineare Abhängigkeit
+ρ = 0   ⟺  X, Y unkorreliert              kein linearer Zusammenhang</span>
+        </div>
+
+        <h3>Varianz einer Summe (allgemein)</h3>
+        <p>Jetzt lässt sich die Formel aus Thema 08 vervollständigen — ohne Unabhängigkeitsannahme kommt ein
+          Kovarianz-Term hinzu:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Var(X+Y) allgemein</div>
+          <span class="formula">Var(X + Y) = Var(X) + Var(Y) + 2·Cov(X,Y)
+Allgemein:  Var(Σᵢ Xᵢ) = Σᵢ Var(Xᵢ) + 2·Σ_{i&lt;j} Cov(Xᵢ,Xⱼ)
+Bei Unabhängigkeit fallen alle Kovarianzen weg: Var(Σᵢ Xᵢ) = Σᵢ Var(Xᵢ)</span>
+        </div>
+
+        <h3>Achtung: unkorreliert ≠ unabhängig</h3>
+        <p>Cov(X,Y) = 0 bedeutet nur, dass es <strong>keinen linearen</strong> Zusammenhang gibt. Ein nicht-linearer
+          (aber sehr starker!) Zusammenhang kann trotzdem bestehen:</p>
+
+        <!-- SVG 2: Gegenbeispiel Kreis -->
+        <figure class="diagram">
+          <div class="diagram-title">Gegenbeispiel: X = sin(U), Y = cos(U), U ~ Gleichverteilt auf [0, 2π)</div>
+          <svg viewBox="0 0 340 200" width="340" role="img" aria-label="Punkte gleichmäßig auf einem Kreis verteilt: X und Y sind unkorreliert, aber durch X²+Y²=1 deterministisch voneinander abhängig">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <circle cx="170" cy="105" r="70" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <g fill="#8b5cf6">
+                <circle cx="240" cy="105" r="5"/><circle cx="219" cy="55" r="5"/><circle cx="170" cy="35" r="5"/>
+                <circle cx="121" cy="55" r="5"/><circle cx="100" cy="105" r="5"/><circle cx="121" cy="155" r="5"/>
+                <circle cx="170" cy="175" r="5"/><circle cx="219" cy="155" r="5"/>
+                <circle cx="232" cy="80" r="5"/><circle cx="197" cy="41" r="5"/><circle cx="143" cy="41" r="5"/>
+                <circle cx="108" cy="80" r="5"/><circle cx="108" cy="130" r="5"/><circle cx="143" cy="169" r="5"/>
+                <circle cx="197" cy="169" r="5"/><circle cx="232" cy="130" r="5"/>
+              </g>
+              <line x1="170" y1="35" x2="170" y2="175" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="100" y1="105" x2="240" y2="105" stroke="#8a94a6" stroke-width="1"/>
+              <text x="170" y="195" text-anchor="middle" class="svg-ink">Cov(X,Y) = 0, aber X² + Y² = 1 — total abhängig!</text>
+            </g>
+          </svg>
+          <figcaption>Die Punkte liegen exakt auf dem Einheitskreis — kennst du X, kennst du Y (bis auf das
+            Vorzeichen) fast vollständig. Trotzdem ist Cov(X,Y) = 0, weil der Zusammenhang nicht linear ist.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Sonderfall: bivariate Normalverteilung</div>
+          <p>Bei (X,Y) ~ N₂(μ_X, μ_Y, σ_X², σ_Y², ρ) gilt <strong>ausnahmsweise</strong>: ρ = 0 ⟺ X, Y unabhängig.
+            Das ist die <strong>einzige</strong> gängige Verteilung, bei der Unkorreliertheit automatisch
+            Unabhängigkeit bedeutet — verlass dich darauf nicht bei anderen Verteilungen!</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>Cov(X,X) = Var(X)</b><span>Sonderfall der Kovarianz</span></div>
+          <div class="fact"><b>ρ ∈ [−1,1]</b><span>dimensionslos, dank Normierung</span></div>
+          <div class="fact"><b>Unabh. ⟹ Cov=0</b><span>Rückrichtung gilt i.A. nicht</span></div>
+          <div class="fact"><b>Σᵢⱼ = Cov(Xᵢ,Xⱼ)</b><span>Kovarianzmatrix, symmetrisch &amp; pos. semidefinit</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>Beispiel 1: Kovarianz und Korrelation aus gemeinsamer Verteilung</h3>
+        <p>X und Y haben die gemeinsame Wahrscheinlichkeitsfunktion:</p>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>f(x,y)</th><th>y=1</th><th>y=2</th></tr></thead>
+          <tbody>
+            <tr><td>x=1</td><td>0.1</td><td>0.3</td></tr>
+            <tr><td>x=2</td><td>0.4</td><td>0.2</td></tr>
+          </tbody>
+        </table></div>
+        <ol class="steps">
+          <li><strong>Randverteilungen bestimmen:</strong><br>
+            P(X=1) = 0.4, P(X=2) = 0.6 &nbsp;·&nbsp; P(Y=1) = 0.5, P(Y=2) = 0.5</li>
+          <li><strong>E[X] und E[Y]:</strong><br>
+            E[X] = 1·0.4 + 2·0.6 = <strong>1.6</strong> &nbsp;·&nbsp; E[Y] = 1·0.5 + 2·0.5 = <strong>1.5</strong></li>
+          <li><strong>E[XY]:</strong><br>
+            E[XY] = 1·1·0.1 + 1·2·0.3 + 2·1·0.4 + 2·2·0.2 = 0.1+0.6+0.8+0.8 = <strong>2.3</strong></li>
+          <li><strong>Kovarianz:</strong><br>
+            Cov(X,Y) = E[XY] − E[X]·E[Y] = 2.3 − 1.6·1.5 = 2.3 − 2.4 = <strong>−0.1</strong></li>
+          <li><strong>Für ρ zusätzlich Var(X) und Var(Y):</strong><br>
+            E[X²] = 1·0.4 + 4·0.6 = 2.8 → Var(X) = 2.8 − 1.6² = <strong>0.24</strong> → σ_X ≈ 0.49<br>
+            E[Y²] = 1·0.5 + 4·0.5 = 2.5 → Var(Y) = 2.5 − 1.5² = <strong>0.25</strong> → σ_Y = 0.5</li>
+          <li><strong>Korrelationskoeffizient:</strong><br>
+            ρ = Cov(X,Y)/(σ_X·σ_Y) = −0.1/(0.49·0.5) = −0.1/0.245 ≈ <strong>−0.41</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Plausibilitätscheck</div>
+          <p>ρ ≈ −0.41 liegt sauber in [−1,1] — ein Wert außerhalb dieses Bereichs wäre ein sicheres Zeichen für
+            einen Rechenfehler bei Cov, Var(X) oder Var(Y).</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Kovarianz aus einer 3×3-Kontingenztafel</h3>
+        <p>Gegeben die gemeinsame Verteilung von X und Y:</p>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th></th><th>Y=0</th><th>Y=1</th><th>Y=2</th></tr></thead>
+          <tbody>
+            <tr><td>X=0</td><td>0.1</td><td>0.2</td><td>0.1</td></tr>
+            <tr><td>X=1</td><td>0.2</td><td>0.1</td><td>0.1</td></tr>
+            <tr><td>X=2</td><td>0.1</td><td>0.0</td><td>0.1</td></tr>
+          </tbody>
+        </table></div>
+        <ol class="steps">
+          <li><strong>Randverteilungen:</strong><br>
+            P(X=0)=0.4, P(X=1)=0.4, P(X=2)=0.2 &nbsp;·&nbsp; P(Y=0)=0.4, P(Y=1)=0.3, P(Y=2)=0.3</li>
+          <li><strong>Erwartungswerte:</strong><br>
+            E[X] = 0·0.4+1·0.4+2·0.2 = <strong>0.8</strong> &nbsp;·&nbsp;
+            E[Y] = 0·0.4+1·0.3+2·0.3 = <strong>0.9</strong></li>
+          <li><strong>E[XY] — nur Zellen mit x,y ≠ 0 zählen:</strong><br>
+            E[XY] = 1·1·0.1 + 1·2·0.1 + 2·1·0.0 + 2·2·0.1 = 0.1+0.2+0+0.4 = <strong>0.7</strong></li>
+          <li><strong>Kovarianz:</strong><br>
+            Cov(X,Y) = 0.7 − 0.8·0.9 = 0.7 − 0.72 = <strong>−0.02</strong></li>
+        </ol>
+        <p>Die Kovarianz ist hier sehr klein, aber (leicht) negativ von null verschieden — X und Y sind
+          also schwach negativ korreliert und damit <strong>nicht unabhängig</strong>.</p>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Cov(X,Y) = 0 bedeutet, dass X und Y
+            unabhängig sind.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Unkorreliertheit ≠ Unabhängigkeit (außer bei
+            bivariater Normalverteilung). Gegenbeispiel: X=sin(U), Y=cos(U) mit U~U(0,2π): Cov=0, aber X²+Y²=1
+            — total abhängig!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ich habe ρ = 1.3 berechnet — kann so stehen
+            bleiben, ist halt eine starke Korrelation.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ρ muss <strong>immer</strong> in [−1,1] liegen.
+            Ein Wert außerhalb ist ein Rechenfehler — such ihn bei Cov, Var(X) oder Var(Y).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Cov(aX+b, Y) = a·Cov(X,Y) + b·Cov(1,Y)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Cov(aX+b, Y) = a·Cov(X,Y) — additive
+            Konstanten fallen bei der Kovarianz <strong>immer komplett</strong> weg.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Var(X−Y) = Var(X) − Var(Y)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Var(X−Y) = Var(X) + Var(Y) − 2·Cov(X,Y) —
+            das Vorzeichen vor Cov dreht sich um, aber Var(Y) wird addiert (Varianzen sind nie negativ).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Zwei Größen sind korreliert, also verursacht
+            die eine die andere.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Korrelation ≠ Kausalität.</strong>
+            Ein Zusammenhang kann auch durch eine gemeinsame dritte Ursache entstehen (siehe Eisverkauf und
+            Ertrinken — beides hängt von der Temperatur ab).</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <pre class="code">Cov(X,Y)  = E[XY] − E[X]·E[Y]                Rechenformel
+ρ         = Cov(X,Y) / (σ_X · σ_Y)           Pearson-Korrelation, ∈ [−1,1]
+Cov(X,X)  = Var(X)                           Sonderfall
+Cov(aX+b, cY+d) = a·c·Cov(X,Y)               bilinear, Konstanten fallen weg
+Var(X+Y)  = Var(X) + Var(Y) + 2·Cov(X,Y)     allgemeine Varianz der Summe
+Unabhängig ⟹ Cov=0                           aber nicht umgekehrt!</pre>
+
+          <h4>Aufgabentypen im Überblick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Aufgabentyp</th><th>Vorgehen</th></tr></thead>
+            <tbody>
+              <tr><td>Kovarianz berechnen</td><td>E[XY] − E[X]·E[Y] aus gemeinsamer Verteilung</td></tr>
+              <tr><td>Korrelation bestimmen</td><td>Cov(X,Y) / (σ_X·σ_Y)</td></tr>
+              <tr><td>Varianz einer Linearkombination</td><td>Var(aX+bY) = a²Var(X)+b²Var(Y)+2ab·Cov(X,Y)</td></tr>
+              <tr><td>Unabhängigkeit vs. Unkorreliertheit</td><td>Cov=0 prüfen reicht für Unabhängigkeit NICHT</td></tr>
+              <tr><td>Bivariate Normalverteilung</td><td>hier gilt ausnahmsweise ρ=0 ⟺ unabhängig</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Cov(X,X) = Var(X)</strong> — die Kovarianz verallgemeinert die Varianz</li>
+            <li><strong>ρ ist immer in [−1,1]</strong> — Wert außerhalb = Rechenfehler</li>
+            <li><strong>Additive Konstanten fallen bei Cov immer weg</strong>, multiplikative werden multipliziert</li>
+            <li><strong>Unabhängig ⟹ unkorreliert</strong>, aber die Rückrichtung gilt i.A. nicht</li>
+            <li><strong>Korrelation ist kein Kausalitätsbeweis</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="-0.1" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Für das Beispiel oben gilt E[XY]=2.3, E[X]=1.6,
+              E[Y]=1.5. Wie groß ist Cov(X,Y)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Cov(X,Y) = 2.3 − 1.6·1.5 = 2.3 − 2.4 = <strong>−0.1</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-0.41" data-tol="0.02">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Mit Cov(X,Y)=−0.1, σ_X≈0.49, σ_Y=0.5: wie groß
+              ist der Korrelationskoeffizient ρ?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ρ = −0.1/(0.49·0.5) = −0.1/0.245 ≈ <strong>−0.41</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Welcher Wertebereich gilt immer für den
+              Korrelationskoeffizienten ρ?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">[0, 1]</button>
+              <button class="quiz-choice" type="button" data-correct>[−1, 1]</button>
+              <button class="quiz-choice" type="button">(−∞, ∞)</button>
+              <button class="quiz-choice" type="button">[−1, 0]</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ρ liegt <strong>immer</strong> in [−1, 1] — das folgt aus der
+              Cauchy-Schwarz-Ungleichung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="nein">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Kann man aus Cov(X,Y)=0 allgemein schließen,
+              dass X und Y unabhängig sind (ja/nein)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="ja / nein …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Nein</strong> — Unkorreliertheit ist schwächer als
+              Unabhängigkeit (außer im Sonderfall der bivariaten Normalverteilung).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-0.6" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Cov(X,Y) = −0.1. Wie groß ist Cov(2X, 3Y)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bilinearität: Cov(2X,3Y) = 2·3·Cov(X,Y) = 6·(−0.1) = <strong>−0.6</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: Welche Formel für Var(X−Y) ist
+              korrekt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Var(X) − Var(Y)</button>
+              <button class="quiz-choice" type="button" data-correct>Var(X) + Var(Y) − 2·Cov(X,Y)</button>
+              <button class="quiz-choice" type="button">Var(X) + Var(Y) + 2·Cov(X,Y)</button>
+              <button class="quiz-choice" type="button">Var(X) · Var(Y)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Var(X−Y) = Var(X) + (−1)²Var(Y) + 2·(−1)·Cov(X,Y) =
+              <strong>Var(X) + Var(Y) − 2·Cov(X,Y)</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-0.02" data-tol="0.005">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: Für die 3×3-Kontingenztafel oben
+              gilt E[XY]=0.7, E[X]=0.8, E[Y]=0.9. Wie groß ist Cov(X,Y)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Cov(X,Y) = 0.7 − 0.8·0.9 = 0.7 − 0.72 = <strong>−0.02</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="09-grenzwertsaetze.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Grenzwertsätze</div>
+        </a>
+        <a class="next" href="11-schaetzung.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Statistische Schätzung</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Stochastik &amp; Statistik (P 12, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>
