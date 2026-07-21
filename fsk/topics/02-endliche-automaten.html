@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Endliche Automaten: NFA &amp; DFA · FSK</title>
+<meta name="description" content="NFA und DFA bildlich erklärt: Zustände, Übergänge, ε-Kanten und der Müllzustand – mit gezeichneten Zustandsdiagrammen und einer Schritt-für-Schritt-Verfolgung, wie ein Automat ein Wort liest." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 02</div>
+    <span class="th-icon">🤖</span>
+    <h1>Endliche Automaten: NFA &amp; DFA</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">NFA, DFA &amp; Müllzustand</a></li>
+        <li><a href="#rechnen">Ein Wort Schritt für Schritt lesen</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Ein <strong>endlicher Automat</strong> ist die einfachste Maschine, die eine Sprache
+          erkennen kann: er liest ein Wort <strong>Zeichen für Zeichen</strong> von links nach rechts, wandert
+          dabei zwischen <strong>Zuständen</strong> hin und her, und akzeptiert das Wort genau dann, wenn er am
+          Ende in einem <strong>akzeptierenden Zustand</strong> landet. Es gibt zwei Varianten: den
+          <strong>deterministischen</strong> Automaten (DFA), der bei jedem Zeichen genau einen Weg kennt, und den
+          <strong>nichtdeterministischen</strong> Automaten (NFA), der auch mehrere Wege gleichzeitig ausprobieren
+          darf.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… ein Wächter steht an einer Kreuzung mit beschrifteten Wegen und läuft das Wort wie eine Wegbeschreibung
+            ab: bei Zeichen "a" nimmt er den Weg mit dem Schild "a", bei "b" den Weg mit dem Schild "b". Bei einem
+            <strong>DFA</strong> gibt es an jeder Kreuzung für jedes Zeichen <strong>genau einen</strong> beschrifteten
+            Weg — der Wächter weiß immer sofort, wo's langgeht. Bei einem <strong>NFA</strong> kann es an einer
+            Kreuzung <strong>zwei Wege mit demselben Schild</strong> geben — dann <strong>klont</strong> sich der
+            Wächter kurzerhand und läuft <strong>beide gleichzeitig</strong> weiter! Landet am Ende
+            <strong>irgendeiner</strong> der Klone auf einem Zielfeld (akzeptierender Zustand), gilt das Wort als
+            erkannt.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>NFA, DFA &amp; der Müllzustand im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: DFA (deterministisch)</div>
+          <span class="formula">M = (Q, Σ, δ, q₀, F)
+
+Q     endliche Zustandsmenge
+Σ     Eingabealphabet
+δ     Q × Σ → Q       genau EIN Nachfolgezustand pro (Zustand, Zeichen) — und für JEDES Paar definiert
+q₀    Startzustand
+F     Menge akzeptierender ("finaler") Zustände, F ⊆ Q</span>
+          <p>δ ist beim DFA eine <strong>totale Funktion</strong>: für jeden Zustand und jedes Zeichen gibt es
+            eine — und nur eine — Antwort.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: NFA (nichtdeterministisch)</div>
+          <span class="formula">M = (Q, Σ, δ, q₀, F)
+
+δ     Q × Σ → P(Q)     eine (auch leere!) TEILMENGE von Nachfolgezuständen — mehrere Ziele erlaubt
+zusätzlich erlaubt: ε-Übergänge (Zustandswechsel OHNE ein Zeichen zu lesen)
+und: nicht jede Kombination (Zustand, Zeichen) muss überhaupt definiert sein</span>
+          <p>P(Q) ist die <strong>Potenzmenge</strong> von Q (alle Teilmengen, siehe Thema 01) — δ liefert also
+            keinen einzelnen Zustand mehr, sondern eine ganze Menge möglicher Ziele auf einmal.</p>
+        </div>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Merkmal</th><th>DFA</th><th>NFA</th></tr></thead>
+          <tbody>
+            <tr><td>Ziel von δ(q,a)</td><td>genau ein Zustand</td><td>eine Menge von Zuständen (auch ∅)</td></tr>
+            <tr><td>ε-Übergänge</td><td>nicht erlaubt</td><td>erlaubt</td></tr>
+            <tr><td>Vollständigkeit</td><td>jede Kombination MUSS definiert sein</td><td>Lücken sind erlaubt (= implizite Ablehnung)</td></tr>
+            <tr><td>Lauf durch den Automaten</td><td>genau ein Pfad</td><td>evtl. mehrere Pfade gleichzeitig</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Ein NFA für bb(a|b)*aa</h3>
+        <p>Als durchgängiges Beispiel für diese Seite nehmen wir die Sprache <strong>bb(a|b)*aa</strong>
+          (Wörter, die mit "bb" beginnen, dann beliebig viele a/b enthalten, und mit "aa" enden) — dieselbe
+          Sprache taucht auch in der echten Erstklausur SoSe 24 auf. Ein NFA kann sie sehr kompakt erkennen, weil
+          er an der richtigen Stelle "raten" darf, wann die letzten beiden Zeichen "aa" anfangen:</p>
+
+        <!-- SVG 1: NFA Zustandsdiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">NFA für bb(a|b)*aa — 5 Zustände, eine Verzweigung bei z2</div>
+          <svg viewBox="0 0 740 260" width="740" role="img" aria-label="NFA-Zustandsdiagramm mit fünf Zuständen z0 bis z4. Von z2 führen bei Zeichen a zwei Pfeile gleichzeitig weg: eine Selbstschleife und ein Pfeil zu z3 - das ist die Nichtdeterminismus-Stelle. z4 ist doppelt umkreist als akzeptierender Zustand">
+            <defs>
+              <marker id="p02s1H" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="p02s1O" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/></marker>
+              <marker id="p02s1V" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <line x1="12" y1="150" x2="44" y2="150" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s1H)"/>
+
+              <path d="M94,150 L196,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s1H)"/>
+              <text x="145" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <path d="M244,150 L346,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s1H)"/>
+              <text x="295" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <path d="M354,128 C334,64 406,64 386,128" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p02s1O)"/>
+              <text x="370" y="52" text-anchor="middle" fill="#f5810b" font-weight="800">a, b</text>
+
+              <path d="M394,150 L496,150" fill="none" stroke="#8b5cf6" stroke-width="2.4" marker-end="url(#p02s1V)"/>
+              <text x="445" y="138" text-anchor="middle" fill="#8b5cf6" font-weight="800">a</text>
+
+              <path d="M544,150 L646,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s1H)"/>
+              <text x="595" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+
+              <circle cx="70" cy="150" r="24" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="2"/>
+              <text x="70" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z0</text>
+
+              <circle cx="220" cy="150" r="24" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="2"/>
+              <text x="220" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z1</text>
+
+              <circle cx="370" cy="150" r="24" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="2"/>
+              <text x="370" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z2</text>
+
+              <circle cx="520" cy="150" r="24" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="520" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z3</text>
+
+              <circle cx="670" cy="150" r="24" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="670" cy="150" r="18" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="670" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z4</text>
+            </g>
+          </svg>
+          <figcaption>Der Clou ist bei z2: auf Zeichen "a" gibt es <strong>zwei</strong> Pfeile gleichzeitig — die
+            orange Selbstschleife (bleib in z2, das ist der (a|b)*-Teil) UND der violette Pfeil zu z3 (rate: "jetzt
+            beginnt das finale aa"). Genau das ist Nichtdeterminismus: δ(z2,a) = {z2, z3}.</figcaption>
+        </figure>
+
+        <pre class="code">δ(z0,b) = z1
+δ(z1,b) = z2
+δ(z2,a) = {z2, z3}      ← zwei Ziele gleichzeitig!
+δ(z2,b) = z2
+δ(z3,a) = z4            (F = {z4})
+
+alle anderen Kombinationen: einfach undefiniert (kein Pfeil = "dieser Pfad stirbt")</pre>
+
+        <h3>Derselbe Job als DFA — mit Müllzustand</h3>
+        <p>Ein DFA darf nicht raten. Für dieselbe Sprache muss er stattdessen <strong>genau mitzählen</strong>,
+          wie viele der zuletzt gelesenen Zeichen schon zum gewünschten Suffix "aa" passen könnten — und er
+          braucht einen <strong>Müllzustand</strong> für alle Zeichen, die sonst keinen Übergang hätten (z. B.
+          ein "a" direkt am Anfang, wo "bb" verlangt ist):</p>
+
+        <!-- SVG 2: DFA Zustandsdiagramm mit Müllzustand -->
+        <figure class="diagram">
+          <div class="diagram-title">DFA für bb(a|b)*aa — 6 Zustände inkl. Müllzustand z5</div>
+          <svg viewBox="0 0 740 420" width="740" role="img" aria-label="DFA-Zustandsdiagramm mit sechs Zuständen. Jeder Zustand hat für a und für b genau einen Pfeil. Unten liegt der Müllzustand z5, in den alle fehlenden Übergänge von z0 und z1 führen und der sich selbst über eine Schleife absorbiert">
+            <defs>
+              <marker id="p02s2H" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="p02s2O" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/></marker>
+              <marker id="p02s2T" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+              <marker id="p02s2G" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Startpfeil -->
+              <line x1="12" y1="150" x2="44" y2="150" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s2H)"/>
+
+              <!-- Hauptkette -->
+              <path d="M94,150 L196,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s2H)"/>
+              <text x="145" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <path d="M244,150 L346,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s2H)"/>
+              <text x="295" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <path d="M394,150 L496,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s2H)"/>
+              <text x="445" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+
+              <path d="M544,150 L646,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s2H)"/>
+              <text x="595" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+
+              <!-- Selbstschleifen -->
+              <path d="M354,128 C334,64 406,64 386,128" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p02s2O)"/>
+              <text x="370" y="52" text-anchor="middle" fill="#f5810b" font-weight="800">b</text>
+
+              <path d="M654,128 C634,64 706,64 686,128" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p02s2O)"/>
+              <text x="670" y="52" text-anchor="middle" fill="#f5810b" font-weight="800">a</text>
+
+              <!-- Rück-Kanten zu z2 (b bricht die Serie) -->
+              <path d="M520,174 C520,226 370,226 370,174" fill="none" stroke="#8b5cf6" stroke-width="1.8" marker-end="url(#p02s2H)"/>
+              <text x="445" y="238" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="12">b</text>
+
+              <path d="M670,174 C670,270 370,270 370,178" fill="none" stroke="#12b28c" stroke-width="1.8" marker-end="url(#p02s2T)"/>
+              <text x="595" y="284" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="12">b</text>
+
+              <!-- Zustände Hauptkette -->
+              <circle cx="70" cy="150" r="24" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="2"/>
+              <text x="70" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z0</text>
+
+              <circle cx="220" cy="150" r="24" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="2"/>
+              <text x="220" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z1</text>
+
+              <circle cx="370" cy="150" r="24" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="2"/>
+              <text x="370" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z2</text>
+
+              <circle cx="520" cy="150" r="24" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="520" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z3</text>
+
+              <circle cx="670" cy="150" r="24" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="670" cy="150" r="18" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="670" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z4</text>
+
+              <!-- Müllzustand -->
+              <path d="M62,172 C40,240 100,290 138,320" fill="none" stroke="#8a94a6" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#p02s2G)"/>
+              <text x="60" y="248" fill="#8a94a6" font-weight="800" font-size="12">a</text>
+
+              <path d="M212,172 C200,240 180,280 165,318" fill="none" stroke="#8a94a6" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#p02s2G)"/>
+              <text x="212" y="248" fill="#8a94a6" font-weight="800" font-size="12">a</text>
+
+              <path d="M128,358 C108,394 182,394 162,358" fill="none" stroke="#8a94a6" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#p02s2G)"/>
+              <text x="145" y="410" text-anchor="middle" fill="#8a94a6" font-weight="800" font-size="12">a, b</text>
+
+              <circle cx="145" cy="340" r="22" fill="#8a94a6" fill-opacity="0.16" stroke="#8a94a6" stroke-width="2"/>
+              <text x="145" y="346" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12">z5</text>
+            </g>
+          </svg>
+          <figcaption>Grau gestrichelt = Übergänge in den Müllzustand z5 (nur bei z0 und z1 nötig, weil z2, z3, z4
+            für "b" bereits über die violetten/grünen Rückkanten in z2 zurückspringen). z5 verschlingt sich per
+            Selbstschleife selbst — einmal drin, nie wieder raus.</figcaption>
+        </figure>
+
+        <pre class="code">δ(z0,b)=z1   δ(z0,a)=z5
+δ(z1,b)=z2   δ(z1,a)=z5
+δ(z2,a)=z3   δ(z2,b)=z2
+δ(z3,a)=z4   δ(z3,b)=z2
+δ(z4,a)=z4   δ(z4,b)=z2
+δ(z5,a)=z5   δ(z5,b)=z5
+
+F = {z4} — jede der 6 Zustand-Zeichen-Kombinationen ist definiert (total!)</pre>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Akzeptanz eines Wortes (Lauf durch den Automaten)</div>
+          <span class="formula">Ein Lauf ist eine Folge q₀, q₁, …, qₙ von Zuständen, wobei jeder Schritt
+qᵢ → qᵢ₊₁ durch das i-te Zeichen des Wortes und δ erlaubt ist.
+
+DFA: das Wort wird akzeptiert  ⇔  der EINE Lauf endet in einem Zustand aus F
+NFA: das Wort wird akzeptiert  ⇔  MINDESTENS EINER der möglichen Läufe endet in F</span>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt für Schritt: ein Wort lesen</h2>
+
+        <h3>NFA verfolgt "bbaa" — mehrere Pfade gleichzeitig</h3>
+        <ol class="steps">
+          <li><strong>Start:</strong> aktive Zustandsmenge = {z0}</li>
+          <li><strong>Lies 'b':</strong> δ(z0,b) = {z1} → aktive Menge {z1}</li>
+          <li><strong>Lies 'b':</strong> δ(z1,b) = {z2} → aktive Menge {z2}</li>
+          <li><strong>Lies 'a' (1.):</strong> δ(z2,a) = {z2, z3} → aktive Menge <strong>{z2, z3}</strong> —
+            ab hier läuft der Automat gedanklich auf zwei Pfaden gleichzeitig!</li>
+          <li><strong>Lies 'a' (2.):</strong> von z2 aus δ(z2,a)={z2,z3}, von z3 aus δ(z3,a)={z4} →
+            Vereinigung <strong>{z2, z3, z4}</strong></li>
+          <li><strong>Wortende:</strong> z4 ∈ F liegt in der aktiven Menge → <strong>"bbaa" wird akzeptiert.</strong></li>
+        </ol>
+
+        <!-- SVG 3: Timeline der aktiven Zustandsmengen -->
+        <figure class="diagram">
+          <div class="diagram-title">Wie sich die aktive Zustandsmenge des NFA über "bbaa" entwickelt</div>
+          <svg viewBox="0 0 800 300" width="800" role="img" aria-label="Zeitleiste mit fünf Spalten (Start, b, b, a, a). Die Menge aktiver Zustände wächst von einem einzelnen Kasten auf zwei und schließlich drei gleichzeitig aktive Kästen, bis am Ende der akzeptierende Zustand z4 erreicht ist">
+            <defs>
+              <marker id="p02s3H" markerWidth="9" markerHeight="9" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#2f6df6"/></marker>
+              <marker id="p02s3O" markerWidth="9" markerHeight="9" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#f5810b"/></marker>
+              <marker id="p02s3V" markerWidth="9" markerHeight="9" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#8b5cf6"/></marker>
+              <marker id="p02s3G" markerWidth="9" markerHeight="9" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#12b28c"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5" text-anchor="middle">
+              <text x="60" y="30" class="svg-soft" font-weight="700">Start</text>
+              <text x="230" y="30" fill="#2f6df6" font-weight="800">b</text>
+              <text x="400" y="30" fill="#2f6df6" font-weight="800">b</text>
+              <text x="570" y="30" fill="#8b5cf6" font-weight="800">a</text>
+              <text x="740" y="30" fill="#8b5cf6" font-weight="800">a</text>
+            </g>
+            <g font-family="JetBrains Mono, monospace" font-size="13" font-weight="700">
+              <!-- Pfeile -->
+              <path d="M105,150 L185,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s3H)"/>
+              <path d="M275,150 L355,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p02s3H)"/>
+              <path d="M445,150 L520,118" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p02s3O)"/>
+              <path d="M445,150 L520,182" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p02s3V)"/>
+              <path d="M615,118 L690,86" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p02s3O)"/>
+              <path d="M615,118 L690,150" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p02s3V)"/>
+              <path d="M615,182 L690,214" fill="none" stroke="#12b28c" stroke-width="2" marker-end="url(#p02s3G)"/>
+
+              <!-- Kästen Spalte 0 -->
+              <rect x="15" y="134" width="90" height="32" rx="6" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6"/>
+              <text x="60" y="155" text-anchor="middle" class="svg-ink">{z0}</text>
+
+              <!-- Spalte 1 -->
+              <rect x="185" y="134" width="90" height="32" rx="6" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6"/>
+              <text x="230" y="155" text-anchor="middle" class="svg-ink">{z1}</text>
+
+              <!-- Spalte 2 -->
+              <rect x="355" y="134" width="90" height="32" rx="6" fill="#f5810b" fill-opacity="0.14" stroke="#f5810b"/>
+              <text x="400" y="155" text-anchor="middle" class="svg-ink">{z2}</text>
+
+              <!-- Spalte 3: zwei Kästen -->
+              <rect x="525" y="102" width="90" height="32" rx="6" fill="#f5810b" fill-opacity="0.14" stroke="#f5810b"/>
+              <text x="570" y="123" text-anchor="middle" class="svg-ink">{z2}</text>
+              <rect x="525" y="166" width="90" height="32" rx="6" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6"/>
+              <text x="570" y="187" text-anchor="middle" class="svg-ink">{z3}</text>
+
+              <!-- Spalte 4: drei Kästen -->
+              <rect x="695" y="70" width="90" height="32" rx="6" fill="#f5810b" fill-opacity="0.14" stroke="#f5810b"/>
+              <text x="740" y="91" text-anchor="middle" class="svg-ink">{z2}</text>
+              <rect x="695" y="134" width="90" height="32" rx="6" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6"/>
+              <text x="740" y="155" text-anchor="middle" class="svg-ink">{z3}</text>
+              <rect x="695" y="198" width="90" height="32" rx="6" fill="#12b28c" fill-opacity="0.28" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="740" y="219" text-anchor="middle" class="svg-ink">{z4}</text>
+            </g>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <text x="740" y="252" text-anchor="middle" fill="#12b28c" font-weight="800">✓ z4 ∈ F</text>
+              <text x="740" y="269" text-anchor="middle" class="svg-soft" font-size="11">→ "bbaa" akzeptiert</text>
+            </g>
+          </svg>
+          <figcaption>Nach dem ersten "a" ist der NFA gedanklich gleichzeitig in z2 UND z3 aktiv — nach dem zweiten
+            "a" sogar in drei Zuständen auf einmal. Sobald irgendeiner davon ein Endzustand ist, gilt das Wort
+            als akzeptiert.</figcaption>
+        </figure>
+
+        <h3>DFA verfolgt "bbaa" — genau ein Pfad</h3>
+        <ol class="steps">
+          <li><strong>Start:</strong> z0</li>
+          <li><strong>Lies 'b':</strong> δ(z0,b) = z1</li>
+          <li><strong>Lies 'b':</strong> δ(z1,b) = z2</li>
+          <li><strong>Lies 'a':</strong> δ(z2,a) = z3</li>
+          <li><strong>Lies 'a':</strong> δ(z3,a) = z4</li>
+          <li><strong>Wortende:</strong> z4 ∈ F → <strong>akzeptiert</strong> — keine Verzweigung nötig, nur
+            EIN Zustand zu jeder Zeit.</li>
+        </ol>
+
+        <h3>DFA verfolgt "bab" — landet im Müllzustand</h3>
+        <ol class="steps">
+          <li><strong>Start:</strong> z0</li>
+          <li><strong>Lies 'b':</strong> δ(z0,b) = z1</li>
+          <li><strong>Lies 'a':</strong> δ(z1,a) = z5 — <strong>Müllzustand!</strong> ("bb" ist noch nicht
+            fertig, also kann "a" hier nie zu einem akzeptierten Wort führen)</li>
+          <li><strong>Lies 'b':</strong> δ(z5,b) = z5 — die Selbstschleife hält den Automaten im Müllzustand fest</li>
+          <li><strong>Wortende:</strong> z5 ∉ F → <strong>"bab" wird abgelehnt.</strong></li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Der Kernunterschied in einem Satz</div>
+          <p>Ein <strong>DFA</strong> weiß bei jedem Zeichen sofort und eindeutig, wo er hin muss (auch wenn das
+            manchmal "in den Müllzustand" heißt). Ein <strong>NFA</strong> darf bei mehrdeutigen Situationen
+            <strong>alle</strong> Möglichkeiten gleichzeitig offenhalten und muss sich erst am Wortende
+            entscheiden, ob irgendeiner der Pfade gewonnen hat.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein NFA und ein DFA für dieselbe Sprache haben
+            immer gleich viele Zustände.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein DFA kann <strong>mehr</strong> Zustände
+            brauchen als ein NFA für dieselbe Sprache — im schlimmsten Fall sogar exponentiell mehr (Thema 03:
+            Potenzmengenkonstruktion). Schon unser Beispiel braucht als DFA einen Zustand mehr, weil er nicht
+            raten darf, sondern genau mitzählen muss.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>ε-Übergänge beim Lesen eines NFA einfach
+            überspringen, weil "da ja kein Zeichen gelesen wird".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ε-Übergänge sind <strong>kostenlose</strong>
+            Zustandswechsel, die jederzeit passieren können, ohne ein Zeichen zu verbrauchen — sie müssen bei
+            jedem Schritt mitverfolgt werden, sonst übersiehst du gültige Pfade (mehr dazu bei der ε-Hülle in
+            Thema 03).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Beim Zeichnen eines DFA einfach die
+            Übergänge weglassen, für die es "offensichtlich" keinen sinnvollen nächsten Zustand gibt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein DFA <strong>muss vollständig</strong>
+            sein: für jeden Zustand und jedes Zeichen aus Σ braucht es einen Pfeil. Fehlt einer, gehört er in
+            den <strong>Müllzustand</strong> — sonst ist es formal gar kein gültiger DFA mehr.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>DFA vs. NFA auf einen Blick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Merkmal</th><th>DFA</th><th>NFA</th></tr></thead>
+            <tbody>
+              <tr><td>δ liefert</td><td>genau 1 Zustand</td><td>Menge von Zuständen (P(Q))</td></tr>
+              <tr><td>ε-Kanten</td><td>nein</td><td>ja</td></tr>
+              <tr><td>muss vollständig sein?</td><td>ja (sonst Müllzustand ergänzen)</td><td>nein, Lücken erlaubt</td></tr>
+              <tr><td>Akzeptanz</td><td>der eine Lauf endet in F</td><td>irgendein Lauf endet in F</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>NFA und DFA können unterschiedlich groß sein</strong> — nie automatisch gleich viele Zustände annehmen</li>
+            <li><strong>ε-Übergänge nie ignorieren</strong> — sie sind Teil jedes Laufs</li>
+            <li><strong>DFA-Müllzustand nicht vergessen</strong> — jede (Zustand, Zeichen)-Kombination muss definiert sein</li>
+            <li>NFA akzeptiert, wenn <strong>irgendein</strong> Pfad im Ziel landet — DFA hat nur einen Pfad</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wofür steht δ: Q×Σ→Q beim DFA?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Genau ein Nachfolgezustand pro (Zustand, Zeichen)-Paar</button>
+              <button class="quiz-choice" type="button">Eine Menge möglicher Nachfolgezustände</button>
+              <button class="quiz-choice" type="button">Ein Zeichen als Ausgabe</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>δ: Q×Σ→Q liefert für jedes (Zustand, Zeichen)-Paar
+              <strong>genau einen</strong> Zielzustand — das ist der Kern von "deterministisch".</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wofür steht δ: Q×Σ→P(Q) beim NFA?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Für jedes Zeichen genau einen Zustand, wie beim DFA</button>
+              <button class="quiz-choice" type="button" data-correct>Eine (möglicherweise leere) Menge von Nachfolgezuständen</button>
+              <button class="quiz-choice" type="button">Immer alle Zustände in Q gleichzeitig</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P(Q) ist die Potenzmenge — δ darf also 0, 1 oder mehrere Ziele
+              gleichzeitig liefern.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Müllzustand|Fehlerzustand|Fangzustand|Papierkorbzustand">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie nennt man den Zustand, in den beim DFA alle
+              fehlenden Übergänge führen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Den <strong>Müllzustand</strong> (auch Fehler- oder Fangzustand
+              genannt) — er fängt alle "eigentlich undefinierten" Übergänge ab und ist selbst absorbierend.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur SoSe 24 (EK): Die Erstklausur
+              (Aufgabe 1b) verlangt einen DFA mit Müllzustand für bb(a|b)*aa. Wie viele Zustände hat so ein
+              vollständiger DFA insgesamt (inklusive Müllzustand)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Zustände</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>5 "inhaltliche" Zustände (Start, "b" gelesen, Suffix-Tracking,
+              Ziel) plus der Müllzustand = <strong>6</strong> Zustände insgesamt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wird "bab" vom DFA für bb(a|b)*aa akzeptiert
+              oder abgelehnt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Akzeptiert</button>
+              <button class="quiz-choice" type="button" data-correct>Abgelehnt — landet im Müllzustand</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>z0→(b)→z1→(a)→z5(Müllzustand)→(b)→z5. z5 ∉ F, also wird "bab"
+              <strong>abgelehnt</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Warum kann der NFA nach dem ersten 'a' (in
+              "bbaa") gleichzeitig in {z2, z3} aktiv sein?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Weil der Automat zufällig einen der beiden Zustände auswürfelt.</button>
+              <button class="quiz-choice" type="button" data-correct>Weil δ(z2,a) zwei Ziele gleichzeitig liefert — Nichtdeterminismus erlaubt mehrere aktive Pfade.</button>
+              <button class="quiz-choice" type="button">Weil z2 und z3 in Wirklichkeit derselbe Zustand sind.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>δ(z2,a) = {z2, z3} — beide Pfade werden <strong>gleichzeitig</strong>
+              weiterverfolgt, es wird nichts "gewürfelt". Am Ende zählt, ob mindestens einer in F landet.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="01-regulaere-ausdruecke.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Reguläre Ausdrücke &amp; formale Sprachen</div>
+        </a>
+        <a class="next" href="03-regex-zu-dfa.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Von Regex zu DFA</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

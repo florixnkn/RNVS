@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Das Pumping-Lemma · FSK</title>
+<meta name="description" content="Das Pumping-Lemma für reguläre Sprachen bildlich erklärt: Schubfachprinzip, Beweisstruktur und die vollständige Original-Klausuraufgabe (SoSe 2024, Erstklausur 2a) zu L₃={ab^i cd^i} mit sauberer Fallanalyse." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 05</div>
+    <span class="th-icon">💪</span>
+    <h1>Das Pumping-Lemma</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Schubfachprinzip &amp; Beweisstruktur</a></li>
+        <li><a href="#rechnen">Beispiele &amp; Klausuraufgabe</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Du weißt jetzt, wie man reguläre Sprachen <strong>baut</strong> (Regex, DFA, NFA).
+          Aber wie zeigst du, dass eine Sprache <strong>nicht</strong> gebaut werden kann — dass <em>kein</em>
+          DFA der Welt sie erkennt? Genau dafür ist das <strong>Pumping-Lemma</strong> da: ein Werkzeug, das aus
+          der bloßen Existenz eines DFA eine Eigenschaft ableitet, die jede reguläre Sprache erfüllen
+          <em>muss</em>. Erfüllt eine Sprache diese Eigenschaft nicht, kann sie unmöglich regulär sein.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… ein Postbote muss jeden Brief in eines von <strong>n</strong> Postfächern einsortieren. Verteilt
+            er mehr als n Briefe, muss zwangsläufig <strong>irgendein Postfach zweimal</strong> benutzt werden —
+            das ist das <strong>Schubfachprinzip</strong> (auch Taubenschlagprinzip genannt). Ein DFA hat nur
+            <strong>endlich viele Zustände</strong> — das sind seine „Postfächer". Liest er ein Wort, das
+            <strong>länger</strong> ist als seine Zustandsanzahl n, muss er unterwegs zwangsläufig in einen
+            Zustand <strong>zurückkehren</strong>, den er schon einmal besucht hat. Zwischen den beiden Besuchen
+            liegt eine <strong>Schleife</strong> — und die kannst du beliebig oft „durchpumpen" (0×, 1×, 2×, …),
+            ohne dass der DFA das überhaupt bemerkt: Er landet danach garantiert wieder im selben Zustand.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Das Pumping-Lemma für reguläre Sprachen (exakte Aussage)</div>
+          <span class="formula">Wenn L regulär ist, dann gilt:
+∃ n ∈ ℕ  ∀ w ∈ L mit |w| ≥ n:
+  w kann geschrieben werden als w = u v x, sodass
+    (1) |u v| ≤ n
+    (2) |v| ≥ 1
+    (3) ∀ i ∈ ℕ:  u v^i x ∈ L</span>
+          <p>n heißt <strong>Pumping-Konstante</strong> (bei einem DFA: die Anzahl seiner Zustände). Bedingung
+            (3) ist der Kern: du darfst v <strong>beliebig oft wiederholen</strong> (auch 0-mal, also
+            weglassen) — das Ergebnis bleibt immer in L.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Schubfachprinzip &amp; Beweisstruktur im Bild</h2>
+
+        <p>Zerlegen wir ein Wort w formal in die drei Teile u, v, x. Der Teil v ist die „Schleife" — er darf
+          herausgeschnitten oder beliebig oft vervielfacht werden, ohne dass das Wort die Sprache verlässt:</p>
+
+        <!-- SVG 1: Wortband u|v|x mit Pump-Pfeil -->
+        <figure class="diagram">
+          <div class="diagram-title">Wort w = u v x — v ist der „aufpumpbare" Teil</div>
+          <svg viewBox="0 0 640 260" width="640" role="img" aria-label="Wort w in die Teile u, v und x zerlegt; ein Pfeil über v zeigt, dass dieser Abschnitt beliebig oft wiederholt werden kann, ohne die Sprachzugehörigkeit zu ändern">
+            <defs>
+              <marker id="p05mkViolet" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="320" y="28" text-anchor="middle" class="svg-ink" font-weight="800" font-size="16">w = u v x</text>
+
+              <path d="M180,95 C180,32 330,32 330,95" fill="none" stroke="#8b5cf6" stroke-width="2.2" marker-end="url(#p05mkViolet)"/>
+              <text x="255" y="52" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="12">v, v², v³, … (beliebig oft)</text>
+
+              <rect x="40" y="95" width="110" height="70" rx="8" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="95" y="139" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="20">u</text>
+
+              <rect x="180" y="95" width="150" height="70" rx="8" fill="#8b5cf6" fill-opacity="0.28" stroke="#8b5cf6" stroke-width="2.4"/>
+              <text x="255" y="139" text-anchor="middle" fill="#8b5cf6" font-family="JetBrains Mono, monospace" font-weight="800" font-size="20">v</text>
+
+              <rect x="360" y="95" width="240" height="70" rx="8" fill="#8a94a6" fill-opacity="0.16" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="480" y="139" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="20">x</text>
+
+              <path d="M40,182 L40,190 L330,190 L330,182" fill="none" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="185" y="206" text-anchor="middle" class="svg-soft" font-size="12.5">|u v| ≤ n</text>
+
+              <path d="M180,220 L180,228 L330,228 L330,220" fill="none" stroke="#8b5cf6" stroke-width="1.3"/>
+              <text x="255" y="245" text-anchor="middle" fill="#8b5cf6" font-size="12.5">|v| ≥ 1</text>
+            </g>
+          </svg>
+          <figcaption>u und v zusammen passen in die ersten n Zeichen von w (|uv| ≤ n). v selbst darf nicht leer
+            sein (|v| ≥ 1) — sonst würde „pumpen" gar nichts verändern.</figcaption>
+        </figure>
+
+        <h3>Warum es diese Schleife geben MUSS</h3>
+        <p>Ein DFA mit n Zuständen, der ein Wort w mit |w| ≥ n liest, durchläuft dabei
+          <strong>n + 1 Zustände</strong> (den Startzustand plus einen nach jedem der ersten n gelesenen
+          Zeichen). Es gibt aber nur n <em>verschiedene</em> Zustände im DFA — nach dem Schubfachprinzip müssen
+          also zwei dieser n + 1 Besuche <strong>denselben Zustand</strong> treffen. Der Abschnitt des Wortes,
+          den der DFA zwischen diesen beiden Besuchen liest, ist genau v: eine <strong>Schleife im
+          Zustandsdiagramm</strong>.</p>
+
+        <!-- SVG 2: DFA-Lauf mit wiederkehrendem Zustand -->
+        <figure class="diagram">
+          <div class="diagram-title">DFA-Lauf: nach u zurück zum selben Zustand — das ist die Schleife v</div>
+          <svg viewBox="0 0 620 250" width="620" role="img" aria-label="DFA-Zustandsdiagramm: vom Startzustand über u in einen Zustand, der durch das Lesen von v wieder erreicht wird (Selbstschleife), danach über x in den akzeptierenden Zustand">
+            <defs>
+              <marker id="p05mkBlau" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="p05mkViolet2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <line x1="15" y1="150" x2="52" y2="150" stroke="#2f6df6" stroke-width="2" marker-end="url(#p05mkBlau)"/>
+
+              <path d="M110,150 C170,150 210,150 260,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p05mkBlau)"/>
+              <text x="185" y="136" text-anchor="middle" fill="#2f6df6" font-weight="800">u</text>
+
+              <path d="M292,122 C270,58 350,58 328,122" fill="none" stroke="#8b5cf6" stroke-width="2.2" marker-end="url(#p05mkViolet2)"/>
+              <text x="310" y="42" text-anchor="middle" fill="#8b5cf6" font-weight="800">v</text>
+
+              <path d="M340,150 C400,150 440,150 490,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p05mkBlau)"/>
+              <text x="415" y="136" text-anchor="middle" fill="#2f6df6" font-weight="800">x</text>
+
+              <circle cx="80" cy="150" r="28" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="80" y="156" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">q₀</text>
+              <text x="80" y="196" text-anchor="middle" class="svg-soft" font-size="11">Start</text>
+
+              <circle cx="310" cy="150" r="28" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="2.4"/>
+              <text x="310" y="156" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">q</text>
+              <text x="310" y="196" text-anchor="middle" fill="#8b5cf6" font-size="11">wiederkehrender Zustand</text>
+
+              <circle cx="540" cy="150" r="28" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="540" cy="150" r="21" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="540" y="156" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">F</text>
+              <text x="540" y="196" text-anchor="middle" class="svg-soft" font-size="11">akzeptierend</text>
+            </g>
+          </svg>
+          <figcaption>Nach dem Lesen von v ist der DFA wieder im <em>gleichen</em> Zustand q wie vorher — egal ob
+            v 0×, 1× oder 5× gelesen wird, der DFA landet danach immer über x in F. Deshalb ist u v^i x ∈ L für
+            jedes i.</figcaption>
+        </figure>
+
+        <h3>Die Beweisstruktur (Widerspruchsbeweis)</h3>
+        <p>Um mit dem Pumping-Lemma zu zeigen, dass eine Sprache L <strong>nicht</strong> regulär ist, führst du
+          einen Widerspruchsbeweis in exakt dieser Reihenfolge:</p>
+        <ol class="steps">
+          <li><strong>Annahme:</strong> L sei regulär (das willst du am Ende widerlegen).</li>
+          <li><strong>n gegeben:</strong> Dann liefert das Pumping-Lemma ein n ∈ ℕ. Du kennst n nicht konkret —
+            du weißt nur, dass es <em>existiert</em>.</li>
+          <li><strong>w geschickt wählen:</strong> Du wählst ein Wort w ∈ L mit |w| ≥ n — <strong>abhängig von
+            n</strong> (z. B. w = a·b<sup>n</sup>·c·d<sup>n</sup>), so geschickt, dass dir die nächsten Schritte
+            leichtfallen.</li>
+          <li><strong>Alle Zerlegungen betrachten:</strong> Für <strong>jede</strong> mögliche Zerlegung
+            w = uvx mit |uv| ≤ n und |v| ≥ 1 (nicht nur eine!) …</li>
+          <li><strong>i finden mit u v^i x ∉ L:</strong> … zeigst du, dass es (mindestens) ein i ∈ ℕ gibt, für
+            das das gepumpte Wort <strong>nicht</strong> mehr in L liegt.</li>
+          <li><strong>Widerspruch → Folgerung:</strong> Das widerspricht Bedingung (3) des Pumping-Lemmas. Die
+            Annahme war also falsch: <strong>L ist nicht regulär.</strong></li>
+        </ol>
+
+        <div class="factgrid">
+          <div class="fact"><b>n</b><span>vom Lemma vorgegeben — du wählst es NICHT</span></div>
+          <div class="fact"><b>w</b><span>wählst DU, abhängig von n</span></div>
+          <div class="fact"><b>u, v, x</b><span>Gegner wählt Zerlegung — du musst ALLE behandeln</span></div>
+          <div class="fact"><b>i</b><span>wählst DU, passend für den Widerspruch</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele &amp; Original-Klausuraufgabe</h2>
+
+        <h3>🧮 Übung: Warm-up mit L = {a^i b^i c^i : i ∈ ℕ}</h3>
+        <p>Bevor wir zur echten Klausuraufgabe kommen, ein kleiner Aufwärm-Beweis, der zeigt, wie man w
+          <strong>geschickt</strong> wählt, damit die Zerlegung fast von selbst klar wird.</p>
+        <ol class="steps">
+          <li><strong>Annahme &amp; n:</strong> L sei regulär mit Pumping-Konstante n.</li>
+          <li><strong>w wählen:</strong> Wähle w = a<sup>n</sup> b<sup>n</sup> c<sup>n</sup> ∈ L. Es gilt
+            |w| = 3n ≥ n ✓.</li>
+          <li><strong>Position von v erzwingen:</strong> Da |uv| ≤ n und die ersten n Zeichen von w
+            <strong>ausschließlich a's</strong> sind, muss v komplett innerhalb des a-Blocks liegen: v = a^k
+            für ein k ≥ 1.</li>
+          <li><strong>Pumpen &amp; Widerspruch:</strong> u v² x hat dann n + k a's, aber weiterhin genau n b's
+            und n c's. Da k ≥ 1, sind die drei Buchstabenanzahlen nicht mehr gleich → u v² x ∉ L.
+            Widerspruch! ✓</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Der Trick</div>
+          <p>Weil w so gebaut ist, dass seine ersten n Zeichen <strong>nur aus einem einzigen Buchstaben</strong>
+            bestehen, bleibt für v gar keine andere Möglichkeit übrig, als innerhalb dieses Blocks zu liegen.
+            Eine einzige, saubere Fallunterscheidung reicht — das ist der Sinn einer <strong>geschickten
+            w-Wahl</strong>.</p>
+        </div>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 2a)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Zeige mit dem Pumping-Lemma, dass L₃ = {a b<sup>i</sup> c d<sup>i</sup> : i ∈ ℕ} nicht regulär
+            ist.</p>
+        </div>
+
+        <p>Hier steht am Wortanfang nur <strong>ein einziges</strong> a — anders als beim Warm-up reicht das
+          nicht für eine Ein-Fall-Lösung, wir brauchen zwei Fälle, je nachdem ob v dieses eine a „mitnimmt"
+          oder nicht.</p>
+
+        <ol class="steps">
+          <li><strong>Annahme:</strong> L₃ sei regulär mit Pumping-Konstante n.</li>
+          <li><strong>w wählen:</strong> Wähle w = a b<sup>n</sup> c d<sup>n</sup> ∈ L₃.</li>
+          <li><strong>Längenprüfung:</strong> |w| = 1 + n + 1 + n = 2n + 2 ≥ n ✓ — w ist geeignet gewählt
+            (w ∈ L₃ und |w| ≥ n).</li>
+          <li><strong>Zerlegungsanalyse — Vorbereitung:</strong> Da |uv| ≤ n, liegt uv vollständig in den ersten
+            n Zeichen von w. Diese ersten n Zeichen sind „a" gefolgt von (n−1) b's, also die Zeichenkette
+            a b<sup>n−1</sup>. Jede gültige Zerlegung fällt damit in genau einen von zwei Fällen:</li>
+          <li><strong>Fall 1 — v enthält das a:</strong> Dann ist u = ε und v = a b<sup>k</sup> für ein k ≥ 0,
+            also x = b<sup>n−1−k</sup> c d<sup>n</sup>. Beim Pumpen auf i = 0 fällt das a komplett weg:
+            u v⁰ x = b<sup>n−1−k</sup> c d<sup>n</sup>. Dieses Wort beginnt <strong>nicht mit a</strong> →
+            u v⁰ x ∉ L₃. Widerspruch! ✓</li>
+          <li><strong>Fall 2 — v liegt ganz im b-Block:</strong> Dann ist u = a b<sup>j</sup> und v = b<sup>k</sup>
+            mit j ≥ 0, k ≥ 1 und j + k ≤ n − 1, also x = b<sup>n−j−k</sup> c d<sup>n</sup>. Beim Pumpen auf
+            i = 0 verschwindet v: u v⁰ x = a b<sup>n−j−k</sup> c d<sup>n</sup>. Die Anzahl der b's ist
+            n − j − k, die Anzahl der d's bleibt n. Da j + k ≥ 1 (denn k ≥ 1), gilt n − j − k &lt; n — b's und
+            d's stimmen nicht mehr überein → u v⁰ x ∉ L₃. Widerspruch! ✓</li>
+          <li><strong>Folgerung:</strong> Für jede mögliche Zerlegung w = uvx mit |uv| ≤ n und |v| ≥ 1 gibt es
+            ein i (hier immer i = 0) mit u v^i x ∉ L₃. Das widerspricht dem Pumping-Lemma. Also war die Annahme
+            falsch: <strong>L₃ ist nicht regulär.</strong> ∎</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Warum diese w-Wahl geschickt war</div>
+          <p>Weil w mit genau <strong>einem</strong> a beginnt, bevor der b-Block kommt, erzwingt |uv| ≤ n, dass
+            v entweder <strong>das einzige a</strong> enthält (Fall 1) oder <strong>komplett in den b's</strong>
+            liegt (Fall 2) — mehr Fälle gibt es nicht. Genau diese Beschränkung auf zwei überschaubare Fälle ist
+            der Sinn einer klugen w-Wahl.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Sei n = 5" — die Pumping-Konstante selbst
+            festlegen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>n wird vom Pumping-Lemma
+            <strong>garantiert</strong>, nicht von dir gewählt. Du weißt nur, dass irgendein n existiert — und
+            musst deinen Beweis für <strong>jedes mögliche</strong> n funktionieren lassen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nur eine einzige Zerlegung w = uvx prüfen und
+            daraus schließen, das Lemma sei verletzt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Gegner (das Lemma) darf sich
+            <strong>irgendeine</strong> gültige Zerlegung aussuchen. Du musst zeigen, dass es für
+            <strong>alle</strong> Zerlegungen mit |uv| ≤ n, |v| ≥ 1 ein passendes i gibt — meist über eine
+            vollständige Fallunterscheidung.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>v = ε zulassen — „dann pumpt man halt gar
+            nichts".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bedingung (2) fordert <strong>|v| ≥ 1</strong>
+            explizit. v = ε ist keine gültige Zerlegung — sonst wäre uv⁰x = uv¹x = w immer trivial erfüllt und
+            das Lemma nutzlos.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>w „irgendwie" wählen, z. B. w = b<sup>n</sup>
+            a c d<sup>n</sup>, sodass v an vielen verschiedenen Stellen liegen könnte und die Fallanalyse
+            ausufert.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>w so bauen, dass |uv| ≤ n die Position von v
+            möglichst stark <strong>erzwingt</strong> — z. B. indem die ersten n Zeichen aus möglichst wenigen
+            verschiedenen Buchstaben-Blöcken bestehen. Weniger mögliche Positionen = weniger Fälle im Beweis.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Das Lemma in einer Zeile</h4>
+          <pre class="code">L regulär ⇒ ∃n ∈ ℕ ∀w ∈ L, |w|≥n: w=uvx, |uv|≤n, |v|≥1, ∀i∈ℕ: uv^i x ∈ L</pre>
+
+          <h4>Beweis-Skelett zum Auswendiglernen</h4>
+          <pre class="code">1. Annahme:     L sei regulär, PL-Konstante n
+2. w wählen:    w ∈ L, |w| ≥ n, abhängig von n (geschickt!)
+3. Fallanalyse: ALLE Zerlegungen w=uvx mit |uv|≤n, |v|≥1 durchgehen
+4. i finden:    für jeden Fall ein i mit uv^i x ∉ L zeigen
+5. Widerspruch: → Annahme falsch → L nicht regulär</pre>
+
+          <h4>Wer wählt was?</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Größe</th><th>Wer wählt sie</th></tr></thead>
+            <tbody>
+              <tr><td>n</td><td>das Lemma (du kennst nur: es existiert)</td></tr>
+              <tr><td>w</td><td>du — abhängig von n, möglichst geschickt</td></tr>
+              <tr><td>u, v, x</td><td>der „Gegner" — du musst jede Zerlegung abdecken</td></tr>
+              <tr><td>i</td><td>du — passend zum jeweiligen Fall</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>n ist nicht deine Wahl</strong> — dein Beweis muss für jedes n funktionieren</li>
+            <li><strong>w so wählen, dass |uv|≤n die Position von v einschränkt</strong> (z. B. gleicher
+              Buchstabe am Anfang)</li>
+            <li><strong>Alle</strong> Zerlegungen behandeln, nicht nur eine — meist reichen 2–3 saubere Fälle</li>
+            <li><strong>|v| ≥ 1</strong> ist Pflicht — v = ε ist keine gültige Zerlegung</li>
+            <li>Meistens reicht <strong>i = 0</strong> (v komplett wegpumpen) oder <strong>i = 2</strong>
+              (v verdoppeln) für den Widerspruch</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was genau garantiert das Pumping-Lemma für ein
+              Wort w ∈ L mit |w| ≥ n (falls L regulär ist)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Es gibt eine Zerlegung w=uvx mit
+                |uv|≤n, |v|≥1, und uv^i x ∈ L für alle i ∈ ℕ.</button>
+              <button class="quiz-choice" type="button">w besteht komplett aus einem einzigen Buchstaben.</button>
+              <button class="quiz-choice" type="button">Es gibt genau eine mögliche Zerlegung w=uvx.</button>
+              <button class="quiz-choice" type="button">n darf frei gewählt werden, nachdem man w kennt.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist exakt die Aussage des Lemmas — inklusive der drei
+              Bedingungen |uv|≤n, |v|≥1 und dem „beliebig oft pumpen" (∀i).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wer wählt die Pumping-Konstante n?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Das Lemma selbst — du weißt nur, dass so
+                ein n existiert.</button>
+              <button class="quiz-choice" type="button">Du darfst n frei wählen, bevor du w wählst.</button>
+              <button class="quiz-choice" type="button">n = |w| — immer gleich der Wortlänge.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>n wird vom Pumping-Lemma garantiert (bei einem DFA: seine
+              Zustandsanzahl) — du kennst seinen konkreten Wert nicht und darfst ihn nicht selbst festlegen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="12">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🎓 Klausuraufgabe: w = a b<sup>n</sup> c
+              d<sup>n</sup>. Wie lang ist w für n = 5?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Zeichen</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>|w| = 1 + n + 1 + n = 2n + 2. Für n=5: 2·5+2 =
+              <strong>12</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Warum ist v = ε (die leere Zerlegung) im
+              Pumping-Lemma verboten?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Weil |v| ≥ 1 explizit gefordert wird —
+                sonst würde „pumpen" nichts verändern.</button>
+              <button class="quiz-choice" type="button">Weil ε kein gültiges Zeichen ist.</button>
+              <button class="quiz-choice" type="button">Ist gar nicht verboten, kommt oft vor.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>|v| ≥ 1 ist Bedingung (2) des Lemmas. Mit v=ε wäre uv^i x = w für
+              jedes i — das Lemma wäre trivial und nutzlos.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausuraufgabe: In Fall 1 (v enthält das
+              einzige a von w = ab<sup>n</sup>cd<sup>n</sup>) — was zeigt uv⁰x?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>uv⁰x beginnt nicht mehr mit a, also
+                uv⁰x ∉ L₃.</button>
+              <button class="quiz-choice" type="button">uv⁰x hat zu viele b's im Vergleich zu d's.</button>
+              <button class="quiz-choice" type="button">uv⁰x ist identisch zu w, kein Widerspruch.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Wenn v das einzige a „mitnimmt" und wir es wegpumpen (i=0), fehlt
+              das a komplett — das Wort beginnt dann mit b oder direkt mit c, was L₃ nie erlaubt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Schubfachprinzip|Taubenschlagprinzip|Pigeonhole-Prinzip|Pigeonhole">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie heißt das Prinzip, das erzwingt, dass ein DFA
+              bei einem ausreichend langen Wort einen Zustand wiederholen muss?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das <strong>Schubfachprinzip</strong> (auch Taubenschlag- oder
+              Pigeonhole-Prinzip): mehr Objekte als Fächer ⇒ ein Fach wird doppelt benutzt.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="04-dfa-minimierung.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">DFA-Minimierung</div>
+        </a>
+        <a class="next" href="06-myhill-nerode.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Myhill-Nerode &amp; Abschluss</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

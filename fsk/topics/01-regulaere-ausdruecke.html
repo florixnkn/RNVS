@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reguläre Ausdrücke &amp; formale Sprachen · FSK</title>
+<meta name="description" content="Alphabet, Wort, Sprache und die Bausteine regulärer Ausdrücke bildlich erklärt – plus die Chomsky-Hierarchie als große, verschachtelte Landkarte für das ganze Modul." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 01</div>
+    <span class="th-icon">🔤</span>
+    <h1>Reguläre Ausdrücke &amp; formale Sprachen</h1>
+    <div class="th-meta">
+      <span class="stars">★☆☆</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Regex &amp; Chomsky-Hierarchie</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Ein <strong>Alphabet</strong> Σ ist einfach eine endliche Menge von Zeichen, z. B.
+          Σ = {a,b}. Ein <strong>Wort</strong> ist eine endliche Aneinanderreihung von Zeichen aus Σ, z. B. "abba".
+          Das <strong>leere Wort</strong> ε ist das Wort ohne jedes Zeichen — es hat Länge 0, existiert aber
+          trotzdem. Eine <strong>Sprache</strong> L ist einfach eine <strong>Menge von Wörtern</strong>: L ⊆ Σ*,
+          wobei Σ* für "alle überhaupt möglichen Wörter über Σ" steht. Genau dieses Grundvokabular brauchst du
+          für den ganzen Kurs — alles Weitere sind nur verschiedene Wege, um Sprachen zu <em>beschreiben</em> und
+          zu <em>erkennen</em>.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… Σ ist die Tastatur, die du benutzen darfst — sagen wir, sie hat nur zwei Tasten: <strong>a</strong>
+            und <strong>b</strong>. Ein <strong>Wort</strong> ist alles, was du damit tippen kannst: "a", "ab",
+            "abba", oder auch gar nichts tippen (das leere Wort ε). <strong>Σ*</strong> ist die Menge
+            <em>aller</em> Zeichenketten, die mit dieser Tastatur überhaupt jemals getippt werden könnten —
+            unendlich viele. Eine <strong>Sprache</strong> ist jetzt eine bestimmte <em>Auswahlliste</em> aus
+            all diesen Möglichkeiten, z. B. "alle Wörter, die mit a beginnen" oder "alle Wörter gerader Länge".
+            Ein <strong>regulärer Ausdruck</strong> ist eine kompakte Formel, mit der du so eine Auswahlliste
+            aufschreiben kannst, ohne jedes einzelne Wort einzeln aufzuzählen.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Reguläre Ausdrücke &amp; die Chomsky-Hierarchie im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Grundvokabular</div>
+          <span class="formula">Σ           Alphabet — endliche Menge von Zeichen, z. B. {a,b}
+Σ*          alle Wörter über Σ, inklusive ε (Kleene-Stern auf dem Alphabet)
+ε           das leere Wort (Länge 0)
+L ⊆ Σ*      eine Sprache — eine Teilmenge von Σ*, also eine Menge von Wörtern</span>
+          <p>Eine Sprache ist nichts Mystisches: einfach eine Menge, deren Elemente Wörter sind — statt Zahlen
+            oder Personen wie in Thema 01 von LDS.</p>
+        </div>
+
+        <h3>Reguläre Ausdrücke: induktiv aus drei Bausteinen gebaut</h3>
+        <p>Ein <strong>regulärer Ausdruck</strong> über Σ wird <strong>induktiv</strong> definiert — genau wie
+          man einen Turm aus wenigen Grundbausteinen und Zusammenbau-Regeln baut:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Regulärer Ausdruck (induktiv)</div>
+          <span class="formula">Basisfälle (die kleinsten Bausteine):
+  ∅        die leere Sprache (kein einziges Wort, nicht mal ε)
+  ε        die Sprache {ε} (genau ein Wort: das leere Wort)
+  a ∈ Σ    für jedes Zeichen — die Sprache {a}
+
+Induktionsfälle (aus r, s reguläre Ausdrücke baue neue):
+  (r|s)    Alternative — "r ODER s"
+  (rs)     Verkettung — erst ein Wort aus r, direkt gefolgt von einem Wort aus s
+  r*       Kleene-Stern — r beliebig oft hintereinander, auch NULL-mal</span>
+          <p>Mehr Bausteine gibt es nicht! Jeder komplizierte reguläre Ausdruck ist nur eine Verschachtelung
+            dieser sechs Regeln.</p>
+        </div>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Ausdruck</th><th>Sprache in Worten</th><th>Beispielwörter</th></tr></thead>
+          <tbody>
+            <tr><td><code>(a|b)*</code></td><td>beliebig viele a's und b's, in beliebiger Reihenfolge, auch 0 Zeichen</td><td>ε, a, ba, abba, …</td></tr>
+            <tr><td><code>ab(a|b)*c</code></td><td>beginnt mit "ab", dann beliebig viele a/b, endet mit "c"</td><td>abc, ababc, abbbac, …</td></tr>
+            <tr><td><code>(a*b*)*</code></td><td>beliebig viele Blöcke aus (a's gefolgt von b's) — am Ende bleibt effektiv wieder "beliebig viele a's und b's"</td><td>ε, aabb, ba, aabbba, …</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>Ein regulärer Ausdruck ist also nur eine <strong>Bauanleitung</strong> — aber jede Bauanleitung lässt
+          sich auch als kleine <strong>Maschine</strong> zeichnen, die Wort für Wort liest und dabei durch
+          Zustände wandert:</p>
+
+        <!-- SVG 1: kleiner Automat für ab(a|b)*c -->
+        <figure class="diagram">
+          <div class="diagram-title">So liest eine Maschine den Ausdruck ab(a|b)*c</div>
+          <svg viewBox="0 0 660 260" width="660" role="img" aria-label="Zustandsdiagramm für den regulären Ausdruck ab(a|b)*c: vier Zustände, Startpfeil, Selbstschleife für den Stern-Teil und ein doppelter Kreis für den akzeptierenden Endzustand">
+            <defs>
+              <marker id="p01arrH" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/>
+              </marker>
+              <marker id="p01arrO" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Startpfeil -->
+              <line x1="12" y1="150" x2="44" y2="150" stroke="#2f6df6" stroke-width="2" marker-end="url(#p01arrH)"/>
+
+              <!-- Kanten -->
+              <path d="M94,150 L216,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p01arrH)"/>
+              <text x="155" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+
+              <path d="M264,150 L386,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p01arrH)"/>
+              <text x="325" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <path d="M410,126 C390,62 430,62 410,126" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p01arrO)"/>
+              <text x="410" y="52" text-anchor="middle" fill="#f5810b" font-weight="800">a, b</text>
+
+              <path d="M434,150 L556,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p01arrH)"/>
+              <text x="495" y="138" text-anchor="middle" fill="#2f6df6" font-weight="800">c</text>
+
+              <!-- Zustände -->
+              <circle cx="70" cy="150" r="24" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="2"/>
+              <text x="70" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z0</text>
+
+              <circle cx="240" cy="150" r="24" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="2"/>
+              <text x="240" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z1</text>
+
+              <circle cx="410" cy="150" r="24" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="2"/>
+              <text x="410" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z2</text>
+
+              <circle cx="580" cy="150" r="24" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="580" cy="150" r="18" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="580" y="156" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z3</text>
+            </g>
+          </svg>
+          <figcaption>z0→z1 liest "ab", die Schleife an z2 liest beliebig viele weitere a/b (das ist der Stern-Teil),
+            und der letzte Pfeil liest das abschließende "c". Der doppelte Kreis markiert z3 als
+            <strong>akzeptierenden</strong> Zustand. Wie so eine Maschine formal heißt und funktioniert, ist
+            Thema 02.</figcaption>
+        </figure>
+
+        <h3>Die Chomsky-Hierarchie: die Landkarte für das ganze Modul</h3>
+        <p class="lead-in">Reguläre Sprachen sind nur die <strong>einfachste</strong> von vier Sprachklassen.
+          Jede größere Klasse enthält die kleinere komplett — wie russische Matroschka-Puppen. Diese
+          Verschachtelung ist der <strong>rote Faden</strong>, der alle zwölf Themen dieses Kurses zusammenhält:</p>
+
+        <!-- SVG 2: Chomsky-Hierarchie als verschachtelte Kreise -->
+        <figure class="diagram">
+          <div class="diagram-title">Die Chomsky-Hierarchie: vier ineinander verschachtelte Sprachklassen</div>
+          <svg viewBox="0 0 780 520" width="780" role="img" aria-label="Chomsky-Hierarchie als vier konzentrische Kreise: Typ 3 regulär ganz innen, dann Typ 2 kontextfrei, Typ 1 kontextsensitiv, außen Typ 0 rekursiv aufzählbar. Rechts eine Legende mit Maschine, Beispielsprache und Verweis auf die passenden Themen">
+            <g>
+              <circle cx="245" cy="255" r="220" fill="#e0483d" fill-opacity="0.08" stroke="#e0483d" stroke-width="2"/>
+              <circle cx="245" cy="255" r="165" fill="#f5810b" fill-opacity="0.12" stroke="#f5810b" stroke-width="2"/>
+              <circle cx="245" cy="255" r="110" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="2"/>
+              <circle cx="245" cy="255" r="55" fill="#2f6df6" fill-opacity="0.22" stroke="#2f6df6" stroke-width="2"/>
+            </g>
+            <g font-family="Segoe UI, sans-serif" text-anchor="middle">
+              <text x="245" y="65" fill="#e0483d" font-weight="800" font-size="14">Typ 0 · rekursiv aufzählbar</text>
+              <text x="245" y="118" fill="#f5810b" font-weight="800" font-size="13.5">Typ 1 · kontextsensitiv</text>
+              <text x="245" y="171" fill="#8b5cf6" font-weight="800" font-size="13">Typ 2 · kontextfrei</text>
+              <text x="245" y="248" fill="#2f6df6" font-weight="800" font-size="13">Typ 3</text>
+              <text x="245" y="266" fill="#2f6df6" font-weight="700" font-size="12">regulär</text>
+            </g>
+            <!-- Legende -->
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="512" y="34" width="18" height="18" fill="#2f6df6"/>
+              <text x="538" y="49" fill="#2f6df6" font-weight="800" font-size="13.5">Typ 3 — regulär</text>
+              <text x="512" y="71" class="svg-ink">Maschine: endlicher Automat (NFA/DFA)</text>
+              <text x="512" y="89" class="svg-soft">Beispiel: (a|b)*, feste Muster</text>
+              <text x="512" y="107" fill="#2f6df6" font-weight="700">→ Themen 02–04 (du bist hier!)</text>
+
+              <rect x="512" y="144" width="18" height="18" fill="#8b5cf6"/>
+              <text x="538" y="159" fill="#8b5cf6" font-weight="800" font-size="13.5">Typ 2 — kontextfrei</text>
+              <text x="512" y="181" class="svg-ink">Maschine: Kellerautomat (PDA)</text>
+              <text x="512" y="199" class="svg-soft">Beispiel: {aⁿbⁿ | n ≥ 0}</text>
+              <text x="512" y="217" fill="#8b5cf6" font-weight="700">→ Themen 07–08</text>
+
+              <rect x="512" y="254" width="18" height="18" fill="#f5810b"/>
+              <text x="538" y="269" fill="#f5810b" font-weight="800" font-size="13.5">Typ 1 — kontextsensitiv</text>
+              <text x="512" y="291" class="svg-ink">Maschine: linear beschränkter Automat (LBA)</text>
+              <text x="512" y="309" class="svg-soft">Beispiel: {aⁿbⁿcⁿ | n ≥ 0}</text>
+              <text x="512" y="327" class="svg-soft" font-style="italic">nur zur Einordnung, kein eigenes Thema</text>
+
+              <rect x="512" y="364" width="18" height="18" fill="#e0483d"/>
+              <text x="538" y="379" fill="#e0483d" font-weight="800" font-size="13.5">Typ 0 — rekursiv aufzählbar</text>
+              <text x="512" y="401" class="svg-ink">Maschine: Turingmaschine</text>
+              <text x="512" y="419" class="svg-soft">Beispiel: von Turingmaschinen akzeptierbare Sprachen</text>
+              <text x="512" y="437" fill="#e0483d" font-weight="700">→ Themen 09–10</text>
+            </g>
+          </svg>
+          <figcaption>Jeder äußere Ring enthält alle Sprachen des inneren Rings — plus mehr. Eine reguläre Sprache
+            (Typ 3) ist also automatisch auch kontextfrei (Typ 2), kontextsensitiv (Typ 1) und rekursiv aufzählbar
+            (Typ 0) — aber nicht umgekehrt!</figcaption>
+        </figure>
+
+        <div class="factgrid">
+          <div class="fact"><b>Typ 3 ⊂ Typ 2</b><span>jede reguläre Sprache ist auch kontextfrei</span></div>
+          <div class="fact"><b>Typ 2 ⊂ Typ 1</b><span>jede kontextfreie Sprache ist auch kontextsensitiv</span></div>
+          <div class="fact"><b>Typ 1 ⊂ Typ 0</b><span>jede kontextsensitive Sprache ist auch rekursiv aufzählbar</span></div>
+          <div class="fact"><b>mehr Macht = mehr Aufwand</b><span>je größer der Ring, desto komplexer die erkennende Maschine</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele durchgerechnet</h2>
+
+        <h3>Gehört ein Wort zur Sprache?</h3>
+        <p>Nehmen wir <code>ab(a|b)*c</code> und prüfen zwei konkrete Wörter:</p>
+
+        <ol class="steps">
+          <li><strong>Wort "ababc" testen:</strong> beginnt mit "ab" ✓ — danach folgt "ab" (2× a/b, vom
+            Stern-Teil erlaubt) ✓ — endet mit "c" ✓. Also <strong>ababc ∈ L</strong>.</li>
+          <li><strong>Wort "bac" testen:</strong> beginnt <em>nicht</em> mit "ab" (sondern mit "ba") ✗.
+            Also <strong>bac ∉ L</strong> — egal was danach kommt, das feste Präfix "ab" fehlt.</li>
+          <li><strong>Wort "abc" testen:</strong> beginnt mit "ab" ✓ — der Stern-Teil (a|b)* wird
+            <strong>null-mal</strong> durchlaufen (das ist erlaubt!) — endet mit "c" ✓. Also
+            <strong>abc ∈ L</strong>.</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Trick beim Testen</div>
+          <p>Zerlege das Wort immer <strong>in der Reihenfolge der Verkettung</strong>: erst das feste Präfix
+            "ab" abschneiden, dann prüfen, ob der Rest bis auf das letzte Zeichen nur aus a/b besteht, dann
+            prüfen, ob genau ein "c" übrig bleibt.</p>
+        </div>
+
+        <h3>Wie viele Wörter einer festen Länge gibt es?</h3>
+        <p>Für Σ = {a,b} und Wortlänge n gibt es genau <strong>2ⁿ</strong> mögliche Wörter — bei jedem der n
+          Positionen hast du 2 freie Wahlmöglichkeiten:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Länge n</th><th>Anzahl Wörter (|Σ|ⁿ, |Σ|=2)</th><th>Beispiele</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>1</td><td>ε</td></tr>
+            <tr><td>1</td><td>2</td><td>a, b</td></tr>
+            <tr><td>2</td><td>4</td><td>aa, ab, ba, bb</td></tr>
+            <tr><td>3</td><td>8</td><td>aaa, aab, aba, …</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Wörter fester Länge</div>
+          <span class="formula">Anzahl Wörter der Länge n über Σ  =  |Σ|ⁿ</span>
+          <p>Σ* selbst ist die Vereinigung <strong>aller</strong> dieser endlichen Ebenen (n=0,1,2,…) — deshalb
+            ist Σ* unendlich groß, obwohl jede einzelne Ebene endlich ist.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>ε und ∅ sind dasselbe — "beide sind doch leer".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ε ist ein <strong>Wort</strong> (das leere
+            Wort, Länge 0). ∅ ist eine <strong>Sprache</strong> ohne ein einziges Wort — nicht einmal ε ist
+            drin! {ε} ist also eine Sprache mit genau einem Wort, aber ∅ hat gar keins.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Σ* enthält nur Wörter mit mindestens einem
+            Zeichen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Σ* enthält <strong>auch ε</strong> — der
+            Kleene-Stern erlaubt ausdrücklich auch <strong>null</strong> Wiederholungen. Σ* ist damit die
+            Vereinigung aller Wortlängen 0, 1, 2, 3, ….</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei r* muss r mindestens einmal vorkommen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Kleene-Stern * bedeutet <strong>beliebig
+            oft, inklusive null-mal</strong>. Deshalb ist ε immer Teil von r* — egal was r ist (auch r* mit
+            r=∅ ergibt {ε}, nicht ∅!).</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grundsymbole</h4>
+          <pre class="code">Σ    Alphabet             endliche Zeichenmenge, z. B. {a,b}
+Σ*   alle Wörter          inklusive ε, unendlich groß
+ε    leeres Wort          Länge 0 — ist IN Σ* enthalten
+∅    leere Sprache        enthält gar kein Wort, auch ε nicht
+L ⊆ Σ*   Sprache          irgendeine Teilmenge von Σ*</pre>
+
+          <h4>Regulärer Ausdruck — die sechs Bausteine</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Baustein</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>∅</td><td>leere Sprache</td></tr>
+              <tr><td>ε</td><td>Sprache {ε}</td></tr>
+              <tr><td>a ∈ Σ</td><td>Sprache {a}</td></tr>
+              <tr><td>(r|s)</td><td>r ODER s</td></tr>
+              <tr><td>(rs)</td><td>r direkt gefolgt von s</td></tr>
+              <tr><td>r*</td><td>r beliebig oft, auch 0-mal</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Chomsky-Hierarchie kompakt</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Typ</th><th>Name</th><th>Maschine</th></tr></thead>
+            <tbody>
+              <tr><td>3</td><td>regulär</td><td>endlicher Automat (NFA/DFA) — Themen 02–04</td></tr>
+              <tr><td>2</td><td>kontextfrei</td><td>Kellerautomat (PDA) — Themen 07–08</td></tr>
+              <tr><td>1</td><td>kontextsensitiv</td><td>linear beschränkter Automat</td></tr>
+              <tr><td>0</td><td>rekursiv aufzählbar</td><td>Turingmaschine — Themen 09–10</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>ε ≠ ∅</strong> — ein Wort ist keine Sprache</li>
+            <li><strong>Σ* enthält ε</strong> — auch "nichts tippen" ist ein gültiges Wort</li>
+            <li><strong>r* = beliebig oft, inklusive 0-mal</strong> — deshalb steckt ε immer in r*</li>
+            <li>Typ 3 ⊂ Typ 2 ⊂ Typ 1 ⊂ Typ 0 — jede kleinere Klasse ist komplett in der größeren enthalten</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was ist ε?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>das leere Wort (Länge 0)</button>
+              <button class="quiz-choice" type="button">die leere Sprache</button>
+              <button class="quiz-choice" type="button">ein beliebiges Zeichen aus Σ</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ε ist ein <strong>Wort</strong>, nämlich das ohne jedes Zeichen.
+              Die leere <strong>Sprache</strong> (kein Wort enthalten) heißt ∅ — das ist etwas anderes!</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welche Aussage über Σ* stimmt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Σ* enthält auch das leere Wort ε.</button>
+              <button class="quiz-choice" type="button">Σ* enthält nur Wörter mit mindestens 1 Zeichen.</button>
+              <button class="quiz-choice" type="button">Σ* ist immer endlich.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Σ* ist die Vereinigung aller Wortlängen 0,1,2,… — bei Länge 0
+              steht genau ε. Σ* ist außerdem <strong>unendlich</strong> groß.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Σ = {a,b}. Wie viele Wörter der Länge 2 gibt es
+              in Σ*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Wörter</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>|Σ|ⁿ = 2² = <strong>4</strong>: aa, ab, ba, bb.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Welcher Typ in der Chomsky-Hierarchie heißt
+              "regulär" und wird von endlichen Automaten erkannt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Typ 0</button>
+              <button class="quiz-choice" type="button">Typ 1</button>
+              <button class="quiz-choice" type="button">Typ 2</button>
+              <button class="quiz-choice" type="button" data-correct>Typ 3</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Typ 3</strong> ist der innerste Ring der Hierarchie —
+              erkannt von endlichen Automaten (NFA/DFA), Thema dieses und des nächsten Kapitels.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Ist "abc" ein Wort in der Sprache von
+              <code>ab(a|b)*c</code>?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja — der Stern-Teil wird einfach null-mal durchlaufen.</button>
+              <button class="quiz-choice" type="button">Nein — der Stern-Teil (a|b)* muss mindestens einmal vorkommen.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>"abc" = "ab" (Präfix) + "" (Stern-Teil, 0-mal) + "c" (Suffix).
+              Da r* auch 0 Wiederholungen erlaubt, ist <strong>"abc" ∈ L</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="../index.html">
+          <div class="pn-label">← Übersicht</div>
+          <div class="pn-title">Zur FSK-Kursübersicht</div>
+        </a>
+        <a class="next" href="02-endliche-automaten.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Endliche Automaten: NFA &amp; DFA</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>µ-rekursive Funktionen · FSK</title>
+<meta name="description" content="µ-rekursive Funktionen bildlich erklärt: die drei Basisbausteine (Konstante, Projektion, Nachfolger), Komposition, primitive Rekursion und der µ-Operator – mit durchgerechnetem Summen-Beispiel und der Original-Klausuraufgabe zur Doppelsumme (SoSe 2024)." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 09</div>
+    <span class="th-icon">🔁</span>
+    <h1>µ-rekursive Funktionen</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Bausteine &amp; Operationen</a></li>
+        <li><a href="#rechnen">Beispiele &amp; Klausuraufgabe</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Was heißt eigentlich <strong>„berechenbar"</strong>? Die µ-Rekursion gibt darauf eine
+          erstaunlich handfeste Antwort: Es gibt genau <strong>drei winzige Grundbausteine</strong> und
+          <strong>drei Bauregeln</strong>, um sie zusammenzustecken. Jede Funktion, die sich damit bauen lässt,
+          heißt <strong>µ-rekursiv</strong> — und nach der Church-Turing-These ist das genau die Menge aller
+          Funktionen, die irgendein Computer (oder eine Turingmaschine) jemals berechnen kann.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du hast eine Lego-Kiste mit nur <strong>drei Sorten Steinen</strong>: einen Stein mit fester
+            Zahl drauf (z. B. immer „0"), einen „Zeige-auf-Eingabe-Nr. i"-Stein und einen „Zähl-eins-weiter"-Stein.
+            Dazu <strong>drei Bauregeln</strong>: Steine hintereinanderstecken (<strong>Komposition</strong>),
+            einen Turm Etage für Etage aus der vorigen Etage aufbauen (<strong>primitive Rekursion</strong>),
+            oder so lange weiterzählen, bis eine Markierung „0" erreicht ist (<strong>µ-Operator</strong>,
+            eine Art Suchschleife). Mit diesen sechs Zutaten — nicht mehr, nicht weniger — lässt sich <em>jede</em>
+            berechenbare Funktion zusammenbauen.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die Bausteine berechenbarer Funktionen</h2>
+
+        <h3>Die drei Basisbausteine (Basisfunktionen)</h3>
+        <p>Ganz unten in jeder µ-rekursiven Funktion stecken nur diese drei simplen Bausteine — sie brauchen
+          selbst keine weitere Erklärung, sie sind einfach „da":</p>
+
+        <div class="factgrid">
+          <div class="fact"><b>Konstante</b><span>f(x₁,...,xₖ) = c ∈ ℕ — liefert immer denselben festen Wert</span></div>
+          <div class="fact"><b>Projektion π^k_i</b><span>π^k_i(x₁,...,xₖ) = xᵢ — „greift" die i-te von k Eingaben heraus</span></div>
+          <div class="fact"><b>Nachfolger succ</b><span>succ(x) = x + 1 — zählt genau eins weiter</span></div>
+          <div class="fact"><b>µ-Operator-Bedingung</b><span>immer „= 0" — kein &lt;, &gt; oder ≠ erlaubt</span></div>
+        </div>
+
+        <h3>Die drei Operationen: so werden Bausteine zusammengesteckt</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Komposition — Ergebnisse ineinanderstecken</div>
+          <span class="formula">f(x₁,...,xₖ) = g(h₁(x₁,...,xₖ),...,hₘ(x₁,...,xₖ))</span>
+          <p>Wenn g und alle h₁,...,hₘ bereits µ-rekursiv sind, ist auch f µ-rekursiv. Die hᵢ liefern die
+            „Zwischenergebnisse", die g dann weiterverarbeitet.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Primitive Rekursion — Etage für Etage aus der vorigen bauen</div>
+          <span class="formula">f(0, x₂,...,xₖ) = g(x₂,...,xₖ)
+f(n, x₂,...,xₖ) = h(f(n-1, x₂,...,xₖ), n-1, x₂,...,xₖ)</span>
+          <p>g liefert den Startwert (Etage 0). h nimmt das <strong>vorige</strong> Ergebnis f(n-1,...) plus
+            den Index n-1 plus die restlichen Parameter und baut daraus die <strong>nächste</strong> Etage.
+            Achtung: h bekommt als zweites Argument immer <strong>n-1</strong>, nicht n!</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">µ-Operator — so lange suchen, bis die Bedingung „0" erfüllt ist</div>
+          <span class="formula">f(x₁,...,xₖ) = µn[ h(n, x₁,...,xₖ) = 0 ]</span>
+          <p>Gesucht ist das <strong>kleinste</strong> n, für das h(n, x₁,...,xₖ) = 0 gilt. Wenn h µ-rekursiv
+            ist, ist auch f µ-rekursiv — auch wenn die Suche im Extremfall nie ein n findet (dann ist f an
+            dieser Stelle einfach undefiniert).</p>
+        </div>
+
+        <!-- SVG 1: Baustein-/Baumdiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Die Bauteile von s(n) = 1+2+…+n: 3 Basisbausteine + 2 Operationen</div>
+          <svg viewBox="0 0 760 340" width="760" role="img" aria-label="Baumdiagramm zeigt, wie sich die Funktion s aus den Basisbausteinen Konstante, Projektion und Nachfolger über die Operationen Komposition und primitive Rekursion zusammensetzt">
+            <defs>
+              <marker id="p09arrTree" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <path d="M340,56 L235,96" fill="none" stroke="#8b5cf6" stroke-width="1.6" marker-end="url(#p09arrTree)"/>
+              <path d="M420,56 L555,96" fill="none" stroke="#8b5cf6" stroke-width="1.6" marker-end="url(#p09arrTree)"/>
+              <text x="380" y="76" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="11.5">primitive Rekursion</text>
+
+              <path d="M520,142 L455,214" fill="none" stroke="#f5810b" stroke-width="1.6" marker-end="url(#p09arrTree)"/>
+              <path d="M555,142 L575,214" fill="none" stroke="#f5810b" stroke-width="1.6" marker-end="url(#p09arrTree)"/>
+              <path d="M595,142 L695,214" fill="none" stroke="#f5810b" stroke-width="1.6" marker-end="url(#p09arrTree)"/>
+              <text x="555" y="184" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="11.5">Komposition</text>
+
+              <rect x="290" y="14" width="180" height="42" rx="9" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.6"/>
+              <text x="380" y="40" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">s(n) = 1+2+…+n</text>
+
+              <rect x="130" y="96" width="170" height="46" rx="9" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="215" y="117" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">g() = 0</text>
+              <text x="215" y="133" text-anchor="middle" class="svg-soft" font-size="10.5">Basis: Konstante</text>
+
+              <rect x="460" y="96" width="190" height="46" rx="9" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="555" y="117" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">h(m,n) = m+n+1</text>
+              <text x="555" y="133" text-anchor="middle" class="svg-soft" font-size="10.5">durch Komposition gebaut</text>
+
+              <rect x="400" y="214" width="110" height="44" rx="9" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="455" y="234" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">π²₁(m,n)=m</text>
+              <text x="455" y="250" text-anchor="middle" class="svg-soft" font-size="10">Basis: Projektion</text>
+
+              <rect x="520" y="214" width="110" height="44" rx="9" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="575" y="234" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">π²₂(m,n)=n</text>
+              <text x="575" y="250" text-anchor="middle" class="svg-soft" font-size="10">Basis: Projektion</text>
+
+              <rect x="640" y="214" width="110" height="44" rx="9" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="695" y="234" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">succ(x)=x+1</text>
+              <text x="695" y="250" text-anchor="middle" class="svg-soft" font-size="10">Basis: Nachfolger</text>
+            </g>
+          </svg>
+          <figcaption>Ganz unten stehen nur die drei erlaubten Basisbausteine (grün). „Komposition" (orange) steckt
+            sie zu h(m,n)=m+n+1 zusammen. „Primitive Rekursion" (violett) baut daraus zusammen mit der
+            Basis-Konstante g die fertige Funktion s(n).</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Primitive Rekursion ist ein Spezialfall der µ-Rekursion</div>
+          <p>Jede primitiv-rekursive Funktion (gebaut nur aus Basis + Komposition + primitiver Rekursion, ganz
+            <strong>ohne</strong> µ-Operator) ist automatisch auch µ-rekursiv — der µ-Baukasten enthält den
+            primitiv-rekursiven Baukasten komplett. Umgekehrt gilt das <strong>nicht</strong>: der µ-Operator
+            erlaubt echte Suchschleifen, die im Zweifel „ewig" laufen (die Funktion ist dann an dieser Stelle
+            undefiniert) — genau das macht µ-Rekursion <strong>strikt mächtiger</strong> als primitive
+            Rekursion.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Kernbeispiel &amp; Original-Klausuraufgabe</h2>
+
+        <h3>Kernbeispiel: die Summe s(n) = 1+2+…+n</h3>
+        <p>Gesucht ist eine µ-rekursive Darstellung von s(n) = Σ_{i=1}^n i, definiert über
+          s(0) = 0, s(n) = s(n-1) + n.</p>
+
+        <ol class="steps">
+          <li><strong>Rekursionsschema erkennen:</strong> s(0) = 0 und s(n) = s(n-1) + n passt exakt ins Schema
+            f(0) = g(); f(n) = h(f(n-1), n-1).</li>
+          <li><strong>g und h identifizieren:</strong> g() = 0 (keine Argumente, konstante Funktion) und
+            h(m,n) = m + n + 1, wobei m für s(n-1) steht und n für den zweiten Parameter, den die primitive
+            Rekursion automatisch mitgibt — das ist n-1, <strong>nicht</strong> n.</li>
+          <li><strong>Nachrechnen:</strong> h(s(n-1), n-1) = s(n-1) + (n-1) + 1 = s(n-1) + n ✓ — genau die
+            gesuchte Gleichung.</li>
+          <li><strong>Warum µ-rekursiv:</strong> g ist eine Basiskonstante. h ist eine Komposition aus zwei
+            Projektionen (π²₁ liefert m, π²₂ liefert n), dem Nachfolger succ und der Addition (die selbst wieder
+            µ-rekursiv ist, weil man sie mit primitiver Rekursion aus succ bauen kann). s entsteht aus primitiver
+            Rekursion mit µ-rekursiven g, h ⇒ s ist µ-rekursiv.</li>
+        </ol>
+
+        <!-- SVG 2: Unfolding-Treppe -->
+        <figure class="diagram">
+          <div class="diagram-title">Abrollen (unfolding) der primitiven Rekursion: s(3) Schritt für Schritt</div>
+          <svg viewBox="0 0 600 300" width="600" role="img" aria-label="Treppendiagramm zeigt das schrittweise Abrollen von s(3) über s(2), s(1) bis s(0), mit den jeweiligen h-Aufrufen als Beschriftung">
+            <defs>
+              <marker id="p09arrStep" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <line x1="30" y1="250" x2="580" y2="250" stroke="#8a94a6" stroke-width="1.3"/>
+
+              <rect x="50" y="238" width="90" height="12" fill="#8b5cf6" fill-opacity="0.22" stroke="#8b5cf6"/>
+              <text x="95" y="228" text-anchor="middle" class="svg-ink" font-weight="800">s(0) = 0</text>
+              <text x="95" y="268" text-anchor="middle" class="svg-soft">g() = 0</text>
+
+              <rect x="180" y="228" width="90" height="22" fill="#8b5cf6" fill-opacity="0.35" stroke="#8b5cf6"/>
+              <text x="225" y="218" text-anchor="middle" class="svg-ink" font-weight="800">s(1) = 1</text>
+              <text x="225" y="268" text-anchor="middle" class="svg-soft">h(0,0)=0+0+1</text>
+
+              <rect x="310" y="192" width="90" height="58" fill="#8b5cf6" fill-opacity="0.5" stroke="#8b5cf6"/>
+              <text x="355" y="182" text-anchor="middle" class="svg-ink" font-weight="800">s(2) = 3</text>
+              <text x="355" y="268" text-anchor="middle" class="svg-soft">h(1,1)=1+1+1</text>
+
+              <rect x="440" y="122" width="90" height="128" fill="#8b5cf6" fill-opacity="0.7" stroke="#8b5cf6"/>
+              <text x="485" y="112" text-anchor="middle" class="svg-ink" font-weight="800">s(3) = 6</text>
+              <text x="485" y="268" text-anchor="middle" class="svg-soft">h(3,2)=3+2+1</text>
+
+              <path d="M140,244 C155,244 165,239 178,239" fill="none" stroke="#8a94a6" stroke-width="1.6" marker-end="url(#p09arrStep)"/>
+              <path d="M270,238 C285,238 295,215 308,215" fill="none" stroke="#8a94a6" stroke-width="1.6" marker-end="url(#p09arrStep)"/>
+              <path d="M400,210 C415,210 425,185 438,185" fill="none" stroke="#8a94a6" stroke-width="1.6" marker-end="url(#p09arrStep)"/>
+            </g>
+          </svg>
+          <figcaption>Jede Stufe ruft h mit dem Ergebnis der vorigen Stufe auf:
+            s(3)=h(s(2),2)=h(h(s(1),1),2)=h(h(h(s(0),0),1),2) — ganz unten angekommen bei der Basis g()=0, dann
+            wieder nach oben aufgelöst bis 6.</figcaption>
+        </figure>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 4a)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung (8 Punkte)</div>
+          <p>Gib eine µ-rekursive Funktion f an für die Doppelsumme
+            f(n) = Σ_{i=1}^n Σ_{j=1}^i j. Erläutere, warum f µ-rekursiv ist.</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Werte von Hand nachrechnen:</strong> f(0) = 0 (leere Summe). f(1) = Σ_{j=1}^1 j = 1.
+            f(2) = f(1) + Σ_{j=1}^2 j = 1 + (1+2) = 4. f(3) = f(2) + Σ_{j=1}^3 j = 4 + (1+2+3) = 10. Muster:
+            f(n) = f(n-1) + s(n), wobei s(n) = Σ_{j=1}^n j genau unser Kernbeispiel von oben ist!</li>
+          <li><strong>Rekursionsschema aufstellen:</strong> f(0) = 0, f(n) = f(n-1) + s(n).</li>
+          <li><strong>µ-rekursiv darstellen — s wiederverwenden:</strong> g_f() = 0 (Konstante) und
+            h_f(m,n) = m + s(n+1). f(n) = h_f(f(n-1), n-1).</li>
+          <li><strong>Nachrechnen:</strong> h_f(f(n-1), n-1) = f(n-1) + s((n-1)+1) = f(n-1) + s(n) ✓ — stimmt
+            exakt mit Schritt 2 überein.</li>
+          <li><strong>Begründung (Punkte-Checkliste):</strong> g_f ist eine Basiskonstante → µ-rekursiv. h_f ist
+            eine Komposition aus Addition (µ-rekursiv, siehe oben), s (bereits als µ-rekursiv nachgewiesen),
+            succ und Projektionen → µ-rekursiv. f nutzt primitive Rekursion mit µ-rekursiven g_f, h_f
+            ⇒ <strong>f ist µ-rekursiv.</strong></li>
+        </ol>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>n</th><th>s(n) = 1+…+n</th><th>f(n) = f(n-1)+s(n)</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            <tr><td>1</td><td>1</td><td><strong>1</strong></td></tr>
+            <tr><td>2</td><td>3</td><td><strong>4</strong></td></tr>
+            <tr><td>3</td><td>6</td><td><strong>10</strong></td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Alternative: geschlossene Formel statt Wiederverwendung von s</div>
+          <p>Wer s nicht separat definieren will, kann auch direkt h(m,n) = m + (n+1)(n+2)/2 verwenden
+            (f(n) = h(f(n-1), n-1)). Das Produkt zweier aufeinanderfolgender Zahlen ist immer gerade, die
+            Division durch 2 also stets exakt — auch diese Variante ist eine korrekte, in sich stimmige
+            Lösung. Beide Wege liefern dieselben Werte: f(3) = 4 + (2+1)(2+2)/2 = 4 + 6 = 10.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>h(m,n) = m + n (das „+1" einfach weglassen).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>h(m,n) = m + n + 1 — denn primitive Rekursion
+            übergibt h als zweites Argument immer <strong>n-1</strong>, nicht n. Das „+1" gleicht das exakt
+            wieder aus.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der µ-Operator mit einer beliebigen Bedingung,
+            z. B. µn[n = x] oder µn[h(n,x) &gt; 5].</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Bedingung ist fest an die Form
+            µn[h(n,...) = 0] gebunden — h muss µ-rekursiv sein, und die Bedingung ist <strong>immer</strong>
+            „gleich 0", keine andere Vergleichsoperation.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„f(0)=0, f(n)=f(n-1)+n ist primitive Rekursion
+            — also NICHT µ-rekursiv."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Primitive Rekursion ist ein
+            <strong>Spezialfall</strong> der µ-Rekursion. Jede primitiv-rekursive Funktion ist automatisch auch
+            µ-rekursiv — man braucht den µ-Operator dafür gar nicht extra.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>h willkürlich mit falschen Parametern
+            aufschreiben, z. B. h(f(n-1), n) statt h(f(n-1), n-1).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Form ist exakt festgelegt:
+            f(n,x₂,...,xₖ) = h(f(n-1,x₂,...,xₖ), n-1, x₂,...,xₖ) — das zweite Argument von h ist
+            <strong>immer n-1</strong>, nie n.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Der komplette Baukasten</h4>
+          <pre class="code">Basis:        c (Konstante)   π^k_i (Projektion)   succ(x)=x+1 (Nachfolger)
+Komposition:  f(x) = g(h₁(x),...,hₘ(x))
+Prim. Rek.:   f(0,x) = g(x)
+              f(n,x) = h(f(n-1,x), n-1, x)
+µ-Operator:   f(x) = µn[ h(n,x) = 0 ]   (kleinstes n mit h(n,x)=0)</pre>
+
+          <h4>Kernbeispiel als Vorlage</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Teil</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>g() =</td><td>0</td></tr>
+              <tr><td>h(m,n) =</td><td>m + n + 1</td></tr>
+              <tr><td>s(n) =</td><td>h(s(n-1), n-1)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Nur drei Basisbausteine</strong> — Konstante, Projektion, Nachfolger. Alles andere
+              (Addition, Multiplikation, ...) muss erst gebaut werden.</li>
+            <li>Bei primitiver Rekursion bekommt h als Index immer <strong>n-1</strong>, nicht n — das kostet
+              in Klausuren am meisten Punkte.</li>
+            <li>Primitive Rekursion ⊆ µ-Rekursion — jede primitiv-rekursive Funktion ist automatisch
+              µ-rekursiv.</li>
+            <li>Der µ-Operator sucht <strong>immer</strong> nach „= 0", nie nach einer anderen Bedingung.</li>
+            <li>Schon bewiesene µ-rekursive Hilfsfunktionen (wie s) darfst du in neuen h-Definitionen einfach
+              wiederverwenden — spart Arbeit und Punkte-Risiko.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Unser Kernbeispiel: s(n) = 1+2+…+n. Wie groß ist
+              s(3)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>s(3) = h(s(2),2) = h(3,2) = 3+2+1 = <strong>6</strong>
+              (= 1+2+3).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welche der folgenden ist <strong>KEIN</strong>
+              Basisbaustein der µ-Rekursion?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Konstante</button>
+              <button class="quiz-choice" type="button">Projektion π^k_i</button>
+              <button class="quiz-choice" type="button" data-correct>Multiplikation</button>
+              <button class="quiz-choice" type="button">Nachfolger succ</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die einzigen drei Basisbausteine sind Konstante, Projektion und
+              Nachfolger. <strong>Multiplikation</strong> ist keine Basisfunktion — sie muss erst über primitive
+              Rekursion und Komposition aus den Basisbausteinen gebaut werden.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Ist primitive Rekursion ein Spezialfall der
+              µ-Rekursion?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja — jede primitiv-rekursive Funktion ist
+                auch µ-rekursiv</button>
+              <button class="quiz-choice" type="button">Nein, das sind zwei unvereinbare Klassen</button>
+              <button class="quiz-choice" type="button">Nur wenn zusätzlich der µ-Operator verwendet wird</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Primitive Rekursion ist im µ-rekursiven Baukasten vollständig
+              enthalten (Basis + Komposition + primitive Rekursion). Deshalb ist jede primitiv-rekursive
+              Funktion automatisch auch <strong>µ-rekursiv</strong> — umgekehrt gilt das nicht.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Beim µ-Operator f(x) = µn[h(n,x) = ?]: Welchen
+              Wert muss h(n,x) annehmen, damit n als Ergebnis zählt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der µ-Operator sucht immer nach h(n,x) = <strong>0</strong> — keine
+              andere Bedingung ist erlaubt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="10">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur SoSe 24 (EK, Aufgabe 4a): Für die
+              Doppelsumme f(n) = Σ_{i=1}^n Σ_{j=1}^i j gilt f(n) = f(n-1) + s(n). Wie groß ist f(3)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>f(0)=0, f(1)=1, f(2)=1+3=4, f(3)=4+6=<strong>10</strong>
+              (s(3)=1+2+3=6).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>In h(m,n) = m+n+1 für unser Kernbeispiel s: warum
+              steht dort „+1" und nicht einfach m+n?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Weil primitive Rekursion h als zweites
+                Argument automatisch n-1 mitgibt, nicht n</button>
+              <button class="quiz-choice" type="button">Weil h sonst nicht total wäre</button>
+              <button class="quiz-choice" type="button">Reiner Geschmack — beides wäre gleich richtig</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>h(s(n-1), n-1) soll s(n-1)+n ergeben. Da das zweite Argument
+              bereits n-1 ist, muss h genau <strong>+1</strong> draufrechnen, um wieder auf n zu kommen:
+              (n-1)+1 = n.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="08-kellerautomaten.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Kellerautomaten (PDA)</div>
+        </a>
+        <a class="next" href="10-rice-entscheidbarkeit.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Entscheidbarkeit &amp; Satz von Rice</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

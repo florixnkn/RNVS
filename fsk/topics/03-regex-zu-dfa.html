@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Von Regex zu DFA · FSK</title>
+<meta name="description" content="Von Regex über NFA (Thompson) zur Potenzmengenkonstruktion: wie aus einem nichtdeterministischen Automaten Schritt für Schritt ein deterministischer wird – mit ε-Hülle, vollständiger Konstruktionstabelle und gezeichneten Automaten." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 03</div>
+    <span class="th-icon">🔀</span>
+    <h1>Von Regex zu DFA</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Thompson, ε-Hülle &amp; Potenzmenge</a></li>
+        <li><a href="#rechnen">Beispiel durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Ein regulärer Ausdruck wie <code>(ab|ba)(a|b)*c</code> ist super kompakt zu
+          <strong>lesen</strong> — aber ein Computer will keinen Text lesen, er will einen <strong>Automaten
+          ausführen</strong>. Diese Seite zeigt die komplette Kette von der Formel bis zur Maschine: erst
+          entsteht ein <strong>NFA</strong> (nichtdeterministisch, darf raten), dann wird daraus mit der
+          <strong>Potenzmengenkonstruktion</strong> ein <strong>DFA</strong> (deterministisch, muss sich
+          festlegen). Das ist mit Abstand die klausurrelevanteste Konstruktion des ganzen Moduls.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… der NFA ist eine Gruppe von Kundschaftern, die sich an einer Weggabelung <strong>aufteilen</strong>
+            dürfen: "Du gehst links, ich gehe rechts, wir berichten beide." Am Ende des Wortes hat die Gruppe
+            <em>gewonnen</em>, wenn <strong>mindestens einer</strong> von ihnen im Zielzustand steht. Ein DFA
+            darf sich das nicht leisten — er ist ein <strong>einzelner</strong> Kundschafter, der sich sofort
+            entscheiden muss. Der Trick der Potenzmengenkonstruktion: der DFA-Kundschafter merkt sich einfach
+            <strong>die ganze Gruppe auf einmal</strong> als "Sein" aktueller Zustand — sein Zustand ist also
+            eine <strong>Menge</strong> von NFA-Zuständen.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Thompson, ε-Hülle &amp; die Potenzmengenkonstruktion</h2>
+
+        <h3>1. Regex → NFA (Thompson-Konstruktion, die Kurzversion)</h3>
+        <p>Du musst die Thompson-Konstruktion für die Klausur nicht auswendig als Algorithmus aufschreiben können
+          — aber du solltest das <strong>Bauprinzip</strong> erkennen: jeder Regex-Baustein wird zu einem kleinen
+          Automaten-"Fragment" mit genau einem Start- und einem Ende-Faden, und drei Regeln kleben diese Fragmente
+          zusammen:</p>
+
+        <!-- SVG 1: Thompson-Bauprinzip, 3 Panels -->
+        <figure class="diagram">
+          <div class="diagram-title">Die drei Bauregeln von Thompson: Konkatenation, Vereinigung, Stern</div>
+          <svg viewBox="0 0 680 190" width="680" role="img" aria-label="Drei Diagramme: Konkatenation r gefolgt von s als Kette, Vereinigung r oder s als zwei parallele Bögen, Kleene-Stern r* als Selbstschleife">
+            <defs>
+              <marker id="p03arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="p03arrV" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+              <marker id="p03arrG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#12b28c"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Panel 1: Konkatenation -->
+              <text x="100" y="28" text-anchor="middle" fill="#2f6df6" font-weight="800">r · s (Kette)</text>
+              <circle cx="40" cy="110" r="16" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="1.6"/>
+              <circle cx="160" cy="110" r="16" fill="#2f6df6" fill-opacity="0.18" stroke="#2f6df6" stroke-width="1.6"/>
+              <circle cx="100" cy="110" r="14" fill="none" stroke="#2f6df6" stroke-width="1.3" stroke-dasharray="2 3"/>
+              <path d="M56,110 L84,110" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p03arrB)"/>
+              <path d="M114,110 L144,110" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p03arrB)"/>
+              <text x="70" y="100" text-anchor="middle" fill="#2f6df6" font-weight="700">r</text>
+              <text x="130" y="100" text-anchor="middle" fill="#2f6df6" font-weight="700">s</text>
+              <text x="100" y="150" text-anchor="middle" class="svg-soft" font-size="11">erst r, danach s</text>
+
+              <!-- Panel 2: Vereinigung -->
+              <text x="340" y="28" text-anchor="middle" fill="#8b5cf6" font-weight="800">r | s (Auswahl)</text>
+              <circle cx="280" cy="110" r="16" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.6"/>
+              <circle cx="400" cy="110" r="16" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.6"/>
+              <path d="M294,102 C330,70 350,70 386,102" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p03arrV)"/>
+              <path d="M294,118 C330,150 350,150 386,118" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p03arrV)"/>
+              <text x="340" y="66" text-anchor="middle" fill="#8b5cf6" font-weight="700">r</text>
+              <text x="340" y="164" text-anchor="middle" fill="#8b5cf6" font-weight="700">s</text>
+              <text x="340" y="150" text-anchor="middle" class="svg-soft" font-size="11" dy="30">ε-Gabelung: r ODER s nehmen</text>
+
+              <!-- Panel 3: Stern -->
+              <text x="580" y="28" text-anchor="middle" fill="#12b28c" font-weight="800">r* (Wiederholung)</text>
+              <circle cx="580" cy="120" r="18" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.6"/>
+              <path d="M568,106 C556,60 604,60 592,106" fill="none" stroke="#12b28c" stroke-width="2" marker-end="url(#p03arrG)"/>
+              <text x="580" y="52" text-anchor="middle" fill="#12b28c" font-weight="700">r</text>
+              <text x="580" y="160" text-anchor="middle" class="svg-soft" font-size="11">0-mal, 1-mal, beliebig oft — via ε auch ganz überspringbar</text>
+            </g>
+          </svg>
+          <figcaption>Jeder Regex wird rekursiv in solche Fragmente zerlegt. Für die Klausur reicht es, NFAs
+            direkt "aus dem Bauch heraus" nach diesem Muster zu zeichnen — die strenge Thompson-Formalität
+            wird selten verlangt.</figcaption>
+        </figure>
+
+        <h3>2. ε-Hülle: "wohin komme ich, ohne ein Zeichen zu lesen?"</h3>
+        <p>Ein NFA darf <strong>ε-Kanten</strong> haben — Übergänge, die keinen Buchstaben verbrauchen. Die
+          <strong>ε-Hülle</strong> (englisch <em>epsilon closure</em>) einer Zustandsmenge S ist die Menge aller
+          Zustände, die du von S aus erreichst, wenn du <strong>nur</strong> ε-Kanten läufst — S selbst zählt
+          immer mit dazu.</p>
+
+        <!-- SVG 2: ε-Hülle Mini-Beispiel -->
+        <figure class="diagram">
+          <div class="diagram-title">ε-Hülle({p₀}) = {p₀, p₁} — aber p₂ NICHT, denn dafür musst du 'a' lesen</div>
+          <svg viewBox="0 0 420 200" width="420" role="img" aria-label="Drei Zustände p0, p1, p2. p0 hat eine Epsilon-Kante zu p1, p1 hat eine a-Kante zu p2. Ein gestrichelter Rahmen um p0 und p1 markiert die Epsilon-Hülle von p0.">
+            <defs>
+              <marker id="p03arrEps" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+              <marker id="p03arrA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="36" y="70" width="150" height="80" rx="16" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <text x="111" y="60" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="12">ε-Hülle(p₀)</text>
+
+              <circle cx="80" cy="110" r="24" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="80" y="115" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">p₀</text>
+
+              <circle cx="220" cy="110" r="24" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="220" y="115" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">p₁</text>
+
+              <circle cx="360" cy="110" r="24" fill="#2f6df6" fill-opacity="0.1" stroke="#2f6df6" stroke-width="2"/>
+              <text x="360" y="115" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">p₂</text>
+
+              <path d="M106,110 L194,110" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p03arrEps)"/>
+              <text x="150" y="98" text-anchor="middle" fill="#8b5cf6" font-weight="800">ε</text>
+
+              <path d="M246,110 L334,110" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p03arrA)"/>
+              <text x="290" y="98" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+
+              <text x="210" y="178" text-anchor="middle" class="svg-soft" font-size="11.5">p₂ ist erst NACH dem Lesen von 'a' erreichbar — gehört nicht zur ε-Hülle von p₀</text>
+            </g>
+          </svg>
+          <figcaption>Wenn du die ε-Hülle vergisst, "verlierst" du beim NFA→DFA-Umbau genau die Zustände, die
+            man kostenlos (ohne Zeichen) mit-erreicht — der DFA wird dann fehlerhaft zu "eng".</figcaption>
+        </figure>
+
+        <h3>3. Die Potenzmengenkonstruktion (das Herzstück)</h3>
+        <p>Jetzt zum eigentlichen Algorithmus, der aus einem NFA M = (Q, Σ, δ, q₀, F) einen äquivalenten DFA
+          baut. Die Idee: jeder DFA-Zustand ist eine <strong>Teilmenge</strong> von Q — "alle NFA-Zustände, in
+          denen ich gleichzeitig stehen könnte".</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Potenzmengenkonstruktion</div>
+          <span class="formula">Startzustand:     S₀ = ε-Hülle({q₀})
+Übergang:         δ_DFA(S, a) = ε-Hülle( ⋃_{p∈S} δ_NFA(p, a) )
+Endzustände:      F_DFA = { S ⊆ Q | S ∩ F ≠ ∅ }   (mindestens 1 NFA-Endzustand drin)</span>
+          <p>S ist dabei immer eine <strong>Teilmenge</strong> von Q, geschrieben als {…}. Wichtig: du
+            konstruierst <strong>nur die tatsächlich erreichbaren</strong> Teilmengen — nicht alle 2^|Q| davon!</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Startzustand festlegen:</strong> S₀ = ε-Hülle({q₀}) — das ist der erste DFA-Zustand.</li>
+          <li><strong>Für jeden neuen DFA-Zustand S und jedes Symbol a ∈ Σ:</strong> sammle alle NFA-Ziele
+            δ_NFA(p,a) für jedes p ∈ S, vereinige sie, und bilde davon die ε-Hülle. Das Ergebnis ist
+            δ_DFA(S, a).</li>
+          <li><strong>Neue Teilmenge entdeckt?</strong> Dann wird sie ein neuer DFA-Zustand — weiter zu Schritt 2
+            für diesen Zustand.</li>
+          <li><strong>Wiederholen, bis keine neuen Teilmengen mehr entstehen.</strong> Das ist der entscheidende
+            Punkt: du arbeitest dich von S₀ aus "nach außen vor" und stoppst, sobald nichts Neues mehr
+            dazukommt — statt vorher alle 2^|Q| Teilmengen durchzuprobieren.</li>
+          <li><strong>Leere Menge ∅ nicht vergessen:</strong> Führt ein Übergang ins Leere (der NFA hat für
+            (p,a) gar kein Ziel), landest du im DFA im <strong>Müllzustand</strong> ∅ — er ist selbst nicht
+            akzeptierend und hat Selbstschleifen für alle Symbole.</li>
+          <li><strong>Endzustände markieren:</strong> jede Teilmenge, die mindestens einen NFA-Endzustand
+            enthält, wird im DFA akzeptierend.</li>
+        </ol>
+
+        <div class="factgrid">
+          <div class="fact"><b>Q_DFA ⊆ P(Q_NFA)</b><span>DFA-Zustände sind Teilmengen der NFA-Zustände</span></div>
+          <div class="fact"><b>nur erreichbare S</b><span>nie blind alle 2^n Teilmengen bauen</span></div>
+          <div class="fact"><b>∅ ist ein Zustand</b><span>der Müllzustand, nicht "kein Zustand"</span></div>
+          <div class="fact"><b>NFA und DFA</b><span>akzeptieren immer dieselbe Sprache</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiel durchgerechnet</h2>
+        <p class="lead-in">🧮 Wir bauen den DFA für einen kleinen NFA komplett von Hand — inklusive
+          Müllzustand, damit du siehst, wie beide Fallen (ε-Hülle, Müllzustand) in einem einzigen Beispiel
+          zusammenkommen.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gegeben: NFA mit 3 Zuständen</div>
+          <p>Q = {z₀, z₁, z₂}, Σ = {a, b}, Startzustand z₀, Endzustand F = {z₂}. Keine ε-Kanten in diesem
+            Beispiel (ε-Hülle(S) = S bleibt also trivial — die Formel wird trotzdem immer mitgeschrieben, weil
+            sie in der Klausur oft NICHT trivial ist).</p>
+          <p><strong>Übergänge:</strong> z₀ --a--&gt; z₁ &nbsp;·&nbsp; z₁ --b--&gt; z₁ &nbsp;·&nbsp;
+            z₁ --b--&gt; z₂ &nbsp;<em>(z₁ ist bei 'b' nichtdeterministisch — zwei Ziele!)</em></p>
+        </div>
+
+        <!-- SVG 3: Der NFA -->
+        <figure class="diagram">
+          <div class="diagram-title">Ausgangs-NFA: z₁ hat bei 'b' zwei mögliche Ziele</div>
+          <svg viewBox="0 0 600 260" width="600" role="img" aria-label="NFA mit drei Zuständen z0, z1, z2. z0 geht über a zu z1. z1 geht über b sowohl zu sich selbst als auch zu z2. z2 ist der akzeptierende Zustand.">
+            <defs>
+              <marker id="p03arrN1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <path d="M20,140 L64,140" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p03arrN1)"/>
+
+              <circle cx="90" cy="140" r="26" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="90" y="146" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₀</text>
+
+              <circle cx="290" cy="140" r="26" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="290" y="146" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₁</text>
+
+              <circle cx="500" cy="140" r="27" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="500" cy="140" r="21" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="500" y="146" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₂</text>
+
+              <path d="M116,140 L264,140" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p03arrN1)"/>
+              <text x="190" y="128" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+
+              <path d="M316,140 L473,140" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p03arrN1)"/>
+              <text x="395" y="128" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <path d="M278,116 C260,66 320,66 302,116" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p03arrN1)"/>
+              <text x="290" y="52" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+            </g>
+          </svg>
+          <figcaption>z₁ verzweigt bei 'b' nichtdeterministisch: es bleibt in z₁ ODER springt nach z₂ — beide
+            Möglichkeiten "gleichzeitig". Genau das muss der DFA gleich als EINEN neuen Zustand {z₁,z₂}
+            zusammenfassen.</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li><strong>Startzustand:</strong> S₀ = ε-Hülle({z₀}) = {z₀}.</li>
+          <li><strong>{z₀} bei a:</strong> δ_NFA(z₀,a) = {z₁} → ε-Hülle({z₁}) = <strong>{z₁}</strong> (neu!)</li>
+          <li><strong>{z₀} bei b:</strong> δ_NFA(z₀,b) ist nirgends definiert → leere Menge → ε-Hülle(∅) =
+            <strong>∅</strong> (neu — der Müllzustand!)</li>
+          <li><strong>{z₁} bei a:</strong> δ_NFA(z₁,a) ist undefiniert → <strong>∅</strong> (schon bekannt)</li>
+          <li><strong>{z₁} bei b:</strong> δ_NFA(z₁,b) = {z₁,z₂} → ε-Hülle({z₁,z₂}) = <strong>{z₁,z₂}</strong>
+            (neu! — und akzeptierend, weil z₂ ∈ F enthalten ist)</li>
+          <li><strong>{z₁,z₂} bei a:</strong> weder z₁ noch z₂ haben ein a-Ziel → <strong>∅</strong></li>
+          <li><strong>{z₁,z₂} bei b:</strong> δ_NFA(z₁,b) ∪ δ_NFA(z₂,b) = {z₁,z₂} ∪ ∅ = <strong>{z₁,z₂}</strong>
+            (Selbstschleife — schon bekannt)</li>
+          <li><strong>∅ bei a, b:</strong> bleibt <strong>∅</strong> (Müllzustand schleift immer zu sich
+            selbst).</li>
+          <li><strong>Fertig:</strong> keine neuen Teilmengen mehr → genau <strong>4 erreichbare</strong>
+            DFA-Zustände, statt der theoretisch möglichen 2³ = 8 Teilmengen von {z₀,z₁,z₂}.</li>
+        </ol>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>DFA-Zustand</th><th>bei a</th><th>bei b</th><th>akzeptierend?</th></tr></thead>
+          <tbody>
+            <tr><td><strong>→ {z₀}</strong> (Start)</td><td>{z₁}</td><td>∅</td><td>nein</td></tr>
+            <tr><td>{z₁}</td><td>∅</td><td>{z₁,z₂}</td><td>nein</td></tr>
+            <tr><td>{z₁,z₂}</td><td>∅</td><td>{z₁,z₂}</td><td><strong>ja</strong> (z₂ ∈ F)</td></tr>
+            <tr><td>∅ (Müllzustand)</td><td>∅</td><td>∅</td><td>nein</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 4: Der resultierende DFA -->
+        <figure class="diagram">
+          <div class="diagram-title">Der fertige DFA — 4 von theoretisch 8 Teilmengen sind erreichbar</div>
+          <svg viewBox="0 0 600 340" width="600" role="img" aria-label="DFA mit vier Zuständen: {z0} als Start, {z1}, das akzeptierende {z1,z2} und der nicht-akzeptierende Müllzustand leere Menge. Alle drei Nicht-Treffer-Übergänge führen in den Müllzustand.">
+            <defs>
+              <marker id="p03arrD1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+              <marker id="p03arrD2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e0483d"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <path d="M14,100 L58,100" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p03arrD1)"/>
+
+              <circle cx="84" cy="100" r="26" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="84" y="105" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12">{z₀}</text>
+
+              <circle cx="284" cy="100" r="26" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="284" y="105" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12">{z₁}</text>
+
+              <ellipse cx="490" cy="100" rx="46" ry="30" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <ellipse cx="490" cy="100" rx="39" ry="23" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="490" y="105" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12">{z₁,z₂}</text>
+
+              <circle cx="284" cy="270" r="26" fill="#e0483d" fill-opacity="0.12" stroke="#e0483d" stroke-width="2"/>
+              <text x="284" y="276" text-anchor="middle" fill="#e0483d" font-family="JetBrains Mono, monospace" font-weight="700" font-size="15">∅</text>
+
+              <!-- Hauptkette -->
+              <path d="M110,100 L258,100" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p03arrD1)"/>
+              <text x="184" y="88" text-anchor="middle" fill="#8b5cf6" font-weight="800">a</text>
+
+              <path d="M312,97 C380,85 420,88 444,92" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p03arrD1)"/>
+              <text x="380" y="72" text-anchor="middle" fill="#8b5cf6" font-weight="800">b</text>
+
+              <!-- Selbstschleife {z1,z2} bei b -->
+              <path d="M478,72 C466,30 514,30 502,72" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p03arrD1)"/>
+              <text x="490" y="20" text-anchor="middle" fill="#8b5cf6" font-weight="800">b</text>
+
+              <!-- drei Kanten in den Müllzustand -->
+              <path d="M92,126 C130,190 220,240 260,254" fill="none" stroke="#e0483d" stroke-width="2" marker-end="url(#p03arrD2)"/>
+              <text x="150" y="210" text-anchor="middle" fill="#e0483d" font-weight="800">b</text>
+
+              <path d="M284,126 L284,244" fill="none" stroke="#e0483d" stroke-width="2" marker-end="url(#p03arrD2)"/>
+              <text x="300" y="190" fill="#e0483d" font-weight="800">a</text>
+
+              <path d="M468,124 C420,190 340,240 310,254" fill="none" stroke="#e0483d" stroke-width="2" marker-end="url(#p03arrD2)"/>
+              <text x="410" y="210" text-anchor="middle" fill="#e0483d" font-weight="800">a</text>
+
+              <!-- Selbstschleife Müllzustand -->
+              <path d="M262,254 C230,220 230,290 260,288" fill="none" stroke="#e0483d" stroke-width="1.8" marker-end="url(#p03arrD2)"/>
+              <text x="216" y="270" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="11">a,b</text>
+            </g>
+          </svg>
+          <figcaption>Alle Pfeile, die im NFA "ins Leere" gelaufen wären, landen im DFA gebündelt im
+            <strong>Müllzustand ∅</strong> — er ist Pflicht, damit der DFA <strong>total</strong> ist (für
+            jeden Zustand und jedes Symbol genau ein Ziel).</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei der Umwandlung NFA→DFA werden ε-Kanten
+            einfach ignoriert, "die sind ja gratis".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ε-Kanten müssen über die <strong>ε-Hülle</strong>
+            in JEDEN Übergang eingerechnet werden: δ_DFA(S,a) = ε-Hülle(⋃ δ_NFA(p,a)) — auch der
+            <strong>Startzustand</strong> ist schon ε-Hülle({q₀}), nicht nur {q₀}.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein NFA mit n Zuständen ⟹ konstruiere gleich
+            alle 2ⁿ Teilmengen als DFA-Zustände.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur die <strong>erreichbaren</strong>
+            Teilmengen werden zu DFA-Zuständen — starte bei S₀ und arbeite dich Schritt für Schritt nach außen
+            vor. Im Beispiel oben sind das 4 von 8 möglichen — meistens sind es deutlich weniger als 2ⁿ.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Müllzustand ∅ wird weggelassen, weil "da
+            ja sowieso nichts akzeptiert wird".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein DFA muss <strong>total</strong> sein —
+            für jeden Zustand und jedes Symbol muss genau ein Ziel existieren. Fehlt im NFA ein Ziel, braucht
+            der DFA den Müllzustand ∅ mit Selbstschleifen für alle Symbole.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>NFA und der daraus gebaute DFA haben immer
+            (ungefähr) gleich viele Zustände.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der DFA kann exponentiell mehr Zustände
+            haben (bis zu 2ⁿ) — muss er aber nicht. Die Anzahl hängt davon ab, wie viele unterscheidbare
+            Teilmengen beim Verfolgen der Übergänge wirklich entstehen.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Die Potenzmengenkonstruktion in 4 Zeilen</h4>
+          <pre class="code">S₀        = ε-Hülle({q₀})                         ← Startzustand
+δ_DFA(S,a)= ε-Hülle( ⋃_{p∈S} δ_NFA(p,a) )         ← neuer Zustand pro (S,a)
+F_DFA     = { S | S ∩ F_NFA ≠ ∅ }                  ← mind. 1 NFA-Endzustand drin
+∅ (Müllzustand) nur bauen, wenn wirklich ein Übergang ins Leere führt</pre>
+
+          <h4>Ablauf-Checkliste</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schritt</th><th>Worauf achten</th></tr></thead>
+            <tbody>
+              <tr><td>1. Startzustand</td><td>ε-Hülle nicht vergessen, auch wenn sie trivial aussieht</td></tr>
+              <tr><td>2. Neue Zustände finden</td><td>nur erreichbare Teilmengen, nie blind alle 2ⁿ</td></tr>
+              <tr><td>3. Übergänge berechnen</td><td>erst vereinigen, dann ε-Hülle bilden</td></tr>
+              <tr><td>4. Müllzustand</td><td>bei jedem "ins Leere" laufenden Übergang einbauen</td></tr>
+              <tr><td>5. Endzustände</td><td>jede Teilmenge mit ≥1 NFA-Endzustand markieren</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>DFA-Zustand = Menge von NFA-Zuständen</strong> — "wo könnte ich gerade überall stehen?"</li>
+            <li><strong>ε-Hülle ist immer dabei</strong>, auch beim Startzustand — nicht nur bei den Übergängen</li>
+            <li><strong>Nur erreichbare Teilmengen</strong> konstruieren — spart Arbeit und Punkte-Abzug</li>
+            <li><strong>Müllzustand ∅</strong> macht den DFA total — ihn zu vergessen kostet in der Klausur Punkte</li>
+            <li>NFA und DFA erkennen am Ende <strong>exakt dieselbe Sprache</strong> — nur die Zustandszahl kann sich unterscheiden</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">1.</span>🧮 Unser Beispiel-NFA hat die Zustände z₀, z₁, z₂.
+              Wie viele Zustände hat dieser NFA insgesamt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Zustände</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Q = {z₀, z₁, z₂} → <strong>3</strong> Zustände.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Wie viele DFA-Zustände sind im daraus
+              konstruierten DFA tatsächlich erreichbar (Müllzustand mitgezählt)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Zustände</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>{z₀}, {z₁}, {z₁,z₂}, ∅ → <strong>4</strong> erreichbare Zustände
+              (von theoretisch 2³ = 8 möglichen Teilmengen).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🧮 Was ist δ_DFA({z₁}, b) in unserem Beispiel?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>{z₁,z₂}</button>
+              <button class="quiz-choice" type="button">{z₁}</button>
+              <button class="quiz-choice" type="button">∅</button>
+              <button class="quiz-choice" type="button">{z₂}</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>δ_NFA(z₁,b) = {z₁,z₂} (nichtdeterministisch, zwei Ziele) →
+              ε-Hülle davon ist <strong>{z₁,z₂}</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Warum braucht ein DFA oft einen Müllzustand ∅,
+              den der NFA gar nicht hatte?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ein DFA muss total sein: für jeden Zustand
+                und jedes Symbol muss genau ein Übergang existieren.</button>
+              <button class="quiz-choice" type="button">Weil DFAs grundsätzlich mehr Zustände als NFAs haben
+                müssen.</button>
+              <button class="quiz-choice" type="button">Weil jeder DFA mindestens einen nicht-akzeptierenden
+                Zustand haben muss.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>NFAs dürfen Übergänge undefiniert lassen (dann wird einfach
+              abgelehnt) — ein DFA nicht. Für jedes "ins Leere laufende" (S,a) bekommt er den Müllzustand.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Müllzustand|Fehlerzustand|Fangzustand|Papierkorbzustand">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt der nicht-akzeptierende DFA-Zustand,
+              zu dem alle "ins Leere laufenden" NFA-Übergänge gebündelt werden?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der <strong>Müllzustand</strong> (auch Fehler- oder Fangzustand
+              genannt) — entspricht ∅ als Teilmenge, symbolisiert "keine der NFA-Möglichkeiten trifft mehr zu".</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie ist der Startzustand des DFA bei der
+              Potenzmengenkonstruktion korrekt definiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>S₀ = ε-Hülle({q₀})</button>
+              <button class="quiz-choice" type="button">S₀ = {q₀} (ε-Kanten spielen für den Start keine Rolle)</button>
+              <button class="quiz-choice" type="button">S₀ = Q (alle NFA-Zustände gleichzeitig)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Auch der Startzustand braucht die ε-Hülle: <strong>S₀ =
+              ε-Hülle({q₀})</strong> — sonst fehlen dir Zustände, die man "kostenlos" über ε erreicht.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="02-endliche-automaten.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Endliche Automaten: NFA &amp; DFA</div>
+        </a>
+        <a class="next" href="04-dfa-minimierung.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">DFA-Minimierung</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Formale Sprachen &amp; Komplexität – bildlich erklärt</title>
+<meta name="description" content="Formale Sprachen und Komplexität verständlich und visuell erklärt – von regulären Ausdrücken und endlichen Automaten über Pumping-Lemma, kontextfreie Grammatiken und Kellerautomaten bis Berechenbarkeit, Satz von Rice und NP-Vollständigkeit. Für Einsteiger ohne Vorwissen." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Vorlesungen</a>
+      <a href="#phase-1">Reguläre Sprachen</a>
+      <a href="#phase-2">Grenzen</a>
+      <a href="#phase-3">Kontextfrei</a>
+      <a href="#phase-4">Berechenbarkeit</a>
+      <a href="#phase-5">Klausurtraining</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <h1>Formale Sprachen &amp; Komplexität,<br><span class="grad">endlich bildlich erklärt.</span></h1>
+    <p class="lead">Was kann ein Computer erkennen, was kann er berechnen — und was bleibt selbst mit unendlich
+      viel Zeit unmöglich? Von der ersten Regex über Automaten und Grammatiken bis zu Turing, Rice und NP:
+      jedes Thema auf einer eigenen Seite, mit <strong>gezeichneten Automaten</strong>, Alltags-Vergleichen und
+      Schritt-für-Schritt-Beweisen. Gemacht für alle, die <strong>noch kaum Ahnung</strong> davon haben.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#phase-1">🚀 Bei den Automaten starten</a>
+      <a class="btn btn-ghost" href="topics/12-klausurtraining.html">🎯 Direkt zum Klausurtraining</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>12</b><span>Themen-Seiten</span></div>
+      <div class="stat"><b>5</b><span>Lernphasen</span></div>
+      <div class="stat"><b>0</b><span>Vorwissen nötig</span></div>
+      <div class="stat"><b>2</b><span>echte Klausuren (EK+ZK)</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- ===== PHASE 1 ===== -->
+  <section class="phase" id="phase-1">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat1)">1</div>
+      <div><h2>Reguläre Sprachen &amp; Automaten</h2><p>Die einfachste Sprachklasse: was reguläre Ausdrücke beschreiben und wie endliche Automaten sie erkennen — inklusive Umbau und Minimierung.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/01-regulaere-ausdruecke.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🔤</span><span class="tc-no">01</span></div>
+        <h3>Reguläre Ausdrücke &amp; Sprachen</h3>
+        <p>Alphabet, Wort, Sprache und die Regex-Bausteine — plus die Chomsky-Hierarchie als große Landkarte.</p>
+        <div class="tc-meta"><span class="stars">★☆☆</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/02-endliche-automaten.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🤖</span><span class="tc-no">02</span></div>
+        <h3>Endliche Automaten: NFA &amp; DFA</h3>
+        <p>Zustände, Übergänge, ε-Kanten und der feine Unterschied zwischen Determinismus und Nichtdeterminismus.</p>
+        <div class="tc-meta"><span class="stars">★★☆</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/03-regex-zu-dfa.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🔀</span><span class="tc-no">03</span></div>
+        <h3>Von Regex zu DFA</h3>
+        <p>Thompson-NFA, ε-Hülle und die Potenzmengenkonstruktion — Schritt für Schritt zum deterministischen Automaten.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/04-dfa-minimierung.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">✂️</span><span class="tc-no">04</span></div>
+        <h3>DFA-Minimierung</h3>
+        <p>Das Partitionierungsverfahren: äquivalente Zustände finden und zum kleinstmöglichen Automaten fusionieren.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 2 ===== -->
+  <section class="phase" id="phase-2">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat2)">2</div>
+      <div><h2>Grenzen regulärer Sprachen</h2><p>Manche Sprachen kann kein endlicher Automat erkennen. Wie man das wasserdicht beweist — mit drei verschiedenen Werkzeugen.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/05-pumping-lemma.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">💪</span><span class="tc-no">05</span></div>
+        <h3>Das Pumping-Lemma</h3>
+        <p>Warum jedes lange Wort eine „aufpumpbare" Schleife hat — und wie du damit Nicht-Regularität beweist.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/06-myhill-nerode.html" style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+        <div class="tc-top"><span class="tc-icon">🧩</span><span class="tc-no">06</span></div>
+        <h3>Myhill-Nerode &amp; Abschluss</h3>
+        <p>Äquivalenzklassen als eleganter Endlichkeits-Test und wie Abschlusseigenschaften Beweise abkürzen.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 3 ===== -->
+  <section class="phase" id="phase-3">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat3)">3</div>
+      <div><h2>Kontextfreie Sprachen</h2><p>Eine Stufe mächtiger: geschachtelte Strukturen wie Klammern und a<sup>n</sup>b<sup>n</sup> — beschrieben durch Grammatiken, erkannt mit einem Keller.</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/07-kontextfreie-grammatiken.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🌳</span><span class="tc-no">07</span></div>
+        <h3>Kontextfreie Grammatiken</h3>
+        <p>Produktionsregeln, Linksableitung und Syntaxbäume — Sprachen bauen und mathematisch beschreiben.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/08-kellerautomaten.html" style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+        <div class="tc-top"><span class="tc-icon">🥞</span><span class="tc-no">08</span></div>
+        <h3>Kellerautomaten (PDA)</h3>
+        <p>Push, Pop und ein Stapel als Gedächtnis — wie ein PDA zählt und warum CFG und PDA dasselbe können.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 4 ===== -->
+  <section class="phase" id="phase-4">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat4)">4</div>
+      <div><h2>Berechenbarkeit &amp; Komplexität</h2><p>Die großen Grenzen: Was ist überhaupt berechenbar, was entscheidbar — und was ist zwar lösbar, aber vermutlich hoffnungslos langsam?</p></div>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card reveal" href="topics/09-mu-rekursion.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🔁</span><span class="tc-no">09</span></div>
+        <h3>µ-rekursive Funktionen</h3>
+        <p>Aus drei Basisbausteinen alles Berechenbare zusammensetzen: Komposition, primitive Rekursion, µ-Operator.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/10-rice-entscheidbarkeit.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🚦</span><span class="tc-no">10</span></div>
+        <h3>Entscheidbarkeit &amp; Satz von Rice</h3>
+        <p>Warum keine nichttriviale Eigenschaft berechneter Funktionen entscheidbar ist — und wo Rice nicht greift.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨 Klausur</span></div>
+      </a>
+
+      <a class="topic-card reveal" href="topics/11-np-komplexitaet.html" style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+        <div class="tc-top"><span class="tc-icon">🧨</span><span class="tc-no">11</span></div>
+        <h3>NP-Schwere &amp; Reduktionen</h3>
+        <p>P, NP, NP-vollständig und die Kunst der Polynomialzeit-Reduktion — mit CLIQUE, VERTEX-COVER &amp; Co.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausur</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASE 5 ===== -->
+  <section class="phase" id="phase-5">
+    <div class="phase-head">
+      <div class="phase-num" style="background:var(--c-cat1)">5</div>
+      <div><h2>Klausurtraining</h2><p>Die echten Erst- und Zweitklausur-Aufgaben (SoSe 2024, Prof. Blanchette) — komplett durchgerechnet und zum Selbst-Lösen.</p></div>
+    </div>
+    <div class="topic-grid">
+      <a class="topic-card reveal" href="topics/12-klausurtraining.html" style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+        <div class="tc-top"><span class="tc-icon">🎯</span><span class="tc-no">12</span></div>
+        <h3>Klausurtraining: Automat bis NP</h3>
+        <p>Automaten-Konstruktion, Minimierung, Pumping-Lemma, Grammatiken, µ-Rekursion, Rice und Reduktionen — Aufgabe für Aufgabe gelöst.</p>
+        <div class="tc-meta"><span class="stars">★★★</span><span class="badge badge-exam">🎓 EK &amp; ZK</span><span class="badge badge-blatt">SoSe 2024</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Lernpfad-Hinweis -->
+  <div class="callout callout-tip reveal" style="margin: 40px 0;">
+    <div class="c-title">So nutzt du diese Seite am besten</div>
+    <p>Arbeite die Themen <strong>der Reihe nach</strong> durch (01 → 11) — die Sprachklassen bauen aufeinander auf:
+      erst <strong>regulär</strong> (Phase 1–2), dann <strong>kontextfrei</strong> (Phase 3), dann die großen Grenzen
+      <strong>Berechenbarkeit &amp; Komplexität</strong> (Phase 4). Jede Seite endet mit einer
+      <strong>Quick-Reference</strong> und einem interaktiven <strong>Wissenscheck</strong>; das Klausurtraining (12)
+      rechnet zum Schluss die echten Klausuraufgaben durch. Oben rechts kannst du zwischen hellem und dunklem Design
+      wechseln.</p>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zu allen Vorlesungen</a> · © <span data-year>2026</span></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

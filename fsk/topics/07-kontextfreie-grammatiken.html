@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kontextfreie Grammatiken · FSK</title>
+<meta name="description" content="Kontextfreie Grammatiken bildlich erklärt: Produktionsregeln, Linksableitung und Syntaxbaum an einem echten Klausur-Beispiel (SoSe 2024) durchgerechnet – inklusive Mehrdeutigkeit im Bild." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 07</div>
+    <span class="th-icon">🌳</span>
+    <h1>Kontextfreie Grammatiken</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Grammatik, Ableitung &amp; Linksableitung</a></li>
+        <li><a href="#rechnen">Beispiele &amp; Original-Klausuraufgaben</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Ein endlicher Automat (Thema 02) hat ein Problem: Er kann sich <strong>keine
+          beliebig große Zahl merken</strong>. Deshalb kann kein DFA/NFA erkennen, ob Klammern korrekt
+          verschachtelt sind oder ob genau gleich viele a's wie b's vorkommen. Eine
+          <strong>kontextfreie Grammatik (CFG)</strong> löst genau das: Sie ist eine Bauanleitung mit
+          <strong>Ersetzungsregeln</strong>, die solche verschachtelten Strukturen erzeugen kann.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du packst Geschenke ineinander: Jedes Mal, wenn du außen ein Papier (a) anlegst, musst du
+            später auch wieder ein Papier (b) abwickeln — und zwar in <strong>umgekehrter Reihenfolge</strong>
+            (zuletzt eingepackt, zuerst ausgepackt). Klammern „(a(a(a)b)b)b", HTML-Tags
+            <code>&lt;div&gt;&lt;div&gt;…&lt;/div&gt;&lt;/div&gt;</code> oder Programmier-Blöcke funktionieren
+            genauso. Eine kontextfreie Grammatik ist die <strong>Bauanleitung</strong> für genau solche
+            „balanced nesting"-Strukturen: Du startest bei einem Symbol S und ersetzt es Schritt für Schritt
+            durch andere Symbole, bis nur noch fertige Wort-Bausteine (Terminale) übrig sind.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Grammatik, Ableitung &amp; Linksableitung im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Kontextfreie Grammatik</div>
+          <span class="formula">G = (V, Σ, P, S)</span>
+          <p><strong>V:</strong> endliche Menge <strong>Nichtterminale</strong> (Platzhalter, „Baustellen").
+            <strong>Σ:</strong> Eingabealphabet, die <strong>Terminale</strong> (fertige, nicht mehr
+            ersetzbare Bausteine). <strong>P:</strong> <strong>Produktionsregeln</strong> A → β mit A ∈ V und
+            β ∈ (V ∪ Σ)* (β darf beliebig aus Nichtterminalen und Terminalen gemischt sein — auch leer!).
+            <strong>S:</strong> das <strong>Startsymbol</strong>, S ∈ V.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>V</b><span>Nichtterminale — Platzhalter, werden ersetzt</span></div>
+          <div class="fact"><b>Σ</b><span>Terminale — fertige Bausteine, bleiben stehen</span></div>
+          <div class="fact"><b>P</b><span>Produktionen A → β — die Ersetzungsregeln</span></div>
+          <div class="fact"><b>S</b><span>Startsymbol — hier beginnt jede Ableitung</span></div>
+        </div>
+
+        <p>Der Name „kontext<strong>frei</strong>" kommt genau daher, dass links immer nur <strong>ein
+          einzelnes</strong> Nichtterminal A steht — die Regel gilt <strong>unabhängig vom Kontext</strong>
+          drumherum (α…γ), im Gegensatz zu allgemeineren Grammatiken, bei denen auch die Umgebung eine Rolle
+          spielen darf.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Direktableitung, Ableitung &amp; die Sprache L(G)</div>
+          <span class="formula">w ⇒ w'    falls w = αAγ, w' = αβγ und A → β ∈ P   (eine Ersetzung)
+w ⇒* w'   beliebig viele (auch null) Direktableitungen hintereinander
+
+L(G) = { w ∈ Σ* | S ⇒* w }</span>
+          <p>L(G) ist also genau die Menge aller Wörter, die sich — Schritt für Schritt ersetzend — komplett
+            bis auf reine Terminalsymbole aus S herleiten lassen.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Linksableitung — sehr klausurrelevant!</div>
+          <p>Bei einer <strong>Linksableitung</strong> ersetzt du in jedem Schritt <strong>immer das am
+            weitesten links stehende Nichtterminal</strong> — nie eines weiter rechts, egal wie viele
+            Nichtterminale gerade im Wort stehen. Das macht die Ableitung <strong>eindeutig
+            nachvollziehbar</strong> (es gibt bei fester Regelwahl nur einen Weg, sie aufzuschreiben) und ist
+            in der Klausur fast immer explizit gefordert.</p>
+        </div>
+
+        <h3>Der Syntaxbaum: Struktur statt flacher Liste</h3>
+        <p>Jede Ableitung entspricht einem <strong>Syntaxbaum</strong>: Die Wurzel ist das Startsymbol S,
+          <strong>innere Knoten</strong> sind Nichtterminale, <strong>Blätter</strong> sind Terminale. Jede
+          Kantengruppe (ein Knoten zu seinen Kindern) entspricht genau <strong>einer angewendeten
+          Produktionsregel</strong>. Schauen wir uns das an einem kleinen Beispiel an — der Grammatik
+          S → aTe, T → bUd, U → c, die genau das Wort „abcde" erzeugt:</p>
+
+        <!-- SVG 1: Syntaxbaum für abcde -->
+        <figure class="diagram">
+          <div class="diagram-title">Syntaxbaum für „abcde" — Wurzel S, innere Knoten T/U, Blätter a,b,c,d,e</div>
+          <svg viewBox="0 0 480 300" width="480" role="img" aria-label="Syntaxbaum für das Wort abcde nach der Grammatik S geht zu aTe, T geht zu bUd, U geht zu c: Wurzel S mit Kindern a, T, e; T hat Kinder b, U, d; U hat Kind c.">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <g stroke="#8a94a6" stroke-width="1.4" fill="none">
+                <line x1="240" y1="50" x2="150" y2="98"/>
+                <line x1="240" y1="50" x2="240" y2="95"/>
+                <line x1="240" y1="50" x2="335" y2="98"/>
+                <line x1="240" y1="125" x2="175" y2="168"/>
+                <line x1="240" y1="125" x2="240" y2="165"/>
+                <line x1="240" y1="125" x2="305" y2="168"/>
+                <line x1="240" y1="195" x2="240" y2="218"/>
+              </g>
+
+              <rect x="218" y="20" width="44" height="30" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.6"/>
+              <text x="240" y="40" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">S</text>
+              <text x="272" y="40" class="svg-soft" font-style="italic" font-size="11.5">S → a T e</text>
+
+              <text x="150" y="112" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">a</text>
+              <rect x="218" y="95" width="44" height="30" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.6"/>
+              <text x="240" y="115" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">T</text>
+              <text x="272" y="115" class="svg-soft" font-style="italic" font-size="11.5">T → b U d</text>
+              <text x="335" y="112" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">e</text>
+
+              <text x="175" y="182" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">b</text>
+              <rect x="218" y="165" width="44" height="30" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.6"/>
+              <text x="240" y="185" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">U</text>
+              <text x="272" y="185" class="svg-soft" font-style="italic" font-size="11.5">U → c</text>
+              <text x="305" y="182" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">d</text>
+
+              <text x="240" y="235" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">c</text>
+            </g>
+          </svg>
+          <figcaption>Violett = Nichtterminal (wird noch ersetzt), Grün = Terminal (Blatt, fertig). Jede
+            Verzweigung entspricht genau einer Produktionsregel — das ist die Grammatik G₁ (i=1, j=1) aus der
+            Original-Klausuraufgabe weiter unten, hier im einfachsten Fall.</figcaption>
+        </figure>
+
+        <h3>Mehrdeutigkeit: nicht jede Grammatik hat nur EINEN Baum pro Wort</h3>
+        <p>Manche Grammatiken sind <strong>mehrdeutig</strong>: Für dasselbe Wort gibt es <strong>mehrere
+          verschiedene Syntaxbäume</strong> (auch wenn beide Linksableitungen zum gleichen Wort führen). Das
+          klassische Beispiel: S → SS | a und das Wort „aaa".</p>
+
+        <!-- SVG 2: Mehrdeutigkeit, zwei Bäume -->
+        <figure class="diagram">
+          <div class="diagram-title">Zwei verschiedene Syntaxbäume für dasselbe Wort „aaa" (Grammatik S → SS | a)</div>
+          <svg viewBox="0 0 480 260" width="480" role="img" aria-label="Zwei Syntaxbäume für das Wort aaa nach der mehrdeutigen Grammatik S geht zu SS oder a: Baum 1 gruppiert die ersten beiden a zuerst, Baum 2 gruppiert die letzten beiden a zuerst.">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="100" y="12" text-anchor="middle" fill="#8b5cf6" font-weight="800">Baum 1</text>
+              <g stroke="#8a94a6" stroke-width="1.3" fill="none">
+                <line x1="100" y1="48" x2="60" y2="85"/>
+                <line x1="100" y1="48" x2="150" y2="90"/>
+                <line x1="60" y1="113" x2="40" y2="155"/>
+                <line x1="60" y1="113" x2="80" y2="155"/>
+              </g>
+              <rect x="78" y="20" width="44" height="28" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="100" y="39" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">S</text>
+              <rect x="38" y="85" width="44" height="28" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="60" y="104" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">S</text>
+              <text x="150" y="103" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">a</text>
+              <text x="40" y="169" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">a</text>
+              <text x="80" y="169" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">a</text>
+              <text x="100" y="195" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11">((a·a)·a)</text>
+
+              <text x="400" y="12" text-anchor="middle" fill="#8b5cf6" font-weight="800">Baum 2</text>
+              <g stroke="#8a94a6" stroke-width="1.3" fill="none">
+                <line x1="400" y1="48" x2="440" y2="85"/>
+                <line x1="400" y1="48" x2="350" y2="90"/>
+                <line x1="440" y1="113" x2="420" y2="155"/>
+                <line x1="440" y1="113" x2="460" y2="155"/>
+              </g>
+              <rect x="378" y="20" width="44" height="28" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="400" y="39" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">S</text>
+              <rect x="418" y="85" width="44" height="28" rx="8" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="440" y="104" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">S</text>
+              <text x="350" y="103" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">a</text>
+              <text x="420" y="169" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">a</text>
+              <text x="460" y="169" text-anchor="middle" fill="#12b28c" font-weight="800" font-family="JetBrains Mono, monospace" font-size="16">a</text>
+              <text x="400" y="195" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11">(a·(a·a))</text>
+            </g>
+          </svg>
+          <figcaption>Beide Bäume erzeugen „aaa", aber mit unterschiedlicher Struktur (unterschiedlicher
+            Klammerung). Genau das heißt „mehrdeutig": die Grammatik legt nicht eindeutig fest, WIE das Wort
+            zusammengesetzt ist.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Original-Klausuraufgaben durchgerechnet</h2>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 3a)</h3>
+        <p>Gib eine kontextfreie Grammatik G₁ für L₅ = { a b<sup>i</sup> c<sup>j</sup> d<sup>i</sup> e | i,j ∈ ℕ,
+          i,j ≥ 1 } an. Gib außerdem eine Linksableitung für das Wort <strong>abbbccddde</strong> an.</p>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Idee zuerst: was muss die Grammatik erzwingen?</div>
+          <p>Das Wort beginnt fest mit a und endet fest mit e. Dazwischen müssen <strong>gleich viele</strong>
+            b's wie d's stehen (Exponent i gekoppelt!) und dazwischen beliebig viele c's (Exponent j frei). Ein
+            Nichtterminal T, das bei jedem Rekursionsschritt gleichzeitig ein b links UND ein d rechts anhängt,
+            erzwingt automatisch i(b) = i(d) — genau das, was wir brauchen.</p>
+        </div>
+
+        <pre class="code">G₁ = (V, Σ, P, S)
+V = {S, T, U}
+Σ = {a, b, c, d, e}
+P = { S → a T e,
+      T → b T d | b U d,
+      U → U c | c }</pre>
+
+        <p>S erzeugt zuerst a und e, mit T in der Mitte. T erzeugt rekursiv b/d-Paare (ein b links, ein d
+          rechts pro Rekursionsschritt) und übergibt am Ende an U. U erzeugt rekursiv beliebig viele c's.
+          Struktur: a · b<sup>i</sup> · c<sup>j</sup> · d<sup>i</sup> · e.</p>
+
+        <h4>Linksableitung von „abbbccddde" (i=3, j=2)</h4>
+        <ol class="steps">
+          <li><strong>Start:</strong> S — das Startsymbol ist automatisch das (einzige) linkeste
+            Nichtterminal.</li>
+          <li><strong>Regel S → aTe:</strong> S ⇒ a<strong style="color:#8b5cf6">T</strong>e</li>
+          <li><strong>Regel T → bTd:</strong> aTe ⇒ ab<strong style="color:#8b5cf6">T</strong>de</li>
+          <li><strong>Regel T → bTd (nochmal):</strong> abTde ⇒ abb<strong style="color:#8b5cf6">T</strong>dde</li>
+          <li><strong>Regel T → bUd (Basisfall, T-Rekursion endet):</strong> abbTdde ⇒
+            abbb<strong style="color:#8b5cf6">U</strong>ddde</li>
+          <li><strong>Regel U → Uc:</strong> abbbUddde ⇒ abbb<strong style="color:#8b5cf6">U</strong>cddde</li>
+          <li><strong>Regel U → c (Basisfall):</strong> abbbUcddde ⇒ <strong>abbbccddde</strong> ✓ — kein
+            Nichtterminal mehr übrig, fertig!</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Kontrolle</div>
+          <p>a·(bbb)·(cc)·(ddd)·e = abbbccddde ✓ — i = 3 (drei b's, drei d's), j = 2 (zwei c's).</p>
+        </div>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Zweitklausur, Aufgabe 3b)</h3>
+        <p>Gib für die folgende Grammatik G₂ eine <strong>mathematische Beschreibung</strong> von L(G₂) an:</p>
+
+        <pre class="code">G₂ = ({S, T, U}, {a, b, c}, P, S)
+P = { S → T U T,
+      T → a T a | c,
+      U → b U b | c }</pre>
+
+        <ol class="steps">
+          <li><strong>T analysieren:</strong> T → aTa | c erzeugt rekursiv T ⇒* a<sup>i</sup> c a<sup>i</sup>
+            — beliebig viele a-Paare symmetrisch um ein zentrales c.</li>
+          <li><strong>U analysieren:</strong> U → bUb | c erzeugt analog U ⇒* b<sup>j</sup> c b<sup>j</sup>.</li>
+          <li><strong>S zusammensetzen:</strong> S → T U T verkettet <strong>drei unabhängige Teile</strong>:
+            erst ein T (Exponent i), dann U (Exponent j), dann <strong>noch ein zweites, eigenständiges</strong>
+            T (Exponent k — nicht zwangsläufig gleich i!).</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Ergebnis</div>
+          <span class="formula">L(G₂) = { a^i c a^i · b^j c b^j · a^k c a^k | i, j, k ∈ ℕ }</span>
+          <p>ℕ enthält hier auch 0 (T → c bzw. U → c ist der Basisfall mit Exponent 0).</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Falle vermieden</div>
+          <p>Die beiden T-Vorkommen in S → TUT sind <strong>zwei getrennte Ableitungs-Instanzen</strong> im
+            Syntaxbaum — jede darf ihren eigenen Exponenten wählen. i und k müssen <strong>nicht</strong>
+            gleich sein, nur weil dieselbe Regel benutzt wird!</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei einer Linksableitung darf man
+            Produktionen in beliebiger Reihenfolge auf beliebige Nichtterminale anwenden.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Immer das am <strong>weitesten links
+            stehende</strong> Nichtterminal ersetzen — nie eines weiter rechts, auch wenn dort gerade eine
+            „einfachere" Regel anwendbar wäre.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>ε-Produktionen (A → ε) machen eine
+            Grammatik „nicht mehr kontextfrei".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ε-Produktionen sind bei kontextfreien
+            Grammatiken <strong>uneingeschränkt erlaubt</strong> (nur in bestimmten Normalformen wie CNF
+            eingeschränkt) — z. B. ist S → aS | ε ganz normal kontextfrei.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein Syntaxbaum ist nur die Ableitung flach
+            hintereinander aufgeschrieben, z. B. „S, aTe" direkt untereinander.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Syntaxbaum zeigt die
+            <strong>Verzweigungsstruktur</strong>: S ⇒ aTe bedeutet, S bekommt <strong>drei Kinder</strong>
+            a, T, e nebeneinander — nicht eine Kette von Einzelknoten.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Jede kontextfreie Grammatik hat für jedes
+            Wort genau einen Syntaxbaum.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Manche Grammatiken sind
+            <strong>mehrdeutig</strong> (S → SS | a ist das Standardbeispiel) — dasselbe Wort kann mehrere
+            verschiedene Syntaxbäume haben.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei S → TUT sind die Exponenten der beiden
+            T-Vorkommen automatisch gleich, weil es „dieselbe Regel" ist.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Jedes Vorkommen von T im Syntaxbaum ist
+            eine <strong>eigenständige Ableitung</strong> — nur wenn EIN gemeinsames Nichtterminal (wie T in
+            G₁ oben) für beide Seiten zuständig ist, werden die Exponenten gekoppelt.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grammatik-Bausteine</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Symbol</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>V</td><td>Nichtterminale (Platzhalter)</td></tr>
+              <tr><td>Σ</td><td>Terminale (fertige Bausteine)</td></tr>
+              <tr><td>P</td><td>Produktionen A → β</td></tr>
+              <tr><td>S</td><td>Startsymbol</td></tr>
+              <tr><td>⇒ / ⇒*</td><td>Direktableitung / beliebig viele Ableitungsschritte</td></tr>
+              <tr><td>L(G)</td><td>{w ∈ Σ* | S ⇒* w}</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Linksableitung — Vorgehen</h4>
+          <pre class="code">1. Finde das am weitesten LINKS stehende Nichtterminal.
+2. Wende eine passende Regel darauf an.
+3. Wiederhole, bis nur noch Terminale übrig sind.
+4. Kontrolle: Ergebnis mit dem Zielwort vergleichen.</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Linksableitung</strong> = immer das linkeste Nichtterminal ersetzen, nie beliebig</li>
+            <li><strong>ε-Produktionen sind erlaubt</strong> bei CFG (nicht verboten)</li>
+            <li><strong>Syntaxbaum</strong> zeigt Verzweigung, nicht die flache Ableitungskette</li>
+            <li><strong>Mehrdeutigkeit</strong> ist möglich — ein Wort kann mehrere Syntaxbäume haben</li>
+            <li>Getrennte Vorkommen desselben Nichtterminals (S → TUT) haben
+              <strong>unabhängige Exponenten</strong>, außer eine gemeinsame Regel koppelt sie explizit</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was bedeutet eine Produktion A → β in einer
+              KONTEXTFREIEN Grammatik?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Die linke Seite ist immer genau EIN
+                Nichtterminal — die Ersetzung gilt unabhängig vom Kontext drumherum.</button>
+              <button class="quiz-choice" type="button">β darf nur aus Terminalen bestehen.</button>
+              <button class="quiz-choice" type="button">A muss immer das Startsymbol S sein.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Genau das macht eine Grammatik „kontextfrei": links steht immer
+              nur ein einzelnes Nichtterminal A, das ersetzt werden darf — egal in welcher Umgebung es
+              steht.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="L(G)|L(G) = {w|S=>*w}">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie schreibt man kurz die Menge aller vom
+              Startsymbol S ableitbaren Wörter (die „Sprache von G")?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>L(G)</strong> = {w ∈ Σ* | S ⇒* w}.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Aktuelle Ableitungszeile: „aTbUc" (T und U sind
+              Nichtterminale). Welches Nichtterminal wird im NÄCHSTEN Schritt einer Linksableitung ersetzt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>T (das am weitesten links stehende NT)</button>
+              <button class="quiz-choice" type="button">U</button>
+              <button class="quiz-choice" type="button">Beide gleichzeitig, in einem Schritt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Linksableitung heißt: immer das am weitesten links stehende
+              Nichtterminal ersetzen. Das ist hier T — U kommt erst danach dran.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur EK 3a: Für L₅ = {ab<sup>i</sup>c<sup>j</sup>d<sup>i</sup>e}
+              und das Wort abbbccddde — wie groß ist der Exponent i (Anzahl b's = Anzahl d's)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Drei b's und drei d's im Wort abb<u>b</u>ccddd<u>e</u> →
+              i = <strong>3</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur EK 3a: Und wie groß ist der Exponent
+              j (Anzahl c's) im selben Wort abbbccddde?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Zwei c's im Wort → j = <strong>2</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur ZK 3b: Für G₂ mit S → TUT,
+              T → aTa|c, U → bUb|c — was erzeugt T (für sich allein)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>a^i c a^i (beliebig viele a-Paare
+                symmetrisch um ein zentrales c)</button>
+              <button class="quiz-choice" type="button">b^j c b^j</button>
+              <button class="quiz-choice" type="button">nur das Zeichen c, nie mehr</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>T → aTa | c erzeugt rekursiv a^i c a^i — bei jedem
+              Rekursionsschritt kommt links UND rechts ein a dazu, bis die Basis T → c greift.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="06-myhill-nerode.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Myhill-Nerode &amp; Abschluss</div>
+        </a>
+        <a class="next" href="08-kellerautomaten.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Kellerautomaten (PDA)</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

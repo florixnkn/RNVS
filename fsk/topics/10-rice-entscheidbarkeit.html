@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Entscheidbarkeit &amp; Satz von Rice · FSK</title>
+<meta name="description" content="Entscheidbarkeit und der Satz von Rice bildlich erklärt: warum keine nichttriviale Eigenschaft berechneter Funktionen entscheidbar ist, wo Rice NICHT greift (Struktureigenschaften) – mit Entscheidungsbaum, Gegenüberstellung und den Original-Klausuraufgaben 4b (SoSe 2024)." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 10</div>
+    <span class="th-icon">🚦</span>
+    <h1>Entscheidbarkeit &amp; Satz von Rice</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Der Satz von Rice</a></li>
+        <li><a href="#rechnen">Beispiele &amp; Klausuraufgaben</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Manche Fragen über Programme kann <strong>kein</strong> Algorithmus für alle Fälle
+          beantworten — egal wie clever er ist. Das berühmteste Beispiel ist das <strong>Halteproblem</strong>:
+          „Hält Turingmaschine M bei Eingabe w irgendwann an?" ist <strong>unentscheidbar</strong> (Turing, 1936).
+          Der <strong>Satz von Rice</strong> verallgemeinert dieses Ergebnis dramatisch: er sagt, dass praktisch
+          <strong>jede</strong> interessante Frage über das Verhalten von Programmen unentscheidbar ist — nicht
+          nur das Halten.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du bekommst den Quellcode eines fremden Programms und sollst sagen: „Berechnet dieses Programm
+            am Ende immer eine gerade Zahl?" Du könntest das Programm laufen lassen und ein paar Eingaben testen
+            — aber du kannst niemals <strong>alle</strong> unendlich vielen Eingaben durchprobieren, und du
+            kannst auch nicht einfach den Code „anschauen" und es allgemein herausfinden. Genau das ist die
+            Aussage des Satzes von Rice: Fragen über das <strong>Verhalten</strong> (die berechnete Funktion)
+            eines Programms sind fast immer unentscheidbar — Fragen über den <strong>Code selbst</strong>
+            (Zeilenzahl, Laufzeit, benutzte Variablen) dagegen oft sehr wohl entscheidbar.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>Entscheidbar</b><span>ein Algorithmus stoppt für JEDE Eingabe mit Ja/Nein</span></div>
+          <div class="fact"><b>Unentscheidbar</b><span>kein Algorithmus kann das für alle Eingaben leisten</span></div>
+          <div class="fact"><b>Halteproblem</b><span>der Klassiker: „hält M bei w?" ist unentscheidbar</span></div>
+          <div class="fact"><b>Satz von Rice</b><span>verallgemeinert das auf JEDE nichttriviale Funktionseigenschaft</span></div>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Der Satz von Rice im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Satz von Rice</div>
+          <span class="formula">Sei S eine nichttriviale Eigenschaft der von TMs BERECHNETEN Funktionen:
+∅ ≠ S ≠ R   (R = Menge aller berechenbaren Funktionen)
+
+Dann ist C(S) = { w | M_w berechnet eine Funktion in S }  UNENTSCHEIDBAR.</span>
+          <p>„M_w" bezeichnet die Turingmaschine, die durch den Code w beschrieben wird. C(S) fragt: Berechnet
+            diese TM eine Funktion mit der Eigenschaft S?</p>
+        </div>
+
+        <h3>Die klausurentscheidende Kernunterscheidung</h3>
+        <p>Der mit Abstand häufigste Fehler: nicht zu unterscheiden, <strong>wovon</strong> S eigentlich
+          eine Eigenschaft ist.</p>
+
+        <ul>
+          <li><strong>Funktionseigenschaft</strong> (Eigenschaft von f_M, der berechneten Funktion) → Satz von
+            Rice greift, C(S) ist (fast immer) unentscheidbar.</li>
+          <li><strong>TM-Struktureigenschaft</strong> (Eigenschaft von M selbst — Code, Zustandszahl,
+            Laufzeit, benutzte Bandsymbole, ...) → Satz von Rice greift <strong>nicht</strong>, solche Fragen
+            sind oft entscheidbar, meist per direkter Simulation.</li>
+        </ul>
+
+        <!-- SVG 1: Entscheidungsbaum -->
+        <figure class="diagram">
+          <div class="diagram-title">Entscheidungsbaum: Ist der Satz von Rice überhaupt anwendbar?</div>
+          <svg viewBox="0 0 800 410" width="800" role="img" aria-label="Entscheidungsbaum: zuerst wird geprüft, ob eine Eigenschaft der berechneten Funktion oder der TM-Struktur vorliegt, dann bei Funktionseigenschaften ob S nichtleer und echte Teilmenge ist, mit den jeweiligen Konsequenzen für Entscheidbarkeit">
+            <defs>
+              <marker id="p10arrFlow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- edges level 0 -> level 1 -->
+              <path d="M340,64 L150,120" fill="none" stroke="#e0483d" stroke-width="1.6" marker-end="url(#p10arrFlow)"/>
+              <path d="M460,64 L620,120" fill="none" stroke="#2f6df6" stroke-width="1.6" marker-end="url(#p10arrFlow)"/>
+              <text x="220" y="97" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="11.5">Struktur</text>
+              <text x="555" y="97" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="11.5">Funktion</text>
+
+              <!-- top box -->
+              <rect x="280" y="10" width="240" height="54" rx="10" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.6"/>
+              <text x="400" y="32" text-anchor="middle" class="svg-ink" font-weight="700">Eigenschaft der berechneten</text>
+              <text x="400" y="50" text-anchor="middle" class="svg-ink" font-weight="700">FUNKTION oder TM-STRUKTUR?</text>
+
+              <!-- STRUKTUR path -->
+              <rect x="60" y="120" width="180" height="44" rx="9" fill="#e0483d" fill-opacity="0.16" stroke="#e0483d" stroke-width="1.6"/>
+              <text x="150" y="138" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">❌ TM-Struktur</text>
+              <text x="150" y="154" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">Rice NICHT anwendbar</text>
+
+              <path d="M150,164 L150,210" fill="none" stroke="#8a94a6" stroke-width="1.6" marker-end="url(#p10arrFlow)"/>
+              <rect x="60" y="210" width="180" height="50" rx="9" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="150" y="230" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">✅ oft entscheidbar</text>
+              <text x="150" y="248" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">(z. B. per Simulation)</text>
+
+              <!-- FUNKTION decision box -->
+              <rect x="520" y="120" width="200" height="50" rx="9" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.6"/>
+              <text x="620" y="140" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">✅ Funktionseigenschaft</text>
+              <text x="620" y="158" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">S ≠ ∅ und S ≠ R ?</text>
+
+              <path d="M560,170 L515,240" fill="none" stroke="#f5810b" stroke-width="1.6" marker-end="url(#p10arrFlow)"/>
+              <path d="M680,170 L705,240" fill="none" stroke="#8b5cf6" stroke-width="1.6" marker-end="url(#p10arrFlow)"/>
+              <text x="510" y="205" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="11.5">Nein</text>
+              <text x="690" y="205" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="11.5">Ja</text>
+
+              <!-- NEIN branch -->
+              <rect x="430" y="240" width="170" height="44" rx="9" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="515" y="266" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">S trivial (∅ oder R)</text>
+
+              <path d="M515,284 L515,320" fill="none" stroke="#8a94a6" stroke-width="1.6" marker-end="url(#p10arrFlow)"/>
+              <rect x="430" y="320" width="170" height="50" rx="9" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="515" y="340" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">✅ entscheidbar</text>
+              <text x="515" y="358" text-anchor="middle" class="svg-ink" font-size="10.5">(immer dieselbe Antwort)</text>
+
+              <!-- JA branch -->
+              <rect x="620" y="240" width="170" height="44" rx="9" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.6"/>
+              <text x="705" y="266" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11.5">Satz von Rice anwendbar</text>
+
+              <path d="M705,284 L705,320" fill="none" stroke="#8a94a6" stroke-width="1.6" marker-end="url(#p10arrFlow)"/>
+              <rect x="610" y="320" width="180" height="50" rx="9" fill="#e0483d" fill-opacity="0.2" stroke="#e0483d" stroke-width="1.8"/>
+              <text x="700" y="350" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="13">🚫 UNENTSCHEIDBAR</text>
+            </g>
+          </svg>
+          <figcaption>Erster Filter: Funktion oder Struktur? Nur bei Funktionseigenschaften lohnt sich der zweite
+            Filter: S ≠ ∅ und S ≠ R. Erst wenn beides erfüllt ist, greift der Satz von Rice und C(S) ist
+            garantiert unentscheidbar.</figcaption>
+        </figure>
+
+        <h3>Anwendbarkeit prüfen: zwei Bedingungen, unabhängig von der Größe</h3>
+        <p>Es kommt nicht darauf an, wie „groß" S ist — nur auf zwei Dinge:</p>
+        <ol class="steps">
+          <li><strong>S ist nichtleer:</strong> mindestens eine berechenbare Funktion hat die Eigenschaft
+            (∃f ∈ S).</li>
+          <li><strong>S ist eine echte Teilmenge:</strong> mindestens eine berechenbare Funktion hat sie
+            <strong>nicht</strong> (∃f ∈ R\S).</li>
+        </ol>
+
+        <!-- SVG 2: Gegenüberstellung -->
+        <figure class="diagram">
+          <div class="diagram-title">Gegenüberstellung: Funktionseigenschaft vs. Struktureigenschaft</div>
+          <svg viewBox="0 0 680 340" width="680" role="img" aria-label="Zwei Spalten: links Beispiele für Funktionseigenschaften, bei denen Rice greift, rechts Beispiele für Struktureigenschaften, bei denen Rice nicht greift">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <rect x="20" y="20" width="300" height="300" rx="12" fill="#12b28c" fill-opacity="0.12" stroke="#12b28c" stroke-width="1.8"/>
+              <text x="170" y="50" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="14">✅ Funktionseigenschaft</text>
+              <text x="170" y="68" text-anchor="middle" class="svg-soft" font-size="10.5">(Satz von Rice GREIFT)</text>
+              <line x1="40" y1="80" x2="300" y2="80" stroke="#12b28c" stroke-width="1" stroke-opacity="0.4"/>
+              <text x="40" y="106" class="svg-ink">• f ist total (überall definiert)</text>
+              <text x="40" y="140" class="svg-ink">• f ist konstant 0</text>
+              <text x="40" y="174" class="svg-ink">• f berechnet die Identität</text>
+              <text x="40" y="208" class="svg-ink">• f(42) = 43</text>
+              <text x="40" y="242" class="svg-ink">• f ist surjektiv</text>
+              <text x="40" y="284" class="svg-soft" font-size="10.5">→ hängt nur vom Ein-/Ausgabe-</text>
+              <text x="40" y="298" class="svg-soft" font-size="10.5">   Verhalten von f ab</text>
+
+              <rect x="360" y="20" width="300" height="300" rx="12" fill="#e0483d" fill-opacity="0.1" stroke="#e0483d" stroke-width="1.8"/>
+              <text x="510" y="50" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="14">❌ Struktureigenschaft</text>
+              <text x="510" y="68" text-anchor="middle" class="svg-soft" font-size="10.5">(Satz von Rice GREIFT NICHT)</text>
+              <line x1="380" y1="80" x2="640" y2="80" stroke="#e0483d" stroke-width="1" stroke-opacity="0.4"/>
+              <text x="380" y="106" class="svg-ink">• M hat ≤ 100 Zustände</text>
+              <text x="380" y="140" class="svg-ink">• M hält nach ≤ 1000 Schritten</text>
+              <text x="380" y="174" class="svg-ink">• Code von M ist ≤ 50 Zeichen</text>
+              <text x="380" y="208" class="svg-ink">• M benutzt Bandsymbol X</text>
+              <text x="380" y="242" class="svg-ink">• M ist ein 2-Band-Automat</text>
+              <text x="380" y="284" class="svg-soft" font-size="10.5">→ hängt vom PROGRAMM/CODE</text>
+              <text x="380" y="298" class="svg-soft" font-size="10.5">   von M ab, nicht nur von f_M</text>
+            </g>
+          </svg>
+          <figcaption>Dieselbe Funktion kann von unendlich vielen verschiedenen TMs berechnet werden. Fragen über
+            die Funktion selbst sind (fast immer) unentscheidbar; Fragen über eine konkrete TM-Beschreibung
+            lassen sich dagegen oft direkt am Code oder per Simulation beantworten.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Original-Klausuraufgaben (SoSe 2024, Erstklausur, Aufgabe 4b)</h2>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 4b(i))</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung (4 Punkte)</div>
+          <p>Ist es unentscheidbar, ob eine TM M nach höchstens 1000 Schritten anhält? Begründe deine Antwort
+            bzw. erkläre, warum der Satz von Rice hier nicht anwendbar ist.</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Antwort:</strong> Nein — das ist <strong>entscheidbar</strong>. Der Satz von Rice ist
+            hier <strong>nicht</strong> anwendbar.</li>
+          <li><strong>Warum Rice nicht anwendbar ist:</strong> „Hält nach ≤1000 Schritten" ist eine Eigenschaft
+            der <strong>TM-Struktur</strong> (wie lange M konkret läuft) — nicht eine Eigenschaft der von M
+            berechneten Funktion. Rice braucht aber eine Eigenschaft, die nur von f_M abhängt.</li>
+          <li><strong>Warum es trotzdem entscheidbar ist (Simulationsargument):</strong> Man lässt M einfach
+            1001 Schritte lang simulieren. Hält M innerhalb dieser 1001 Schritte an → Antwort „Ja". Läuft M
+            danach immer noch → Antwort „Nein". Diese Simulation ist ein Algorithmus, der garantiert nach
+            endlich vielen (1001) Schritten terminiert — also ist die Frage entscheidbar.</li>
+        </ol>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 4b(ii))</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung (4 Punkte)</div>
+          <p>Ist es unentscheidbar, ob eine TM M bei Eingabe 42 die Zahl 43 berechnet?</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Antwort:</strong> Ja — das ist <strong>unentscheidbar</strong> (mit dem Satz von Rice).</li>
+          <li><strong>S definieren:</strong> Sei S = {f | f(42) = 43} — die Menge aller berechenbaren
+            (partiellen) Funktionen, die bei Eingabe 42 den Wert 43 liefern. Das ist eine reine
+            <strong>Funktionseigenschaft</strong>, hängt nur vom Ein-/Ausgabeverhalten ab.</li>
+          <li><strong>S ist nichtleer:</strong> f = (n ↦ n+1) erfüllt f(42) = 43 ✓, also f ∈ S.</li>
+          <li><strong>S ist echte Teilmenge:</strong> f = (n ↦ n) erfüllt f(42) = 42 ≠ 43, also f ∈ R\S ✓.</li>
+          <li><strong>Folgerung:</strong> S ≠ ∅ und S ≠ R ⇒ Satz von Rice anwendbar ⇒
+            C(S) = {w | M_w berechnet f(42)=43} ist <strong>unentscheidbar</strong>.</li>
+        </ol>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Aufgabe</th><th>Eigenschaft von</th><th>Rice anwendbar?</th><th>Ergebnis</th></tr></thead>
+          <tbody>
+            <tr><td>4b(i): ≤1000 Schritte</td><td>TM-Struktur</td><td>Nein</td><td>entscheidbar</td></tr>
+            <tr><td>4b(ii): f(42)=43</td><td>berechnete Funktion</td><td>Ja (S≠∅, S≠R)</td><td>unentscheidbar</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„S = {f | f(42)=43} ist zu spezifisch — nur
+            eine einzelne Eingabe, das kann keine Funktionseigenschaft sein, also ist Rice nicht anwendbar."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>„f(42)=43" ist trotzdem eine Eigenschaft der
+            <strong>gesamten Funktion</strong> f (jede Funktion hat entweder diese Eigenschaft oder nicht) —
+            <strong>keine</strong> Eigenschaft der TM-Struktur. Rice ist hier sehr wohl anwendbar!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Rice pauschal auf jede Eigenschaft anwenden,
+            z. B. auch auf Laufzeit oder Zustandszahl.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Rice gilt <strong>nur</strong> für
+            Eigenschaften der berechneten Funktion. Laufzeit, Zustandszahl, Bandsymbole & Co. sind
+            Struktureigenschaften der TM — dort greift Rice nicht, oft sind solche Fragen sogar direkt
+            entscheidbar.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„S muss entweder leer oder die ganze Menge R
+            sein, damit man von 'trivial' spricht — alles andere ist automatisch unentscheidbar, egal wie groß
+            S ist."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es kommt nicht auf die <strong>Größe</strong>
+            von S an, sondern nur auf S ≠ ∅ <strong>und</strong> S ≠ R. Ein unendlich großes S kann genauso
+            unter Rice fallen wie ein kleines — solange beide Bedingungen erfüllt sind.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Der Check in drei Fragen</h4>
+          <pre class="code">1. Eigenschaft der FUNKTION oder der TM-STRUKTUR?
+   → Struktur:  Rice NICHT anwendbar, meist per Simulation entscheidbar
+   → Funktion:  weiter zu Frage 2
+
+2. Ist S ≠ ∅ (mind. eine Funktion HAT die Eigenschaft)?
+3. Ist S ≠ R (mind. eine Funktion hat sie NICHT)?
+   → beides Ja:  Satz von Rice anwendbar → C(S) UNENTSCHEIDBAR
+   → sonst:      S trivial → C(S) entscheidbar (immer dieselbe Antwort)</pre>
+
+          <h4>Beispiele auf einen Blick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Eigenschaft</th><th>Typ</th><th>Entscheidbar?</th></tr></thead>
+            <tbody>
+              <tr><td>f(42) = 43</td><td>Funktion</td><td>Nein</td></tr>
+              <tr><td>f ist total</td><td>Funktion</td><td>Nein</td></tr>
+              <tr><td>M hat ≤ 1000 Schritte gebraucht</td><td>Struktur</td><td>Ja</td></tr>
+              <tr><td>M hat ≤ 100 Zustände</td><td>Struktur</td><td>Ja</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Funktion vs. Struktur</strong> ist der erste und wichtigste Filter — vor jeder anderen
+              Überlegung.</li>
+            <li>S ≠ ∅ <strong>und</strong> S ≠ R — beide Bedingungen, unabhängig von der Größe von S.</li>
+            <li>Eingabe-spezifische Aussagen wie f(42)=43 sind <strong>trotzdem</strong> Funktionseigenschaften
+              — nicht mit Struktureigenschaften verwechseln!</li>
+            <li>Struktureigenschaften (Laufzeit, Zustandszahl, ...) sind oft per direkter Simulation
+              entscheidbar — das ist meist auch das Gegenargument in der Klausur.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Ist es entscheidbar, ob eine TM M nach höchstens
+              1000 Schritten anhält?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja, entscheidbar — einfach 1001 Schritte
+                simulieren</button>
+              <button class="quiz-choice" type="button">Nein, unentscheidbar nach Satz von Rice</button>
+              <button class="quiz-choice" type="button">Nur für manche TMs entscheidbar</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das ist eine TM-Struktureigenschaft (Laufzeit), Rice greift nicht.
+              Per Simulation über 1001 Schritte ist die Frage direkt <strong>entscheidbar</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Ist es entscheidbar, ob eine TM M bei Eingabe 42
+              die Zahl 43 berechnet?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, entscheidbar durch Simulation</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, unentscheidbar (Satz von Rice)</button>
+              <button class="quiz-choice" type="button">Nur wenn M garantiert terminiert</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>S={f|f(42)=43} ist nichtleer (n↦n+1) und echte Teilmenge (n↦n) —
+              Rice anwendbar ⇒ <strong>unentscheidbar</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Für welche Art von Eigenschaft gilt der Satz von
+              Rice?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Eigenschaften der berechneten Funktion</button>
+              <button class="quiz-choice" type="button">Eigenschaften des Programmcodes / der TM-Struktur</button>
+              <button class="quiz-choice" type="button">Eigenschaften der Laufzeit</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Rice gilt ausschließlich für Eigenschaften der
+              <strong>berechneten Funktion</strong> — nie für Struktur- oder Laufzeiteigenschaften der TM
+              selbst.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie viele Bedingungen muss S erfüllen, damit der
+              Satz von Rice überhaupt anwendbar ist (S≠∅ zählt als eine, S≠R als eine weitere)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Bedingungen</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>S ≠ ∅ und S ≠ R — <strong>2</strong> Bedingungen, beide müssen
+              erfüllt sein.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Warum greift der Satz von Rice NICHT bei der
+              Eigenschaft „M hat ≤ 100 Zustände"?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Weil das eine Eigenschaft der TM-Struktur
+                ist, nicht der berechneten Funktion</button>
+              <button class="quiz-choice" type="button">Weil 100 eine willkürlich gewählte Zahl ist</button>
+              <button class="quiz-choice" type="button">Weil Zustände nichts mit Berechenbarkeit zu tun haben</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Zustandszahl beschreibt die konkrete TM-Beschreibung, nicht
+              das Ein-/Ausgabeverhalten der berechneten Funktion — also eine <strong>Struktureigenschaft</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Sei S = {f | f(42) = 43}. Ist S ≠ ∅?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ja, z. B. erfüllt f(n) = n+1 diese
+                Eigenschaft</button>
+              <button class="quiz-choice" type="button">Nein, S ist immer leer</button>
+              <button class="quiz-choice" type="button">Das lässt sich nicht entscheiden</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>f = (n ↦ n+1) liefert f(42) = 43, also f ∈ S — S ist
+              <strong>nichtleer</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="09-mu-rekursion.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">µ-rekursive Funktionen</div>
+        </a>
+        <a class="next" href="11-np-komplexitaet.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">NP-Schwere &amp; Reduktionen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

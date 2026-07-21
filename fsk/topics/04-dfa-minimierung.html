@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DFA-Minimierung · FSK</title>
+<meta name="description" content="DFA-Minimierung bildlich erklärt: das Partitionierungsverfahren als Folge von Boxen, unerreichbare Zustände entfernen, und die komplette Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 1c) sauber durchgerechnet." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 04</div>
+    <span class="th-icon">✂️</span>
+    <h1>DFA-Minimierung</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Partitionierungsverfahren</a></li>
+        <li><a href="#rechnen">Original-Klausuraufgabe</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Ein DFA, den man "aus dem Bauch heraus" oder per Potenzmengenkonstruktion baut, hat
+          oft <strong>überflüssige Zustände</strong> — mehrere Zustände, die sich für die Außenwelt exakt
+          identisch verhalten. Die <strong>Minimierung</strong> findet diese Zwillinge und verschmilzt sie zum
+          kleinstmöglichen DFA, der <strong>exakt dieselbe Sprache</strong> erkennt. Kleiner Automat, gleiche
+          Sprache — das ist das ganze Versprechen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… zwei Mitarbeiter in einem Callcenter, die beide immer <strong>exakt gleich</strong> reagieren:
+            bei jeder Kundenanfrage geben sie dieselbe Antwort und leiten an dieselben Kollegen weiter. Aus
+            Kundensicht ist es völlig egal, mit welchem der beiden du sprichst — sie sind
+            <strong>ununterscheidbar</strong>. Warum dann zwei Schreibtische bezahlen? Die Minimierung ist genau
+            diese Entlassungswelle für redundante Zustände: sie fusioniert alle, die sich <strong>für jede
+            mögliche Eingabe</strong> exakt gleich verhalten würden.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Das Partitionierungsverfahren</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Äquivalenz zweier Zustände</div>
+          <span class="formula">p ≡ q   gdw.   für alle Wörter w gilt: δ*(p,w) ∈ F  ⇔  δ*(q,w) ∈ F
+
+kurz für den Algorithmus: p ≡ q  gdw.  für alle a ∈ Σ: δ(p,a) und δ(q,a) landen in derselben Klasse</span>
+          <p>Zwei Zustände sind äquivalent, wenn du ihnen <strong>kein einziges Wort</strong> zeigen kannst, bei
+            dem einer akzeptiert und der andere nicht. Praktisch prüfst du das schrittweise über Klassen statt
+            über unendlich viele Wörter — das ist die Partitionierung.</p>
+        </div>
+
+        <h3>Schritt 0 (Pflicht, wird oft vergessen): unerreichbare Zustände entfernen</h3>
+        <p>Bevor du überhaupt zu partitionieren anfängst: streiche jeden Zustand, der vom Startzustand aus
+          <strong>gar nicht erreichbar</strong> ist. Ein unerreichbarer Zustand kann die Sprache nie beeinflussen
+          — ihn mitzunehmen verfälscht nur deine Partitionen.</p>
+
+        <!-- SVG 1: Unerreichbarer Zustand -->
+        <figure class="diagram">
+          <div class="diagram-title">🧮 Mini-Beispiel: x₉ hat keine einzige eingehende Kante — raus damit</div>
+          <svg viewBox="0 0 480 280" width="480" role="img" aria-label="DFA mit Start x0, das über a zu x1 und über b zum akzeptierenden x2 führt. Ein vierter Zustand x9 hat ausgehende Kanten, aber keinerlei eingehende Kante und ist damit vom Start aus unerreichbar.">
+            <defs>
+              <marker id="p04arrU" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="p04arrD" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#9aa3b2"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <path d="M20,190 L46,190" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrU)"/>
+              <circle cx="72" cy="190" r="24" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="72" y="195" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">x₀</text>
+
+              <circle cx="240" cy="190" r="24" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="240" y="195" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">x₁</text>
+
+              <circle cx="410" cy="190" r="26" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="410" cy="190" r="20" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="410" y="195" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">x₂</text>
+
+              <path d="M96,190 L216,190" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrU)"/>
+              <text x="156" y="178" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+
+              <path d="M264,190 L384,190" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrU)"/>
+              <text x="324" y="178" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <path d="M396,166 C384,126 436,126 424,166" fill="none" stroke="#2f6df6" stroke-width="1.8" marker-end="url(#p04arrU)"/>
+              <text x="410" y="112" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="11">a,b</text>
+
+              <circle cx="240" cy="60" r="22" fill="none" stroke="#9aa3b2" stroke-width="2" stroke-dasharray="4 4"/>
+              <text x="240" y="65" text-anchor="middle" fill="#9aa3b2" font-family="JetBrains Mono, monospace" font-weight="700">x₉</text>
+              <path d="M258,78 C320,110 370,150 392,172" fill="none" stroke="#9aa3b2" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#p04arrD)"/>
+              <text x="330" y="118" text-anchor="middle" fill="#9aa3b2" font-weight="700" font-size="11">a,b</text>
+              <text x="240" y="24" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="13">✂ unerreichbar</text>
+            </g>
+          </svg>
+          <figcaption>x₉ hat zwar eine ausgehende Kante — aber <strong>keine einzige eingehende</strong>. Egal
+            welches Wort du von x₀ aus liest, du kommst nie bei x₉ vorbei. Vor der Partitionierung wird x₉
+            gestrichen, sonst verzerrt er deine Klassen unnötig.</figcaption>
+        </figure>
+
+        <h3>Schritt 1: Partition 0 — nach Akzeptanz trennen</h3>
+        <p>Die gröbste sinnvolle Unterscheidung: alle Endzustände in eine Klasse, alle Nicht-Endzustände in die
+          andere. Zwei Zustände, von denen einer akzeptiert und der andere nicht, können niemals äquivalent
+          sein — das ist der einzig sichere Startpunkt.</p>
+
+        <h3>Schritt 2: verfeinern, bis nichts mehr passiert</h3>
+        <ol class="steps">
+          <li><strong>Für jede aktuelle Klasse:</strong> prüfe für jeden Zustand p in der Klasse, in welche
+            Klasse δ(p,a) für jedes a ∈ Σ führt — das ist die "Signatur" von p.</li>
+          <li><strong>Unterschiedliche Signatur ⇒ Klasse spalten.</strong> Zustände mit gleicher Signatur
+            bleiben zusammen, Zustände mit abweichender Signatur wandern in eine neue Teil-Klasse.</li>
+          <li><strong>Wiederholen</strong> mit der neuen, feineren Partition — so lange, bis sich in einer
+            kompletten Runde <strong>gar nichts</strong> mehr ändert.</li>
+          <li><strong>Stabil = fertig.</strong> Jede verbleibende Klasse wird zu genau einem Zustand im
+            minimierten DFA fusioniert.</li>
+        </ol>
+
+        <!-- SVG 2: Partitions-Boxen -->
+        <figure class="diagram">
+          <div class="diagram-title">Partitionsverfeinerung als Boxen — vorgezogen am Klausurbeispiel unten</div>
+          <svg viewBox="0 0 640 300" width="640" role="img" aria-label="P0 zeigt zwei Boxen: nicht-akzeptierende Zustände z0,z1,z3 und akzeptierende Zustände z2,z4,z5. Ein Pfeil zeigt, wie sich die erste Box in P1 in zwei Boxen aufspaltet, waehrend die zweite Box unveraendert bleibt.">
+            <defs>
+              <marker id="p04arrO" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f5810b"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <text x="20" y="30" fill="#8a94a6" font-weight="800" font-size="12">P₀ — nach Akzeptanz</text>
+              <rect x="20" y="42" width="230" height="66" rx="12" fill="#e0483d" fill-opacity="0.1" stroke="#e0483d" stroke-width="1.6"/>
+              <text x="135" y="70" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₀, z₁, z₃</text>
+              <text x="135" y="92" text-anchor="middle" class="svg-soft" font-size="11">nicht-akzeptierend</text>
+
+              <rect x="300" y="42" width="320" height="66" rx="12" fill="#12b28c" fill-opacity="0.12" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="460" y="70" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₂, z₄, z₅</text>
+              <text x="460" y="92" text-anchor="middle" class="svg-soft" font-size="11">akzeptierend</text>
+
+              <text x="20" y="200" fill="#8a94a6" font-weight="800" font-size="12">P₁ — verfeinert (bereits stabil)</text>
+              <rect x="20" y="212" width="90" height="60" rx="12" fill="#e0483d" fill-opacity="0.1" stroke="#e0483d" stroke-width="1.6"/>
+              <text x="65" y="248" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₀</text>
+
+              <rect x="130" y="212" width="140" height="60" rx="12" fill="#f5810b" fill-opacity="0.12" stroke="#f5810b" stroke-width="1.6"/>
+              <text x="200" y="248" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₁, z₃</text>
+
+              <rect x="300" y="212" width="320" height="60" rx="12" fill="#12b28c" fill-opacity="0.12" stroke="#12b28c" stroke-width="1.6"/>
+              <text x="460" y="248" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₂, z₄, z₅</text>
+
+              <path d="M110,108 C90,140 75,170 62,212" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p04arrO)"/>
+              <path d="M160,108 C180,140 195,170 200,212" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p04arrO)"/>
+              <text x="130" y="160" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="11">spaltet sich</text>
+
+              <path d="M460,108 L460,212" fill="none" stroke="#12b28c" stroke-width="2" marker-end="url(#p04arrO)"/>
+              <text x="500" y="165" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="11">bleibt gleich</text>
+            </g>
+          </svg>
+          <figcaption>z₀ verhält sich anders als z₁ und z₃ (es führt bei a UND b in die nicht-akzeptierende
+            Klasse, während z₁/z₃ in die akzeptierende Klasse führen) — die linke Box spaltet sich. Die rechte
+            Box bleibt komplett, weil z₂, z₄ und z₅ alle wieder in dieselbe akzeptierende Klasse
+            zurückführen.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Wichtig: Minimierung ändert NIE die Sprache</div>
+          <p>So aggressiv das Fusionieren auch aussieht — der minimierte DFA akzeptiert <strong>exakt dieselben
+            Wörter</strong> wie der ursprüngliche. Du entfernst nur Redundanz, nie Verhalten.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 1c)</h2>
+        <p class="lead-in">10 Punkte, DFA-Minimierung. Wir rechnen die komplette Partitionstabelle sauber
+          durch — inklusive Erreichbarkeits-Check und Musterlösung.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben ist folgender DFA über Σ = {a, b} mit Startzustand z₀ und Endzuständen
+            F = {z₂, z₄, z₅}. Minimiere ihn.</p>
+        </div>
+
+        <!-- SVG 3: Original-DFA aus der Klausur -->
+        <figure class="diagram">
+          <div class="diagram-title">Ausgangs-DFA der Klausuraufgabe — 6 Zustände</div>
+          <svg viewBox="0 0 650 480" width="650" role="img" aria-label="Sechs-Zustands-DFA: Start z0 fuehrt ueber a zu z1 und ueber b zu z3. z1 fuehrt ueber a zum akzeptierenden z2 und ueber b zum akzeptierenden z5. z3 fuehrt ueber a und b zum akzeptierenden z4. z4 fuehrt ueber a und b zu z5. z2 und z5 haben Selbstschleifen fuer a und b.">
+            <defs>
+              <marker id="p04arrX" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <path d="M30,230 L64,230" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrX)"/>
+
+              <circle cx="90" cy="230" r="26" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="90" y="236" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₀</text>
+
+              <circle cx="300" cy="120" r="26" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="300" y="126" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₁</text>
+
+              <circle cx="300" cy="340" r="26" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="2"/>
+              <text x="300" y="346" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₃</text>
+
+              <circle cx="530" cy="90" r="26" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="530" cy="90" r="20" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="530" y="96" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₂</text>
+
+              <circle cx="530" cy="230" r="26" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="530" cy="230" r="20" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="530" y="236" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₅</text>
+
+              <circle cx="530" cy="400" r="26" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="530" cy="400" r="20" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="530" y="406" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">z₄</text>
+
+              <!-- z0 -> z1 (a), z0 -> z3 (b) -->
+              <path d="M113,218 L277,131" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrX)"/>
+              <text x="185" y="160" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+              <path d="M113,242 L277,329" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrX)"/>
+              <text x="185" y="300" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <!-- z1 -> z2 (a), z1 -> z5 (b) -->
+              <path d="M325,116 L504,93" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrX)"/>
+              <text x="415" y="96" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+              <path d="M322,140 L507,219" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrX)"/>
+              <text x="415" y="170" text-anchor="middle" fill="#2f6df6" font-weight="800">b</text>
+
+              <!-- z3 -> z4 (a,b) -->
+              <path d="M324,352 L505,394" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrX)"/>
+              <text x="415" y="362" text-anchor="middle" fill="#2f6df6" font-weight="800">a,b</text>
+
+              <!-- z4 -> z5 (a,b) -->
+              <path d="M530,374 L530,256" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p04arrX)"/>
+              <text x="552" y="315" fill="#2f6df6" font-weight="800">a,b</text>
+
+              <!-- Selbstschleifen -->
+              <path d="M508,70 C496,30 564,30 552,70" fill="none" stroke="#2f6df6" stroke-width="1.8" marker-end="url(#p04arrX)"/>
+              <text x="530" y="18" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="11">a,b</text>
+
+              <path d="M556,208 C598,196 598,264 556,252" fill="none" stroke="#2f6df6" stroke-width="1.8" marker-end="url(#p04arrX)"/>
+              <text x="610" y="234" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="11">a,b</text>
+            </g>
+          </svg>
+          <figcaption>z₂, z₄, z₅ sind akzeptierend (Doppelkreis). z₂ und z₅ sind "absorbierend": ist man einmal
+            dort, bleibt man für jedes weitere Zeichen dort.</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li><strong>Schritt 0 — Erreichbarkeit prüfen:</strong> von z₀ aus erreichst du über a bzw. b sofort
+            z₁ und z₃; von dort aus alle übrigen. Alle 6 Zustände sind erreichbar — hier gibt es also nichts zu
+            streichen (der Check selbst ist trotzdem Pflicht und bringt in der Klausur den ersten Punkt).</li>
+          <li><strong>Partition 0 — nach Akzeptanz:</strong> P₀ = {z₀, z₁, z₃} | {z₂, z₄, z₅}.</li>
+          <li><strong>Signaturen für die nicht-akzeptierende Klasse berechnen (Ziel-Klasse bei a, bei b):</strong>
+            z₀: a→z₁ (nicht-akz.), b→z₃ (nicht-akz.) → Signatur (N,N).<br>
+            z₁: a→z₂ (akz.), b→z₅ (akz.) → Signatur (A,A).<br>
+            z₃: a→z₄ (akz.), b→z₄ (akz.) → Signatur (A,A).<br>
+            z₀ hat eine andere Signatur als z₁, z₃ → <strong>{z₀} spaltet sich ab.</strong></li>
+          <li><strong>Signaturen für die akzeptierende Klasse berechnen:</strong>
+            z₂: a→z₂ (akz.), b→z₂ (akz.) → (A,A).<br>
+            z₄: a→z₅ (akz.), b→z₅ (akz.) → (A,A).<br>
+            z₅: a→z₅ (akz.), b→z₅ (akz.) → (A,A).<br>
+            Alle drei identisch → <strong>{z₂, z₄, z₅} bleibt zusammen.</strong></li>
+          <li><strong>Partition 1:</strong> P₁ = {z₀} | {z₁, z₃} | {z₂, z₄, z₅}.</li>
+          <li><strong>Stabilitätscheck (eine Runde weiterprüfen):</strong> z₁ und z₃ gehen bei a UND b beide
+            wieder in dieselbe Klasse {z₂,z₄,z₅} → gleiche Signatur, bleiben zusammen. z₂, z₄, z₅ gehen bei a
+            UND b jeweils wieder in {z₂,z₄,z₅} selbst → auch hier alle drei gleiche Signatur. <strong>Keine
+            Klasse spaltet sich weiter — P₁ ist stabil.</strong></li>
+        </ol>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Zustand</th><th>δ(·,a)</th><th>δ(·,b)</th><th>Klasse in P₀</th><th>Klasse in P₁ (stabil)</th></tr></thead>
+          <tbody>
+            <tr><td>z₀</td><td>z₁</td><td>z₃</td><td>nicht-akz.</td><td><strong>{z₀}</strong></td></tr>
+            <tr><td>z₁</td><td>z₂</td><td>z₅</td><td>nicht-akz.</td><td><strong>{z₁,z₃}</strong></td></tr>
+            <tr><td>z₃</td><td>z₄</td><td>z₄</td><td>nicht-akz.</td><td><strong>{z₁,z₃}</strong></td></tr>
+            <tr><td>z₂</td><td>z₂</td><td>z₂</td><td>akz.</td><td><strong>{z₂,z₄,z₅}</strong></td></tr>
+            <tr><td>z₄</td><td>z₅</td><td>z₅</td><td>akz.</td><td><strong>{z₂,z₄,z₅}</strong></td></tr>
+            <tr><td>z₅</td><td>z₅</td><td>z₅</td><td>akz.</td><td><strong>{z₂,z₄,z₅}</strong></td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 4: Minimierter DFA -->
+        <figure class="diagram">
+          <div class="diagram-title">Minimierter DFA — von 6 auf 3 Zustände</div>
+          <svg viewBox="0 0 640 240" width="640" role="img" aria-label="Minimierter DFA mit drei Zustaenden: Start z0 fuehrt ueber a und b zu z1-z3, dieser fuehrt ueber a und b zum akzeptierenden z2-z4-z5, welches eine Selbstschleife fuer a und b hat.">
+            <defs>
+              <marker id="p04arrM" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <path d="M30,130 L64,130" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p04arrM)"/>
+
+              <circle cx="90" cy="130" r="26" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="90" y="136" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12">{z₀}</text>
+
+              <ellipse cx="330" cy="130" rx="50" ry="30" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="330" y="136" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12">{z₁,z₃}</text>
+
+              <ellipse cx="560" cy="130" rx="58" ry="34" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <ellipse cx="560" cy="130" rx="50" ry="26" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="560" y="136" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11.5">{z₂,z₄,z₅}</text>
+
+              <path d="M116,130 L280,130" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p04arrM)"/>
+              <text x="198" y="116" text-anchor="middle" fill="#8b5cf6" font-weight="800">a,b</text>
+
+              <path d="M380,130 L502,130" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#p04arrM)"/>
+              <text x="440" y="116" text-anchor="middle" fill="#8b5cf6" font-weight="800">a,b</text>
+
+              <path d="M538,100 C526,56 594,56 582,100" fill="none" stroke="#8b5cf6" stroke-width="1.8" marker-end="url(#p04arrM)"/>
+              <text x="560" y="42" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="11">a,b</text>
+            </g>
+          </svg>
+          <figcaption>Bemerkenswert: Der minimierte Automat sagt uns nebenbei auch, welche Sprache erkannt
+            wird — nämlich <strong>alle Wörter mit mindestens 2 Zeichen</strong> (egal welche): jedes Zeichen
+            bringt dich eine Stufe weiter, ab der zweiten Stufe bleibst du für immer akzeptiert.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Musterlösung: minimierter DFA</div>
+          <span class="formula">Zustände:   {z₀} (Start), {z₁,z₃}, {z₂,z₄,z₅} (Endzustand)
+Übergänge:  {z₀} --a,b--&gt; {z₁,z₃}
+            {z₁,z₃} --a,b--&gt; {z₂,z₄,z₅}
+            {z₂,z₄,z₅} --a,b--&gt; {z₂,z₄,z₅}   (Selbstschleife)</span>
+          <p>Von 6 auf 3 Zustände — die Hälfte war redundant. Die erkannte Sprache bleibt exakt dieselbe wie
+            beim Original-DFA.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nach der Minimierung erkennt der DFA eine
+            kleinere oder andere Sprache, weil ja Zustände "verloren gehen".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Minimierung ändert <strong>niemals</strong>
+            die akzeptierte Sprache — es werden nur Zustände fusioniert, die sich für JEDES Eingabewort
+            ohnehin exakt gleich verhalten hätten.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Direkt mit der Partitionierung loslegen, ohne
+            vorher auf unerreichbare Zustände zu prüfen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Schritt 0 ist Pflicht: <strong>erst
+            unerreichbare Zustände streichen</strong>, dann erst partitionieren — sonst können sie deine
+            Klassen unnötig verfälschen (und in der Klausur kostet das Punkte).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nach der ersten Verfeinerungsrunde aufhören,
+            weil "es sich doch schon geändert hat".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Du musst so lange verfeinern, bis eine
+            <strong>komplette Runde ohne jede Änderung</strong> durchläuft. Erst dann ist die Partition
+            garantiert stabil und die Minimierung fertig.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Im minimierten DFA einen fusionierten
+            Zustand einfach "z₀" statt "{z₀}" nennen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Zustände des minimierten DFA sind
+            <strong>Mengen</strong> von Original-Zuständen — auch wenn eine Klasse nur ein einziges Element
+            enthält, schreibst du sie als Menge: <strong>{z₀}</strong>, nicht z₀. Das ist reine Notation, wird
+            in der Klausur aber oft mit Punktabzug geahndet.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Das Verfahren in 5 Zeilen</h4>
+          <pre class="code">0. Unerreichbare Zustände entfernen (Pflicht-Check, auch wenn "nichts" gefunden wird)
+1. P0 = {Endzustände} | {Nicht-Endzustände}
+2. Signatur je Zustand = (Klasse von δ(q,a) für jedes a ∈ Σ)
+3. Unterschiedliche Signatur → Klasse spaltet sich
+4. Wiederholen bis eine ganze Runde stabil bleibt → fertig, Klassen = neue Zustände</pre>
+
+          <h4>Checkliste</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schritt</th><th>Worauf achten</th></tr></thead>
+            <tbody>
+              <tr><td>Vorbereitung</td><td>unerreichbare Zustände zuerst entfernen</td></tr>
+              <tr><td>P₀</td><td>nur Akzeptanz zählt (Endzustand ja/nein)</td></tr>
+              <tr><td>Verfeinern</td><td>Signatur = Zielklassen bei jedem Symbol</td></tr>
+              <tr><td>Abbruch</td><td>erst bei komplett stabiler Runde stoppen</td></tr>
+              <tr><td>Ergebnis</td><td>Zustände als Mengen schreiben: {z₀}, {z₁,z₃}, …</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Minimierung ändert nie die Sprache</strong> — nur die Zustandszahl schrumpft</li>
+            <li><strong>Unerreichbare Zustände zuerst raus</strong> — sonst verfälschen sie die Partitionen</li>
+            <li>Zwei Zustände sind äquivalent, wenn sie bei <strong>jedem</strong> Symbol in dieselbe Klasse
+              führen — nicht nur "meistens"</li>
+            <li><strong>So lange verfeinern, bis stabil</strong> — eine einzelne stabile Runde reicht als Beweis</li>
+            <li>Minimierte Zustände sind <strong>Mengen</strong>: auch Einzelzustände als {z} schreiben</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was passiert mit der akzeptierten Sprache bei
+              einer DFA-Minimierung?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Nichts — sie bleibt exakt gleich.</button>
+              <button class="quiz-choice" type="button">Sie wird kleiner, weil Zustände wegfallen.</button>
+              <button class="quiz-choice" type="button">Sie kann sich leicht ändern, das ist normal.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Minimierung fusioniert nur Zustände, die sich für <strong>jedes</strong>
+              Wort ohnehin identisch verhalten — die Sprache bleibt <strong>exakt</strong> dieselbe.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="unerreichbare Zustände entfernen|unerreichbare Zustände|Erreichbarkeit prüfen">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welcher Schritt muss VOR der eigentlichen
+              Partitionierung passieren (auch wenn er manchmal "nichts findet")?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Zuerst müssen <strong>unerreichbare Zustände entfernt</strong>
+              werden — sonst verfälschen sie die Partitionen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Zwei Zustände p, q liegen laut Signatur-Check
+              bei a in derselben Klasse, aber bei b in verschiedenen Klassen. Was folgt daraus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>p und q sind NICHT äquivalent — die Klasse
+                muss sich spalten.</button>
+              <button class="quiz-choice" type="button">p und q sind trotzdem äquivalent, weil sie bei a
+                übereinstimmen.</button>
+              <button class="quiz-choice" type="button">Man muss noch ein drittes Symbol prüfen, um sicher zu sein.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Äquivalenz braucht Übereinstimmung bei <strong>jedem</strong>
+              Symbol aus Σ. Weicht auch nur eines ab, spaltet sich die Klasse.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur EK: Wie viele Zustände hat der
+              Ausgangs-DFA der Klausuraufgabe (vor der Minimierung)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Zustände</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>z₀ bis z₅ → <strong>6</strong> Zustände.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur EK: Wie viele Zustände hat der
+              minimierte DFA am Ende?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Zustände</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>{z₀}, {z₁,z₃}, {z₂,z₄,z₅} → <strong>3</strong> Zustände.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur EK: Warum spaltet sich {z₀} von
+              {z₁, z₃} in Partition 1 ab?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>z₀ führt bei a UND b in die
+                nicht-akzeptierende Klasse, z₁ und z₃ führen bei a UND b in die akzeptierende Klasse.</button>
+              <button class="quiz-choice" type="button">z₀ ist der Startzustand, Startzustände bleiben immer
+                allein.</button>
+              <button class="quiz-choice" type="button">z₀ hat mehr ausgehende Kanten als z₁ und z₃.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Signatur entscheidet: z₀ → (nicht-akz., nicht-akz.), aber
+              z₁, z₃ → (akz., akz.) — unterschiedliche Signatur, also unterschiedliche Klasse.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="03-regex-zu-dfa.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Von Regex zu DFA</div>
+        </a>
+        <a class="next" href="05-pumping-lemma.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Das Pumping-Lemma</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

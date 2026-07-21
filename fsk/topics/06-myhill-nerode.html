@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Myhill-Nerode &amp; Abschluss · FSK</title>
+<meta name="description" content="Satz von Myhill-Nerode und Abschlusseigenschaften regulärer Sprachen bildlich erklärt: Äquivalenzklassen als Eimer, Komplement-Umschaltung, plus die vollständigen Original-Klausuraufgaben (SoSe 2024, Zweitklausur 2a/2b)." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 06</div>
+    <span class="th-icon">🧩</span>
+    <h1>Myhill-Nerode &amp; Abschluss</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Äquivalenzklassen &amp; Abschluss</a></li>
+        <li><a href="#rechnen">Beispiele &amp; Klausuraufgaben</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Das Pumping-Lemma ist mächtig, aber manchmal umständlich — du musst alle Zerlegungen
+          durchprobieren. Der Satz von <strong>Myhill-Nerode</strong> gibt dir ein zweites, oft eleganteres
+          Werkzeug: Er sagt, dass eine Sprache genau dann regulär ist, wenn sie ihre Wörter in nur
+          <strong>endlich viele „Verhaltensklassen"</strong> einteilt. Zusätzlich lernst du die
+          <strong>Abschlusseigenschaften</strong> kennen — mit denen du Nicht-Regularität manchmal in wenigen
+          Zeilen zeigen kannst, indem du eine bekannte nicht-reguläre Sprache „versteckt" in deiner Sprache
+          wiederfindest.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du testest zwei Wörter u und v, indem du an <strong>jedes mögliche</strong> Suffix w denkst und
+            fragst: „Ist uw in der Sprache — und ist vw es auch?" Verhalten sich u und v bei
+            <strong>jedem</strong> Suffix identisch (immer beide drin oder immer beide draußen), gehören sie in
+            denselben „Eimer" — sie sind <strong>äquivalent</strong>. Findest du auch nur ein einziges Suffix,
+            bei dem sie sich unterscheiden, gehören sie in verschiedene Eimer. Ein DFA <em>ist</em> im Grunde
+            nichts anderes als eine Sammlung solcher Eimer: <strong>ein Zustand pro Äquivalenzklasse</strong>.
+            Gibt es unendlich viele Eimer, kann kein (endlicher!) DFA das leisten — die Sprache ist nicht
+            regulär.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Äquivalenzklassen &amp; Abschlusseigenschaften im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Äquivalenzrelation ~_L</div>
+          <span class="formula">u ~_L v  ⟺  ∀ w ∈ Σ*:  u w ∈ L  ⇔  v w ∈ L</span>
+          <p>u und v sind äquivalent bezüglich L, wenn sie sich mit <strong>jedem</strong> möglichen Suffix w
+            gleich verhalten — entweder landen beide in L oder keins von beiden.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Satz von Myhill-Nerode</div>
+          <span class="formula">L ist regulär  ⟺  ~_L hat endlichen Index</span>
+          <p>Der <strong>Index</strong> ist einfach die Anzahl der Äquivalenzklassen von ~_L. „Endlicher Index"
+            heißt: endlich viele Klassen — genau wie ein DFA nur endlich viele Zustände hat (ein minimaler DFA
+            hat sogar <strong>exakt</strong> so viele Zustände wie ~_L Klassen hat!).</p>
+        </div>
+
+        <p>Um <strong>Nicht-Regularität</strong> zu zeigen, gibst du unendlich viele Wörter an, die
+          <strong>paarweise</strong> inäquivalent sind — für je zwei davon nennst du ein <strong>trennendes
+          Suffix</strong>, das sie unterscheidet:</p>
+
+        <!-- SVG 1: Äquivalenzklassen als Eimer -->
+        <figure class="diagram">
+          <div class="diagram-title">Unendlich viele Äquivalenzklassen — je ein „Eimer" pro Wort ab^i</div>
+          <svg viewBox="0 0 640 230" width="640" role="img" aria-label="Fünf Eimer als Äquivalenzklassen dargestellt: [ab], [abb], [abbb], [abbbb] und Auslassungspunkte, jeweils mit dem trennenden Suffix c, cc, ccc, cccc darunter, plus eine Klammer, die anzeigt, dass es unendlich viele solcher Klassen gibt">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <rect x="20" y="40" width="100" height="70" rx="10" fill="#2f6df6" fill-opacity="0.15" stroke="#2f6df6" stroke-width="1.8"/>
+              <text x="70" y="82" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="16">[ab]</text>
+              <text x="70" y="128" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11.5">Suffix c</text>
+
+              <rect x="135" y="40" width="100" height="70" rx="10" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="1.8"/>
+              <text x="185" y="82" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="16">[abb]</text>
+              <text x="185" y="128" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11.5">Suffix cc</text>
+
+              <rect x="250" y="40" width="100" height="70" rx="10" fill="#f5810b" fill-opacity="0.15" stroke="#f5810b" stroke-width="1.8"/>
+              <text x="300" y="82" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="16">[abbb]</text>
+              <text x="300" y="128" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11.5">Suffix ccc</text>
+
+              <rect x="365" y="40" width="100" height="70" rx="10" fill="#12b28c" fill-opacity="0.15" stroke="#12b28c" stroke-width="1.8"/>
+              <text x="415" y="82" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="15">[abbbb]</text>
+              <text x="415" y="128" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11.5">Suffix cccc</text>
+
+              <rect x="480" y="40" width="100" height="70" rx="10" fill="none" stroke="#8a94a6" stroke-width="1.8" stroke-dasharray="5,4"/>
+              <text x="530" y="88" text-anchor="middle" class="svg-soft" font-weight="800" font-size="22">…</text>
+
+              <path d="M20,155 L20,163 L580,163 L580,155" fill="none" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="300" y="185" text-anchor="middle" class="svg-ink" font-weight="700" font-size="13">unendlich viele, paarweise verschiedene Klassen</text>
+              <text x="300" y="207" text-anchor="middle" class="svg-soft" font-size="12">⇒ Index von ~_L ist unendlich ⇒ L nicht regulär</text>
+            </g>
+          </svg>
+          <figcaption>Jedes ab^i landet in seinem eigenen Eimer: der Suffix c^i beweist es — er trennt ab^i von
+            jedem ab^j mit j ≠ i, weil nur ab^i · c^i in L liegt.</figcaption>
+        </figure>
+
+        <h3>Abschlusseigenschaften regulärer Sprachen</h3>
+        <p>Reguläre Sprachen sind unter fünf Operationen <strong>abgeschlossen</strong> — wendest du eine davon
+          auf reguläre Sprachen an, bleibt das Ergebnis regulär:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Operation</th><th>Symbol</th><th>Beweisidee</th></tr></thead>
+          <tbody>
+            <tr><td>Vereinigung</td><td>L₁ ∪ L₂</td><td>Thompson-Konstruktion: neuer Startzustand mit ε-Kanten
+              zu beiden NFA-Starts</td></tr>
+            <tr><td>Konkatenation</td><td>L₁ · L₂</td><td>Thompson-Konstruktion: ε-Kante von jedem Endzustand
+              von NFA₁ zum Start von NFA₂</td></tr>
+            <tr><td>Kleene-Stern</td><td>L*</td><td>Thompson-Konstruktion: ε-Kanten zurück zum Start + neuer,
+              sofort akzeptierender Startzustand</td></tr>
+            <tr><td>Schnitt</td><td>L₁ ∩ L₂</td><td><strong>Produktautomat</strong>: Zustände sind Paare
+              (q,r), Endzustand nur wenn q UND r Endzustände sind</td></tr>
+            <tr><td>Komplement</td><td>L̄</td><td>DFA umkehren: <strong>Endzustände ↔ Nicht-Endzustände</strong>
+              (braucht einen vollständigen DFA!)</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 2: Komplement-Umschaltung -->
+        <figure class="diagram">
+          <div class="diagram-title">Komplement: Endzustände und Nicht-Endzustände tauschen die Rollen</div>
+          <svg viewBox="0 0 640 260" width="640" role="img" aria-label="Zwei kleine DFAs für ungerade bzw. gerade Anzahl von a: derselbe Automat, aber mit vertauschter Endzustands-Markierung, verbunden durch einen Komplement-Pfeil">
+            <defs>
+              <marker id="p06mkBlau" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+              <marker id="p06mkGrau" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <text x="180" y="26" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">M — „ungerade Anzahl a"</text>
+              <text x="460" y="26" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">M̄ — Komplement: „gerade Anzahl a"</text>
+
+              <!-- Linkes Automat M -->
+              <line x1="35" y1="130" x2="62" y2="130" stroke="#2f6df6" stroke-width="2" marker-end="url(#p06mkBlau)"/>
+              <path d="M108,110 C150,60 210,60 252,110" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p06mkBlau)"/>
+              <text x="180" y="66" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+              <path d="M252,150 C210,200 150,200 108,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p06mkBlau)"/>
+              <text x="180" y="205" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+              <path d="M76,105 C58,55 108,55 100,105" fill="none" stroke="#8a94a6" stroke-width="1.8" marker-end="url(#p06mkGrau)"/>
+              <text x="90" y="45" text-anchor="middle" class="svg-soft">b</text>
+              <path d="M256,105 C238,55 288,55 280,105" fill="none" stroke="#8a94a6" stroke-width="1.8" marker-end="url(#p06mkGrau)"/>
+              <text x="270" y="45" text-anchor="middle" class="svg-soft">b</text>
+
+              <circle cx="90" cy="130" r="28" fill="#8a94a6" fill-opacity="0.14" stroke="#8a94a6" stroke-width="2"/>
+              <text x="90" y="136" text-anchor="middle" class="svg-ink" font-weight="800">q₀</text>
+              <circle cx="270" cy="130" r="28" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2.2"/>
+              <circle cx="270" cy="130" r="21" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="270" y="136" text-anchor="middle" class="svg-ink" font-weight="800">q₁</text>
+
+              <!-- Umschalt-Pfeil -->
+              <path d="M330,130 C350,110 370,150 390,130" fill="none" stroke="#e0483d" stroke-width="2.4" marker-end="url(#p06mkBlau)"/>
+              <text x="360" y="95" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="12">Endzustände</text>
+              <text x="360" y="109" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="12">umkehren</text>
+
+              <!-- Rechtes Automat M̄ -->
+              <line x1="405" y1="130" x2="432" y2="130" stroke="#2f6df6" stroke-width="2" marker-end="url(#p06mkBlau)"/>
+              <path d="M478,110 C520,60 580,60 622,110" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p06mkBlau)"/>
+              <text x="550" y="66" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+              <path d="M622,150 C580,200 520,200 478,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p06mkBlau)"/>
+              <text x="550" y="205" text-anchor="middle" fill="#2f6df6" font-weight="800">a</text>
+              <path d="M446,105 C428,55 478,55 470,105" fill="none" stroke="#8a94a6" stroke-width="1.8" marker-end="url(#p06mkGrau)"/>
+              <text x="460" y="45" text-anchor="middle" class="svg-soft">b</text>
+              <path d="M626,105 C608,55 658,55 650,105" fill="none" stroke="#8a94a6" stroke-width="1.8" marker-end="url(#p06mkGrau)"/>
+              <text x="638" y="45" text-anchor="middle" class="svg-soft">b</text>
+
+              <circle cx="460" cy="130" r="28" fill="#12b28c" fill-opacity="0.22" stroke="#12b28c" stroke-width="2.2"/>
+              <circle cx="460" cy="130" r="21" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="460" y="136" text-anchor="middle" class="svg-ink" font-weight="800">q₀</text>
+              <circle cx="640" cy="130" r="28" fill="#8a94a6" fill-opacity="0.14" stroke="#8a94a6" stroke-width="2"/>
+              <text x="640" y="136" text-anchor="middle" class="svg-ink" font-weight="800">q₁</text>
+            </g>
+          </svg>
+          <figcaption>Gleiche Zustände, gleiche Übergänge — nur die grün markierten Endzustände wechseln die
+            Seite. Links akzeptiert q₁ (ungerade Anzahl a), rechts akzeptiert q₀ (gerade Anzahl a). Das
+            funktioniert nur bei einem <strong>vollständigen</strong> DFA (jeder Zustand hat für jedes Symbol
+            einen Übergang)!</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Nicht-Regularität elegant per Reduktion zeigen</div>
+          <p>Statt direkt mit dem Pumping-Lemma zu kämpfen, kannst du manchmal deine Sprache mit einer
+            <strong>regulären</strong> Sprache schneiden, um eine <strong>bekannte nicht-reguläre</strong>
+            Sprache „herauszufiltern". Wäre deine Sprache regulär, müsste (wegen Abschluss unter Schnitt) auch
+            das Filterergebnis regulär sein — ist es das nachweislich nicht, hast du deinen Widerspruch, ganz
+            ohne Fallanalyse über Zerlegungen.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Original-Klausuraufgaben</h2>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Zweitklausur, Aufgabe 2a)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Zeige mit dem Satz von Myhill-Nerode, dass L₃ = {a b<sup>i</sup> c<sup>i</sup> : i ∈ ℕ<sub>&gt;0</sub>}
+            nicht regulär ist. Gib die Äquivalenzklassen mit trennenden Suffixen an.</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Kandidaten wählen:</strong> Betrachte die unendliche Wortfamilie ab<sup>i</sup> für
+            i = 1, 2, 3, 4, … — also ab, abb, abbb, abbbb, …</li>
+          <li><strong>Äquivalenzklassen mit trennenden Suffixen:</strong><br>
+            [ab]~_L₃ mit Suffix c &nbsp;·&nbsp; [abb]~_L₃ mit Suffix cc &nbsp;·&nbsp;
+            [abbb]~_L₃ mit Suffix ccc &nbsp;·&nbsp; [abbbb]~_L₃ mit Suffix cccc &nbsp;·&nbsp; …</li>
+          <li><strong>Disjunktheit zeigen (für i ≠ j):</strong> ab<sup>i</sup> · c<sup>i</sup> ∈ L₃ (i b's,
+            i c's — passt), aber ab<sup>j</sup> · c<sup>i</sup> ∉ L₃ (j b's, aber i c's, und j ≠ i). Da c<sup>i</sup>
+            die beiden Wörter unterschiedlich behandelt, gilt ab<sup>i</sup> ≁_L₃ ab<sup>j</sup>, also
+            [ab<sup>i</sup>] ≠ [ab<sup>j</sup>].</li>
+          <li><strong>Index unendlich:</strong> Es gibt unendlich viele Wörter (ab<sup>i</sup>)<sub>i∈ℕ</sub>
+            mit paarweise verschiedenen Äquivalenzklassen. Der Index von ~_L₃ ist also unendlich.</li>
+          <li><strong>Folgerung:</strong> Nach Myhill-Nerode ist L₃ damit <strong>nicht regulär</strong>. ∎</li>
+        </ol>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Zweitklausur, Aufgabe 2b)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Zeige mit Abschlusseigenschaften, dass L₄ = {a<sup>i</sup> b<sup>j</sup> a<sup>j</sup> b<sup>i</sup>
+            : i,j ∈ ℕ} nicht regulär ist. Du darfst verwenden, dass {a<sup>n</sup> b<sup>n</sup> : n ∈ ℕ} nicht
+            regulär ist.</p>
+        </div>
+
+        <ol class="steps">
+          <li><strong>Annahme:</strong> L₄ sei regulär.</li>
+          <li><strong>Vergleichssprache wählen:</strong> a*b* (nur a's, danach nur b's) ist ein einfacher
+            regulärer Ausdruck, also regulär.</li>
+          <li><strong>Schnitt bilden:</strong> Wäre L₄ regulär, dann wäre nach Abschluss unter Schnitt auch
+            L₄ ∩ a*b* regulär.</li>
+          <li><strong>L₄ ∩ a*b* explizit bestimmen:</strong> Ein Wort a<sup>i</sup> b<sup>j</sup> a<sup>j</sup>
+            b<sup>i</sup> liegt nur dann in a*b* (erst nur a's, dann nur b's, keine weiteren a's danach), wenn
+            der mittlere Block a<sup>j</sup> leer ist, also j = 0. Für j = 0 bleibt genau a<sup>i</sup> b<sup>i</sup>
+            übrig. Also: L₄ ∩ a*b* = {a<sup>i</sup> b<sup>i</sup> : i ∈ ℕ}.</li>
+          <li><strong>Widerspruch:</strong> {a<sup>i</sup> b<sup>i</sup> : i ∈ ℕ} ist laut Aufgabenstellung
+            nicht regulär — aber Schritt 3 sagt, es müsste regulär sein. Widerspruch!</li>
+          <li><strong>Folgerung:</strong> Die Annahme war falsch: <strong>L₄ ist nicht regulär.</strong> ∎</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Der Kniff dieser Reduktion</div>
+          <p>a*b* ist so gewählt, dass es genau den Fall „mittlerer Block leer" (j = 0) herausfiltert — und
+            dieser Spezialfall von L₄ ist exakt die bekannte nicht-reguläre Sprache a<sup>i</sup>b<sup>i</sup>.
+            Man muss keine Fallunterscheidung über Zerlegungen führen; der Schnitt erledigt die ganze Arbeit.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nur 2–3 konkrete Wörter als Äquivalenzklassen
+            angeben und daraus „nicht regulär" schließen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Du brauchst eine <strong>unendliche</strong>
+            Familie paarweise inäquivalenter Wörter — endlich viele Klassen wären ja gerade mit Regularität
+            vereinbar! Beschreibe die Familie allgemein (z. B. ab<sup>i</sup> für i ∈ ℕ) statt nur einzelne
+            Beispiele hinzuschreiben.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Behaupten „ab<sup>i</sup> und ab<sup>j</sup>
+            sind nicht äquivalent", ohne ein konkretes trennendes Suffix zu nennen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Immer das <strong>konkrete Suffix</strong>
+            angeben und zeigen, dass es die beiden Wörter unterschiedlich behandelt — z. B. „mit Suffix c<sup>i</sup>
+            gilt ab<sup>i</sup>c<sup>i</sup> ∈ L aber ab<sup>j</sup>c<sup>i</sup> ∉ L". Ohne Suffix ist die
+            Inäquivalenz nicht bewiesen, nur behauptet.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Ich wende Abschluss unter Schnitt/Komplement
+            an" — ohne zu sagen, mit welcher Sprache geschnitten wird und was dabei herauskommt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Immer die <strong>konkrete reguläre
+            Vergleichssprache</strong> nennen (z. B. a*b*), das Schnittergebnis <strong>explizit
+            bestimmen</strong> und zeigen, dass genau dieses Ergebnis eine bereits bekannte nicht-reguläre
+            Sprache ist — sonst ist die Reduktion nicht nachvollziehbar.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kernformeln</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Formel</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>u ~_L v ⟺ ∀w: uw∈L ⇔ vw∈L</td><td>Definition der Äquivalenzrelation</td></tr>
+              <tr><td>L regulär ⟺ Index(~_L) endlich</td><td>Satz von Myhill-Nerode</td></tr>
+              <tr><td>Index = minimale Zustandsanzahl</td><td>Anzahl Äquivalenzklassen = Größe des minimalen DFA</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Methoden-Vergleich (aus den Klausur-Notizen)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Methode</th><th>Wann geeignet</th><th>Vorteil</th></tr></thead>
+            <tbody>
+              <tr><td>Pumping-Lemma</td><td>Struktur mit klaren Buchstaben-Blöcken (a<sup>i</sup>b<sup>i</sup>c<sup>i</sup>)</td><td>direkt, formal</td></tr>
+              <tr><td>Myhill-Nerode</td><td>klare, unendliche Wortfamilie mit trennenden Suffixen erkennbar</td><td>elegant, oft kürzer</td></tr>
+              <tr><td>Abschlusseigenschaften</td><td>Sprache lässt sich mit regulärer Sprache schneiden/vereinigen</td><td>keine Fallanalyse nötig</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Unendlich viele</strong> paarweise inäquivalente Wörter — nie nur 2–3 Beispiele</li>
+            <li>Jede Inäquivalenz braucht ein <strong>konkretes trennendes Suffix</strong></li>
+            <li>Regulär abgeschlossen unter: <strong>∪, ∩, Komplement, Konkatenation, Kleene-Stern</strong></li>
+            <li>Komplement per DFA-Umkehr braucht einen <strong>vollständigen</strong> DFA</li>
+            <li>Reduktion: reguläre Sprache so wählen, dass der Schnitt genau eine bekannte nicht-reguläre
+              Sprache übrig lässt</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wie ist u ~_L v korrekt definiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>∀w∈Σ*: uw∈L ⇔ vw∈L</button>
+              <button class="quiz-choice" type="button">∃w∈Σ*: uw∈L ⇔ vw∈L</button>
+              <button class="quiz-choice" type="button">u und v haben dieselbe Länge</button>
+              <button class="quiz-choice" type="button">uw = vw für alle w</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>u und v sind äquivalent, wenn sie sich mit <strong>jedem</strong>
+              (∀, nicht ∃) Suffix w gleich verhalten — beide landen in L oder keins von beiden.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Index|Index von ~_L|Index der Relation">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie nennt man die Anzahl der Äquivalenzklassen
+              von ~_L — genau die Größe, die laut Myhill-Nerode über Regularität entscheidet?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der <strong>Index</strong> von ~_L. Endlicher Index ⇔ regulär,
+              unendlicher Index ⇔ nicht regulär.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🎓 Klausuraufgabe 2a: Die Klasse [ab³] wird von
+              allen anderen [ab^j] (j≠3) durch den Suffix c<sup>k</sup> getrennt. Wie groß ist k?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der trennende Suffix für ab<sup>i</sup> ist immer c<sup>i</sup> —
+              für i=3 also c<sup>3</sup>, k = <strong>3</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Warum reichen 2–3 konkrete Kandidaten NICHT, um
+              mit Myhill-Nerode Nicht-Regularität zu zeigen?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Weil man unendlich viele paarweise
+                inäquivalente Wörter braucht — endlich viele Klassen wären mit Regularität vereinbar.</button>
+              <button class="quiz-choice" type="button">Weil 2–3 Kandidaten grammatikalisch nicht erlaubt
+                sind.</button>
+              <button class="quiz-choice" type="button">Reichen tatsächlich, mehr ist nur Fleißarbeit.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Satz verlangt <strong>unendlichen</strong> Index. Jede
+              endliche Anzahl an Klassen — egal ob 2, 3 oder 1000 — ist mit Regularität vereinbar.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Reguläre Sprachen sind abgeschlossen unter …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Vereinigung, Schnitt, Komplement,
+                Konkatenation und Kleene-Stern.</button>
+              <button class="quiz-choice" type="button">nur Vereinigung und Konkatenation, nicht aber
+                Schnitt.</button>
+              <button class="quiz-choice" type="button">nur Operationen, die die Wortlänge nicht
+                verändern.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Alle fünf Operationen erhalten Regularität — Schnitt über den
+              Produktautomaten, Komplement über Endzustands-Umkehr, der Rest über Thompson-Konstruktionen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausuraufgabe 2b: Für L₄ = {a^i b^j a^j b^i}
+              gilt L₄ ∩ a*b* = ?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>{a^i b^i : i∈ℕ} — nur der Fall j=0</button>
+              <button class="quiz-choice" type="button">L₄ selbst, unverändert</button>
+              <button class="quiz-choice" type="button">die leere Sprache ∅</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>a*b* erlaubt nur „erst a's, dann b's" — das passt zu
+              a^i b^j a^j b^i nur, wenn der mittlere Block a^j leer ist (j=0). Übrig bleibt
+              <strong>{a^i b^i}</strong>, die bekannte nicht-reguläre Sprache.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="05-pumping-lemma.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Das Pumping-Lemma</div>
+        </a>
+        <a class="next" href="07-kontextfreie-grammatiken.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Kontextfreie Grammatiken</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

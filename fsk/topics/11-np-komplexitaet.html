@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NP-Schwere &amp; Reduktionen · FSK</title>
+<meta name="description" content="P, NP, NP-schwer und NP-vollständig bildlich erklärt: Polynomialzeit-Reduktionen L₁ ≤_p L₂ als Pfeil zwischen Problemen, CLIQUE/INDEPENDENT-SET/VERTEX-COVER am selben Graphen – inklusive der echten Klausuraufgaben 5a/5b (SoSe 2024)." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 11</div>
+    <span class="th-icon">🧨</span>
+    <h1>NP-Schwere &amp; Reduktionen</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">P, NP &amp; Reduktionen</a></li>
+        <li><a href="#rechnen">Klausuraufgaben durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Manche Probleme kannst du <strong>schnell lösen</strong>. Bei anderen weißt du keinen
+          schnellen Lösungsweg — aber wenn dir <strong>jemand eine Lösung zeigt</strong>, kannst du in Windeseile
+          <strong>nachprüfen</strong>, ob sie stimmt. Genau dieser Unterschied zwischen <em>lösen</em> und
+          <em>verifizieren</em> steckt hinter den Begriffen P und NP. Und mit <strong>Reduktionen</strong> kannst du
+          zeigen: „Wenn du mein Problem schnell lösen könntest, könntest du auch alle anderen schweren Probleme
+          schnell lösen." Das ist die Grundlage jedes NP-Schwere-Beweises — und eine waschechte Klausur-Kernkompetenz.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du sollst ein <strong>1000-Teile-Puzzle</strong> lösen. Das selbst zusammenzusetzen kann ewig dauern
+            (kein bekannter schneller Weg). Aber wenn dir jemand ein <strong>fertiges Bild</strong> hinlegt und
+            behauptet „so geht's", kannst du in Sekunden nachschauen, ob jedes Teil wirklich passt. Dieses fertige
+            Bild ist das <strong>Zertifikat</strong> — die kurze, leicht prüfbare Lösung. Genau das ist die Idee
+            von <strong>NP</strong>: nicht „schnell lösbar", sondern „schnell <em>nachprüfbar</em>, wenn man die
+            Lösung schon hat".</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>P, NP &amp; Reduktionen im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">P vs. NP — die Kurzfassung</div>
+          <span class="formula">P  = Probleme, die ein Algorithmus in Polynomialzeit LÖST
+NP = Probleme, deren Lösung ein Algorithmus in Polynomialzeit VERIFIZIERT
+     (wenn man ein Zertifikat/eine Lösung schon vorgelegt bekommt)</span>
+          <p>Jedes Problem in P ist auch in NP (lösen kannst du ja auch verifizieren: einfach selbst nochmal lösen
+            und vergleichen). Ob auch <strong>NP ⊆ P</strong> gilt — also ob „schnell prüfbar" auch „schnell
+            lösbar" bedeutet — ist die berühmte, bis heute offene Frage <strong>P = NP?</strong></p>
+        </div>
+
+        <!-- SVG 1: Landschaft P ⊆ NP ⊆ NP-schwer/NP-vollständig -->
+        <figure class="diagram">
+          <div class="diagram-title">Die Komplexitäts-Landschaft: P, NP, NP-vollständig und NP-schwer</div>
+          <svg viewBox="0 0 620 360" width="620" role="img" aria-label="Mengendiagramm: P liegt innerhalb von NP, NP-vollständige Probleme liegen im Überlappungsbereich von NP und NP-schwer, NP-schwere Probleme können auch außerhalb von NP liegen. Daneben die offene Frage P gleich NP.">
+            <defs>
+              <clipPath id="p11clipHard"><rect x="230" y="40" width="360" height="300" rx="26"/></clipPath>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- NP-schwer: großes Rechteck rechts, teils außerhalb NP -->
+              <rect x="230" y="40" width="360" height="300" rx="26" fill="#e0483d" fill-opacity="0.10" stroke="#e0483d" stroke-width="2"/>
+              <text x="560" y="66" text-anchor="end" fill="#e0483d" font-weight="800" font-size="14">NP-schwer</text>
+
+              <!-- NP: großer Kreis -->
+              <circle cx="330" cy="190" r="150" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="192" y="70" fill="#8b5cf6" font-weight="800" font-size="14">NP</text>
+
+              <!-- P: kleiner Kreis in NP -->
+              <circle cx="255" cy="220" r="70" fill="#2f6df6" fill-opacity="0.28" stroke="#2f6df6" stroke-width="2"/>
+              <text x="255" y="224" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="16">P</text>
+
+              <!-- NP-vollständig: Schnitt von NP und NP-schwer -->
+              <g clip-path="url(#p11clipHard)">
+                <circle cx="330" cy="190" r="150" fill="#12b28c" fill-opacity="0.35"/>
+              </g>
+              <text x="430" y="150" text-anchor="middle" fill="#0d8f70" font-weight="800" font-size="13">NP-voll-</text>
+              <text x="430" y="167" text-anchor="middle" fill="#0d8f70" font-weight="800" font-size="13">ständig</text>
+
+              <!-- Beispielpunkte -->
+              <circle cx="255" cy="230" r="4" fill="#2f6df6"/>
+              <text x="255" y="253" text-anchor="middle" class="svg-soft" font-size="10.5">z.B. Sortieren</text>
+
+              <circle cx="410" cy="180" r="4" fill="#0d8f70"/>
+              <text x="410" y="200" text-anchor="middle" class="svg-soft" font-size="10.5">z.B. SAT, CLIQUE</text>
+
+              <circle cx="540" cy="290" r="4" fill="#e0483d"/>
+              <text x="540" y="310" text-anchor="middle" class="svg-soft" font-size="10.5">z.B. TQBF (nicht in NP)</text>
+
+              <!-- Frage -->
+              <rect x="10" y="300" width="200" height="46" rx="10" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="110" y="320" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="13">P = NP ?</text>
+              <text x="110" y="337" text-anchor="middle" class="svg-soft" font-size="10.5">bis heute ungeklärt!</text>
+            </g>
+          </svg>
+          <figcaption>P liegt komplett in NP. NP-vollständige Probleme sind genau die „schwersten" Probleme
+            innerhalb von NP (Schnittmenge aus NP und NP-schwer). NP-schwere Probleme können auch außerhalb von
+            NP liegen — dort ist nicht mal die Verifikation garantiert schnell.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: NP-schwer</div>
+          <span class="formula">A ist NP-schwer  :⟺  ∀ B ∈ NP: B ≤_p A</span>
+          <p>Ein Problem A ist NP-schwer, wenn sich <strong>jedes</strong> NP-Problem in Polynomialzeit auf A
+            reduzieren lässt. A ist damit „mindestens so schwer" wie das schwerste NP-Problem — muss aber selbst
+            gar nicht in NP liegen!</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: NP-vollständig</div>
+          <span class="formula">A ist NP-vollständig  :⟺  A ∈ NP   UND   A ist NP-schwer</span>
+          <p>NP-vollständig ist also <strong>strenger</strong> als NP-schwer: Es kommt die Zusatzbedingung dazu,
+            dass A selbst auch in NP liegt (ein Zertifikat für A muss sich schnell prüfen lassen).</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merke: NP-schwer ≠ NP-vollständig!</div>
+          <p>„NP-schwer" heißt nur „mindestens so schwer wie jedes NP-Problem" — <strong>nicht</strong>, dass das
+            Problem selbst in NP liegt. Es könnte sogar noch schwerer sein (z. B. TQBF, das nicht in NP liegt,
+            weil man dort keine kurzen Zertifikate hat). NP-vollständig = NP-schwer <strong>und zusätzlich</strong>
+            in NP.</p>
+        </div>
+
+        <h3>Polynomialzeit-Reduktion L₁ ≤_p L₂</h3>
+        <p>Eine Reduktion ist der zentrale Baustein, um Schwere zu „vererben". Sie ist <strong>keine</strong>
+          Umformung von Lösungen, sondern eine Funktion, die <strong>Eingaben auf Eingaben</strong> abbildet:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: L₁ ≤_p L₂</div>
+          <span class="formula">L₁ ≤_p L₂  :⟺  ∃ Funktion f: Σ* → Σ*  mit
+    (1) f ist in Polynomialzeit berechenbar
+    (2) ∀ w:  w ∈ L₁  ⟺  f(w) ∈ L₂</span>
+          <p>f bildet <strong>Eingaben von L₁ auf Eingaben von L₂</strong> ab — nicht Lösungen! Bedeutung von
+            „≤_p": <strong>L₂ ist mindestens so schwer wie L₁.</strong> Könntest du L₂ schnell lösen, könntest du
+            über f auch L₁ schnell lösen (einfach transformieren und L₂-Löser aufrufen).</p>
+        </div>
+
+        <!-- SVG 2: Reduktionspfeil -->
+        <figure class="diagram">
+          <div class="diagram-title">Reduktion als Pfeil: f transportiert die Ja/Nein-Antwort mit</div>
+          <svg viewBox="0 0 560 220" width="560" role="img" aria-label="Zwei Kästen L1 und L2, verbunden durch einen Pfeil f. Eine Eingabe w in L1 wird durch f auf f(w) in L2 abgebildet, wobei w Element von L1 genau dann gilt wenn f(w) Element von L2 gilt.">
+            <defs>
+              <marker id="p11arrF" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Box L1 -->
+              <rect x="30" y="60" width="180" height="100" rx="14" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="120" y="50" text-anchor="middle" fill="#8b5cf6" font-weight="800" font-size="15">L₁</text>
+              <circle cx="90" cy="100" r="16" fill="#12b28c" fill-opacity="0.5" stroke="#12b28c"/>
+              <text x="90" y="105" text-anchor="middle" class="svg-ink" font-size="11">w</text>
+              <text x="90" y="132" text-anchor="middle" class="svg-soft" font-size="10.5">w ∈ L₁</text>
+              <circle cx="160" cy="130" r="16" fill="#e0483d" fill-opacity="0.35" stroke="#e0483d"/>
+              <text x="160" y="135" text-anchor="middle" class="svg-ink" font-size="11">w'</text>
+              <text x="160" y="162" text-anchor="middle" class="svg-soft" font-size="10.5">w' ∉ L₁</text>
+
+              <!-- Arrow f -->
+              <path d="M215,90 C280,80 300,80 345,90" fill="none" stroke="#2f6df6" stroke-width="2.4" marker-end="url(#p11arrF)"/>
+              <text x="280" y="70" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="14">f</text>
+              <path d="M215,140 C280,150 300,150 345,140" fill="none" stroke="#2f6df6" stroke-width="2.4" marker-end="url(#p11arrF)"/>
+              <text x="280" y="172" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="14">f</text>
+
+              <!-- Box L2 -->
+              <rect x="350" y="60" width="180" height="100" rx="14" fill="#f5810b" fill-opacity="0.14" stroke="#f5810b" stroke-width="2"/>
+              <text x="440" y="50" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="15">L₂</text>
+              <circle cx="410" cy="100" r="16" fill="#12b28c" fill-opacity="0.5" stroke="#12b28c"/>
+              <text x="410" y="105" text-anchor="middle" class="svg-ink" font-size="10">f(w)</text>
+              <text x="410" y="132" text-anchor="middle" class="svg-soft" font-size="10.5">f(w) ∈ L₂</text>
+              <circle cx="480" cy="130" r="16" fill="#e0483d" fill-opacity="0.35" stroke="#e0483d"/>
+              <text x="480" y="135" text-anchor="middle" class="svg-ink" font-size="9">f(w')</text>
+              <text x="480" y="162" text-anchor="middle" class="svg-soft" font-size="10.5">f(w') ∉ L₂</text>
+
+              <text x="280" y="205" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">„Ja" bleibt „Ja", „Nein" bleibt „Nein" — f transportiert nur die Antwort, nicht die Struktur</text>
+            </g>
+          </svg>
+          <figcaption>f ist eine Funktion auf Eingaben (Wörtern), keine Lösungs-Übersetzung. Wichtig ist nur, dass
+            die Zugehörigkeit erhalten bleibt: w ∈ L₁ ⟺ f(w) ∈ L₂. Wie f das intern anstellt, ist beliebig.</figcaption>
+        </figure>
+
+        <h3>Beweis-Schema für NP-Schwere</h3>
+        <p>Um zu zeigen, dass ein <strong>neues</strong> Problem L NP-schwer ist, reduzierst du ein
+          <strong>bereits bekanntes</strong> NP-schweres Problem P auf L — niemals umgekehrt!</p>
+        <ol class="steps">
+          <li><strong>Bekanntes Problem wählen:</strong> ein NP-vollständiges (oder NP-schweres) Problem P, das
+            strukturell zu L passt (z. B. 3-SAT, CLIQUE, GRAPH-COLORING).</li>
+          <li><strong>P ≤_p L zeigen:</strong> Funktion f angeben, die Instanzen von P auf Instanzen von L
+            abbildet.</li>
+          <li><strong>Totalität &amp; Polynomialzeit:</strong> f ist für jede Eingabe definiert und läuft in
+            Polynomialzeit (inkl. polynomialer Ausgabegröße).</li>
+          <li><strong>Korrektheit ⇒:</strong> w ∈ P ⇒ f(w) ∈ L zeigen.</li>
+          <li><strong>Korrektheit ⇐:</strong> f(w) ∈ L ⇒ w ∈ P (bzw. äquivalent: w ∉ P ⇒ f(w) ∉ L) zeigen.</li>
+          <li><strong>Schluss:</strong> Da P NP-schwer ist und P ≤_p L gilt, ist auch L NP-schwer.</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">Bekannte NP-vollständige Probleme (als Werkzeugkasten)</div>
+          <p>
+            <strong>SAT / 3-SAT:</strong> ist eine aussagenlogische Formel (in 3-KNF) erfüllbar?<br>
+            <strong>GRAPH-COLORING / 3-COLORING:</strong> lässt sich ein Graph mit ≤k (bzw. genau 3) Farben so
+            färben, dass benachbarte Knoten verschieden gefärbt sind?<br>
+            <strong>CLIQUE:</strong> gibt es eine Teilmenge V′⊆V, |V′|≥k, in der alle Knotenpaare verbunden sind?<br>
+            <strong>INDEPENDENT-SET:</strong> gibt es V′⊆V, |V′|≥k, in der <em>keine</em> zwei Knoten verbunden sind?<br>
+            <strong>VERTEX-COVER:</strong> gibt es V′⊆V, |V′|≤k, die jede Kante mindestens einmal berührt?
+          </p>
+        </div>
+
+        <p>Diese drei Graphprobleme hängen eng zusammen — am selben Graphen kannst du das direkt sehen:</p>
+
+        <!-- SVG 3: konkreter Graph für CLIQUE / INDEPENDENT-SET / VERTEX-COVER -->
+        <figure class="diagram">
+          <div class="diagram-title">Ein Graph, drei Brillen: CLIQUE, INDEPENDENT-SET (im Komplement) &amp; VERTEX-COVER</div>
+          <svg viewBox="0 0 640 260" width="640" role="img" aria-label="Ein Graph mit 5 Knoten wird dreimal gezeigt: links eine Clique der Größe 3 hervorgehoben, in der Mitte im Komplementgraphen die entsprechende unabhängige Menge, rechts im Originalgraphen die Knotenüberdeckung als Komplement der unabhängigen Menge.">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+
+              <!-- Panel 1: CLIQUE im Originalgraph -->
+              <text x="100" y="24" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="13">CLIQUE (k=3)</text>
+              <g stroke="#8a94a6" stroke-width="1.4">
+                <line x1="60" y1="70" x2="140" y2="70"/>
+                <line x1="60" y1="70" x2="100" y2="140"/>
+                <line x1="140" y1="70" x2="100" y2="140"/>
+                <line x1="140" y1="70" x2="170" y2="120"/>
+                <line x1="100" y1="140" x2="60" y2="190"/>
+              </g>
+              <g stroke="#12b28c" stroke-width="3.4">
+                <line x1="60" y1="70" x2="140" y2="70"/>
+                <line x1="60" y1="70" x2="100" y2="140"/>
+                <line x1="140" y1="70" x2="100" y2="140"/>
+              </g>
+              <g>
+                <circle cx="60" cy="70" r="16" fill="#12b28c" fill-opacity="0.5" stroke="#12b28c" stroke-width="2"/>
+                <circle cx="140" cy="70" r="16" fill="#12b28c" fill-opacity="0.5" stroke="#12b28c" stroke-width="2"/>
+                <circle cx="100" cy="140" r="16" fill="#12b28c" fill-opacity="0.5" stroke="#12b28c" stroke-width="2"/>
+                <circle cx="170" cy="120" r="16" fill="none" stroke="#8a94a6" stroke-width="2"/>
+                <circle cx="60" cy="190" r="16" fill="none" stroke="#8a94a6" stroke-width="2"/>
+                <text x="60" y="75" text-anchor="middle" class="svg-ink" font-weight="700">1</text>
+                <text x="140" y="75" text-anchor="middle" class="svg-ink" font-weight="700">2</text>
+                <text x="100" y="145" text-anchor="middle" class="svg-ink" font-weight="700">3</text>
+                <text x="170" y="125" text-anchor="middle" class="svg-soft">4</text>
+                <text x="60" y="195" text-anchor="middle" class="svg-soft">5</text>
+              </g>
+              <text x="100" y="228" text-anchor="middle" class="svg-soft" font-size="10.5">{1,2,3} paarweise verbunden</text>
+
+              <!-- Panel 2: INDEPENDENT-SET im Komplementgraph -->
+              <text x="320" y="24" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="13">INDEPENDENT-SET im Komplement</text>
+              <g stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="3,3">
+                <line x1="280" y1="70" x2="390" y2="120"/>
+                <line x1="280" y1="70" x2="280" y2="190"/>
+                <line x1="360" y1="70" x2="280" y2="190"/>
+                <line x1="360" y1="70" x2="390" y2="120"/>
+                <line x1="320" y1="140" x2="390" y2="120"/>
+                <line x1="320" y1="140" x2="280" y2="190"/>
+              </g>
+              <g>
+                <circle cx="280" cy="70" r="16" fill="#2f6df6" fill-opacity="0.35" stroke="#2f6df6" stroke-width="2"/>
+                <circle cx="360" cy="70" r="16" fill="#2f6df6" fill-opacity="0.35" stroke="#2f6df6" stroke-width="2"/>
+                <circle cx="320" cy="140" r="16" fill="#2f6df6" fill-opacity="0.35" stroke="#2f6df6" stroke-width="2"/>
+                <circle cx="390" cy="120" r="16" fill="none" stroke="#8a94a6" stroke-width="2"/>
+                <circle cx="280" cy="190" r="16" fill="none" stroke="#8a94a6" stroke-width="2"/>
+                <text x="280" y="75" text-anchor="middle" class="svg-ink" font-weight="700">1</text>
+                <text x="360" y="75" text-anchor="middle" class="svg-ink" font-weight="700">2</text>
+                <text x="320" y="145" text-anchor="middle" class="svg-ink" font-weight="700">3</text>
+                <text x="390" y="125" text-anchor="middle" class="svg-soft">4</text>
+                <text x="280" y="195" text-anchor="middle" class="svg-soft">5</text>
+              </g>
+              <text x="335" y="228" text-anchor="middle" class="svg-soft" font-size="10.5">{1,2,3}: im Komplement keine Kante zw. ihnen</text>
+
+              <!-- Panel 3: VERTEX-COVER im Originalgraph -->
+              <text x="545" y="24" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="13">VERTEX-COVER</text>
+              <g stroke="#8a94a6" stroke-width="1.4">
+                <line x1="505" y1="70" x2="585" y2="70"/>
+                <line x1="505" y1="70" x2="545" y2="140"/>
+                <line x1="585" y1="70" x2="545" y2="140"/>
+                <line x1="585" y1="70" x2="615" y2="120"/>
+                <line x1="545" y1="140" x2="505" y2="190"/>
+              </g>
+              <g stroke="#f5810b" stroke-width="3.4">
+                <line x1="585" y1="70" x2="615" y2="120"/>
+                <line x1="545" y1="140" x2="505" y2="190"/>
+              </g>
+              <g>
+                <circle cx="505" cy="70" r="16" fill="none" stroke="#8a94a6" stroke-width="2"/>
+                <circle cx="585" cy="70" r="16" fill="#f5810b" fill-opacity="0.45" stroke="#f5810b" stroke-width="2"/>
+                <circle cx="545" cy="140" r="16" fill="#f5810b" fill-opacity="0.45" stroke="#f5810b" stroke-width="2"/>
+                <circle cx="615" cy="120" r="16" fill="none" stroke="#8a94a6" stroke-width="2"/>
+                <circle cx="505" cy="190" r="16" fill="none" stroke="#8a94a6" stroke-width="2"/>
+                <text x="505" y="75" text-anchor="middle" class="svg-soft">1</text>
+                <text x="585" y="75" text-anchor="middle" class="svg-ink" font-weight="700">2</text>
+                <text x="545" y="145" text-anchor="middle" class="svg-ink" font-weight="700">3</text>
+                <text x="615" y="125" text-anchor="middle" class="svg-soft">4</text>
+                <text x="505" y="195" text-anchor="middle" class="svg-soft">5</text>
+              </g>
+              <text x="560" y="228" text-anchor="middle" class="svg-soft" font-size="10.5">{2,3} = alle Knoten \ {1,2,3}</text>
+            </g>
+          </svg>
+          <figcaption>Dieselben 5 Knoten, dreimal betrachtet: {1,2,3} ist eine Clique der Größe 3 im Originalgraphen
+            (links). Genau dieselbe Menge ist eine unabhängige Menge im <strong>Komplementgraphen</strong> (Mitte,
+            gestrichelte Kanten = „im Original NICHT verbunden"). Das <strong>Komplement der Menge</strong>, also
+            {2,3}, ist eine Knotenüberdeckung im Originalgraphen (rechts) — jede Kante berührt 2 oder 3.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Die drei Äquivalenzen</div>
+          <span class="formula">CLIQUE ≡_p INDEPENDENT-SET       (via Komplementgraph: Kanten ↔ Nicht-Kanten)
+INDEPENDENT-SET ≡_p VERTEX-COVER (via Komplementmenge: V′ unabhängig ⟺ V\V′ Überdeckung)</span>
+          <p>„≡_p" heißt: Reduktion in <strong>beide</strong> Richtungen möglich — die Probleme sind polynomial
+            gleich schwer. Kennst du eine der drei, bekommst du die anderen beiden fast geschenkt.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Original-Klausuraufgaben durchgerechnet</h2>
+        <p class="lead-in">Alle drei Aufgaben stammen exakt so aus den Klausuren SoSe 2024 (Prof. Blanchette) und
+          zeigen das komplette Beweis-Schema von oben in Aktion.</p>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 5a)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Ist GRAPH-3-COLORING NP-schwer? (Gegeben: GRAPH-COLORING mit beliebigem k ist NP-schwer.) Begründe.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Antwort:</strong> Ja, GRAPH-3-COLORING ist NP-schwer.</li>
+          <li><strong>Bekannte Reduktion erinnern:</strong> Dass GRAPH-COLORING NP-schwer ist, wurde über
+            3-SAT ≤_p GRAPH-COLORING gezeigt.</li>
+          <li><strong>Genauer hinschauen:</strong> Diese Reduktion konstruiert einen Graphen, der genau dann
+            k-färbbar ist, wenn die 3-SAT-Formel erfüllbar ist — und sie benutzt dabei <strong>genau k=3
+            Farben</strong> (nicht mehr, nicht weniger).</li>
+          <li><strong>Konsequenz:</strong> Dieselbe Konstruktion funktioniert unverändert als
+            3-SAT ≤_p GRAPH-3-COLORING — f, Polyzeit und Korrektheitsbeweis bleiben identisch, nur dass die
+            Zielinstanz jetzt fest auf k=3 lautet.</li>
+          <li><strong>Schluss:</strong> Da 3-SAT NP-schwer ist und 3-SAT ≤_p GRAPH-3-COLORING gilt, ist auch
+            GRAPH-3-COLORING NP-schwer. ✓</li>
+        </ol>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Erstklausur, Aufgabe 5b)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Beweise mit einer Reduktion, dass STRANGERS NP-schwer ist. (Gegebene NP-vollständige Probleme:
+            CLIQUE, INDEPENDENT-SET, VERTEX-COVER.)</p>
+          <p><strong>STRANGERS:</strong> Gegeben Personen P, Relation K⊆P×P („kennt"), n∈ℕ. Gefragt: gibt es
+            S⊆P mit |S|≥n, sodass alle in S paarweise Fremde sind (¬(s K t) für alle s,t∈S)?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Strategie:</strong> Zeige INDEPENDENT-SET ≤_p STRANGERS — INDEPENDENT-SET ist bereits
+            als NP-vollständig gegeben, „paarweise unverbunden" passt strukturell zu „paarweise fremd".</li>
+          <li><strong>Funktion f angeben:</strong><br>
+            Eingabe: INDEPENDENT-SET-Instanz (G=(V,E), k).<br>
+            Ausgabe: STRANGERS-Instanz f((V,E),k) = (P,K,n) mit P = V, K = {(x,y) | {x,y} ∈ E}, n = k.</li>
+          <li><strong>Totalität &amp; Polynomialzeit:</strong> f ist für jeden Graphen definiert und kopiert nur
+            Knoten- und Kantenmenge in eine andere Repräsentation — offensichtlich total und in Polynomialzeit.</li>
+          <li><strong>Korrektheit ⇒ (und ⇐, als Äquivalenzkette):</strong><br>
+            (V,E),k ∈ INDEPENDENT-SET<br>
+            ⟺ ∃ V′⊆V, |V′|≥k, sodass ∀u,v∈V′: {u,v}∉E<br>
+            ⟺ ∃ V′⊆V, |V′|≥k, sodass ∀u,v∈V′: (u,v)∉K &nbsp;<em>(Definition von K eingesetzt)</em><br>
+            ⟺ ∃ S⊆P, |S|≥n, sodass alle in S paarweise Fremde sind &nbsp;<em>(P=V, n=k umbenannt)</em><br>
+            ⟺ f((V,E),k) ∈ STRANGERS ✓</li>
+          <li><strong>Schluss:</strong> INDEPENDENT-SET ist NP-schwer und INDEPENDENT-SET ≤_p STRANGERS ⇒
+            STRANGERS ist NP-schwer.</li>
+        </ol>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Zweitklausur, Aufgabe 5b)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Beweise mit einer Reduktion, dass ASSIGN-GIFTS NP-schwer ist.</p>
+          <p><strong>ASSIGN-GIFTS:</strong> Gegeben Personen P, Freundeskreise M={K₁,…,Kₙ}, Geschenk-Typen
+            t∈ℕ&gt;₀. Gefragt: gibt es Zuweisung g: P→{0,…,t−1}, sodass in jedem Freundeskreis keine zwei
+            Personen dasselbe Geschenk bekommen?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Strategie:</strong> Zeige GRAPH-COLORING ≤_p ASSIGN-GIFTS — „verschiedene Geschenke in
+            jedem Freundeskreis" ist strukturell dasselbe wie „verschiedene Farben an jeder Kante".</li>
+          <li><strong>Funktion f angeben:</strong><br>
+            Eingabe: GRAPH-COLORING-Instanz (G=(V,E), k).<br>
+            Ausgabe: ASSIGN-GIFTS-Instanz f((V,E),k) = (P,M,t) mit P = V (Personen = Knoten),
+            M = E (Freundeskreise = Kanten als 2-elementige Personengruppen), t = k (Geschenk-Typen = Farben).</li>
+          <li><strong>Totalität &amp; Polynomialzeit:</strong> f baut nur Knoten und Kanten in Personen und
+            Freundeskreise um — trivial total und in Polynomialzeit.</li>
+          <li><strong>Korrektheit (Äquivalenzkette):</strong><br>
+            (V,E),k ∈ GRAPH-COLORING<br>
+            ⟺ ∃ Färbung c: V→{0,…,k−1} mit ∀{u,v}∈E: c(u)≠c(v)<br>
+            ⟺ ∃ Zuweisung g: P→{0,…,t−1} mit ∀{u,v}∈M: g(u)≠g(v) &nbsp;<em>(P=V, M=E, t=k, c=g umbenannt)</em><br>
+            ⟺ f((V,E),k) ∈ ASSIGN-GIFTS ✓</li>
+          <li><strong>Schluss:</strong> GRAPH-COLORING ist NP-schwer und GRAPH-COLORING ≤_p ASSIGN-GIFTS ⇒
+            ASSIGN-GIFTS ist NP-schwer.</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Muster erkannt?</div>
+          <p>In allen drei Aufgaben ist f eine <strong>fast triviale Umbenennung</strong> — Knoten werden zu
+            Personen, Kanten zu Beziehungen, Farben zu Geschenken. Das ist typisch: Die eigentliche Arbeit steckt
+            nicht in einer komplizierten Konstruktion, sondern darin, <strong>präzise zu erkennen</strong>, dass
+            zwei Probleme dieselbe kombinatorische Struktur haben, und das sauber mit Definitionen zu belegen.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Reduktion: Gib (G,k) ein, erhalte (G,3)" — also
+            einfach k durch 3 ersetzen, fertig.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>„Instanz zu Instanz" ohne Konstruktion ist
+            <strong>keine echte Reduktion</strong>. f muss den Graphen tatsächlich so <strong>umbauen</strong>,
+            dass „k-färbbar" und „3-färbbar" für die neue Instanz äquivalent werden — das ist der eigentliche
+            Beweisinhalt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Problem X ist NP-schwer, also automatisch
+            NP-vollständig."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>NP-schwer ≠ NP-vollständig.</strong>
+            NP-vollständig braucht zusätzlich A∈NP. Manche NP-schweren Probleme (z. B. TQBF) liegen gar nicht
+            in NP — sie sind noch schwerer.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Bei einer Reduktion zwischen Graphproblemen
+            muss der neue Graph isomorph zum alten bleiben."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Reduktion muss <strong>nicht</strong> die
+            Struktur bewahren — f darf beliebig transformieren. Wichtig ist nur die Ja/Nein-Äquivalenz:
+            w∈L₁ ⟺ f(w)∈L₂.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Um zu zeigen, dass L NP-schwer ist, reduziere
+            ich L auf ein bekanntes NP-schweres Problem P" (L ≤_p P).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Richtung ist <strong>umgekehrt</strong>:
+            du musst <strong>bekannt-NP-schwer ≤_p neues Problem</strong> zeigen (P ≤_p L), nicht L ≤_p P.
+            Nur so „vererbt" sich die Schwere von P auf L.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„A ≤_p B bedeutet, B ist einfacher/schwächer
+            als A."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>A ≤_p B heißt: <strong>B ist mindestens so
+            schwer wie A.</strong> Könntest du B schnell lösen, könntest du über f auch A schnell lösen.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Kerndefinitionen</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Definition</th></tr></thead>
+            <tbody>
+              <tr><td>NP-schwer</td><td>∀B∈NP: B ≤_p A</td></tr>
+              <tr><td>NP-vollständig</td><td>A∈NP UND A NP-schwer</td></tr>
+              <tr><td>L₁ ≤_p L₂</td><td>∃f in Polyzeit: w∈L₁ ⟺ f(w)∈L₂</td></tr>
+              <tr><td>Bedeutung von ≤_p</td><td>L₂ mindestens so schwer wie L₁</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Beweis-Schema NP-Schwere (immer in dieser Reihenfolge)</h4>
+          <pre class="code">1. Bekanntes NP-schweres Problem P wählen (SAT, 3-SAT, CLIQUE, ...)
+2. Funktion f: Instanzen von P → Instanzen von L angeben
+3. f ist total + läuft in Polynomialzeit
+4. Korrektheit ⇒: w ∈ P ⇒ f(w) ∈ L
+5. Korrektheit ⇐: f(w) ∈ L ⇒ w ∈ P
+6. Schluss: P ≤_p L und P NP-schwer ⇒ L NP-schwer
+   RICHTUNG MERKEN: bekannt ≤_p neu (nicht umgekehrt!)</pre>
+
+          <h4>Werkzeugkasten NP-vollständiger Probleme</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Problem</th><th>Frage</th></tr></thead>
+            <tbody>
+              <tr><td>SAT / 3-SAT</td><td>Formel erfüllbar?</td></tr>
+              <tr><td>GRAPH-COLORING / 3-COLORING</td><td>Graph mit ≤k (bzw. 3) Farben färbbar?</td></tr>
+              <tr><td>CLIQUE</td><td>Teilmenge der Größe ≥k, paarweise verbunden?</td></tr>
+              <tr><td>INDEPENDENT-SET</td><td>Teilmenge der Größe ≥k, paarweise unverbunden?</td></tr>
+              <tr><td>VERTEX-COVER</td><td>Teilmenge der Größe ≤k, überdeckt alle Kanten?</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>NP-schwer ≠ NP-vollständig</strong> — NP-vollständig braucht zusätzlich A∈NP</li>
+            <li>Reduktion ist eine Funktion auf <strong>Eingaben</strong>, nicht auf Lösungen</li>
+            <li>Richtung immer: <strong>bekannt-NP-schwer ≤_p neues Problem</strong></li>
+            <li>Struktur muss <strong>nicht</strong> erhalten bleiben — nur die Ja/Nein-Antwort</li>
+            <li>CLIQUE ≡_p INDEPENDENT-SET ≡_p VERTEX-COVER (über Komplementgraph/-menge)</li>
+            <li>„Instanz zu Instanz ersetzen" ohne echte Konstruktion ist keine gültige Reduktion</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was ist der Kernunterschied zwischen P und NP?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">NP-Probleme lassen sich nie lösen.</button>
+              <button class="quiz-choice" type="button" data-correct>P = schnell lösbar, NP = schnell verifizierbar
+                (bei vorgelegtem Zertifikat).</button>
+              <button class="quiz-choice" type="button">P und NP sind exakt dieselbe Klasse.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>P sind Probleme, die ein Algorithmus in Polynomialzeit
+              <strong>löst</strong>. NP sind Probleme, deren Lösung in Polynomialzeit <strong>verifiziert</strong>
+              werden kann, wenn man sie schon vorgelegt bekommt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Ist „NP-schwer" dasselbe wie „NP-vollständig"?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, beide Begriffe bedeuten exakt dasselbe.</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — NP-vollständig braucht zusätzlich,
+                dass das Problem selbst in NP liegt.</button>
+              <button class="quiz-choice" type="button">Nein — NP-vollständig ist eine schwächere Bedingung als
+                NP-schwer.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>NP-schwer heißt nur ∀B∈NP: B≤_p A. NP-vollständig verlangt
+              zusätzlich A∈NP. Es gibt NP-schwere Probleme (z. B. TQBF), die nicht in NP liegen und damit nicht
+              NP-vollständig sind.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Um zu beweisen, dass ein neues Problem L NP-schwer
+              ist, in welche Richtung musst du reduzieren?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">L ≤_p P, wobei P ein bekanntes NP-schweres Problem ist.</button>
+              <button class="quiz-choice" type="button" data-correct>P ≤_p L, wobei P ein bekanntes NP-schweres
+                Problem ist.</button>
+              <button class="quiz-choice" type="button">Die Richtung ist egal, Hauptsache es gibt eine Funktion f.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Immer <strong>bekannt-NP-schwer ≤_p neues Problem</strong> (P ≤_p L).
+              Nur so vererbt sich die Schwere von P auf L. L ≤_p P würde nichts über die Schwere von L aussagen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Eingaben|Instanzen|Eingaben, nicht Lösungen">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Die Funktion f in einer Reduktion L₁ ≤_p L₂ bildet
+              was auf was ab — Eingaben oder Lösungen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>f bildet <strong>Eingaben auf Eingaben</strong> ab (w ↦ f(w)),
+              niemals Lösungen. Das ist ein häufiger Denkfehler.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur EK SoSe 24 (5a): Warum folgt aus
+              „GRAPH-COLORING ist NP-schwer" direkt „GRAPH-3-COLORING ist NP-schwer"?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Weil 3-Färbbarkeit immer leichter ist als k-Färbbarkeit.</button>
+              <button class="quiz-choice" type="button" data-correct>Weil die bekannte Reduktion 3-SAT ≤_p
+                GRAPH-COLORING bereits genau 3 Farben verwendet.</button>
+              <button class="quiz-choice" type="button">Weil jeder Graph automatisch 3-färbbar ist.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Standard-Reduktion 3-SAT ≤_p GRAPH-COLORING benutzt genau k=3
+              Farben. Damit funktioniert dieselbe Konstruktion unverändert auch als
+              3-SAT ≤_p GRAPH-3-COLORING.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="INDEPENDENT-SET|Independent-Set|independent set">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Klausur EK SoSe 24 (5b): Welches bekannte
+              NP-vollständige Problem wurde auf STRANGERS reduziert, um dessen NP-Schwere zu zeigen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>INDEPENDENT-SET</strong> ≤_p STRANGERS — „paarweise
+              unverbunden" (Graph) entspricht „paarweise fremd" (Personen).</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="10-rice-entscheidbarkeit.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Entscheidbarkeit &amp; Satz von Rice</div>
+        </a>
+        <a class="next" href="12-klausurtraining.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Klausurtraining (EK &amp; ZK SoSe 24)</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

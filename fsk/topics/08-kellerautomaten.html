@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kellerautomaten (PDA) · FSK</title>
+<meta name="description" content="Kellerautomaten (PDA) bildlich erklärt: der Keller als Stapel-Säule beim Push und Pop, ein beschriftetes Zustandsdiagramm und die echte Zweitklausur-Aufgabe (SoSe 2024) Schritt für Schritt nachvollzogen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>δ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">δ</span>
+      <span>P10 · FSK<small>Formale Sprachen &amp; Komplexität, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Worum</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">FSK-Kursübersicht</a> › Thema 08</div>
+    <span class="th-icon">🥞</span>
+    <h1>Kellerautomaten (PDA)</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">PDA, Keller &amp; Akzeptanz</a></li>
+        <li><a href="#rechnen">Beispiel &amp; Original-Klausuraufgabe</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Ein <strong>Kellerautomat (PDA, „Pushdown Automaton")</strong> ist ein endlicher
+          Automat mit einer zusätzlichen Fähigkeit: einem <strong>Keller</strong> (Stapel) als Gedächtnis. Das
+          reicht genau, um kontextfreie Sprachen zu erkennen — also all das, was eine kontextfreie Grammatik
+          (Thema 07) erzeugen kann. PDA und CFG sind zwei Seiten derselben Medaille.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… den Tablett-Stapel in der Mensa: Du kannst nur das <strong>oberste</strong> Tablett wegnehmen
+            (<strong>pop</strong>) oder ein neues obendrauf legen (<strong>push</strong>) — nie mittendrin
+            etwas herausziehen. Genau das ist ein Keller: <strong>LIFO</strong> — „Last In, First Out". Ein
+            PDA ist ein endlicher Automat, der zusätzlich so einen Stapel als Gedächtnis besitzt. Das reicht,
+            um zu <strong>zählen</strong> (z. B. „gleich viele a's wie b's") — etwas, das ein normaler
+            endlicher Automat NICHT kann, weil er sich keine beliebig große Zahl merken kann.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>PDA, Keller &amp; Akzeptanz im Bild</h2>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Definition: Kellerautomat (PDA)</div>
+          <span class="formula">M = (Q, Σ, Γ, δ, q₀, Z₀, F)</span>
+          <p><strong>Q:</strong> Zustandsmenge. <strong>Σ:</strong> Eingabealphabet. <strong>Γ:</strong>
+            Kelleralphabet (die Symbole, die auf dem Keller liegen dürfen — meist eine andere Menge als Σ!).
+            <strong>δ:</strong> Q × (Σ ∪ {ε}) × Γ → P(Q × Γ*), die Übergangsfunktion. <strong>q₀:</strong>
+            Startzustand. <strong>Z₀:</strong> initiales Kellersymbol (Boden-Marker, liegt zu Beginn ganz
+            unten). <strong>F:</strong> Endzustände.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Übergangssyntax lesen</div>
+          <p><span class="formula" style="display:inline-block">(a, Z) : Y Z</span> bedeutet: „lies das
+            Eingabezeichen a, entferne Z vom Keller (pop), lege danach Y Z auf den Keller (push) — <strong>Y
+            landet dabei oben</strong>." Wichtig: Y Z wird als <strong>ein Block auf einmal</strong> gepusht,
+            nicht Y und Z einzeln nacheinander. Bei <strong>ε-Übergängen</strong> (ε, X) : … wird
+            <strong>kein</strong> Eingabezeichen gelesen — nur der Keller verändert sich.</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Zwei Akzeptanzbedingungen</div>
+          <p><strong>Durch Endzustand:</strong> Kellerinhalt komplett egal, es zählt nur q ∈ F am
+            Eingabeende.<br><strong>Durch leeren Keller:</strong> Endzustand egal, es zählt nur, dass der
+            Keller am Eingabeende <strong>komplett leer</strong> ist. Beide Varianten sind gleich mächtig —
+            man legt sich pro PDA aber auf EINE davon fest.</p>
+        </div>
+
+        <p>Schauen wir uns das an der einfachsten möglichen „Zähl-Sprache" an: {a<sup>n</sup>b<sup>n</sup> | n ≥ 0}.
+          Ein einziger Zustand reicht: bei jedem a wird ein Kellersymbol A gepusht, bei jedem b eines gepoppt.
+          Ist am Ende nur noch der Boden-Marker Z₀ übrig, wird er per ε-Übergang auch noch entfernt — der
+          Keller ist dann leer, und das ist unser Akzeptanzkriterium.</p>
+
+        <pre class="code">Q = {q0},  Γ = {A, Z0},  Akzeptanz: leerer Keller
+
+δ:  (a, Z0) : A Z0     (erstes a: A oberhalb von Z0 anlegen)
+    (a, A)  : A A      (weiteres a: noch ein A obendrauf)
+    (b, A)  : ε        (jedes b poppt ein A)
+    (ε, Z0) : ε         (sind alle A weg, auch den Boden-Marker entfernen → leer!)</pre>
+
+        <!-- SVG 1: Kellersäule Filmstrip -->
+        <figure class="diagram">
+          <div class="diagram-title">Keller-Entwicklung beim Erkennen von „aabb" (n=2) — push/pop Schritt für Schritt</div>
+          <svg viewBox="0 0 620 260" width="620" role="img" aria-label="Filmstreifen aus sechs Keller-Säulen, die zeigen, wie sich der Stapel beim Lesen von a a b b entwickelt: er wächst bei jedem a um ein A und schrumpft bei jedem b, bis er am Ende komplett leer ist.">
+            <g font-family="JetBrains Mono, monospace" font-size="13">
+              <!-- gridline baseline -->
+              <line x1="20" y1="190" x2="600" y2="190" stroke="#8a94a6" stroke-width="1"/>
+
+              <!-- C0: [Z0] -->
+              <rect x="45" y="164" width="50" height="26" fill="#8a94a6" fill-opacity="0.22" stroke="#8a94a6" stroke-width="1.4"/>
+              <text x="70" y="182" text-anchor="middle" class="svg-ink">Z0</text>
+              <text x="70" y="215" text-anchor="middle" class="svg-soft" font-size="11">Start</text>
+
+              <text x="115" y="182" text-anchor="middle" class="svg-soft" font-size="16">→</text>
+
+              <!-- C1: [Z0, A] -->
+              <rect x="120" y="138" width="50" height="26" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="1.4"/>
+              <text x="145" y="156" text-anchor="middle" class="svg-ink">A</text>
+              <rect x="120" y="164" width="50" height="26" fill="#8a94a6" fill-opacity="0.22" stroke="#8a94a6" stroke-width="1.4"/>
+              <text x="145" y="182" text-anchor="middle" class="svg-ink">Z0</text>
+              <text x="145" y="215" text-anchor="middle" class="svg-soft" font-size="10.5">lies a: (a,Z0):AZ0</text>
+
+              <text x="200" y="182" text-anchor="middle" class="svg-soft" font-size="16">→</text>
+
+              <!-- C2: [Z0, A, A] -->
+              <rect x="205" y="112" width="50" height="26" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="1.4"/>
+              <text x="230" y="130" text-anchor="middle" class="svg-ink">A</text>
+              <rect x="205" y="138" width="50" height="26" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="1.4"/>
+              <text x="230" y="156" text-anchor="middle" class="svg-ink">A</text>
+              <rect x="205" y="164" width="50" height="26" fill="#8a94a6" fill-opacity="0.22" stroke="#8a94a6" stroke-width="1.4"/>
+              <text x="230" y="182" text-anchor="middle" class="svg-ink">Z0</text>
+              <text x="230" y="215" text-anchor="middle" class="svg-soft" font-size="10.5">lies a: (a,A):AA</text>
+
+              <text x="285" y="182" text-anchor="middle" class="svg-soft" font-size="16">→</text>
+
+              <!-- C3: [Z0, A] after pop -->
+              <rect x="290" y="138" width="50" height="26" fill="#2f6df6" fill-opacity="0.2" stroke="#2f6df6" stroke-width="1.4"/>
+              <text x="315" y="156" text-anchor="middle" class="svg-ink">A</text>
+              <rect x="290" y="164" width="50" height="26" fill="#8a94a6" fill-opacity="0.22" stroke="#8a94a6" stroke-width="1.4"/>
+              <text x="315" y="182" text-anchor="middle" class="svg-ink">Z0</text>
+              <text x="315" y="215" text-anchor="middle" class="svg-soft" font-size="10.5">lies b: (b,A):ε</text>
+
+              <text x="370" y="182" text-anchor="middle" class="svg-soft" font-size="16">→</text>
+
+              <!-- C4: [Z0] after 2nd pop -->
+              <rect x="375" y="164" width="50" height="26" fill="#8a94a6" fill-opacity="0.22" stroke="#8a94a6" stroke-width="1.4"/>
+              <text x="400" y="182" text-anchor="middle" class="svg-ink">Z0</text>
+              <text x="400" y="215" text-anchor="middle" class="svg-soft" font-size="10.5">lies b: (b,A):ε</text>
+
+              <text x="455" y="182" text-anchor="middle" class="svg-soft" font-size="16">→</text>
+
+              <!-- C5: empty -->
+              <rect x="460" y="164" width="50" height="26" fill="none" stroke="#12b28c" stroke-width="1.6" stroke-dasharray="4 3"/>
+              <text x="485" y="182" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="11">leer</text>
+              <text x="485" y="210" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="10.5">ε: (ε,Z0):ε</text>
+              <text x="485" y="224" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="10.5">akzeptiert! ✓</text>
+            </g>
+          </svg>
+          <figcaption>Jede Säule zeigt den Keller nach dem jeweiligen Schritt (oberstes Symbol oben). Bei „aabb"
+            wächst der Keller bei den beiden a's auf A A Z0 und schrumpft bei den beiden b's zurück auf Z0 —
+            der letzte ε-Schritt entfernt auch noch Z0, der Keller ist leer, das Wort wird akzeptiert.</figcaption>
+        </figure>
+
+        <h3>Beziehung: CFG ↔ PDA</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Satz</div>
+          <span class="formula">L ist kontextfrei  ⟺  L wird von einem PDA akzeptiert</span>
+          <p>Kontextfreie Grammatiken und Kellerautomaten sind exakt gleich mächtig. Die Richtung CFG → PDA
+            hat eine besonders einfache Standardkonstruktion:</p>
+        </div>
+
+        <pre class="code">CFG → PDA (Standardkonstruktion, Akzeptanz durch leeren Keller):
+
+Zustände:       {q0, q1}
+Kelleralphabet: V ∪ Σ        (Nichtterminale UND Terminale im selben Keller!)
+Start:          q0, Keller = S   (Startsymbol der Grammatik als erstes Kellersymbol)
+
+Übergänge (an q1, als Selbstschleifen):
+  A → β ∈ P   ⟹   (ε, A) : β     "ersetze Nichtterminal A durch die rechte Regelseite β"
+  a ∈ Σ       ⟹   (a, a) : ε     "Terminal a auf dem Keller gegen Eingabe-a wegstreichen"</pre>
+
+        <p>Kurz gesagt: Der PDA <strong>simuliert eine Linksableitung direkt auf dem Keller</strong> (siehe
+          Thema 07). Liegt oben auf dem Keller ein Nichtterminal, wird es per ε-Übergang durch eine
+          Regelseite ersetzt. Liegt oben ein Terminal, muss es exakt mit dem nächsten Eingabezeichen
+          übereinstimmen — sonst blockiert der Automat und das Wort wird nicht akzeptiert.</p>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Original-Klausuraufgabe durchgerechnet</h2>
+
+        <h3>🎓 Original-Klausuraufgabe (SoSe 2024, Zweitklausur, Aufgabe 3c)</h3>
+        <p>Gegeben ist folgender Kellerautomat M₂ (Akzeptanz durch leeren Keller, Z₀ = #):</p>
+
+        <pre class="code">M₂ = ({z0, z1, z2}, {a,b,c}, {#,C}, δ, z0, #, {})
+
+δ:  (a, #) : C C C #      an z0 → z1     (erstes a: 3 C's oberhalb von # anlegen)
+    (a, C) : C C C C      an z1 (Schleife)   (jedes weitere a: netto 3 C's mehr)
+    (b, #) : #             an z1 (Schleife)   (b lässt den Keller unverändert)
+    (b, C) : C             an z1 (Schleife)   (b lässt den Keller unverändert)
+    (c, C) : ε              an z1 (Schleife)   (jedes c poppt ein C)
+    (ε, #) : ε              an z1 → z2          (Boden-Marker weg → Keller leer, akzeptiert)</pre>
+
+        <!-- SVG 2: PDA-Zustandsdiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Zustandsdiagramm von M₂ — z1 verarbeitet a/b/c per Selbstschleife</div>
+          <svg viewBox="0 0 640 300" width="640" role="img" aria-label="Zustandsdiagramm des Kellerautomaten M2 mit drei Zuständen z0 (Start), z1 (Verarbeitung mit Selbstschleifen für a, b und c) und z2 (akzeptierend, doppelter Kreis), verbunden durch beschriftete Übergänge.">
+            <defs>
+              <marker id="p08arrH" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6df6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- start arrow -->
+              <path d="M20,150 L64,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p08arrH)"/>
+
+              <!-- z0 -> z1 -->
+              <path d="M130,150 L296,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p08arrH)"/>
+              <text x="213" y="138" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="11.5">(a,#):CCC#</text>
+
+              <!-- z1 -> z2 -->
+              <path d="M364,150 L526,150" fill="none" stroke="#2f6df6" stroke-width="2" marker-end="url(#p08arrH)"/>
+              <text x="445" y="138" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="11.5">(ε,#):ε</text>
+
+              <!-- z1 self-loop (top) -->
+              <path d="M306,126 C290,66 370,66 354,126" fill="none" stroke="#f5810b" stroke-width="2" marker-end="url(#p08arrH)"/>
+              <text x="330" y="30" text-anchor="middle" fill="#2f6df6" font-weight="700" font-size="11.5">(a,C):CCCC</text>
+              <text x="330" y="46" text-anchor="middle" class="svg-soft" font-weight="700" font-size="11.5">(b,#):#  ·  (b,C):C</text>
+              <text x="330" y="62" text-anchor="middle" fill="#e0483d" font-weight="700" font-size="11.5">(c,C):ε</text>
+
+              <!-- states -->
+              <circle cx="100" cy="150" r="30" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="100" y="156" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">z0</text>
+              <text x="100" y="196" text-anchor="middle" class="svg-soft" font-size="11">Start, Keller=#</text>
+
+              <circle cx="330" cy="150" r="34" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="330" y="156" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">z1</text>
+              <text x="330" y="200" text-anchor="middle" class="svg-soft" font-size="11">Verarbeitung</text>
+
+              <circle cx="560" cy="150" r="34" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="560" cy="150" r="28" fill="none" stroke="#12b28c" stroke-width="2"/>
+              <text x="560" y="156" text-anchor="middle" class="svg-ink" font-weight="800" font-size="15">z2</text>
+              <text x="560" y="196" text-anchor="middle" fill="#12b28c" font-weight="700" font-size="11">akzeptierend</text>
+            </g>
+          </svg>
+          <figcaption>Alle vier Übergänge an z1 sind Selbstschleifen (hier zusammengefasst gezeichnet). Der
+            Übergang z1 → z2 feuert per ε (ohne Eingabezeichen) genau dann, wenn oben auf dem Keller nur noch
+            # liegt — Endzustand z2 UND leerer Keller fallen hier im selben Moment zusammen.</figcaption>
+        </figure>
+
+        <h4>Analyse: was erkennt M₂?</h4>
+        <ol class="steps">
+          <li><strong>a-Phase:</strong> jedes gelesene a legt (netto) 3 weitere C's auf den Keller — nach i
+            a's liegen 3i C's oberhalb von #.</li>
+          <li><strong>b-Phase:</strong> b verändert den Keller nicht, egal ob C oder # oben liegt — beliebig
+            (aber laut Bau der Aufgabe genau ein) b ist möglich.</li>
+          <li><strong>c-Phase:</strong> jedes gelesene c poppt genau ein C — nach 3i c's ist der Keller wieder
+            bis auf # leer.</li>
+          <li><strong>Akzeptanz:</strong> Ist nur noch # übrig, feuert der ε-Übergang nach z2 → Keller leer,
+            akzeptiert.</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">L(M₂)</div>
+          <span class="formula">L(M₂) = { a^i b c^(3i) | i ∈ ℕ }</span>
+        </div>
+
+        <h4>Keller-Entwicklung nachvollziehen (i = 1, Wort „abccc")</h4>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Schritt</th><th>Zustand</th><th>Gelesen</th><th>Regel</th><th>Keller danach</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>z0 → z1</td><td>a</td><td>(a,#):CCC#</td><td>C C C #</td></tr>
+            <tr><td>2</td><td>z1</td><td>b</td><td>(b,C):C</td><td>C C C #</td></tr>
+            <tr><td>3</td><td>z1</td><td>c</td><td>(c,C):ε</td><td>C C #</td></tr>
+            <tr><td>4</td><td>z1</td><td>c</td><td>(c,C):ε</td><td>C #</td></tr>
+            <tr><td>5</td><td>z1</td><td>c</td><td>(c,C):ε</td><td>#</td></tr>
+            <tr><td>6</td><td>z1 → z2</td><td>ε</td><td>(ε,#):ε</td><td><strong>leer ✓ akzeptiert</strong></td></tr>
+          </tbody>
+        </table></div>
+        <p>Für i = 1 stehen genau 3·1 = 3 C's auf dem Keller (Schritt 1), die durch die drei c's wieder
+          vollständig abgebaut werden (Schritte 3–5) — passend zu 3i = 3 c's im Wort „abccc".</p>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Push „YZ" bedeutet: erst Y einzeln pushen,
+            dann Z einzeln pushen (zwei getrennte Schritte).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>YZ wird als <strong>EIN Block auf
+            einmal</strong> gepusht — Y landet dabei sofort oben (zuerst geschrieben = oben).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein PDA kann sich merken, was ganz unten im
+            Keller liegt, und gezielt darauf zugreifen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur das <strong>oberste</strong> Symbol ist
+            sichtbar und entfernbar (LIFO) — alles darunter ist bis dahin unerreichbar.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein PDA, der den Keller nie anschaut oder
+            verändert, ist trotzdem „mehr" als ein endlicher Automat.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein PDA, der Γ komplett ignoriert, kann
+            nichts, was ein DFA/NFA nicht auch kann — <strong>erst der Keller</strong> macht den PDA
+            mächtiger.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>ε-Übergänge sind „kostenlos" und beliebig
+            oft hintereinander ohne Risiko ausführbar.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>ε-Übergänge lesen kein Zeichen, können aber
+            zu <strong>Nichtdeterminismus</strong> führen (mehrere parallele Keller-Pfade) — bei der
+            Konstruktion sorgfältig und gezielt einsetzen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man kann „Endzustand" und „leerer Keller"
+            im selben Lauf beliebig mischen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Man legt sich pro PDA auf
+            <strong>eine</strong> Akzeptanzbedingung fest — auch wenn beide Varianten nachweislich gleich
+            mächtig sind.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>PDA-Bausteine</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Symbol</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>Q</td><td>Zustandsmenge</td></tr>
+              <tr><td>Γ</td><td>Kelleralphabet</td></tr>
+              <tr><td>δ</td><td>Übergangsfunktion Q×(Σ∪{ε})×Γ → P(Q×Γ*)</td></tr>
+              <tr><td>Z₀</td><td>initiales Kellersymbol (Boden-Marker)</td></tr>
+              <tr><td>(a,Z):YZ</td><td>lies a, pop Z, push YZ (Y landet oben)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>CFG → PDA (Standardkonstruktion)</h4>
+          <pre class="code">A → β ∈ P  ⟹  (ε, A) : β     (Nichtterminal ersetzen)
+a ∈ Σ      ⟹  (a, a) : ε     (Terminal gegen Eingabe matchen)
+Akzeptanz: leerer Keller</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>LIFO</strong> — nur das oberste Kellersymbol ist erreichbar</li>
+            <li><strong>YZ als Block pushen</strong>, nicht einzeln nacheinander</li>
+            <li>ε-Übergänge lesen kein Zeichen, verändern nur den Keller</li>
+            <li>Akzeptanz: durch Endzustand ODER durch leeren Keller — nie beides gemischt</li>
+            <li>Ohne Keller-Nutzung ist ein PDA nur ein (N)DFA in Verkleidung</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was bedeutet der Übergang (a, Z) : YZ?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Lies a, entferne Z vom Keller, lege
+                danach YZ drauf (Y landet oben).</button>
+              <button class="quiz-choice" type="button">Lies a, lasse den Keller unverändert.</button>
+              <button class="quiz-choice" type="button">Lies a und Z gleichzeitig als ein Eingabezeichen.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(a,Z):YZ heißt: Eingabe a lesen, Z poppen, dann YZ als Block
+              pushen — Y liegt danach oben.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="LIFO|Lifo|lifo">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie heißt das Speicherprinzip eines Kellers
+              (Abkürzung, englisch)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>LIFO</strong> — „Last In, First Out": was zuletzt drauf
+              kam, kommt zuerst wieder runter.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Ein PDA führt einen ε-Übergang aus. Was
+              passiert mit dem Eingabewort?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Es wird kein Zeichen gelesen — nur der
+                Keller verändert sich.</button>
+              <button class="quiz-choice" type="button">Das nächste Zeichen wird trotzdem konsumiert.</button>
+              <button class="quiz-choice" type="button">Die gesamte restliche Eingabe wird verworfen.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ε-Übergänge lesen per Definition kein Eingabezeichen — nur der
+              Zustand und/oder der Keller ändern sich.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Klausur ZK 3c: Für L(M₂) = {a^i b c^(3i)}
+              mit i = 2 — wie viele c's stehen im zugehörigen Wort?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">c's</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>3i = 3·2 = <strong>6</strong> c's (Wort: aabcccccc).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Klausur ZK 3c: M₂ akzeptiert durch …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>leeren Keller (der ε-Übergang entfernt
+                den Boden-Marker # ganz am Ende)</button>
+              <button class="quiz-choice" type="button">Endzustand, unabhängig vom Keller</button>
+              <button class="quiz-choice" type="button">die maximale Anzahl an Zustandswechseln</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der letzte Übergang (ε,#):ε entfernt den Boden-Marker — der
+              Keller wird in genau diesem Moment leer, das ist die Akzeptanzbedingung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Ein PDA verändert den Keller während der
+              gesamten Verarbeitung nie (ignoriert Γ komplett). Was folgt daraus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Er ist höchstens so mächtig wie ein
+                DFA/NFA.</button>
+              <button class="quiz-choice" type="button">Er kann trotzdem jede kontextfreie Sprache erkennen.</button>
+              <button class="quiz-choice" type="button">Das ist bei PDAs gar nicht erlaubt.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ohne den Keller zu nutzen, hat der Automat kein zusätzliches
+              Gedächtnis — er verhält sich wie ein gewöhnlicher endlicher Automat.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="07-kontextfreie-grammatiken.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Kontextfreie Grammatiken</div>
+        </a>
+        <a class="next" href="09-mu-rekursion.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">µ-rekursive Funktionen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>FSK · Formale Sprachen &amp; Komplexität (P 10, LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>
