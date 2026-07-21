@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Der Wirtschaftskreislauf · P2 Makro</title>
+<meta name="description" content="Der makroökonomische Kreislauf zwischen Haushalten, Unternehmen, Staat, Kapitalmarkt und Ausland bildlich erklärt – mit Saldenidentität, Crowding-Out und durchgerechneten Beispielen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Kreislauf</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 03</div>
+    <span class="th-icon">🔄</span>
+    <h1>Der Wirtschaftskreislauf</h1>
+    <div class="th-meta">
+      <span class="stars">★☆☆</span>
+      <span class="badge badge-blatt">Grundlagen</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Der Kreislauf im Bild</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Geld in einer Volkswirtschaft <strong>verschwindet nirgendwo</strong> — es fließt in
+          einem geschlossenen System zwischen Haushalten, Unternehmen, dem Staat, dem Kapitalmarkt und dem Ausland
+          hin und her. Der Wirtschaftskreislauf ist die Landkarte dieser Ströme — und liefert eine der wichtigsten
+          Identitäten der Makroökonomie: <strong>Sparen = Investieren</strong> (in einer offenen Wirtschaft etwas
+          erweitert).</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… Geld ist <strong>Wasser</strong>, das durch ein Rohrsystem zwischen fünf Becken fließt: Haushalte,
+            Unternehmen, Staat, Kapitalmarkt (Banken) und Ausland. Manche Rohre <strong>entziehen</strong> Wasser
+            aus dem Hauptkreislauf HH↔Unternehmen — das sind die <strong>Leakages</strong> (Sparen S, Steuern T,
+            Importe M). Andere Rohre <strong>pumpen</strong> Wasser wieder hinein — das sind die
+            <strong>Injektionen</strong> (Investitionen I, Staatsausgaben G, Exporte X). Damit der Wasserspiegel im
+            System stabil bleibt, müssen sich Entnahmen und Einspeisungen langfristig die Waage halten.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Der Kreislauf im Bild</h2>
+
+        <h3>Der einfachste Fall: zwei Sektoren</h3>
+        <p>Ganz ohne Staat und Ausland gibt es nur einen Kreislauf zwischen Haushalten und Unternehmen: Haushalte
+          stellen Arbeit &amp; Kapital bereit und bekommen dafür Löhne/Zinsen/Gewinne; mit diesem Einkommen kaufen
+          sie wiederum die produzierten Güter.</p>
+
+        <!-- SVG 1: Einfacher 2-Sektoren-Kreislauf -->
+        <figure class="diagram">
+          <div class="diagram-title">Der einfachste Kreislauf: Haushalte ↔ Unternehmen</div>
+          <svg viewBox="0 0 420 190" width="420" role="img" aria-label="Einfacher Kreislauf zwischen Haushalten und Unternehmen: oben fließt Konsum von Haushalten zu Unternehmen, unten fließt Faktoreinkommen von Unternehmen zu Haushalten">
+            <defs>
+              <marker id="kmArrowSimple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#12b28c"/>
+              </marker>
+              <marker id="kmArrowSimple2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#2f6df6"/>
+              </marker>
+            </defs>
+            <line x1="130" y1="50" x2="290" y2="50" stroke="#12b28c" stroke-width="2.5" marker-end="url(#kmArrowSimple)"/>
+            <text x="210" y="38" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="12" font-family="Segoe UI, sans-serif">Konsumgüter / Ausgaben C</text>
+            <line x1="290" y1="140" x2="130" y2="140" stroke="#2f6df6" stroke-width="2.5" marker-end="url(#kmArrowSimple2)"/>
+            <text x="210" y="160" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="12" font-family="Segoe UI, sans-serif">Arbeit, Kapital → Löhne, Zinsen, Gewinne</text>
+
+            <rect x="20" y="65" width="110" height="60" rx="12" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.5"/>
+            <text x="75" y="100" text-anchor="middle" class="svg-ink" font-weight="800" font-family="Segoe UI, sans-serif">🏠 Haushalte</text>
+            <rect x="290" y="65" width="110" height="60" rx="12" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c" stroke-width="1.5"/>
+            <text x="345" y="100" text-anchor="middle" class="svg-ink" font-weight="800" font-family="Segoe UI, sans-serif">🏭 Unternehmen</text>
+          </svg>
+          <figcaption>Zwei Sektoren, zwei Ströme, ein perfekter Kreis — die Basis, auf der alles Weitere
+            aufbaut.</figcaption>
+        </figure>
+
+        <p>In der Realität kommen drei weitere Akteure dazu, die den einfachen Kreis "anzapfen": der
+          <strong>Staat</strong> (Steuern raus, Ausgaben &amp; Transfers rein), der <strong>Kapitalmarkt/Banken</strong>
+          (Ersparnis rein, Investitionen raus) und das <strong>Ausland</strong> (Importe raus, Exporte rein).</p>
+
+        <h3>Das vollständige Bild — der Wirtschaftskreislauf</h3>
+
+        <!-- SVG 2: GROSSES Kreislaufdiagramm (Herzstück) -->
+        <figure class="diagram">
+          <div class="diagram-title">Der Wirtschaftskreislauf: 5 Sektoren, alle Geldströme im Überblick</div>
+          <svg viewBox="0 0 820 640" width="820" role="img" aria-label="Vollständiges Kreislaufdiagramm mit fünf Sektoren Haushalte, Unternehmen, Kapitalmarkt, Staat und Ausland, verbunden durch die Geldströme Konsum, Faktoreinkommen, Ersparnis, Investitionen, Steuern, Transfers, Staatsausgaben, Außenhandel und Kapitalflüsse">
+            <defs>
+              <marker id="mkGreen"  viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#12b28c"/></marker>
+              <marker id="mkBlue"   viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f6df6"/></marker>
+              <marker id="mkPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b5cf6"/></marker>
+              <marker id="mkOrange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f5810b"/></marker>
+              <marker id="mkRed"    viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e0483d"/></marker>
+              <marker id="mkGray"   viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8a94a6"/></marker>
+            </defs>
+
+            <!-- ===== Ebene 1: Pfeile (werden von Boxen überdeckt) ===== -->
+            <g font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">
+
+              <!-- 1. Konsum C: HH -> U -->
+              <line x1="210" y1="45" x2="610" y2="45" stroke="#12b28c" stroke-width="2.5" marker-end="url(#mkGreen)"/>
+              <text x="410" y="34" text-anchor="middle" fill="#12b28c">Konsumausgaben C</text>
+
+              <!-- 2. Faktoreinkommen: U -> HH -->
+              <line x1="610" y1="82" x2="210" y2="82" stroke="#2f6df6" stroke-width="2.5" marker-end="url(#mkBlue)"/>
+              <text x="410" y="100" text-anchor="middle" fill="#2f6df6" font-size="11.5">Faktoreinkommen: w·L + r·K + π</text>
+
+              <!-- 3. Ersparnis S: HH -> Kapitalmarkt -->
+              <line x1="150" y1="102" x2="345" y2="288" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#mkPurple)"/>
+              <text x="95" y="215" fill="#8b5cf6">Ersparnis S</text>
+
+              <!-- 4. Investitionen I: Kapitalmarkt -> U -->
+              <line x1="475" y1="288" x2="668" y2="102" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#mkPurple)"/>
+              <text x="555" y="215" fill="#8b5cf6">Investitionen I</text>
+
+              <!-- 5. Steuern T: HH -> Staat -->
+              <line x1="90" y1="102" x2="90" y2="538" stroke="#f5810b" stroke-width="2.5" marker-end="url(#mkOrange)"/>
+              <text x="30" y="300" fill="#f5810b" transform="rotate(-90 30 300)" text-anchor="middle">Steuern T</text>
+
+              <!-- 6. Transfers: Staat -> HH -->
+              <line x1="150" y1="538" x2="150" y2="102" stroke="#f5810b" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#mkOrange)"/>
+              <text x="182" y="300" fill="#f5810b" transform="rotate(-90 182 300)" text-anchor="middle">Transfers</text>
+
+              <!-- 7. Staatsausgaben G: Staat -> U (Elbow-Pfad, läuft hinter Kapitalmarkt-Box durch) -->
+              <path d="M 175,538 L 400,430 L 660,102" stroke="#f5810b" stroke-width="2.5" fill="none" marker-end="url(#mkOrange)"/>
+              <text x="440" y="490" fill="#f5810b">Staatsausgaben G</text>
+
+              <!-- 8. Außenhandel X-M: U <-> Ausland -->
+              <line x1="705" y1="102" x2="705" y2="538" stroke="#e0483d" stroke-width="2.5" marker-end="url(#mkRed)" marker-start="url(#mkRed)"/>
+              <text x="715" y="315" fill="#e0483d" font-size="11.5">Außenhandel:</text>
+              <text x="715" y="332" fill="#e0483d" font-size="11.5">Exporte X, Importe M</text>
+
+              <!-- 9. Kapitalflüsse: Kapitalmarkt <-> Ausland -->
+              <line x1="515" y1="330" x2="625" y2="538" stroke="#8a94a6" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#mkGray)"/>
+              <text x="565" y="450" fill="#8a94a6" font-size="11">Kapitalflüsse</text>
+              <text x="565" y="465" fill="#8a94a6" font-size="10">(bei X ≠ M)</text>
+            </g>
+
+            <!-- ===== Ebene 2: Boxen (liegen über den Pfeilen) ===== -->
+            <g font-family="Segoe UI, sans-serif">
+              <rect x="20" y="20" width="190" height="82" rx="14" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="115" y="52" text-anchor="middle" font-size="15" font-weight="800" class="svg-ink">🏠 Haushalte</text>
+              <text x="115" y="72" text-anchor="middle" font-size="10.5" class="svg-soft">Konsum, Arbeit,</text>
+              <text x="115" y="86" text-anchor="middle" font-size="10.5" class="svg-soft">Ersparnis, Steuern</text>
+
+              <rect x="610" y="20" width="190" height="82" rx="14" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="705" y="52" text-anchor="middle" font-size="15" font-weight="800" class="svg-ink">🏭 Unternehmen</text>
+              <text x="705" y="72" text-anchor="middle" font-size="10.5" class="svg-soft">Produktion, Löhne,</text>
+              <text x="705" y="86" text-anchor="middle" font-size="10.5" class="svg-soft">Investitionsgüter</text>
+
+              <rect x="310" y="288" width="200" height="72" rx="14" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="410" y="318" text-anchor="middle" font-size="15" font-weight="800" class="svg-ink">🏦 Kapitalmarkt</text>
+              <text x="410" y="338" text-anchor="middle" font-size="10.5" class="svg-soft">Banken, Kredite</text>
+
+              <rect x="20" y="538" width="190" height="82" rx="14" fill="#f5810b" fill-opacity="0.16" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="115" y="570" text-anchor="middle" font-size="15" font-weight="800" class="svg-ink">🏛️ Staat</text>
+              <text x="115" y="590" text-anchor="middle" font-size="10.5" class="svg-soft">Steuern, Ausgaben,</text>
+              <text x="115" y="604" text-anchor="middle" font-size="10.5" class="svg-soft">Transfers</text>
+
+              <rect x="610" y="538" width="190" height="82" rx="14" fill="#e0483d" fill-opacity="0.14" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="705" y="570" text-anchor="middle" font-size="15" font-weight="800" class="svg-ink">🌍 Ausland</text>
+              <text x="705" y="590" text-anchor="middle" font-size="10.5" class="svg-soft">Export, Import,</text>
+              <text x="705" y="604" text-anchor="middle" font-size="10.5" class="svg-soft">Kapitalverkehr</text>
+            </g>
+          </svg>
+          <figcaption>Grün/Blau = Güter- und Faktormarkt (Kern-Kreislauf) · Lila = Kapitalmarkt (Sparen ↔
+            Investieren) · Orange = Staat (Steuern, Transfers, Ausgaben) · Rot/Grau = Ausland (Handel,
+            Kapitalflüsse). Jeder Pfeil ist ein Geldstrom, keine Güterlieferung.</figcaption>
+        </figure>
+
+        <h3>Leakages &amp; Injektionen</h3>
+        <p>Aus Sicht des Kern-Kreislaufs (HH ↔ Unternehmen) gibt es Ströme, die Geld <strong>abziehen</strong>
+          (Leakages) und solche, die es <strong>zurückspeisen</strong> (Injektionen):</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Typ</th><th>Ströme</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Leakage</strong> (Entnahme)</td><td>S, T, M</td><td>Sparen, Steuern, Importe — Geld verlässt den Kern-Kreislauf</td></tr>
+            <tr><td><strong>Injektion</strong> (Einspeisung)</td><td>I, G, X</td><td>Investitionen, Staatsausgaben, Exporte — Geld fließt zurück</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- SVG 3: Waage Leakages vs Injektionen -->
+        <figure class="diagram">
+          <div class="diagram-title">Im Gleichgewicht halten sich Entnahmen und Einspeisungen die Waage</div>
+          <svg viewBox="0 0 460 180" width="460" role="img" aria-label="Waage-Diagramm: linke Seite Leakages S, T, M; rechte Seite Injektionen I, G, X; beide Seiten im Gleichgewicht">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <line x1="230" y1="40" x2="230" y2="90" stroke="#8a94a6" stroke-width="4"/>
+              <line x1="60" y1="90" x2="400" y2="90" stroke="#8a94a6" stroke-width="4"/>
+              <polygon points="230,20 200,45 260,45" fill="#8a94a6"/>
+
+              <rect x="30" y="95" width="150" height="55" rx="10" fill="#8b5cf6" fill-opacity="0.18" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="105" y="118" text-anchor="middle" fill="#8b5cf6" font-weight="800">Leakages</text>
+              <text x="105" y="138" text-anchor="middle" class="svg-ink">S + T + M</text>
+
+              <rect x="280" y="95" width="150" height="55" rx="10" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="355" y="118" text-anchor="middle" fill="#12b28c" font-weight="800">Injektionen</text>
+              <text x="355" y="138" text-anchor="middle" class="svg-ink">I + G + X</text>
+
+              <text x="230" y="170" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800">S + T + M = I + G + X</text>
+            </g>
+          </svg>
+          <figcaption>Umgestellt nach S ergibt sich die zentrale Saldenidentität der Volkswirtschaft.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Saldenidentität (offene Wirtschaft)</div>
+          <span class="formula">S = I + (G − T) + (X − M)
+          bzw.  S − I = (G − T) + (X − M)</span>
+          <p>Geschlossene Wirtschaft (X=M=0): <strong>S = I + (G − T)</strong>. Wenn G &gt; T (Staatsdefizit),
+            braucht der Staat zusätzliche Ersparnisse — er konkurriert mit Unternehmen um denselben Topf
+            (<strong>Crowding Out</strong>).</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele durchgerechnet</h2>
+
+        <h3>Beispiel 1: Investitionen aus der Saldenidentität</h3>
+        <p>Gegeben: S = 500, G = 400, T = 300, X = 150, M = 100. Wie groß sind die Investitionen I?</p>
+        <ol class="steps">
+          <li><strong>Formel aufschreiben:</strong> S = I + (G−T) + (X−M)</li>
+          <li><strong>Bekannte Größen einsetzen:</strong> 500 = I + (400−300) + (150−100) = I + 100 + 50</li>
+          <li><strong>Nach I auflösen:</strong> 500 = I + 150 → I = <strong>350</strong></li>
+        </ol>
+
+        <h3>Beispiel 2: Leistungsbilanz bei Investitionsüberschuss</h3>
+        <p>Sparen S = 600, Investitionen I = 700, ausgeglichenes Staatsbudget (G = T). Wie groß ist die
+          Leistungsbilanz (X−M)?</p>
+        <ol class="steps">
+          <li><strong>Formel:</strong> S = I + (G−T) + (X−M), mit G−T = 0</li>
+          <li><strong>Einsetzen:</strong> 600 = 700 + 0 + (X−M)</li>
+          <li><strong>Auflösen:</strong> X−M = 600 − 700 = <strong>−100</strong></li>
+          <li><strong>Interpretation:</strong> Ein Leistungsbilanz<strong>defizit</strong> von 100 — die
+            Investitionen übersteigen das Inlandssparen und werden über Kapitalimporte finanziert. Das ist
+            keine Katastrophe, sondern eine normale Finanzierungsform.</li>
+        </ol>
+
+        <h3>Beispiel 3: Dreisektoren-Rechnung</h3>
+        <p>Haushalte sparen 15 % ihres Einkommens Y = 1000. Staatsdefizit (G−T) = 50. Exporte X = 200,
+          Importe M = 180. Wie groß sind die Investitionen I?</p>
+        <ol class="steps">
+          <li><strong>Sparen berechnen:</strong> S = 0,15 × 1000 = 150</li>
+          <li><strong>Nettoexporte berechnen:</strong> X−M = 200−180 = 20</li>
+          <li><strong>In Saldenidentität einsetzen:</strong> 150 = I + 50 + 20</li>
+          <li><strong>Auflösen:</strong> I = 150 − 70 = <strong>80</strong></li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: Crowding-Out-Mechanismus</h3>
+        <p>Der Staat erhöht seine Ausgaben G, während das Sparen S konstant bleibt und T unverändert ist.
+          Was passiert mit Investitionen I, Zins r und Output Y?</p>
+        <ol class="steps">
+          <li><strong>Saldenmechanik:</strong> S = I + (G−T) + (X−M). S konstant, (G−T) steigt → I oder (X−M)
+            müssen sinken, damit die Gleichung weiter stimmt.</li>
+          <li><strong>Kreditmarkt:</strong> Der Staat fragt mehr Kredit nach und konkurriert mit Unternehmen um
+            dieselben Ersparnisse → der Zinssatz r <strong>steigt</strong>.</li>
+          <li><strong>Wirkung auf I:</strong> Höheres r macht Investitionsprojekte unrentabler → I
+            <strong>sinkt</strong> (Crowding Out).</li>
+          <li><strong>Netto-Effekt auf Y:</strong> G wirkt direkt positiv, das sinkende I wirkt negativ.
+            Bei <strong>vollständigem</strong> Crowding Out: ΔY = 0. Bei <strong>partiellem</strong> Crowding
+            Out: ΔY &gt; 0, aber kleiner als ΔG.</li>
+          <li><strong>Alternative in offener Wirtschaft:</strong> Steigt r, wird das Land für ausländisches
+            Kapital attraktiv — Kapitalimporte können I stützen, kosten aber eine schlechtere Leistungsbilanz
+            (X−M sinkt).</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Y = C+I+G+(X−M) beschreibt das
+            Haushaltseinkommen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Diese Formel beschreibt die
+            <strong>inländische Produktion</strong> (BIP), nicht das, was bei den Haushalten ankommt — das
+            wäre erst nach Steuern/Transfers das verfügbare Einkommen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Sparen bedeutet, dass Geld aus der Wirtschaft
+            verschwindet ("Horten").</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ersparnisse fließen über den Kapitalmarkt
+            als <strong>Investitionen I</strong> zurück in den Kreislauf — Sparen ist eine Umleitung, kein
+            Verschwinden.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>(G−T) &gt; 0, also ein Staatsdefizit, ist
+            automatisch schlecht für die Wirtschaft.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ob das problematisch ist, hängt vom
+            Vergleich mit S−I ab. Ein Defizit, das aus hohen Ersparnissen finanziert wird, muss keine Krise
+            auslösen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein Leistungsbilanzdefizit (X&lt;M) heißt,
+            dass ein Land "über seine Verhältnisse lebt".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es zeigt oft nur, dass I &gt; S — das Land
+            zieht Auslandskapital an, um mehr zu investieren, als es selbst sparen kann. Für Wachstumsländer
+            ganz normal.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Steuern T sind dasselbe wie Staatsausgaben G,
+            nur mit anderem Vorzeichen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>T ist eine <strong>Leakage</strong> (Geld
+            fließt von HH zum Staat ab), G ist eine <strong>Injektion</strong> (Staat kauft Güter/Dienstleistungen
+            der Unternehmen). Nur die <em>Differenz</em> (G−T) taucht als Nettogröße in der Saldenidentität auf.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Saldenidentität</h4>
+          <pre class="code">Offene Wirtschaft:      S = I + (G−T) + (X−M)
+                         S − I = (G−T) + (X−M)
+Geschlossene Wirtschaft: S = I + (G−T)          [X=M=0]
+
+Leakages  (raus): S (Sparen), T (Steuern), M (Importe)
+Injektionen (rein): I (Investitionen), G (Staatsausgaben), X (Exporte)</pre>
+
+          <h4>Begriffe</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Begriff</th><th>Definition</th></tr></thead>
+            <tbody>
+              <tr><td>Leakage</td><td>Geldstrom, der aus dem Kern-Kreislauf abfließt (S, T, M)</td></tr>
+              <tr><td>Injektion</td><td>Geldstrom, der in den Kern-Kreislauf fließt (I, G, X)</td></tr>
+              <tr><td>Crowding Out</td><td>Verdrängung privater Investitionen durch Staatsausgaben über steigende Zinsen</td></tr>
+              <tr><td>Saldenidentität</td><td>Ex-post-Beziehung, die immer (per Definition) erfüllt ist</td></tr>
+              <tr><td>Leistungsbilanz</td><td>X − M, Handelsbeziehungen mit dem Ausland</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li>Fünf Sektoren: <strong>Haushalte, Unternehmen, Staat, Kapitalmarkt, Ausland</strong></li>
+            <li><strong>S = I + (G−T) + (X−M)</strong> gilt immer — es ist eine Identität, keine Verhaltensgleichung</li>
+            <li>Sparen fließt über den Kapitalmarkt zurück als <strong>Investitionen</strong>, verschwindet nicht</li>
+            <li>Staatsdefizit ↑ und konstantes S → Zins ↑ → Crowding Out privater Investitionen</li>
+            <li>Ein Leistungsbilanzdefizit ist neutral zu bewerten — es zeigt Kapitalimport, nicht "Schwäche"</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="350">
+            <p class="quiz-prompt"><span class="q-no">1.</span>S=500, G=400, T=300, X=150, M=100. Wie groß sind die Investitionen I?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>500 = I + (400−300) + (150−100) = I + 150 → I = <strong>350</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-100">
+            <p class="quiz-prompt"><span class="q-no">2.</span>S=600, I=700, ausgeglichenes Staatsbudget (G=T). Wie groß ist (X−M)? (Vorzeichen beachten!)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>600 = 700 + 0 + (X−M) → X−M = <strong>−100</strong> (Leistungsbilanzdefizit).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="80">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Y=1000, Sparquote 15 %, (G−T)=50, X=200, M=180. Wie groß ist I?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>S = 0,15×1000 = 150. 150 = I + 50 + 20 → I = <strong>80</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Der Staat erhöht G, das Sparen S bleibt konstant. Was passiert typischerweise mit dem Zinssatz r?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>r steigt (mehr Kreditnachfrage bei gleichem Angebot)</button>
+              <button class="quiz-choice" type="button">r sinkt</button>
+              <button class="quiz-choice" type="button">r bleibt exakt gleich</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Staat konkurriert mit Unternehmen um dieselben Ersparnisse →
+              Zins <strong>steigt</strong>, private Investitionen werden verdrängt (Crowding Out).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Ist ein Leistungsbilanzdefizit (X&lt;M) automatisch ein Zeichen wirtschaftlicher Schwäche?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, immer</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — es kann Investitionen finanzieren, die die eigene Ersparnis übersteigen</button>
+              <button class="quiz-choice" type="button">Nur bei Entwicklungsländern</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ein Defizit zeigt I &gt; S — finanziert über Kapitalimporte. Für
+              wachsende Volkswirtschaften ist das eine normale, oft positive Situation.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="leakage|leakages">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie heißt der Fachbegriff für Geldströme, die aus dem Kern-Kreislauf abfließen (z. B. S, T, M)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Leakage</strong> (Entnahme). Das Gegenstück heißt
+              Injektion (I, G, X).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="250">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Geschlossene Wirtschaft: S=300, G=250, T=200. Wie groß ist I?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>S = I + (G−T) → 300 = I + 50 → I = <strong>250</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="02-preise-arbeitsmarkt.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Preise &amp; Arbeitsmarkt</div>
+        </a>
+        <a class="next" href="04-guetermarkt.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Gütermarkt &amp; Multiplikator</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Geldmarkt &amp; Zins · Makro</title>
+<meta name="description" content="Geldnachfrage, Geldangebot und Zinsbestimmung im Geldmarkt bildlich erklärt – mit Geldmarktdiagramm, der Quantitätsgleichung MV=PY und der Liquiditätsfalle." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Modell</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 05</div>
+    <span class="th-icon">💰</span>
+    <h1>Geldmarkt &amp; Zins</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🧮 Rechnen</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Modell &amp; Geldmarktdiagramm</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Während der Gütermarkt bestimmt, <strong>wie viel</strong> produziert wird, klärt der
+          <strong>Geldmarkt</strong>, wie hoch der <strong>Zinssatz</strong> ist. Die Grundidee: Haushalte
+          entscheiden ständig, wie viel Vermögen sie als <strong>Bargeld/Girokonto</strong> (jederzeit verfügbar,
+          aber kein Zins) und wie viel als <strong>verzinste Anlage</strong> (Anleihe, Sparkonto) halten wollen.
+          Der Zins ist der Preis, der diese Entscheidung ins Gleichgewicht bringt.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du erbst <strong>1.000 €</strong>. Du kannst das Geld bar im Schrank liegen lassen — jederzeit
+            verfügbar, aber es bringt <strong>0 % Zins</strong>. Oder du legst es in eine Anleihe an — sie bringt
+            Zinsen, aber du kommst nicht sofort ran.<br><br>
+            Wie viel Bargeld du halten willst, hängt von zwei Dingen ab: wie viel du im Alltag für Einkäufe brauchst
+            (mehr Einkommen Y → mehr Bargeld nötig) und wie hoch der Zins ist (höherer Zins r → höhere
+            Opportunitätskosten des „Geld im Schrank liegen lassens" → du hältst weniger Bargeld). Genau das ist
+            die Geldnachfrage L(Y,r).</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Das Modell &amp; das Geldmarktdiagramm</h2>
+
+        <h3>Geldmengenaggregate — was zählt eigentlich als „Geld"?</h3>
+        <p>Bevor wir Angebot und Nachfrage vergleichen, lohnt sich ein Blick darauf, was die Zentralbank überhaupt
+          steuert. „Geld" ist nicht nur Bargeld — Ökonomen unterscheiden mehrere Stufen:</p>
+        <div class="factgrid">
+          <div class="fact"><b>M0</b><span>Bargeld (Zentralbankgeld) — direkt von der ZB kontrolliert</span></div>
+          <div class="fact"><b>M1</b><span>M0 + Sichteinlagen (täglich verfügbar)</span></div>
+          <div class="fact"><b>M2</b><span>M1 + Spareinlagen mit kurzer Kündigungsfrist</span></div>
+          <div class="fact"><b>M3</b><span>M2 + Geldmarktpapiere</span></div>
+        </div>
+        <p>Die Zentralbank kontrolliert M0 <strong>direkt</strong> (sie druckt bzw. bucht es), M1–M3 dagegen nur
+          <strong>indirekt</strong> — über Zinsen und die Kreditvergabe der Geschäftsbanken. In den Modellen dieser
+          Seite steht M^s vereinfachend für „die von der Zentralbank steuerbare Geldmenge".</p>
+
+        <h3>Geldnachfrage</h3>
+        <p>Die (reale) Geldnachfrage L hängt von zwei Größen ab:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Geldnachfrage-Funktion</div>
+          <span class="formula">L(Y, r) = k·Y − h·r</span>
+        </div>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Symbol</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>k &gt; 0</strong></td><td>Transaktionssensitivität — L steigt mit Y (mehr Einkommen,
+              mehr Transaktionen, mehr Geld nötig)</td></tr>
+            <tr><td><strong>h &gt; 0</strong></td><td>Zinssensitivität — L sinkt mit r (höherer Zins, höhere
+              Opportunitätskosten des Geldhaltens)</td></tr>
+            <tr><td><strong>M^s</strong></td><td>nominales Geldangebot, von der Zentralbank festgelegt</td></tr>
+            <tr><td><strong>M^s/P</strong></td><td>reales Geldangebot (nominal geteilt durch Preisniveau)</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Geldmarktgleichgewicht &amp; Zinsbestimmung</h3>
+        <p>Das reale Geldangebot der Zentralbank muss der realen Geldnachfrage entsprechen:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Geldmarktgleichgewicht</div>
+          <span class="formula">M^s / P = L(Y, r) = k·Y − h·r</span>
+        </div>
+        <ol class="steps">
+          <li><strong>Nach r auflösen:</strong> M^s/P = kY − hr → hr = kY − M^s/P</li>
+          <li><strong>Ergebnis:</strong> r = (k·Y − M^s/P) / h</li>
+        </ol>
+        <div class="factgrid">
+          <div class="fact"><b>Y ↑ → r ↑</b><span>mehr Einkommen erhöht Geldnachfrage und damit den Zins</span></div>
+          <div class="fact"><b>M^s ↑ → r ↓</b><span>mehr Geldangebot drückt den Zins</span></div>
+        </div>
+
+        <!-- SVG 1: Geldmarktdiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Geldmarktdiagramm — vertikales Angebot trifft fallende Nachfrage</div>
+          <svg viewBox="0 0 480 320" width="480" role="img" aria-label="Geldmarktdiagramm mit vertikaler Geldangebotskurve und fallender Geldnachfragekurve, Gleichgewicht bei M/P=400 und r=4 Prozent">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Achsen -->
+              <line x1="60" y1="280" x2="440" y2="280" stroke="#8a94a6" stroke-width="1.4"/>
+              <line x1="60" y1="280" x2="60" y2="30" stroke="#8a94a6" stroke-width="1.4"/>
+              <polygon points="440,280 430,276 430,284" fill="#8a94a6"/>
+              <polygon points="60,30 56,40 64,40" fill="#8a94a6"/>
+              <text x="330" y="300" class="svg-soft">Reale Geldmenge M/P</text>
+              <text x="20" y="35" class="svg-soft">Zins r</text>
+
+              <!-- Angebot (vertikal) -->
+              <line x1="266" y1="280" x2="266" y2="40" stroke="#2f6df6" stroke-width="2.2"/>
+              <text x="272" y="55" fill="#2f6df6" font-weight="800">Geldangebot M^s/P</text>
+
+              <!-- Nachfrage (fallend) -->
+              <line x1="394" y1="280" x2="137" y2="40" stroke="#e0483d" stroke-width="2.2"/>
+              <text x="335" y="255" fill="#e0483d" font-weight="800">Geldnachfrage L(Y,r)</text>
+
+              <!-- Gleichgewicht -->
+              <circle cx="266" cy="160" r="6" fill="#12b28c"/>
+              <line x1="266" y1="160" x2="60" y2="160" stroke="#12b28c" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <line x1="266" y1="160" x2="266" y2="280" stroke="#12b28c" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <text x="20" y="156" fill="#12b28c" font-weight="800">r*</text>
+              <text x="266" y="300" text-anchor="middle" fill="#12b28c" font-weight="800">M/P</text>
+            </g>
+          </svg>
+          <figcaption>Das Geldangebot ist senkrecht, weil die Zentralbank M^s unabhängig vom Zins festlegt. Die
+            Geldnachfrage fällt mit steigendem Zins. Der Schnittpunkt bestimmt r*. Erhöht die Zentralbank M^s,
+            wandert die senkrechte Linie nach rechts und r* sinkt.</figcaption>
+        </figure>
+
+        <h3>Die Quantitätsgleichung</h3>
+        <p>Ein zweiter, klassischer Zugang verknüpft Geldmenge und Output direkt über die Umlaufgeschwindigkeit V
+          (wie oft jeder Euro pro Periode den Besitzer wechselt):</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Quantitätsgleichung</div>
+          <span class="formula">M · V = P · Y</span>
+          <p>Das ist eine <strong>Identität</strong> (per Definition von V immer wahr) — <strong>keine
+            Gleichgewichtsbedingung</strong>, aus der man wie oben einen Zins bestimmt. Man nutzt sie, um Y, P, M
+            oder V ineinander umzurechnen.</p>
+        </div>
+
+        <!-- SVG 2: Transmissionskette -->
+        <figure class="diagram">
+          <div class="diagram-title">Vom Geldangebot zum Output — die Wirkungskette</div>
+          <svg viewBox="0 0 640 130" width="640" role="img" aria-label="Wirkungskette: Zentralbank erhöht Geldmenge M0, Banken erhöhen M1 und M2, Zins sinkt, Investitionen steigen, Output Y steigt">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <g fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.4">
+                <rect x="10" y="30" width="110" height="60" rx="8"/>
+              </g>
+              <text x="65" y="55" text-anchor="middle" class="svg-ink" font-weight="700">ZB erhöht</text>
+              <text x="65" y="72" text-anchor="middle" class="svg-ink" font-weight="700">Geldmenge M0</text>
+
+              <text x="135" y="65" fill="#8a94a6" font-size="18">→</text>
+
+              <g fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.4">
+                <rect x="150" y="30" width="110" height="60" rx="8"/>
+              </g>
+              <text x="205" y="55" text-anchor="middle" class="svg-ink" font-weight="700">Banken erhöhen</text>
+              <text x="205" y="72" text-anchor="middle" class="svg-ink" font-weight="700">M1 / M2</text>
+
+              <text x="275" y="65" fill="#8a94a6" font-size="18">→</text>
+
+              <g fill="#e0483d" fill-opacity="0.16" stroke="#e0483d" stroke-width="1.4">
+                <rect x="290" y="30" width="90" height="60" rx="8"/>
+              </g>
+              <text x="335" y="65" text-anchor="middle" class="svg-ink" font-weight="700">Zins r ↓</text>
+
+              <text x="395" y="65" fill="#8a94a6" font-size="18">→</text>
+
+              <g fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="1.4">
+                <rect x="410" y="30" width="110" height="60" rx="8"/>
+              </g>
+              <text x="465" y="55" text-anchor="middle" class="svg-ink" font-weight="700">Investitionen</text>
+              <text x="465" y="72" text-anchor="middle" class="svg-ink" font-weight="700">I ↑</text>
+
+              <text x="535" y="65" fill="#8a94a6" font-size="18">→</text>
+
+              <g fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.4">
+                <rect x="550" y="30" width="80" height="60" rx="8"/>
+              </g>
+              <text x="590" y="55" text-anchor="middle" class="svg-ink" font-weight="700">Output</text>
+              <text x="590" y="72" text-anchor="middle" class="svg-ink" font-weight="700">Y ↑</text>
+            </g>
+          </svg>
+          <figcaption>Der monetäre Transmissionsmechanismus: eine Geldmengenänderung wirkt über den Zins auf die
+            Investitionen und erst dann auf den Output. Mehr dazu im nächsten Thema (Zinssteuerung).</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>🧮 Klausurtyp: Zinsbestimmung im Geldmarkt</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>M^s/P = 500, L(Y,r) = 0,2Y − 100r, Y = 2500. Berechne den Gleichgewichtszins r.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Gleichgewicht ansetzen:</strong> 500 = 0,2·2500 − 100r</li>
+          <li><strong>Ausrechnen:</strong> 500 = 500 − 100r</li>
+          <li><strong>Auflösen:</strong> 100r = 0 → r = <strong>0 %</strong></li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Was passiert, wenn die Zentralbank noch mehr Geld anbietet?</div>
+          <p>Erhöht die Zentralbank M^s/P von 500 auf 600 (Y bleibt bei 2500): 600 = 500 − 100r → 100 = −100r →
+            r = <strong>−1 %</strong>. Unter der klassischen Annahme r ≥ 0 ist das nicht möglich — die Wirtschaft
+            steckt in der <strong>Liquiditätsfalle</strong>: bei r = 0 will jeder unbegrenzt Geld halten, zusätzliches
+            Geldangebot senkt den Zins nicht weiter und verpufft wirkungslos.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Einkommenssteigerung &amp; Zinseffekt</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>M^s/P bleibt bei 500. Y steigt von 2500 auf 3000. Wie ändert sich der Gleichgewichtszins?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Gleichgewicht mit neuem Y:</strong> 500 = 0,2·3000 − 100r</li>
+          <li><strong>Ausrechnen:</strong> 500 = 600 − 100r → 100r = 100</li>
+          <li><strong>Ergebnis:</strong> r = <strong>1 %</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Intuition</div>
+          <p>Höheres Einkommen erhöht die Transaktionsnachfrage nach Geld. Bei konstantem Geldangebot muss der
+            Zins steigen, um die zusätzliche Nachfrage wieder zu dämpfen (weniger attraktiv, Geld statt Anleihen
+            zu halten).</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Quantitätsgleichung anwenden</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>M = 200, V = 5, P = 2. Wie hoch ist Y? Die Zentralbank erhöht M anschließend auf 250 — wie ändert
+            sich Y (bei gleichem V und P)?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Nach Y umstellen:</strong> Y = M·V / P</li>
+          <li><strong>Erster Fall:</strong> Y = 200·5 / 2 = 1000/2 = <strong>500</strong></li>
+          <li><strong>Nach Erhöhung auf M=250:</strong> Y = 250·5 / 2 = 1250/2 = <strong>625</strong></li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Vorsicht bei der Interpretation</div>
+          <p>Diese Rechnung unterstellt, dass V und P konstant bleiben und die zusätzliche Geldmenge vollständig
+            in reales Y (nicht in Preise P) fließt — eine stark vereinfachende, klassische Annahme.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>MV=PY wird nach r aufgelöst wie eine
+            Gleichgewichtsbedingung.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>MV=PY ist eine <strong>Identität</strong>
+            (immer wahr per Definition von V) — die Zinsbestimmung läuft über M^s/P = L(Y,r), nicht über die
+            Quantitätsgleichung.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>M^s wird direkt mit L(Y,r) verglichen:
+            M^s = L(Y,r)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>L ist die <strong>reale</strong> Geldnachfrage —
+            verglichen wird das <strong>reale</strong> Geldangebot: <strong>M^s/P</strong> = L(Y,r).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Geldnachfrage und Geldangebot werden verwechselt
+            (M^d ist dasselbe wie M^s).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>M^d (bzw. L) ist, wie viel Geld Haushalte
+            <strong>halten wollen</strong>; M^s ist, wie viel die Zentralbank <strong>bereitstellt</strong>.
+            Das Gleichgewicht bringt beide zusammen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Zins kann beliebig negativ werden, wenn die
+            Zentralbank nur genug Geld anbietet.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Klassisch gilt r ≥ 0 (Zinsuntergrenze /
+            Liquiditätsfalle). In der Praxis sind seit 2015 leicht negative Zinsen in der EU möglich, aber nicht
+            unbegrenzt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nominalzins i und Realzins r werden gleichgesetzt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Realzins r = i − π (Inflationserwartung π).
+            Die Geldnachfrage hängt vom <strong>Realzins</strong> ab, nicht direkt vom Nominalzins.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grundformeln</h4>
+          <pre class="code">Geldnachfrage:         L(Y,r) = k·Y − h·r
+Geldmarkt-GG:          M^s/P = L(Y,r)
+Zinsbestimmung:        r = (k·Y − M^s/P) / h
+Quantitätsgleichung:   M·V = P·Y   (Identität, keine GG-Bedingung!)
+Realzins:              r = i − π
+
+Y ↑        → r ↑   (mehr Transaktionsnachfrage)
+M^s ↑      → r ↓   (mehr Geldangebot)
+r = 0      → Liquiditätsfalle (Geldpolitik wirkungslos)</pre>
+
+          <h4>Situation → Effekt auf r</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Änderung</th><th>Effekt auf r</th></tr></thead>
+            <tbody>
+              <tr><td>Y steigt (M^s konstant)</td><td>r steigt</td></tr>
+              <tr><td>M^s steigt (Y konstant)</td><td>r sinkt</td></tr>
+              <tr><td>r bereits bei 0 %, M^s steigt weiter</td><td>keine Wirkung (Liquiditätsfalle)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li>Geldangebot ist <strong>senkrecht</strong> (von der ZB fest vorgegeben), Geldnachfrage ist
+              <strong>fallend</strong> in r</li>
+            <li><strong>MV=PY ist keine Gleichgewichtsbedingung</strong>, sondern eine Identität</li>
+            <li>Immer <strong>real</strong> vergleichen: M^s/P = L(Y,r), nicht M^s = L</li>
+            <li>Bei r = 0 kann die klassische Geldpolitik nichts mehr ausrichten — <strong>Liquiditätsfalle</strong></li>
+            <li>Realzins r = i − π nicht mit dem Nominalzins i verwechseln</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="0">
+            <p class="quiz-prompt"><span class="q-no">1.</span>M^s/P=500, L(Y,r)=0,2Y−100r, Y=2500. Wie hoch ist
+              der Gleichgewichtszins r (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>500 = 0,2·2500 − 100r = 500 − 100r → 100r=0 →
+              r = <strong>0 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Was beschreibt die Gleichung MV=PY?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Eine Identität, die per Definition der
+                Umlaufgeschwindigkeit V immer gilt</button>
+              <button class="quiz-choice" type="button">Die Gleichgewichtsbedingung des Geldmarkts</button>
+              <button class="quiz-choice" type="button">Die Konsumfunktion</button>
+              <button class="quiz-choice" type="button">Den Ausgabenmultiplikator</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>MV=PY ist immer wahr (V wird so definiert, dass es passt) —
+              keine Gleichgewichtsbedingung wie M^s/P=L(Y,r).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="625">
+            <p class="quiz-prompt"><span class="q-no">3.</span>M=250, V=5, P=2. Wie hoch ist Y nach der
+              Quantitätsgleichung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Y = MV/P = 250·5/2 = 1250/2 = <strong>625</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Klausurtyp: M^s/P bleibt bei 500, Y steigt von
+              2500 auf 3000. Wie hoch ist der neue Gleichgewichtszins r (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>500 = 0,2·3000 − 100r = 600 − 100r → 100r=100 →
+              r = <strong>1 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Was passiert, wenn die Zentralbank M^s erhöht,
+              während r bereits bei 0 % liegt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Nichts (Liquiditätsfalle) — r kann klassisch
+                nicht unter 0 % fallen</button>
+              <button class="quiz-choice" type="button">r steigt</button>
+              <button class="quiz-choice" type="button">Y sinkt sofort</button>
+              <button class="quiz-choice" type="button">Die Geldnachfrage wird negativ</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei r=0 ist die Geldnachfrage unendlich elastisch — zusätzliches
+              Geldangebot verpufft wirkungslos.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie verändert sich die Geldnachfrage L(Y,r), wenn
+              der Zins r steigt (Y konstant)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Sie sinkt (höhere Opportunitätskosten
+                des Geldhaltens)</button>
+              <button class="quiz-choice" type="button">Sie steigt</button>
+              <button class="quiz-choice" type="button">Sie bleibt gleich</button>
+              <button class="quiz-choice" type="button">Das hängt nur vom Preisniveau P ab</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>L(Y,r) = kY−hr — der Term −hr sorgt dafür, dass L mit steigendem r
+              <strong>sinkt</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="262.5" data-tol="0.5">
+            <p class="quiz-prompt"><span class="q-no">7.</span>M=210, V=5, P=4. Wie hoch ist Y nach der
+              Quantitätsgleichung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Y = MV/P = 210·5/4 = 1050/4 = <strong>262,5</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="04-guetermarkt.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Gütermarkt &amp; Multiplikator</div>
+        </a>
+        <a class="next" href="06-zinssteuerung.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Zinssteuerung der Zentralbank</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

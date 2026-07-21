@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Die Lagrange-Methode · P4 Fiwi</title>
+<meta name="description" content="Der Lagrange-Ansatz für Optimierung mit Nebenbedingungen bildlich erklärt: die 4 Schritte, der Lagrange-Multiplikator als Schattenpreis, die Optimalitätsbedingung GRS = Preisverhältnis – mit durchgerechnetem Beispiel (Annas Nutzenmaximierung) und typischen Fallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Die 4 Schritte</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P4-Fiwi-Kursübersicht</a> › Thema 01</div>
+    <span class="th-icon">🧮</span>
+    <h1>Die Lagrange-Methode</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Info-Sheet</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Die 4 Schritte im Bild</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">In der Finanzwissenschaft dreht sich fast alles um <strong>Optimierung unter
+          Beschränkung</strong>: Ein Haushalt will seinen Nutzen maximieren, hat aber nur ein festes Budget. Ein
+          Staat will Wohlfahrt maximieren, hat aber nur begrenzte Ressourcen. Der <strong>Lagrange-Ansatz</strong>
+          ist das mathematische Werkzeug, mit dem du solche „maximiere X, aber halte dich an Y"-Probleme löst —
+          ohne stumpf alle möglichen Kombinationen durchzuprobieren.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du hast 200 € Taschengeld im Monat und zwei Dinge, die dir Freude machen: Kinobesuche (x₁, 5 € pro
+            Ticket) und Eisbecher (x₂, 10 € pro Becher). Du könntest jetzt anfangen, wild Kombinationen
+            durchzuprobieren — 10 Kinobesuche und 15 Eis, 30 Kinobesuche und 2,5 Eis, … — und jedes Mal deinen
+            Gesamtnutzen ausrechnen. Das dauert ewig und du findest das Optimum vielleicht nie exakt.<br><br>
+            Der Lagrange-Ansatz macht das eleganter: Er baut aus deiner <strong>Zielfunktion</strong> (dein Nutzen)
+            und deiner <strong>Nebenbedingung</strong> (dein Budget) eine einzige neue Funktion, die
+            <strong>Lagrange-Funktion</strong> ℒ. Die leitest du ab, setzt die Ableitungen gleich null — und
+            bekommst dein Optimum direkt als Lösung eines Gleichungssystems, exakt und ohne Rumprobieren.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die 4 Schritte im Bild</h2>
+        <p>Die <strong>Lagrange-Funktion</strong> hat in der Fiwi (fast) immer dieselbe Form: Zielfunktion plus
+          λ mal die auf Null gebrachte Nebenbedingung.</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Die Lagrange-Funktion</div>
+          <span class="formula">ℒ = Zielfunktion  ±  λ · (Nebenbedingung nach 0 aufgelöst)</span>
+          <p><strong>λ (Lambda)</strong> ist der Lagrange-Multiplikator — eine Hilfsvariable, die am Ende eine
+            eigene ökonomische Bedeutung bekommt: den <strong>Schattenpreis</strong> der Ressource.</p>
+        </div>
+
+        <!-- SVG 1: Die 4 Schritte als Flussdiagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Vom Problem zur Lösung — immer derselbe Ablauf</div>
+          <svg viewBox="0 0 700 170" width="700" role="img" aria-label="Flussdiagramm der vier Schritte des Lagrange-Verfahrens: Lagrange aufstellen, FOCs bilden, Gleichungssystem lösen, interpretieren">
+            <defs>
+              <marker id="lagArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif">
+              <line x1="162" y1="85" x2="192" y2="85" stroke="#8a94a6" stroke-width="2" marker-end="url(#lagArrow)"/>
+              <line x1="342" y1="85" x2="372" y2="85" stroke="#8a94a6" stroke-width="2" marker-end="url(#lagArrow)"/>
+              <line x1="522" y1="85" x2="552" y2="85" stroke="#8a94a6" stroke-width="2" marker-end="url(#lagArrow)"/>
+
+              <rect x="10" y="35" width="152" height="100" rx="12" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="86" y="60" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">1. Aufstellen</text>
+              <text x="86" y="85" text-anchor="middle" class="svg-soft" font-size="11">ℒ = Ziel + λ·NB</text>
+              <text x="86" y="104" text-anchor="middle" class="svg-soft" font-size="11">Ziel + NB=0</text>
+              <text x="86" y="123" text-anchor="middle" class="svg-soft" font-size="11">kombinieren</text>
+
+              <rect x="192" y="35" width="150" height="100" rx="12" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="267" y="60" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">2. FOCs</text>
+              <text x="267" y="85" text-anchor="middle" class="svg-soft" font-size="11">∂ℒ/∂x = 0</text>
+              <text x="267" y="104" text-anchor="middle" class="svg-soft" font-size="11">∂ℒ/∂y = 0</text>
+              <text x="267" y="123" text-anchor="middle" class="svg-soft" font-size="11">∂ℒ/∂λ = 0</text>
+
+              <rect x="372" y="35" width="150" height="100" rx="12" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="447" y="60" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">3. Lösen</text>
+              <text x="447" y="85" text-anchor="middle" class="svg-soft" font-size="11">Beziehungen aus</text>
+              <text x="447" y="104" text-anchor="middle" class="svg-soft" font-size="11">FOCs ableiten,</text>
+              <text x="447" y="123" text-anchor="middle" class="svg-soft" font-size="11">einsetzen</text>
+
+              <rect x="552" y="35" width="138" height="100" rx="12" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="621" y="60" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">4. Deuten</text>
+              <text x="621" y="85" text-anchor="middle" class="svg-soft" font-size="11">x*, y*</text>
+              <text x="621" y="104" text-anchor="middle" class="svg-soft" font-size="11">λ* = Schatten-</text>
+              <text x="621" y="123" text-anchor="middle" class="svg-soft" font-size="11">preis</text>
+            </g>
+          </svg>
+          <figcaption>Egal ob Haushalt, Firma oder Planer — dieser Ablauf ist bei jedem Optimierungsproblem mit
+            einer Nebenbedingung identisch.</figcaption>
+        </figure>
+
+        <h3>Optimum als Tangentialpunkt</h3>
+        <p>Geometrisch bedeutet die Lösung: Die höchstmögliche Indifferenzkurve, die du bei gegebenem Budget noch
+          erreichen kannst, <strong>berührt gerade eben</strong> die Budgetgerade — sie schneidet sie nicht, sie
+          tangiert sie. Genau an diesem Berührpunkt gilt die zentrale Optimalitätsbedingung:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Optimalitätsbedingung</div>
+          <span class="formula">U_x / U_y = p_x / p_y          (GRS = Preisverhältnis)</span>
+          <p>Die <strong>Grenzrate der Substitution</strong> (Steigung der Indifferenzkurve) entspricht im Optimum
+            genau dem <strong>Preisverhältnis</strong> (Steigung der Budgetgerade).</p>
+        </div>
+
+        <!-- SVG 2: Tangentialpunkt am Beispiel Anna -->
+        <figure class="diagram">
+          <div class="diagram-title">Annas Optimum: Indifferenzkurve tangiert die Budgetgerade bei (20, 10)</div>
+          <svg viewBox="0 0 460 300" width="460" role="img" aria-label="Diagramm mit x1 auf der horizontalen und x2 auf der vertikalen Achse, Budgetgerade von (0,20) bis (40,0) und einer Indifferenzkurve, die die Budgetgerade im Punkt (20,10) berührt">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="60" y1="260" x2="440" y2="260" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="60" y1="260" x2="60" y2="30" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="430" y="278" class="svg-soft">x₁</text>
+              <text x="40" y="38" class="svg-soft">x₂</text>
+
+              <!-- Budgetgerade -->
+              <line x1="60" y1="40" x2="420" y2="260" stroke="#2f6df6" stroke-width="2"/>
+              <text x="330" y="220" fill="#2f6df6" font-weight="700" font-size="11">Budget: 5x₁+10x₂=200</text>
+              <text x="55" y="34" text-anchor="end" class="svg-soft" font-size="10.5">20</text>
+              <text x="420" y="275" text-anchor="middle" class="svg-soft" font-size="10.5">40</text>
+
+              <!-- Indifferenzkurve x1*x2=200 -->
+              <path d="M 177,91 L 195,113 L 213,131 L 240,150 L 267,164 L 294,175 L 330,187 L 366,195"
+                    fill="none" stroke="#f5810b" stroke-width="2.5"/>
+              <text x="370" y="188" fill="#f5810b" font-weight="700" font-size="11">Indifferenzkurve x₁·x₂=200</text>
+
+              <!-- Tangentialpunkt -->
+              <circle cx="240" cy="150" r="5.5" fill="#e0483d"/>
+              <line x1="240" y1="150" x2="240" y2="260" stroke="#e0483d" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="240" y1="150" x2="60" y2="150" stroke="#e0483d" stroke-width="1" stroke-dasharray="3 3"/>
+              <text x="240" y="278" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="12">x₁*=20</text>
+              <text x="52" y="154" text-anchor="end" fill="#e0483d" font-weight="800" font-size="12">x₂*=10</text>
+              <text x="248" y="140" fill="#e0483d" font-weight="800" font-size="12">Optimum</text>
+            </g>
+          </svg>
+          <figcaption>Beide Kurven haben an dieser Stelle dieselbe Steigung (−0,5) — deshalb ist es der optimale
+            Punkt: Jede andere erreichbare Kombination läge auf einer niedrigeren Indifferenzkurve.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele durchgerechnet</h2>
+
+        <h3>Beispiel 1: Annas Nutzenmaximierung</h3>
+        <p>Anna hat die Nutzenfunktion U(x₁,x₂) = x₁² · x₂² und ein Budget von 200 €, bei Preisen p₁=5 € und
+          p₂=10 €. Wie viel kauft sie von jedem Gut, um ihren Nutzen zu maximieren?</p>
+
+        <ol class="steps">
+          <li><strong>Schritt 1 — Lagrange aufstellen:</strong><br>
+            ℒ = x₁²x₂² + λ(200 − 5x₁ − 10x₂)</li>
+          <li><strong>Schritt 2 — FOCs bilden:</strong><br>
+            ∂ℒ/∂x₁ = 2x₁x₂² − 5λ = 0 &nbsp;(1)<br>
+            ∂ℒ/∂x₂ = 2x₂x₁² − 10λ = 0 &nbsp;(2)<br>
+            ∂ℒ/∂λ = 200 − 5x₁ − 10x₂ = 0 &nbsp;(3)</li>
+          <li><strong>Schritt 3 — Lösen:</strong> Division (1)/(2) lässt λ verschwinden:<br>
+            x₂/x₁ = 5/10 = 1/2 &nbsp;⟹&nbsp; x₂ = ½x₁<br>
+            In (3) einsetzen: 200 − 5x₁ − 10·(½x₁) = 200 − 10x₁ = 0<br>
+            ⟹ <strong>x₁* = 20, x₂* = 10</strong></li>
+          <li><strong>Schritt 4 — Interpretieren:</strong> Aus (1): 2·20·10² = 5λ ⟹ 4000 = 5λ ⟹
+            <strong>λ* = 800</strong>. Das ist der Schattenpreis: Ein Euro mehr Budget würde Annas Nutzen um
+            (marginal) 800 Einheiten erhöhen.</li>
+        </ol>
+
+        <!-- SVG 3: Ausgabenaufteilung -->
+        <figure class="diagram">
+          <div class="diagram-title">Annas 200 € teilen sich exakt hälftig auf beide Güter auf</div>
+          <svg viewBox="0 0 420 150" width="420" role="img" aria-label="Balkendiagramm: 100 Euro Ausgaben für Kino und 100 Euro Ausgaben für Eis, zusammen 200 Euro Budget">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <rect x="30"  y="30" width="160" height="60" rx="8" fill="#12b28c" fill-opacity="0.5"/>
+              <rect x="210" y="30" width="160" height="60" rx="8" fill="#f5810b" fill-opacity="0.5"/>
+              <text x="110" y="65" text-anchor="middle" fill="#fff" font-weight="800">5·20 = 100 €</text>
+              <text x="290" y="65" text-anchor="middle" fill="#fff" font-weight="800">10·10 = 100 €</text>
+              <text x="110" y="112" text-anchor="middle" class="svg-ink" font-size="11">Kino (x₁)</text>
+              <text x="290" y="112" text-anchor="middle" class="svg-ink" font-size="11">Eis (x₂)</text>
+              <text x="200" y="133" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11">Σ = 200 €</text>
+            </g>
+          </svg>
+          <figcaption>Kein Zufall: Bei U=x₁ᵃ·x₂ᵇ mit gleichen Exponenten (hier a=b=2) verteilt sich das Budget
+            immer genau hälftig — unabhängig von den Preisen.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Cobb-Douglas-Abkürzung</div>
+          <p>Für U(x,y) = xᵃ·yᵇ gilt allgemein: Der Ausgabenanteil für Gut x ist immer <strong>a/(a+b)</strong>
+            des Budgets, für Gut y entsprechend b/(a+b) — egal wie hoch die Preise sind. Bei gleichen Exponenten
+            (a=b) heißt das: <strong>immer 50/50</strong>. Praktisch, um Ergebnisse gegenzuprüfen!</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Bens Problem mit anderen Zahlen</h3>
+        <p>Ben hat U(x₁,x₂) = x₁·x₂ und ein Budget von 90 €, bei Preisen p₁=6 € und p₂=3 €. Optimale Menge?</p>
+        <ol class="steps">
+          <li><strong>ℒ = x₁x₂ + λ(90 − 6x₁ − 3x₂)</strong></li>
+          <li>FOCs: ∂ℒ/∂x₁ = x₂ − 6λ = 0 ⟹ λ=x₂/6 &nbsp;·&nbsp; ∂ℒ/∂x₂ = x₁ − 3λ = 0 ⟹ λ=x₁/3</li>
+          <li>Gleichsetzen: x₂/6 = x₁/3 ⟹ x₂ = 2x₁. In Budget einsetzen:
+            6x₁ + 3(2x₁) = 12x₁ = 90 ⟹ <strong>x₁* = 7,5, x₂* = 15</strong></li>
+          <li><strong>Gegenprobe per Abkürzung:</strong> a=b=1 ⟹ 50/50-Aufteilung: 45 € für x₁ (⟹ 45/6=7,5 ✓),
+            45 € für x₂ (⟹ 45/3=15 ✓)</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Nebenbedingung I = pₓ·x + p_y·y wird
+            direkt so in die Lagrange-Funktion eingesetzt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Erst auf <strong>Null bringen</strong>:
+            I − pₓ·x − p_y·y = 0, dann mit λ multiplizieren und addieren.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„λ ist nur eine Hilfsvariable zum Rechnen,
+            danach interessiert sie nicht mehr."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>λ* hat eine <strong>ökonomische Bedeutung</strong>
+            — den Schattenpreis der Ressource. In der Klausur oft explizit nach λ* gefragt!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei ∂(x₁²x₂²)/∂x₁ wird x₂² wie eine Konstante
+            ignoriert und einfach 2x₁ notiert.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Partiell ableiten</strong> heißt: nach
+            x₁ ableiten, x₂ als Konstante <em>mitschleifen</em> (nicht weglassen!) ⟹ 2x₁x₂².</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nur ∂ℒ/∂x = 0 und ∂ℒ/∂y = 0 lösen, ∂ℒ/∂λ
+            wird als „Formsache" übersprungen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>∂ℒ/∂λ = 0 <strong>ist die Nebenbedingung
+            selbst</strong> — sie liefert die dritte Gleichung, die du zum Auflösen nach konkreten Zahlen
+            brauchst.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Zwei unabhängige Nebenbedingungen werden mit
+            demselben λ verrechnet.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Jede Nebenbedingung bekommt ihr
+            eigenes λ</strong> (λ₁, λ₂, …). In der Fiwi hat ein Agent aber meist nur eine Restriktion.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Aufbau &amp; Cheat-Sheet für FOCs</h4>
+          <pre class="code">ℒ = f(x,y) + λ·g(x,y)     (g = Nebenbedingung, nach 0 aufgelöst)
+
+∂ℒ/∂x  → ∂f/∂x + λ·∂g/∂x = 0
+∂ℒ/∂y  → ∂f/∂y + λ·∂g/∂y = 0
+∂ℒ/∂λ  → g(x,y) = 0        ← die Nebenbedingung selbst</pre>
+
+          <h4>Häufigste Formen in der Fiwi</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Problem</th><th>Lagrange-Funktion</th></tr></thead>
+            <tbody>
+              <tr><td>Nutzenmaximierung (Haushalt)</td><td>ℒ = U(x,y) + λ(I − pₓx − p_yy)</td></tr>
+              <tr><td>Gewinnmaximierung (Firma)</td><td>π = p·f(N,K) − w·N − r·K (oft ohne λ)</td></tr>
+              <tr><td>Allokation (Planer)</td><td>ℒ = Uᴬ(xᴬ,yᴬ) + λ(Uᴮ(x̄−xᴬ,ȳ−yᴬ) − Ūᴮ)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Cobb-Douglas-Formel</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>U = xᵃ·yᵇ, Ausgabenanteil für x</td><td>a/(a+b) des Budgets</td></tr>
+              <tr><td>Optimalitätsbedingung</td><td>Uₓ/U_y = pₓ/p_y (GRS = Preisverhältnis)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>4 Schritte, immer gleich:</strong> Aufstellen → FOCs → Lösen → Deuten</li>
+            <li><strong>λ* ist der Schattenpreis</strong> der Ressource — nie ohne Interpretation stehen lassen</li>
+            <li>Division zweier FOCs lässt λ meist <strong>verschwinden</strong> und liefert die Optimalbedingung</li>
+            <li>∂ℒ/∂λ = 0 <strong>ist</strong> die Nebenbedingung — Kontrollgleichung fürs Ergebnis</li>
+            <li>Bei U=xᵃyᵇ: Ausgabenanteil = a/(a+b), unabhängig von den Preisen</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="10">
+            <p class="quiz-prompt"><span class="q-no">1.</span>In Annas Beispiel gilt x₂ = ½x₁ und x₁* = 20.
+              Wie groß ist x₂*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x₂ = ½·20 = <strong>10</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welche Bedingung beschreibt das Optimum bei
+              Nutzenmaximierung mit Budget?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>GRS = Preisverhältnis (Uₓ/U_y = pₓ/p_y)</button>
+              <button class="quiz-choice" type="button">Uₓ = U_y</button>
+              <button class="quiz-choice" type="button">λ = 0</button>
+              <button class="quiz-choice" type="button">x = y</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Im Optimum tangiert die Indifferenzkurve die Budgetgerade — ihre
+              Steigungen (GRS und Preisverhältnis) sind <strong>gleich</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="schattenpreis|grenznutzen">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie nennt man die ökonomische Interpretation von
+              λ* (ein Begriff)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>λ* ist der <strong>Schattenpreis</strong> (bzw. Grenznutzen) der
+              Ressource — wie viel mehr Nutzen eine zusätzliche Einheit Budget bringt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="7.5" data-tol="0.1">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Ben: U=x₁x₂, Budget 6x₁+3x₂=90. Wie groß ist x₁*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Gleiche Exponenten (a=b=1) ⟹ 50/50-Aufteilung: 45 € für x₁ ⟹
+              x₁* = 45/6 = <strong>7,5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Was liefert die Gleichung ∂ℒ/∂λ = 0?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Eine zusätzliche, unwichtige FOC</button>
+              <button class="quiz-choice" type="button" data-correct>Die ursprüngliche Nebenbedingung selbst</button>
+              <button class="quiz-choice" type="button">Den Wert von λ direkt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>∂ℒ/∂λ = 0 ergibt immer <strong>g(x,y) = 0</strong> — also genau die
+              Nebenbedingung, mit der du gestartet bist.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="30">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: U(x,y)=x³y, Budget 2x+4y=80.
+              Nutze die Cobb-Douglas-Abkürzung (a=3, b=1): Wie groß ist x*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ausgabenanteil für x: a/(a+b) = 3/4 von 80 = 60 € ⟹
+              x* = 60/2 = <strong>30</strong> (Gegenprobe per Lagrange: y* = 5, Budget 2·30+4·5=60+20=80 ✓).</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="../index.html">
+          <div class="pn-label">← Übersicht</div>
+          <div class="pn-title">Zur Kursübersicht</div>
+        </a>
+        <a class="next" href="02-tauscheffizienz.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Tauscheffizienz &amp; Edgeworth-Box</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

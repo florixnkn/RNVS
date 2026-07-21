@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Die LM-Kurve · Makro</title>
+<meta name="description" content="Die LM-Kurve bildlich erklärt – Herleitung aus dem Geldmarktgleichgewicht, positive Steigung, Verschiebung durch Geldpolitik, mit durchgerechneten Beispielen und Diagramm." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Herleitung</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 08</div>
+    <span class="th-icon">📈</span>
+    <h1>Die LM-Kurve</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Herleitung &amp; Verschiebungen</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Die <strong>LM-Kurve</strong> ist die zweite Hälfte des IS-LM-Modells. Während die
+          IS-Kurve den Gütermarkt abbildet, beantwortet die LM-Kurve die Frage: <strong>Für welche Kombinationen
+          aus Output Y und Zinssatz r ist der Geldmarkt im Gleichgewicht?</strong> „LM" steht für
+          „Liquidity = Money": die Nachfrage nach liquidem Geld muss dem vorhandenen Geldangebot entsprechen.
+          Anders als bei der IS-Kurve ist die Steigung hier <strong>positiv</strong> — das ist der Punkt, an dem
+          die meisten sich zuerst vertun.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du erbst 1.000 €. Du kannst das Geld <strong>bar im Schrank</strong> liegen lassen — jederzeit
+            verfügbar, aber 0 % Zins. Oder du legst es in eine <strong>Anleihe</strong> an — sie bringt Zinsen,
+            aber du kommst nicht sofort ran. Wie viel Bargeld du halten willst, hängt von zwei Dingen ab: wie viel
+            du für den Alltag brauchst (mehr Einkommen Y → mehr Bargeld nötig) und wie hoch der Zins ist (höherer
+            Zins → höhere Opportunitätskosten, Geld „ungenutzt" im Schrank liegen zu lassen → du hältst
+            weniger).<br><br>
+            Jetzt stell dir vor, die <strong>ganze Volkswirtschaft</strong> verdient plötzlich mehr (Y steigt).
+            Alle wollen mehr Bargeld für ihre größeren Einkäufe halten — aber die Gesamtmenge an Geld ist von der
+            Zentralbank fest vorgegeben! Damit trotzdem alle zufrieden sind, muss der Zins <strong>steigen</strong>:
+            er macht das Geldhalten unattraktiver und drängt die Leute dazu, wieder mehr in Anleihen zu wechseln.
+            Genau das ist der positive Zusammenhang, den die LM-Kurve zeigt.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Herleitung &amp; Verschiebungen</h2>
+
+        <h3>Ausgangspunkt: Geldmarktgleichgewicht</h3>
+        <p>Aus Thema 05 kennst du die (reale) Geldnachfrage L(Y,r) = k·Y − h·r. Das Geldmarktgleichgewicht
+          verlangt, dass das reale Geldangebot M^s/P dieser Nachfrage entspricht:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Geldmarktgleichgewicht</div>
+          <span class="formula">M^s / P = L(Y, r) = k·Y − h·r</span>
+        </div>
+
+        <p>Diesmal löst du nicht nach Y, sondern nach <strong>r</strong> auf — schließlich soll die LM-Kurve
+          zeigen, welcher Zins zu welchem Y „passt":</p>
+
+        <ol class="steps">
+          <li><strong>Umstellen:</strong> h·r = k·Y − M^s/P</li>
+          <li><strong>Durch h teilen:</strong> r = (k/h)·Y − (1/h)·(M^s/P)</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Die LM-Kurve</div>
+          <span class="formula">r = β · Y − γ
+
+β = k/h                    [Steigung, immer positiv]
+γ = (1/h) · (M^s/P)         [Achsenabschnitt-Parameter]</span>
+          <p>β ist positiv, weil k und h beide positiv sind — das ist der mathematische Grund für die positive
+            Steigung. γ hängt vom realen Geldangebot ab: mehr Geld → größeres γ → die Kurve verschiebt sich.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>positive Steigung</b><span>höheres Y → höhere Geldnachfrage → höherer r nötig</span></div>
+          <div class="fact"><b>β = k/h</b><span>Transaktions- ÷ Zinssensitivität der Geldnachfrage</span></div>
+          <div class="fact"><b>M^s ↑</b><span>verschiebt LM nach rechts/unten — r sinkt bei jedem Y</span></div>
+          <div class="fact"><b>h → ∞</b><span>Liquiditätsfalle: LM wird waagerecht, Geldpolitik wirkungslos</span></div>
+        </div>
+
+        <!-- SVG 1: LM-Kurve mit Verschiebung -->
+        <figure class="diagram">
+          <div class="diagram-title">Die LM-Kurve: positive Steigung &amp; Verschiebung durch M^s: 1000→1200</div>
+          <svg viewBox="0 0 560 360" width="560" role="img" aria-label="LM-Kurven-Diagramm mit Output Y auf der horizontalen und Zins r auf der vertikalen Achse. Die LM-Kurve steigt von links unten nach rechts oben. Eine zweite, parallel verschobene LM-Kurve liegt weiter rechts unten nach einer Erhöhung der Geldmenge.">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Achsen -->
+              <line x1="70" y1="290" x2="500" y2="290" stroke="#8a94a6" stroke-width="1.4"/>
+              <line x1="70" y1="290" x2="70" y2="30" stroke="#8a94a6" stroke-width="1.4"/>
+              <polygon points="500,290 490,286 490,294" fill="#8a94a6"/>
+              <polygon points="70,30 66,40 74,40" fill="#8a94a6"/>
+              <text x="440" y="310" class="svg-soft">Output Y</text>
+              <text x="30" y="35" class="svg-soft">Zins r (%)</text>
+
+              <!-- r-Achsen-Ticks -->
+              <line x1="66" y1="203" x2="70" y2="203" stroke="#8a94a6" stroke-width="1.2"/>
+              <text x="55" y="207" text-anchor="end" class="svg-soft" font-size="11">1</text>
+              <line x1="66" y1="117" x2="70" y2="117" stroke="#8a94a6" stroke-width="1.2"/>
+              <text x="55" y="121" text-anchor="end" class="svg-soft" font-size="11">2</text>
+              <text x="55" y="294" text-anchor="end" class="svg-soft" font-size="11">0</text>
+
+              <!-- LM_alt -->
+              <line x1="106" y1="290" x2="464" y2="73" stroke="#2f6df6" stroke-width="2.6"/>
+              <text x="300" y="150" fill="#2f6df6" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">LM_alt: r=0,0025Y−5</text>
+
+              <!-- LM_neu (verschoben) -->
+              <line x1="249" y1="290" x2="464" y2="160" stroke="#f5810b" stroke-width="2.6" stroke-dasharray="7 5"/>
+              <text x="330" y="230" fill="#f5810b" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">LM_neu: r=0,0025Y−6</text>
+
+              <!-- Punkte auf LM_alt: Bewegung auf der Kurve -->
+              <circle cx="106" cy="290" r="5" fill="#2f6df6"/>
+              <text x="4" y="284" fill="#2f6df6" font-size="10.5" font-weight="700">Y=2000: r=0</text>
+              <circle cx="464" cy="73" r="5" fill="#2f6df6"/>
+              <text x="330" y="66" fill="#2f6df6" font-size="10.5" font-weight="700">Y=3000: r=2,5%</text>
+
+              <!-- Verschiebungspfeil -->
+              <line x1="111" y1="320" x2="244" y2="320" stroke="#12a150" stroke-width="2"/>
+              <polygon points="244,320 234,316 234,324" fill="#12a150"/>
+              <text x="177" y="336" text-anchor="middle" fill="#12a150" font-weight="800" font-size="12">M^s/P: 1000→1200</text>
+
+              <!-- Tick-Labels unten -->
+              <line x1="106" y1="290" x2="106" y2="295" stroke="#8a94a6"/>
+              <text x="106" y="308" text-anchor="middle" class="svg-soft" font-size="11">2000</text>
+              <line x1="249" y1="290" x2="249" y2="295" stroke="#8a94a6"/>
+              <text x="249" y="308" text-anchor="middle" class="svg-soft" font-size="11">2400</text>
+            </g>
+          </svg>
+          <figcaption>Achsen schematisch (nicht 1:1 skaliert). Beide Kurven steigen — höheres Y verlangt einen
+            höheren Zins. Nach der Geldmengenerhöhung (M^s/P: 1000→1200) verschiebt sich die Kurve nach
+            rechts/unten: bei jedem Y ist der erforderliche Zins jetzt niedriger.</figcaption>
+        </figure>
+
+        <h3>Verschiebungen der LM-Kurve</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Schock</th><th>Verschiebung</th><th>Mechanismus</th></tr></thead>
+          <tbody>
+            <tr><td>M^s ↑</td><td>rechts/unten</td><td>mehr Geldangebot → niedrigerer r bei gegebenem Y</td></tr>
+            <tr><td>M^s ↓</td><td>links/oben</td><td>weniger Geldangebot → höherer r bei gegebenem Y</td></tr>
+            <tr><td>P ↑</td><td>links/oben</td><td>reales Geldangebot M^s/P sinkt</td></tr>
+            <tr><td>Y ändert sich (sonst nichts)</td><td>keine Verschiebung</td><td>nur Bewegung auf der Kurve</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Bewegung auf der LM vs. Verschiebung der LM</div>
+          <p><strong>Bewegung auf der Kurve:</strong> Y ändert sich → der Geldmarkt verlangt einen anderen Zins,
+            um im Gleichgewicht zu bleiben — du rutschst auf derselben Linie.<br>
+            <strong>Verschiebung der Kurve:</strong> M^s oder P ändern sich → die ganze Linie wandert parallel.
+            Nur die Zentralbank (über M^s) oder das Preisniveau können die LM-Kurve verschieben.</p>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Die Liquiditätsfalle</div>
+          <p>Wird die Geldnachfrage extrem zinsreagibel (h → ∞), wird die LM-Kurve <strong>waagerecht</strong>
+            (nicht senkrecht!). Bei sehr niedrigem Zins ist jeder bereit, beliebig viel zusätzliches Geld einfach
+            zu horten, ohne dass der Zins weiter sinkt — zusätzliches Geldangebot verpufft wirkungslos. In diesem
+            Fall ist nur noch Fiskalpolitik wirksam (mehr dazu in Thema 09).</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>🧮 Klausurtyp: LM-Kurve herleiten</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>M^s/P = 1000, L(Y,r) = 0,5Y − 200r. Leite die LM-Kurve her.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Geldmarktgleichgewicht ansetzen:</strong> 1000 = 0,5Y − 200r</li>
+          <li><strong>Nach r umstellen:</strong> 200r = 0,5Y − 1000</li>
+          <li><strong>Ergebnis:</strong> r = <strong>0,0025Y − 5</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Kontrolle</div>
+          <p>β = k/h = 0,5/200 = 0,0025 ✓ Bei r=0: Y = 5/0,0025 = <strong>2000</strong> — der maximale Output
+            ohne jeden Zinsanreiz.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Geldpolitik &amp; LM-Verschiebung</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Ausgehend von LM: r = 0,0025Y − 5 erhöht die Zentralbank M^s/P von 1000 auf 1200. Wie lautet die
+            neue LM-Kurve?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Neues Geldmarktgleichgewicht:</strong> 1200 = 0,5Y − 200r</li>
+          <li><strong>Nach r umstellen:</strong> 200r = 0,5Y − 1200</li>
+          <li><strong>Ergebnis:</strong> r = <strong>0,0025Y − 6</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Interpretation</div>
+          <p>Die Steigung bleibt exakt gleich (0,0025) — die Kurve verschiebt sich <strong>parallel</strong> nach
+            rechts/unten. Bei jedem Y ist der erforderliche Zins jetzt 1 Prozentpunkt niedriger.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Zinssensitivität h verändert sich</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Die Geldnachfrage wird weniger zinsreagibel: h sinkt von 200 auf 100 (k=0,5 und M^s/P=1000 bleiben
+            gleich). Wie verändert sich die LM-Kurve?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Neue Steigung:</strong> β = k/h = 0,5/100 = <strong>0,005</strong> (vorher 0,0025 —
+            doppelt so steil)</li>
+          <li><strong>Neuer Achsenabschnitt-Parameter:</strong> γ = (1/h)·(M^s/P) = 1000/100 =
+            <strong>10</strong> (vorher 5)</li>
+          <li><strong>Neue LM-Kurve:</strong> r = <strong>0,005Y − 10</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Interpretation</div>
+          <p>Kleineres h bedeutet: eine gegebene Y-Änderung erfordert eine <strong>größere</strong> Zinsänderung,
+            um den Geldmarkt zu räumen — die LM-Kurve wird steiler. Wie sich das im Zusammenspiel mit der IS-Kurve
+            auf die Wirksamkeit von Geldpolitik auswirkt, siehst du in Thema 09.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die LM-Kurve hat wie die IS-Kurve eine
+            negative Steigung.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die LM-Kurve steigt <strong>positiv</strong>:
+            höheres Y erfordert einen höheren Zins r, damit der Geldmarkt im Gleichgewicht bleibt — genau
+            umgekehrt zur IS-Kurve.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Erhöht die Zentralbank M^s, verschiebt sich
+            die LM-Kurve nach links/oben.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Mehr Geldangebot verschiebt die LM-Kurve
+            <strong>nach rechts/unten</strong> — bei jedem Y ist jetzt ein niedrigerer Zins nötig, um den
+            Geldmarkt zu räumen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>M^s (nominal) wird direkt mit der
+            Geldnachfrage verglichen: M^s = L(Y,r).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Verglichen wird das <strong>reale</strong>
+            Geldangebot: <strong>M^s/P</strong> = L(Y,r). Nominale Geldmenge und Preisniveau nicht verwechseln.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Wenn Y steigt, verschiebt sich die LM-Kurve.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Y ist die unabhängige Variable
+            <strong>auf</strong> der Kurve — eine Änderung von Y ist nur eine Bewegung entlang der LM. Nur M^s
+            oder P verschieben die ganze Kurve.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei der Liquiditätsfalle (h→∞) wird die
+            LM-Kurve senkrecht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Genau umgekehrt: bei h→∞ wird die LM-Kurve
+            <strong>waagerecht</strong> (flach) — Geldpolitik verpufft, weil zusätzliches Geld nur gehortet wird,
+            ohne den Zins weiter zu senken.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grundformeln</h4>
+          <pre class="code">Geldnachfrage:        L(Y,r) = k·Y − h·r
+Geldmarkt-GG:         M^s/P = L(Y,r)
+LM-Kurve (nach r):    r = β·Y − γ
+LM-Kurve (nach Y):    Y = (h/k)·r + (1/k)·(M^s/P)
+Steigung β:           k/h   (immer positiv)
+Achsenabschnitt γ:    (1/h)·(M^s/P)
+
+M^s ↑  → LM rechts/unten  → r sinkt bei gegebenem Y
+h → ∞  → LM waagerecht    → Liquiditätsfalle, Geldpolitik wirkungslos</pre>
+
+          <h4>Schock → Richtung der Verschiebung</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schock</th><th>Verschiebung</th></tr></thead>
+            <tbody>
+              <tr><td>M^s ↑ (oder P ↓)</td><td>rechts/unten</td></tr>
+              <tr><td>M^s ↓ (oder P ↑)</td><td>links/oben</td></tr>
+              <tr><td>Y ändert sich (sonst nichts)</td><td>keine Verschiebung — nur Bewegung auf der Kurve</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>LM hat immer positive Steigung</strong> — im Gegensatz zur IS-Kurve</li>
+            <li><strong>Nur M^s oder P verschieben</strong> die Kurve — nicht Y oder r selbst</li>
+            <li>β = k/h — <strong>je zinsunelastischer die Geldnachfrage (h klein)</strong>, desto steiler die
+              LM-Kurve</li>
+            <li>Immer mit dem <strong>realen</strong> Geldangebot rechnen: M^s/P, nicht M^s</li>
+            <li>Liquiditätsfalle (h→∞): LM wird <strong>waagerecht</strong>, nicht senkrecht</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2000">
+            <p class="quiz-prompt"><span class="q-no">1.</span>LM: r = 0,0025Y − 5. Bei welchem Y ist r = 0 (der
+              maximale Output ganz ohne Zinsanreiz)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>0 = 0,0025Y − 5 → 0,0025Y = 5 → Y = <strong>2000</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie verläuft die LM-Kurve grundsätzlich?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Positiv geneigt — höheres Y erfordert
+                höheren Zins</button>
+              <button class="quiz-choice" type="button">Negativ geneigt wie die IS-Kurve</button>
+              <button class="quiz-choice" type="button">Immer waagerecht</button>
+              <button class="quiz-choice" type="button">Immer senkrecht</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>β = k/h &gt; 0 — die LM-Kurve ist <strong>positiv</strong> geneigt,
+              anders als die fallende IS-Kurve.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Die Zentralbank erhöht das Geldangebot M^s. Wie
+              verschiebt sich die LM-Kurve?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Nach rechts/unten</button>
+              <button class="quiz-choice" type="button">Nach links/oben</button>
+              <button class="quiz-choice" type="button">Gar nicht, nur Bewegung auf der Kurve</button>
+              <button class="quiz-choice" type="button">Die Steigung ändert sich, die Lage bleibt gleich</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>γ = (1/h)·(M^s/P) steigt mit M^s — die Kurve verschiebt sich
+              <strong>nach rechts/unten</strong>: bei jedem Y ist der nötige Zins jetzt niedriger.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-0.5" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Klausurtyp: M^s/P steigt von 1000 auf 1300
+              (k=0,5, h=200 bleiben gleich), sodass die neue LM-Kurve r = 0,0025Y − 6,5 lautet. Wie hoch ist r bei
+              Y = 2400 (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>r = 0,0025·2400 − 6,5 = 6 − 6,5 = <strong>−0,5 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="bewegung|bewegung auf der kurve|bewegung entlang der kurve|bewegung auf lm">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Y steigt, M^s/P bleibt unverändert. Ist das eine
+              <em>Bewegung</em> auf der LM-Kurve oder eine <em>Verschiebung</em>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>γ bleibt konstant, nur Y (und damit r auf derselben Kurve) ändert
+              sich → das ist eine <strong>Bewegung</strong> auf der unveränderten LM-Kurve.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Die Geldnachfrage wird weniger zinsreagibel
+              (h sinkt). Was passiert mit der LM-Kurve?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Sie wird steiler</button>
+              <button class="quiz-choice" type="button">Sie wird flacher</button>
+              <button class="quiz-choice" type="button">Sie verschiebt sich nach rechts</button>
+              <button class="quiz-choice" type="button">Sie wird waagerecht (Liquiditätsfalle)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>β=k/h steigt, wenn h sinkt → die Kurve wird <strong>steiler</strong>.
+              Die Liquiditätsfalle ist der gegenteilige Fall (h→∞, LM wird flach).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2.5" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">7.</span>LM_alt: r = 0,0025Y − 5. Wie hoch ist r bei
+              Y = 3000 (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>r = 0,0025·3000 − 5 = 7,5 − 5 = <strong>2,5 %</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="07-is-kurve.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Die IS-Kurve</div>
+        </a>
+        <a class="next" href="09-is-lm-integration.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">IS-LM: Gleichgewicht &amp; Politik</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

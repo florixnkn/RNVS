@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Externe Effekte · P4 Fiwi</title>
+<meta name="description" content="Externe Effekte bildlich erklärt: positive und negative Externalitäten, private vs. soziale Grenzkosten, das Wohlfahrtsverlust-Dreieck, die Pigou-Steuer und das Coase-Theorem – mit durchgerechneten Beispielen mit linearen Kurven für die P4-Klausur." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P4-Fiwi-Kursübersicht</a> › Thema 05</div>
+    <span class="th-icon">🏭</span>
+    <h1>Externe Effekte</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 4</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie im Bild</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Nicht jede Handlung betrifft nur die Person, die sie vornimmt. Wenn dein Handeln —
+          Produzieren oder Konsumieren — <strong>ungefragt</strong> den Nutzen oder die Kosten von jemand anderem
+          verändert, sprechen wir von einem <strong>externen Effekt</strong>. Der Markt „sieht" diese Wirkung
+          nicht im Preis — und produziert deshalb systematisch die falsche Menge.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… dein WG-Nachbar spielt jeden Abend laut Musik (<strong>negativer</strong> externer Effekt): Er trägt
+            die Kosten seiner Lautstärke-Entscheidung nicht allein — du leidest mit, ohne dass er dich dafür
+            entschädigt. Sein privates Kosten-Nutzen-Kalkül sagt „spiel weiter", das <strong>soziale</strong>
+            Kalkül (inklusive deiner genervten Nächte) würde vielleicht „leiser" sagen.<br><br>
+            Umgekehrt gibt's auch <strong>positive</strong> externe Effekte: Ein Imker stellt seine Bienenstöcke
+            neben einen Obstgarten. Die Bienen bestäuben die Bäume — der Obstbauer profitiert, ohne dafür zu
+            zahlen. Hier produziert der Markt tendenziell <strong>zu wenig</strong> Bienenstöcke, weil der Imker
+            den Zusatznutzen für den Obstbauern nicht in seiner eigenen Kalkulation hat.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie im Bild</h2>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Typ</th><th>Definition</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Positive Externalität</strong></td><td>Dritter profitiert, ohne zu zahlen</td><td>Imkerei neben Obstgarten (Bestäubung)</td></tr>
+            <tr><td><strong>Negative Externalität</strong></td><td>Dritter erleidet Schaden, ohne Kompensation</td><td>Kraftwerk → Luftverschmutzung</td></tr>
+            <tr><td><strong>Produktionsexternalität</strong></td><td>beeinflusst Produktionsprozess anderer</td><td>Emissionen belasten Nachbarwerk</td></tr>
+            <tr><td><strong>Konsumexternalität</strong></td><td>beeinflusst Genuss anderer Konsumenten</td><td>Rauchen in der Gaststätte</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Private vs. soziale Grenzkosten</h3>
+        <p>Ein Unternehmen kalkuliert nur seine <strong>privaten</strong> Grenzkosten (GK) — Rohstoffe, Löhne,
+          Maschinen. Die <strong>externen</strong> Grenzkosten (Schaden für Dritte, z. B. Umwelt) fließen nicht in
+          seine Entscheidung ein. Die <strong>sozialen</strong> Grenzkosten sind die Summe aus beidem:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Soziale Grenzkosten</div>
+          <span class="formula">SGK(x) = GK(x) + EGK(x)</span>
+          <p>SGK = soziale Grenzkosten, GK = private (marginale) Produktionskosten, EGK = marginale externe
+            Kosten. Bei einer <strong>negativen</strong> Externalität gilt SGK &gt; GK — der Markt produziert
+            <strong>zu viel</strong>, weil er nach GK statt nach SGK optimiert.</p>
+        </div>
+
+        <p>Die <strong>optimale (soziale) Menge</strong> liegt dort, wo der Grenznutzen (die Nachfrage) den
+          <strong>sozialen</strong> Grenzkosten entspricht — nicht den privaten:</p>
+
+        <!-- SVG 1: Wohlfahrtsverlust-Dreieck bei negativer Externalität -->
+        <figure class="diagram">
+          <div class="diagram-title">Wohlfahrtsverlust bei negativer Externalität — GK(x)=2x, EGK(x)=x, GN(x)=120−x</div>
+          <svg viewBox="0 0 620 320" width="620" role="img" aria-label="Liniendiagramm mit Nachfrage/Grenznutzen, privaten Grenzkosten und sozialen Grenzkosten; das Dreieck zwischen Marktmenge und sozial optimaler Menge ist als Wohlfahrtsverlust markiert">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Achsen -->
+              <line x1="70" y1="280" x2="590" y2="280" stroke="#8a94a6" stroke-width="1.3"/>
+              <line x1="70" y1="24" x2="70" y2="280" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="330" y="308" text-anchor="middle" class="svg-soft">Menge x</text>
+              <text x="26" y="150" text-anchor="middle" class="svg-soft" transform="rotate(-90 26 150)">Preis / Kosten (€)</text>
+
+              <!-- DWL-Dreieck zuerst (im Hintergrund) -->
+              <polygon points="292.9,124 367.1,72 367.1,141.3" fill="#e0483d" fill-opacity="0.35" stroke="#e0483d" stroke-width="1"/>
+
+              <!-- Nachfrage GN(x) = 120 - x -->
+              <line x1="70" y1="72" x2="590" y2="193.3" stroke="#2f6df6" stroke-width="2.2"/>
+              <text x="460" y="180" fill="#2f6df6" font-weight="700" font-size="12">GN = 120 − x</text>
+
+              <!-- private GK(x) = 2x -->
+              <line x1="70" y1="280" x2="590" y2="37.3" stroke="#12b28c" stroke-width="2.2"/>
+              <text x="440" y="90" fill="#12b28c" font-weight="700" font-size="12">GK (privat) = 2x</text>
+
+              <!-- soziale SGK(x) = 3x -->
+              <line x1="70" y1="280" x2="441.4" y2="20" stroke="#e0483d" stroke-width="2.2"/>
+              <text x="270" y="55" fill="#e0483d" font-weight="800" font-size="12">SGK = 3x</text>
+
+              <!-- Marktmenge x_M = 40 -->
+              <line x1="367.1" y1="141.3" x2="367.1" y2="280" stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="3 3"/>
+              <circle cx="367.1" cy="141.3" r="4.5" fill="#12b28c"/>
+              <text x="367.1" y="298" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">x_M = 40</text>
+
+              <!-- Sozial optimale Menge x* = 30 -->
+              <line x1="292.9" y1="124" x2="292.9" y2="280" stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="3 3"/>
+              <circle cx="292.9" cy="124" r="4.5" fill="#e0483d"/>
+              <text x="292.9" y="316" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">x* = 30</text>
+
+              <text x="330" y="105" fill="#e0483d" font-size="11.5" font-weight="700">Wohlfahrts-</text>
+              <text x="330" y="118" fill="#e0483d" font-size="11.5" font-weight="700">verlust</text>
+            </g>
+          </svg>
+          <figcaption>Ohne Regulierung produziert der Markt bei x_M = 40 (Nachfrage trifft private GK). Sozial optimal wäre x* = 30 (Nachfrage trifft SGK). Das rote Dreieck ist der Wohlfahrtsverlust der Überproduktion.</figcaption>
+        </figure>
+
+        <h3>Pigou-Steuer: die Externalität einpreisen</h3>
+        <p>Eine <strong>Pigou-Steuer</strong> in Höhe der externen Grenzkosten <strong>an der optimalen Menge</strong>
+          zwingt das Unternehmen, seine sozialen Kosten selbst zu tragen — dann fällt seine private Entscheidung
+          automatisch auf die sozial optimale Menge.</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Pigou-Steuer</div>
+          <span class="formula">t* = EGK(x*)</span>
+          <p>Die optimale Steuer entspricht genau den externen Grenzkosten <strong>an der optimalen Menge x*</strong>
+            — nicht an der (zu hohen) Marktmenge!</p>
+        </div>
+
+        <h3>Coase-Theorem: Verhandeln statt regulieren</h3>
+        <p>Sind <strong>Eigentumsrechte klar zugeordnet</strong> und die <strong>Transaktionskosten niedrig</strong>,
+          können die Beteiligten die Externalität <strong>selbst wegverhandeln</strong> — ganz ohne Steuer oder
+          Verbot. Das Ergebnis ist immer die <strong>effiziente</strong> Menge, unabhängig davon, wem das Recht
+          ursprünglich gehört. Was sich mit den Rechten ändert, ist nur, <strong>wer wen bezahlt</strong> — also
+          die Vermögensverteilung, nicht die Effizienz.</p>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz</div>
+          <p>Coase-Theorem: <strong>Effizienz ≠ Gerechtigkeit.</strong> Verhandlung führt zu einer effizienten
+            Allokation — aber nicht zwangsläufig zu einer fairen Verteilung der Gewinne daraus.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>Beispiel 1: Marktmenge, Optimum, Pigou-Steuer und Wohlfahrtsverlust</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Gegeben</div>
+          <p>Private Grenzkosten: GK(x) = 2x &nbsp; Externe Grenzkosten: EGK(x) = x &nbsp;
+            (also SGK(x) = 3x)<br>Grenznutzen/Nachfrage: GN(x) = 120 − x</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Marktmenge (ohne Regulierung), GN = GK:</strong> 120 − x = 2x ⇒ 3x = 120 ⇒
+            <strong>x_M = 40</strong>, Preis = GK(40) = 80</li>
+          <li><strong>Sozial optimale Menge, GN = SGK:</strong> 120 − x = 3x ⇒ 4x = 120 ⇒
+            <strong>x* = 30</strong></li>
+          <li><strong>Pigou-Steuer:</strong> t* = EGK(x*) = EGK(30) = <strong>30</strong>. Probe: Mit Steuer löst
+            das Unternehmen GK(x)+t = GN(x): 2x+30 = 120−x ⇒ 3x = 90 ⇒ x = 30 = x* ✓</li>
+          <li><strong>Wohlfahrtsverlust (Dreiecksfläche):</strong> Grundseite = x_M − x* = 40−30 = 10.
+            Höhe = SGK(x_M) − GN(x_M) = 120 − 80 = 40.<br>
+            ΔW = ½ · 10 · 40 = <strong>200</strong></li>
+        </ol>
+
+        <h3>Beispiel 2: Coase-Verhandlung (Rinderzüchter &amp; Farmer)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Gegeben</div>
+          <p>Rinderzüchter-Gewinn: π<sub>x</sub>(x) = 10x − 0,1x² &nbsp;(Grenzgewinn: 10 − 0,2x)<br>
+            Schaden für den Farmer: S(x) = 2x &nbsp;(Grenzschaden: konstant 2 je Rind)</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Ohne Verhandlung (Rinderzüchter hat alle Rechte):</strong> maximiert nur eigenen Gewinn,
+            Grenzgewinn = 0: 10 − 0,2x = 0 ⇒ <strong>x = 50</strong> Rinder. Schaden für den Farmer: S(50) = 100.</li>
+          <li><strong>Sozial optimal (Verhandlungsergebnis nach Coase):</strong> Grenzgewinn = Grenzschaden:
+            10 − 0,2x = 2 ⇒ 0,2x = 8 ⇒ <strong>x* = 40</strong> Rinder.</li>
+          <li><strong>Gesamtwohlstand vergleichen:</strong><br>
+            bei x=50: π<sub>x</sub>(50) = 500 − 250 = 250, minus S(50) = 100 → netto <strong>150</strong><br>
+            bei x*=40: π<sub>x</sub>(40) = 400 − 160 = 240, minus S(40) = 80 → netto <strong>160</strong> —
+            höher! x* = 40 ist tatsächlich effizient.</li>
+          <li><strong>Coase-Pointe:</strong> Egal ob der Rinderzüchter oder der Farmer das Recht hat — solange
+            beide verhandeln können, landen sie bei x* = 40. Hat der Farmer das Recht, zahlt ihm der
+            Rinderzüchter eine Kompensation für den verbleibenden Schaden S(40) = 80; hat der Rinderzüchter das
+            Recht, zahlt ihm der Farmer dafür, die Herde von 50 auf 40 zu reduzieren. Nur die
+            <strong>Zahlungsrichtung</strong> ändert sich, nicht die Menge.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Das Unternehmen zahlt nur seine eigenen Kosten,
+            der Rest ist egal.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Soziale Kosten = private Kosten + externe
+            Kosten. Ignoriert man die externen Kosten, produziert der Markt <strong>zu viel</strong>
+            (negative Externalität).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Coase-Theorem heißt: Mit Verhandlung ist das
+            Ergebnis fair.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Coase: Verhandlung führt zu einer
+            <strong>effizienten</strong> Allokation — die Vermögensverteilung hängt aber weiter davon ab, wer
+            die Ausgangsrechte hat.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Lizenzenhandel und die passende Steuer erzeugen
+            immer exakt denselben Effekt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Lizenzen = Mengenregelung (Menge E sicher,
+            Preis variabel). Steuer = Preisregelung (Preis t sicher, Menge variabel). Bei Unsicherheit über
+            Kosten/Nutzen unterscheiden sich die Risiken.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Das Coase-Theorem gilt immer, unabhängig von den
+            Umständen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es gilt nur bei <strong>klaren
+            Eigentumsrechten</strong> und <strong>niedrigen Transaktionskosten</strong>. Sind Verhandlungen
+            teuer oder unmöglich (z. B. viele Betroffene), bricht das Ergebnis zusammen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Im Optimum mit Lizenzhandel sind die
+            <strong>Gesamtgewinne</strong> beider Unternehmen gleich.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Im Optimum sind die <strong>Grenzgewinne</strong>
+            gleich (dπ₁/dE₁ = dπ₂/dE₂) — nicht die Gesamtgewinne.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Mengensteuerung vs. Preissteuerung</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Aspekt</th><th>Lizenzen (Menge)</th><th>Steuer (Preis)</th></tr></thead>
+            <tbody>
+              <tr><td>Was ist fix?</td><td>Gesamtmenge E</td><td>Preis t je Einheit</td></tr>
+              <tr><td>Wie Allokation?</td><td>Handel zwischen Unternehmen</td><td>Jedes optimiert selbst zu t</td></tr>
+              <tr><td>Staat muss kennen</td><td>optimale Menge E*</td><td>optimalen Preis t*</td></tr>
+              <tr><td>Risiko bei Unsicherheit</td><td>Kosten könnten zu hoch sein</td><td>Emissionen könnten zu hoch sein</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Kernformeln</h4>
+          <pre class="code">SGK(x)  = GK(x) + EGK(x)              soziale = private + externe Grenzkosten
+Optimum: GN(x*) = SGK(x*)             Grenznutzen = soziale Grenzkosten
+Pigou:   t* = EGK(x*)                 Steuer = externe GK AN DER optimalen Menge
+Coase:   klare Rechte + niedrige Transaktionskosten → effiziente Verhandlung</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li>Negative Externalität → Markt produziert <strong>zu viel</strong> (SGK &gt; GK)</li>
+            <li>Positive Externalität → Markt produziert <strong>zu wenig</strong></li>
+            <li>Pigou-Steuer wird an der <strong>optimalen</strong>, nicht an der Marktmenge berechnet</li>
+            <li>Coase: <strong>Effizienz ja, Fairness nicht garantiert</strong></li>
+            <li>Coase braucht <strong>klare Eigentumsrechte + niedrige Transaktionskosten</strong></li>
+            <li>Im Optimum gilt Gleichheit der <strong>Grenzgewinne</strong>, nicht der Gesamtgewinne</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Imkerei neben einem Obstgarten (Bienen bestäuben
+              die Bäume) ist ein Beispiel für …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>positive Produktionsexternalität</button>
+              <button class="quiz-choice" type="button">negative Produktionsexternalität</button>
+              <button class="quiz-choice" type="button">positive Konsumexternalität</button>
+              <button class="quiz-choice" type="button">negative Konsumexternalität</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Obstbauer (ein anderer Produzent) profitiert, ohne zu zahlen →
+              <strong>positive Produktionsexternalität</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Klausurtyp: GK(x) = 2x, EGK(x) = x,
+              GN(x) = 120 − x. Wie groß ist die Marktmenge x_M <strong>ohne</strong> Regulierung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>GN = GK (privat): 120−x = 2x ⇒ 3x = 120 ⇒ x_M = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="30">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Im selben Beispiel: Wie groß ist die sozial
+              optimale Menge x*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>GN = SGK: 120−x = 3x ⇒ 4x = 120 ⇒ x* = <strong>30</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="30">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie hoch muss die Pigou-Steuer t* im selben
+              Beispiel sein?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>t* = EGK(x*) = EGK(30) = <strong>30</strong> (da EGK(x)=x).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="200">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie groß ist der Wohlfahrtsverlust ΔW im selben
+              Beispiel <strong>ohne</strong> Regulierung?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Dreieck: Grundseite (40−30)=10, Höhe (SGK(40)−GN(40))=(120−80)=40.
+              ΔW = ½·10·40 = <strong>200</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Das Coase-Theorem besagt: Verhandlung führt zu
+              einer …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">fairen Allokation, egal wer die Rechte hat</button>
+              <button class="quiz-choice" type="button" data-correct>effizienten Allokation, unabhängig von der Zuteilung der Eigentumsrechte</button>
+              <button class="quiz-choice" type="button">effizienten Allokation, aber nur wenn der Staat vermittelt</button>
+              <button class="quiz-choice" type="button">ineffizienten, aber fairen Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei klaren Eigentumsrechten und niedrigen Transaktionskosten ist das
+              Ergebnis immer <strong>effizient</strong> — unabhängig davon, wer die Rechte anfangs hat. Nur die
+              Vermögensverteilung ändert sich.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Lizenzen|Emissionslizenzen|Zertifikate|Emissionszertifikate|Emissionshandel|Cap-and-Trade|Cap and Trade">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Wie heißt das Regulierungsinstrument, das die
+              Gesamtmenge einer Externalität begrenzt und handelbar macht?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Lizenzen / Emissionszertifikate</strong> (Cap-and-Trade):
+              der Staat begrenzt die Gesamtmenge, Unternehmen handeln die Lizenzen untereinander.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="04-oeffentliche-gueter.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Öffentliche Güter</div>
+        </a>
+        <a class="next" href="06-natuerliches-monopol.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Natürliches Monopol &amp; Regulierung</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

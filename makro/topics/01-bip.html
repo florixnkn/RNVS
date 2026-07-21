@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BIP: das Maß aller Dinge · P2 Makro</title>
+<meta name="description" content="Das Bruttoinlandsprodukt bildlich erklärt: Entstehungs-, Verwendungs- und Verteilungsseite, nominal vs. real und der BIP-Deflator – mit durchgerechneten Beispielen und typischen Fallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Rechnungsweisen</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 01</div>
+    <span class="th-icon">📊</span>
+    <h1>BIP: das Maß aller Dinge</h1>
+    <div class="th-meta">
+      <span class="stars">★☆☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Grundlagen</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Drei Rechnungsweisen</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Das <strong>Bruttoinlandsprodukt (BIP)</strong> ist die Antwort der Volkswirtschaftslehre
+          auf eine simple, aber schwierige Frage: <strong>Wie viel hat ein Land in einem Jahr wirtschaftlich
+          geleistet?</strong> Die Herausforderung dabei ist nicht das Addieren an sich, sondern das
+          <strong>nicht doppelt zählen</strong> — denn fast jedes Produkt entsteht über mehrere Produktionsstufen
+          hinweg, bei denen Geld mehrfach den Besitzer wechselt.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du willst wissen, wie viel wirtschaftlicher Wert entsteht, wenn aus einem Sack Weizen am Ende ein
+            Brot beim Bäcker verkauft wird. Der Bauer verkauft Weizen für 100 € an die Mühle. Die Mühle mahlt daraus
+            Mehl und verkauft es für 200 € an die Bäckerei. Die Bäckerei backt Brot und verkauft es für 400 € an
+            dich.<br><br>
+            Würdest du naiv 100 € + 200 € + 400 € = <strong>700 €</strong> addieren, hättest du den Weizen- und
+            Mehlwert mehrfach mitgezählt — einmal als Rohstoff, einmal versteckt im Verkaufspreis der nächsten Stufe.
+            Volkswirte zählen deshalb nur, was auf jeder Stufe <strong>neu hinzugefügt</strong> wurde (die
+            <strong>Wertschöpfung</strong>): Bauer 100 €, Mühle 200−100=100 €, Bäckerei 400−200=200 €. Zusammen
+            <strong>400 €</strong> — exakt der Endverkaufspreis des Brots. Das ist die Grundidee hinter jeder
+            BIP-Berechnung.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Drei Rechnungsweisen, ein Ergebnis</h2>
+        <p><strong>BIP:</strong> der Marktwert aller <strong>Endgüter</strong> und Dienstleistungen, die
+          <strong>im Inland</strong> in <strong>einer Periode</strong> (meist ein Jahr) produziert werden.
+          Wichtig: Zwischengüter zählen nicht einzeln, nur das Geo-Kriterium zählt (nicht die Nationalität der
+          Produzierenden), und es geht immer um eine klar abgegrenzte Zeitspanne.</p>
+
+        <div class="factgrid">
+          <div class="fact"><b>Endgüter</b><span>keine Zwischen­güter/Vorleistungen</span></div>
+          <div class="fact"><b>Marktpreis</b><span>Bewertung zu aktuellen Preisen</span></div>
+          <div class="fact"><b>Inland</b><span>geografisch, nicht nach Staatsangehörigkeit</span></div>
+          <div class="fact"><b>1 Periode</b><span>meist ein Kalenderjahr</span></div>
+        </div>
+
+        <p>Man kann dieselbe Volkswirtschaft von <strong>drei Seiten</strong> aus vermessen — wie drei
+          unterschiedliche Kameras auf dieselbe Bühne. Alle drei müssen am Ende dasselbe Y ergeben.</p>
+
+        <h3>1. Entstehungsseite (Produktionsansatz)</h3>
+        <p>Summiere die <strong>Wertschöpfung</strong> aller Sektoren — Bruttoproduktion minus die Vorleistungen,
+          die schon in einer früheren Stufe steckten. Genau das Bäckerei-Beispiel von oben:</p>
+
+        <!-- SVG 1: Wertschöpfungskette Weizen → Mehl → Brot -->
+        <figure class="diagram">
+          <div class="diagram-title">Entstehungsseite: Wertschöpfung statt Bruttoproduktion</div>
+          <svg viewBox="0 0 660 220" width="660" role="img" aria-label="Drei Produktionsstufen Weizenanbau, Mühle und Bäckerei mit jeweiliger Wertschöpfung, die zusammen die Wertschöpfungssumme von 450 EUR ergeben">
+            <defs>
+              <marker id="bipArrow1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif">
+              <line x1="180" y1="100" x2="248" y2="100" stroke="#8a94a6" stroke-width="2" marker-end="url(#bipArrow1)"/>
+              <line x1="418" y1="100" x2="486" y2="100" stroke="#8a94a6" stroke-width="2" marker-end="url(#bipArrow1)"/>
+
+              <rect x="20" y="60" width="160" height="80" rx="12" fill="#12b28c" fill-opacity="0.16" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="100" y="86" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">🌾 Weizenanbau</text>
+              <text x="100" y="108" text-anchor="middle" class="svg-soft" font-size="11.5">Bruttoproduktion 100</text>
+              <text x="100" y="126" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="12.5">Wertschöpfung: 100</text>
+
+              <rect x="250" y="60" width="168" height="80" rx="12" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="334" y="82" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">🏭 Mühle</text>
+              <text x="334" y="102" text-anchor="middle" class="svg-soft" font-size="11">200 Mehl − 50 Weizen</text>
+              <text x="334" y="126" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="12.5">Wertschöpfung: 150</text>
+
+              <rect x="488" y="60" width="152" height="80" rx="12" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="564" y="82" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">🥖 Bäckerei</text>
+              <text x="564" y="102" text-anchor="middle" class="svg-soft" font-size="11">400 Brot − 200 Mehl</text>
+              <text x="564" y="126" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="12.5">Wertschöpfung: 200</text>
+
+              <text x="330" y="185" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="15">
+                Σ Wertschöpfung = 100 + 150 + 200 = 450 EUR (nicht 700!)
+              </text>
+            </g>
+          </svg>
+          <figcaption>Nur der jeweils neu hinzugefügte Wert zählt. Die 100 € Weizen und 200 € Mehl stecken bereits
+            in den Folgekosten und dürfen nicht nochmal addiert werden.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Entstehungsseite</div>
+          <span class="formula">Y = Σᵢ Wertschöpfungᵢ = Σᵢ (Bruttoproduktionᵢ − Vorleistungenᵢ)</span>
+        </div>
+
+        <h3>2. Verwendungsseite (Ausgabenansatz)</h3>
+        <p>Frage: <strong>Wer hat das Geld ausgegeben?</strong> Vier Gruppen von Käufern teilen sich den gesamten
+          Output eines Landes auf:</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Symbol</th><th>Komponente</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>C</strong></td><td>Konsum</td><td>Ausgaben der Haushalte für Güter &amp; Dienstleistungen</td></tr>
+            <tr><td><strong>I</strong></td><td>Investitionen</td><td>Anlagenbildung + Lagerhaltung der Unternehmen</td></tr>
+            <tr><td><strong>G</strong></td><td>Staatsausgaben</td><td>laufender Verbrauch + Investitionen des Staats (<strong>ohne</strong> Transfers)</td></tr>
+            <tr><td><strong>X−M</strong></td><td>Nettoexporte</td><td>Exporte minus Importe</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Achtung: Transfers zählen nicht!</div>
+          <p>Renten, Arbeitslosengeld und Kindergeld sind <strong>keine</strong> Käufe von Gütern oder
+            Dienstleistungen — es gibt keine direkte Gegenleistung. Sie gehören nicht in G.</p>
+        </div>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Verwendungsseite</div>
+          <span class="formula">Y = C + I + G + (X − M)</span>
+        </div>
+
+        <h3>3. Verteilungsseite (Einkommensansatz)</h3>
+        <p>Frage: <strong>Wer hat das Geld verdient?</strong> Jeder Euro Wertschöpfung landet als Einkommen bei
+          irgendjemandem — bei Arbeitnehmern, Kapitalgebern oder Unternehmern:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Verteilungsseite</div>
+          <span class="formula">Y = w·L + r·K + π</span>
+          <p><strong>w·L</strong> Arbeitslöhne (Lohnsatz × Arbeitsmenge) · <strong>r·K</strong> Kapitalrendite
+            (Zins, Miete, Pacht) · <strong>π</strong> Unternehmereinkommen (Gewinne). Plus indirekte Steuern
+            abzüglich Subventionen.</p>
+        </div>
+
+        <!-- SVG 2: Drei Wege zum selben Y -->
+        <figure class="diagram">
+          <div class="diagram-title">Drei Rechnungswege — dieselbe Bühne, drei Kameras</div>
+          <svg viewBox="0 0 680 260" width="680" role="img" aria-label="Drei schematische Balkendiagramme für Entstehungs-, Verwendungs- und Verteilungsseite, die alle auf derselben Höhe enden, verbunden durch Gleichheitszeichen">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Col 1: Entstehung -->
+              <text x="110" y="28" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="13.5">Entstehung</text>
+              <rect x="50" y="190" width="120" height="50" fill="#12b28c" fill-opacity="0.55"/>
+              <rect x="50" y="140" width="120" height="50" fill="#12b28c" fill-opacity="0.35"/>
+              <rect x="50" y="90"  width="120" height="50" fill="#12b28c" fill-opacity="0.2"/>
+              <text x="110" y="219" text-anchor="middle" fill="#fff" font-size="10.5">Sektor 1</text>
+              <text x="110" y="169" text-anchor="middle" class="svg-ink" font-size="10.5">Sektor 2</text>
+              <text x="110" y="119" text-anchor="middle" class="svg-ink" font-size="10.5">Sektor 3</text>
+
+              <text x="225" y="170" text-anchor="middle" class="svg-soft" font-weight="800" font-size="20">=</text>
+
+              <!-- Col 2: Verwendung -->
+              <text x="340" y="28" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="13.5">Verwendung</text>
+              <rect x="280" y="210" width="120" height="30" fill="#2f6df6" fill-opacity="0.25"/>
+              <rect x="280" y="170" width="120" height="40" fill="#2f6df6" fill-opacity="0.4"/>
+              <rect x="280" y="130" width="120" height="40" fill="#2f6df6" fill-opacity="0.55"/>
+              <rect x="280" y="90"  width="120" height="40" fill="#2f6df6" fill-opacity="0.7"/>
+              <text x="340" y="229" text-anchor="middle" fill="#fff" font-size="10">X−M</text>
+              <text x="340" y="194" text-anchor="middle" fill="#fff" font-size="10">G</text>
+              <text x="340" y="154" text-anchor="middle" fill="#fff" font-size="10">I</text>
+              <text x="340" y="114" text-anchor="middle" fill="#fff" font-size="10">C</text>
+
+              <text x="455" y="170" text-anchor="middle" class="svg-soft" font-weight="800" font-size="20">=</text>
+
+              <!-- Col 3: Verteilung -->
+              <text x="570" y="28" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="13.5">Verteilung</text>
+              <rect x="510" y="200" width="120" height="40" fill="#f5810b" fill-opacity="0.3"/>
+              <rect x="510" y="150" width="120" height="50" fill="#f5810b" fill-opacity="0.5"/>
+              <rect x="510" y="90"  width="120" height="60" fill="#f5810b" fill-opacity="0.7"/>
+              <text x="570" y="224" text-anchor="middle" fill="#fff" font-size="10.5">π</text>
+              <text x="570" y="179" text-anchor="middle" fill="#fff" font-size="10.5">r·K</text>
+              <text x="570" y="124" text-anchor="middle" fill="#fff" font-size="10.5">w·L</text>
+
+              <line x1="50" y1="90" x2="630" y2="90" stroke="#8a94a6" stroke-width="1" stroke-dasharray="4 4"/>
+              <text x="650" y="94" class="svg-soft" font-size="11">Y</text>
+            </g>
+          </svg>
+          <figcaption>Schematisch, nicht maßstabsgetreu: alle drei Säulen erreichen dieselbe Gesamthöhe Y. Wenn
+            deine drei Rechnungen nicht zum selben Ergebnis kommen, steckt ein Fehler in der Aufgabe.</figcaption>
+        </figure>
+
+        <h3>Nominal vs. real &amp; der BIP-Deflator</h3>
+        <p><strong>Nominales BIP:</strong> bewertet zu den <strong>aktuellen</strong> Preisen der jeweiligen
+          Periode — anfällig für Inflation. <strong>Reales BIP:</strong> bewertet zu den Preisen einer festen
+          <strong>Basisperiode</strong> — zeigt echtes Mengenwachstum, bereinigt um Preiseffekte.</p>
+
+        <!-- SVG 3: Nominal vs Real über zwei Jahre + Deflator -->
+        <figure class="diagram">
+          <div class="diagram-title">Gleiches reales Wachstum, unterschiedliches nominales BIP</div>
+          <svg viewBox="0 0 460 250" width="460" role="img" aria-label="Balkendiagramm: nominales und reales BIP in Jahr 1 und Jahr 2, nominales BIP steigt durch Inflation stärker als das reale BIP">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <line x1="40" y1="210" x2="440" y2="210" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <rect x="60"  y="60" width="42" height="150" fill="#2f6df6" fill-opacity="0.5"/>
+              <rect x="108" y="60" width="42" height="150" fill="#12b28c" fill-opacity="0.5"/>
+              <text x="81"  y="52" text-anchor="middle" class="svg-ink" font-weight="700">1000</text>
+              <text x="129" y="52" text-anchor="middle" class="svg-ink" font-weight="700">1000</text>
+              <text x="105" y="230" text-anchor="middle" class="svg-soft" font-weight="700">Jahr 1</text>
+
+              <rect x="260" y="37"  width="42" height="173" fill="#2f6df6" fill-opacity="0.5"/>
+              <rect x="308" y="60" width="42" height="150" fill="#12b28c" fill-opacity="0.5"/>
+              <text x="281" y="29" text-anchor="middle" class="svg-ink" font-weight="700">1150</text>
+              <text x="329" y="52" text-anchor="middle" class="svg-ink" font-weight="700">1000</text>
+              <text x="305" y="230" text-anchor="middle" class="svg-soft" font-weight="700">Jahr 2</text>
+
+              <rect x="60" y="0" width="12" height="10" fill="#2f6df6" fill-opacity="0.5"/>
+              <text x="78" y="9" class="svg-soft" font-size="10.5">nominal</text>
+              <rect x="150" y="0" width="12" height="10" fill="#12b28c" fill-opacity="0.5"/>
+              <text x="168" y="9" class="svg-soft" font-size="10.5">real</text>
+
+              <text x="405" y="130" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">Deflator</text>
+              <text x="405" y="146" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="14">= 115</text>
+              <text x="405" y="166" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">Inflation</text>
+              <text x="405" y="182" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="14">= 15 %</text>
+            </g>
+          </svg>
+          <figcaption>Reales BIP bleibt beide Jahre bei 1000 (kein echtes Wachstum), das nominale BIP steigt allein
+            durch Preissteigerung auf 1150.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formeln: Deflator &amp; Inflation</div>
+          <span class="formula">BIP-Deflator = (BIP_nominal / BIP_real) × 100
+Inflationsrate_t = (Deflator_t − Deflator_t₋₁) / Deflator_t₋₁ × 100 %</span>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele durchgerechnet</h2>
+
+        <h3>Beispiel 1: BIP über die Verwendungsseite</h3>
+        <p>Gegeben (in Mrd. EUR): C = 1200, I = 400, G = 600, X = 300, M = 200. Wie groß ist das BIP?</p>
+
+        <!-- SVG 4: Stacked bar C+I+G+NX = 2300 -->
+        <figure class="diagram">
+          <div class="diagram-title">Y = C + I + G + (X−M) als Balken, 1 Kästchen ≈ 100 Mrd. EUR</div>
+          <svg viewBox="0 0 640 130" width="640" role="img" aria-label="Gestapelter Balken der die Komponenten Konsum 1200, Investitionen 400, Staatsausgaben 600 und Nettoexporte 100 zu einem BIP von 2300 zusammensetzt">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="20" y="35" width="313" height="50" fill="#2f6df6" fill-opacity="0.6"/>
+              <rect x="333" y="35" width="104" height="50" fill="#8b5cf6" fill-opacity="0.6"/>
+              <rect x="437" y="35" width="156" height="50" fill="#f5810b" fill-opacity="0.6"/>
+              <rect x="593" y="35" width="27"  height="50" fill="#12a150" fill-opacity="0.7"/>
+              <text x="176" y="64" text-anchor="middle" fill="#fff" font-weight="800">C = 1200</text>
+              <text x="385" y="64" text-anchor="middle" fill="#fff" font-weight="800" font-size="10.5">I=400</text>
+              <text x="515" y="64" text-anchor="middle" fill="#fff" font-weight="800">G = 600</text>
+              <text x="606" y="30" text-anchor="middle" class="svg-ink" font-weight="800" font-size="10.5">X−M=100</text>
+              <text x="320" y="112" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="14">Y = 1200+400+600+100 = 2300</text>
+            </g>
+          </svg>
+          <figcaption>X−M = 300−200 = 100. Die vier Segmente ergeben zusammen das BIP von 2300 Mrd. EUR.</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li><strong>Nettoexporte berechnen:</strong> X − M = 300 − 200 = 100</li>
+          <li><strong>Alle Komponenten addieren:</strong> Y = 1200 + 400 + 600 + 100</li>
+          <li><strong>Ergebnis:</strong> Y = <strong>2300 Mrd. EUR</strong></li>
+        </ol>
+
+        <h3>Beispiel 2: Gegenprobe über die Entstehungsseite</h3>
+        <p>Zurück zum Bäckerei-Beispiel: Bruttoproduktion 100 (Weizen) + 200 (Mehl) + 400 (Brot) = 700 — aber das
+          BIP ist nicht 700!</p>
+        <ol class="steps">
+          <li><strong>Vorleistungen abziehen, pro Stufe:</strong> Weizen: 100−0=100 · Mühle: 200−50=150 ·
+            Bäckerei: 400−200=200</li>
+          <li><strong>Wertschöpfungen addieren:</strong> 100 + 150 + 200</li>
+          <li><strong>Ergebnis:</strong> Y = <strong>450 EUR</strong> — identisch mit dem Endverkaufspreis
+            der letzten Stufe plus den davor bereits gezählten Wertschöpfungen, aber deutlich weniger als die
+            naive Summe 700.</li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: Nominal, real &amp; Deflator</h3>
+        <p>Jahr 1: nominales BIP = reales BIP = 1000 Mrd. EUR. Jahr 2: nominales BIP = 1150 Mrd. EUR, reales BIP
+          weiterhin 1000 Mrd. EUR (Basisjahr-Preise). Berechne Deflator und Inflationsrate für Jahr 2.</p>
+        <ol class="steps">
+          <li><strong>Deflator Jahr 2:</strong> (1150 / 1000) × 100 = <strong>115</strong></li>
+          <li><strong>Deflator Jahr 1 (Basisjahr):</strong> per Definition <strong>100</strong></li>
+          <li><strong>Inflationsrate:</strong> (115 − 100) / 100 × 100 % = <strong>15 %</strong></li>
+          <li><strong>Interpretation:</strong> Das reale BIP ist konstant geblieben — kein echtes Wachstum, die
+            gesamten 150 Mrd. EUR "Zuwachs" sind reine Preissteigerung.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man addiert einfach alle Umsätze aller
+            Produktionsstufen (Weizen + Mehl + Brot = 700).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur die <strong>Wertschöpfung</strong> je Stufe
+            zählt (Bruttoproduktion − Vorleistungen) → 450, sonst zählst du Zwischengüter mehrfach.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Verkauf eines Gebrauchtwagens zählt voll
+            ins BIP dieses Jahres.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Wagen wurde schon beim Erstkauf gezählt.
+            Nur die <strong>Maklerprovision</strong> beim Weiterverkauf ist neue Wertschöpfung.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Renten und Arbeitslosengeld gehören in die
+            Staatsausgaben G.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Transfers zählen nicht in G</strong> —
+            es gibt keine Gegenleistung. Nur Käufe von Gütern/Dienstleistungen und staatliche Investitionen
+            zählen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein negatives (X−M) bedeutet, die Wirtschaft
+            geht schlecht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Negative Nettoexporte zeigen oft
+            <strong>Kapitalimporte</strong>, die Investitionen finanzieren — normal für wachsende
+            Volkswirtschaften.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Steigt das nominale BIP, wächst die Wirtschaft
+            real.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nominales BIP kann allein durch
+            <strong>Inflation</strong> steigen. Für echtes Wachstum immer das <strong>reale</strong> BIP
+            betrachten.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Die drei Rechnungsweisen</h4>
+          <pre class="code">Entstehung:  Y = Σᵢ Wertschöpfungᵢ = Σᵢ (Bruttoproduktionᵢ − Vorleistungenᵢ)
+Verwendung:  Y = C + I + G + (X − M)
+Verteilung:  Y = w·L + r·K + π   (+ indirekte Steuern − Subventionen)</pre>
+
+          <h4>Nominal, real &amp; Deflator</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Größe</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>BIP-Deflator</td><td>(BIP_nominal / BIP_real) × 100</td></tr>
+              <tr><td>Inflationsrate</td><td>(Deflator_t − Deflator_t₋₁) / Deflator_t₋₁ × 100 %</td></tr>
+              <tr><td>Nettoinlandsprodukt (NIP)</td><td>BIP − Abschreibungen</td></tr>
+              <tr><td>Bruttonationaleinkommen (BNE)</td><td>BIP + Primäreinkommen aus dem Ausland</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Nur Endgüter</strong> zählen — Zwischengüter/Vorleistungen werden abgezogen</li>
+            <li>Alle drei Rechnungsweisen <strong>müssen dasselbe Y</strong> ergeben (Kontrollmechanismus)</li>
+            <li><strong>Transfers</strong> (Renten, Arbeitslosengeld, Kindergeld) zählen <strong>nicht</strong> in G</li>
+            <li>Für Wachstumsvergleiche immer das <strong>reale</strong> BIP verwenden, nie das nominale</li>
+            <li>Secondhand-Verkäufe zählen nicht neu — nur die <strong>Vermittlungsleistung</strong> (Provision)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2300">
+            <p class="quiz-prompt"><span class="q-no">1.</span>C=1200, I=400, G=600, X=300, M=200 (alles in Mrd. EUR). Wie groß ist das BIP über die Verwendungsseite?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">Mrd. EUR</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>X−M = 300−200 = 100. Y = 1200+400+600+100 = <strong>2300</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="450">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Weizenanbau (Wertschöpfung 100), Mühle (200 Mehl − 50 Weizen), Bäckerei (400 Brot − 200 Mehl). Wie groß ist das BIP über die Entstehungsseite?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">EUR</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Wertschöpfung je Stufe: 100 + 150 + 200 = <strong>450</strong>
+              (nicht die Bruttoproduktions-Summe 700).</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="entstehungsseite|produktionsansatz">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie heißt die Rechnungsweise, die Wertschöpfung statt Bruttoproduktion aufsummiert?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Entstehungsseite</strong> (auch Produktionsansatz genannt)
+              summiert Wertschöpfung statt Bruttoproduktion.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Du verkaufst deinen 5 Jahre alten Gebrauchtwagen privat über eine Anzeige. Wie wirkt sich das aufs BIP dieses Jahres aus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Gar nicht — der Wagen wurde schon beim Erstkauf gezählt</button>
+              <button class="quiz-choice" type="button">Voll mit dem Verkaufspreis</button>
+              <button class="quiz-choice" type="button">Doppelt, weil zwei Personen beteiligt sind</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Wagen ist kein neues Endgut mehr. Nur eine eventuelle
+              <strong>Makler-/Vermittlungsprovision</strong> wäre neue Wertschöpfung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="115">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Nominales BIP Jahr 2 = 1150, reales BIP Jahr 2 = 1000. Wie groß ist der BIP-Deflator?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(1150/1000) × 100 = <strong>115</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="15">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Deflator Jahr 1 = 100 (Basisjahr), Deflator Jahr 2 = 115. Wie hoch ist die Inflationsrate in Prozent (nur die Zahl eingeben)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(115−100)/100 × 100 % = <strong>15 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Zählt Kindergeld, das der Staat an Familien auszahlt, in die Staatsausgaben G?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, voll</button>
+              <button class="quiz-choice" type="button" data-correct>Nein — es ist ein Transfer ohne Gegenleistung</button>
+              <button class="quiz-choice" type="button">Nur zur Hälfte</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Transfers</strong> (Kindergeld, Renten, Arbeitslosengeld)
+              zählen nicht in G — es fehlt die Gegenleistung in Form eines Gutes/einer Dienstleistung.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="../index.html">
+          <div class="pn-label">← Übersicht</div>
+          <div class="pn-title">Zur Makro-Kursübersicht</div>
+        </a>
+        <a class="next" href="02-preise-arbeitsmarkt.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Preise &amp; Arbeitsmarkt</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

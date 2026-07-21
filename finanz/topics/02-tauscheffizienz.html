@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tauscheffizienz &amp; Edgeworth-Box · P4 Fiwi</title>
+<meta name="description" content="Pareto-Effizienz, die Edgeworth-Box, die Kontraktkurve und das Fundamentaltheorem der Wohlfahrtsökonomik bildlich erklärt – mit durchgerechnetem Planerproblem per Lagrange, Marktlösung und typischen Fallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Edgeworth-Box</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P4-Fiwi-Kursübersicht</a> › Thema 02</div>
+    <span class="th-icon">📦</span>
+    <h1>Tauscheffizienz &amp; Edgeworth-Box</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 1</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Edgeworth-Box &amp; Kontraktkurve</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Zwei Haushalte, zwei Güter, eine feste Gesamtmenge. Wer soll wie viel bekommen?
+          Bevor wir überhaupt über <strong>Gerechtigkeit</strong> reden, stellt sich eine viel grundlegendere
+          Frage: Gibt es überhaupt noch <strong>ungenutzte Tauschgewinne</strong> — eine Umverteilung, die beide
+          Seiten besserstellt? Genau das misst die <strong>Tauscheffizienz</strong> (Pareto-Effizienz).</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du und deine Mitbewohnerin bekommt jeweils eine Tüte mit Chips und Schokolade zugeteilt. Du magst
+            Schokolade lieber, isst aber auch Chips; sie ist genau andersrum. Solange noch ein Tausch möglich
+            ist, bei dem <strong>du mehr Schokolade gegen weniger Chips</strong> bekommst und <strong>sie mehr
+            Chips gegen weniger Schokolade</strong> — und ihr beide dabei zufriedener werdet — ist eure
+            Ausgangsverteilung <strong>nicht effizient</strong>. Ihr tauscht so lange, bis kein für beide
+            vorteilhafter Tausch mehr übrig bleibt. Genau dieser Endzustand heißt <strong>Pareto-effizient</strong>:
+            niemand kann mehr bessergestellt werden, ohne den anderen schlechterzustellen.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die Edgeworth-Box &amp; die Kontraktkurve</h2>
+        <p>Zwei Haushalte A und B teilen sich zwei Güter x und y mit festen Gesamtmengen x̄ und ȳ
+          (x_A+x_B=x̄, y_A+y_B=ȳ). Die <strong>Edgeworth-Box</strong> zeichnet <em>jede mögliche Aufteilung</em>
+          als einen einzigen Punkt in einer Box: Ecke unten-links ist der Ursprung O^A von Haushalt A (misst
+          seinen Konsum), Ecke oben-rechts ist der gespiegelte Ursprung O^B von Haushalt B.</p>
+
+        <!-- SVG 1: Edgeworth-Box mit Indifferenzkurven, Tangentialpunkt, Kontraktkurve -->
+        <figure class="diagram">
+          <div class="diagram-title">Edgeworth-Box: Beispiel aus dem Abschnitt „Beispiele durchgerechnet" — Optimum bei x_A=80, y_A=40</div>
+          <svg viewBox="0 0 480 320" width="480" role="img" aria-label="Edgeworth-Box mit Indifferenzkurven von Haushalt A und B, die sich im Punkt x_A=80, y_A=40 auf der Kontraktkurve (der Diagonale der Box) berühren">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <!-- Box -->
+              <rect x="60" y="80" width="360" height="200" fill="none" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="55" y="296" text-anchor="end" fill="#12b28c" font-weight="800">O^A</text>
+              <text x="425" y="72" fill="#2f6df6" font-weight="800">O^B</text>
+              <text x="240" y="308" text-anchor="middle" class="svg-soft">x̄ = 120 (Gut x, ab O^A nach rechts)</text>
+              <text x="20" y="185" text-anchor="middle" class="svg-soft" transform="rotate(-90 20 185)">ȳ = 60 (Gut y, ab O^A nach oben)</text>
+
+              <!-- Kontraktkurve (Diagonale) -->
+              <line x1="60" y1="280" x2="420" y2="80" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <text x="130" y="230" fill="#8a94a6" font-weight="700" font-size="11" transform="rotate(-29 130 230)">Kontraktkurve</text>
+
+              <!-- Indifferenzkurve A: x_A*y_A = 3200 -->
+              <path d="M 240,102 L 270,128 L 300,147 L 330,162 L 360,173 L 390,183"
+                    fill="none" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="245" y="95" fill="#12b28c" font-weight="700" font-size="11">Indiff.-kurve A (U^A=3200)</text>
+
+              <!-- Indifferenzkurve B: (120-x_A)(60-y_A) = 800 -->
+              <path d="M 225,121 L 255,129 L 285,139 L 300,147 L 330,169 L 345,187 L 360,213 L 375,258"
+                    fill="none" stroke="#2f6df6" stroke-width="2.5"/>
+              <text x="330" y="120" fill="#2f6df6" font-weight="700" font-size="11">Indiff.-kurve B (U^B=800)</text>
+
+              <!-- Tangentialpunkt -->
+              <circle cx="300" cy="147" r="6" fill="#e0483d"/>
+              <text x="308" y="142" fill="#e0483d" font-weight="800" font-size="12">Optimum</text>
+              <text x="308" y="158" fill="#e0483d" font-size="10.5">x_A=80, y_A=40</text>
+            </g>
+          </svg>
+          <figcaption>Beide Indifferenzkurven berühren sich (Tangente) im selben Punkt — dort gilt GRS_A = GRS_B.
+            Die gestrichelte Diagonale ist hier die Kontraktkurve, weil beide Haushalte dieselbe Nutzenfunktions-Form
+            (x·y) haben.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Tauscheffizienz-Bedingung</div>
+          <span class="formula">GRS_A = GRS_B          mit GRS^i = U^i_x / U^i_y</span>
+          <p>Die <strong>Grenzrate der Substitution</strong> beider Haushalte muss übereinstimmen — sonst gäbe es
+            noch einen Tausch, der beide besserstellt.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>Kontraktkurve</b><span>Menge aller Pareto-effizienten Punkte in der Box</span></div>
+          <div class="fact"><b>Tauschlinse</b><span>Region mit noch ungenutzten Tauschgewinnen</span></div>
+          <div class="fact"><b>Planer</b><span>löst Lagrange-Problem direkt mit beiden Nutzenfunktionen</span></div>
+          <div class="fact"><b>Markt</b><span>jeder optimiert einzeln — Effizienz entsteht automatisch</span></div>
+        </div>
+
+        <h3>Die Tauschlinse: wenn noch nicht alles effizient ist</h3>
+        <p>Starten zwei Haushalte an einem <strong>beliebigen</strong> Punkt in der Box (nicht auf der
+          Kontraktkurve), kreuzen sich ihre Indifferenzkurven meist zweimal. Der dazwischenliegende
+          mandelförmige Bereich ist die <strong>Tauschlinse</strong>: jede Allokation darin macht
+          <em>beide</em> besser.</p>
+
+        <!-- SVG 2: Tauschlinse (schematisch) -->
+        <figure class="diagram">
+          <div class="diagram-title">Tauschlinse (schematisch) — Ausgangspunkt E ist noch nicht effizient</div>
+          <svg viewBox="0 0 380 240" width="380" role="img" aria-label="Schematisches Diagramm mit zwei sich kreuzenden Indifferenzkurven, die eine linsenförmige Region einschließen, in der beide Haushalte durch Tausch besser gestellt werden können">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <ellipse cx="190" cy="128" rx="75" ry="26" fill="#e0483d" fill-opacity="0.18"/>
+              <path d="M70,120 Q190,100 310,150" fill="none" stroke="#12b28c" stroke-width="2.5"/>
+              <path d="M70,90 Q190,170 310,120" fill="none" stroke="#2f6df6" stroke-width="2.5"/>
+              <circle cx="103" cy="103" r="5" fill="#e0483d"/>
+              <text x="90" y="88" fill="#e0483d" font-weight="800">E (ineffizient)</text>
+              <text x="150" y="132" fill="#e0483d" font-weight="800" font-size="12">Tauschlinse</text>
+              <text x="150" y="148" class="svg-soft" font-size="10">beide könnten sich hier verbessern</text>
+              <text x="55" y="112" fill="#12b28c" font-size="10.5">Indiff.-kurve A</text>
+              <text x="55" y="82" fill="#2f6df6" font-size="10.5">Indiff.-kurve B</text>
+            </g>
+          </svg>
+          <figcaption>Sobald A und B sich auf einen Punkt <em>innerhalb</em> der Linse einigen, sind sie beide
+            zufriedener als bei E. Getauscht wird, bis man am Rand der Linse (= auf der Kontraktkurve) landet.</figcaption>
+        </figure>
+
+        <h3>Planer vs. Markt: zwei Wege, dasselbe Ziel</h3>
+        <p>Ein <strong>Planer</strong> könnte die Bedingung GRS_A=GRS_B direkt per Lagrange herbeirechnen. Ein
+          <strong>Wettbewerbsmarkt</strong> braucht dafür gar keinen Planer — Preise reichen:</p>
+
+        <!-- SVG 3: Planer vs Markt -->
+        <figure class="diagram">
+          <div class="diagram-title">Zwei Wege zur selben Bedingung — das Fundamentaltheorem</div>
+          <svg viewBox="0 0 620 260" width="620" role="img" aria-label="Diagramm zeigt Planer-Weg und Markt-Weg, die beide zur Bedingung GRS_A gleich GRS_B und damit zu Pareto-Effizienz führen">
+            <defs>
+              <marker id="tauschArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#8a94a6"/>
+              </marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="40" y="30" width="220" height="90" rx="12" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="150" y="55" text-anchor="middle" class="svg-ink" font-weight="800" font-size="14">Planer</text>
+              <text x="150" y="78" text-anchor="middle" class="svg-soft" font-size="11">Lagrange: max U^A</text>
+              <text x="150" y="96" text-anchor="middle" class="svg-soft" font-size="11">s.t. U^B ≥ Ū^B</text>
+
+              <rect x="360" y="30" width="220" height="90" rx="12" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="470" y="55" text-anchor="middle" class="svg-ink" font-weight="800" font-size="14">Markt (Wettbewerb)</text>
+              <text x="470" y="78" text-anchor="middle" class="svg-soft" font-size="11">jeder optimiert einzeln</text>
+              <text x="470" y="96" text-anchor="middle" class="svg-soft" font-size="11">zu Preisen pₓ, p_y</text>
+
+              <line x1="150" y1="120" x2="230" y2="190" stroke="#8a94a6" stroke-width="2" marker-end="url(#tauschArrow)"/>
+              <line x1="470" y1="120" x2="400" y2="190" stroke="#8a94a6" stroke-width="2" marker-end="url(#tauschArrow)"/>
+
+              <rect x="150" y="190" width="320" height="60" rx="12" fill="#12b28c" fill-opacity="0.2" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="310" y="215" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13.5">GRS_A = GRS_B</text>
+              <text x="310" y="235" text-anchor="middle" class="svg-ink" font-weight="700" font-size="12">⟹ Pareto-effizient</text>
+            </g>
+          </svg>
+          <figcaption>Der Markt braucht keine Kenntnis der Nutzenfunktionen — nur gemeinsame Preise. Trotzdem
+            kommt automatisch dieselbe Effizienzbedingung heraus wie beim Planerproblem.</figcaption>
+        </figure>
+
+        <div class="callout callout-info">
+          <div class="c-title">Erster Hauptsatz der Wohlfahrtsökonomik</div>
+          <p><strong>Jedes Wettbewerbsgleichgewicht ist Pareto-effizient.</strong> Der Markt führt automatisch zu
+            einer effizienten Allokation — ganz ohne zentralen Planer. Das Umgekehrte gilt auch (2. Hauptsatz,
+            Thema 3): Jede Pareto-effiziente Allokation lässt sich mit der passenden Einkommensverteilung als
+            Wettbewerbsgleichgewicht realisieren.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele durchgerechnet</h2>
+
+        <h3>Planerproblem: effiziente Aufteilung von Äpfeln &amp; Büchern</h3>
+        <p>Zwei Haushalte A und B teilen sich x̄=120 Äpfel und ȳ=60 Bücher. Beide haben (der Einfachheit halber)
+          dieselbe Nutzenfunktion U^A(x_A,y_A)=x_A·y_A und U^B(x_B,y_B)=x_B·y_B. Der Planer maximiert A's Nutzen,
+          verlangt aber mindestens U^B=800 für B.</p>
+
+        <ol class="steps">
+          <li><strong>Schritt 1 — Planerproblem aufstellen:</strong><br>
+            max x_A·y_A &nbsp;s.t.&nbsp; (120−x_A)(60−y_A) = 800</li>
+          <li><strong>Schritt 2 — Lagrange &amp; FOCs:</strong><br>
+            ℒ = x_Ay_A + λ[(120−x_A)(60−y_A) − 800]<br>
+            ∂ℒ/∂x_A = y_A − λ(60−y_A) = 0 &nbsp;(1)<br>
+            ∂ℒ/∂y_A = x_A − λ(120−x_A) = 0 &nbsp;(2)</li>
+          <li><strong>Schritt 3 — Division ergibt die Kontraktkurve:</strong><br>
+            Aus (1): λ = y_A/(60−y_A). Aus (2): λ = x_A/(120−x_A). Gleichsetzen und umformen:<br>
+            100y_A = 50x_A &nbsp;⟹&nbsp; <strong>y_A = 0,5·x_A</strong> (das ist genau die Diagonale der Box,
+            weil ȳ/x̄ = 60/120 = 0,5)</li>
+          <li><strong>Schritt 4 — mit der Nebenbedingung auflösen:</strong><br>
+            (120−x_A)(60−0,5x_A) = 800 ⟹ x_A² − 240x_A + 12800 = 0 ⟹
+            x_A = (240 ± √6400)/2 = (240 ± 80)/2<br>
+            Nur x_A ≤ 120 ist gültig ⟹ <strong>x_A* = 80, y_A* = 40</strong><br>
+            Für B: x_B* = 120−80 = <strong>40</strong>, y_B* = 60−40 = <strong>20</strong></li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Gegenprobe: GRS_A = GRS_B?</div>
+          <p>GRS_A = y_A*/x_A* = 40/80 = <strong>0,5</strong>. GRS_B = y_B*/x_B* = 20/40 = <strong>0,5</strong>.
+            Gleich! ✓ Die Allokation ist tauscheffizient — sie liegt auf der Kontraktkurve.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Ist eine gegebene Allokation effizient?</h3>
+        <p>Angenommen, A und B starten stattdessen bei x_A=60, y_A=20 (statt 80,40). Ist das effizient?</p>
+        <ol class="steps">
+          <li>x_B = 120−60 = 60, y_B = 60−20 = 40</li>
+          <li>GRS_A = y_A/x_A = 20/60 = 0,333</li>
+          <li>GRS_B = y_B/x_B = 40/60 = 0,667</li>
+          <li>0,333 ≠ 0,667 ⟹ <strong>nicht effizient</strong> — es gibt noch eine Tauschlinse. A hat relativ zu
+            wenig y (Bücher) für sein x, B relativ zu viel. Ein Tausch „mehr y für A, mehr x für B" würde
+            beide besserstellen.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Im Optimum sind die Indifferenzkurven
+            parallel."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Im Optimum <strong>tangieren</strong> beide
+            Indifferenzkurven denselben Punkt — GRS_A = GRS_B (im Wettbewerb zusätzlich = pₓ/p_y).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Pareto-Effizienz bedeutet, dass es allen
+            gleich gut geht."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Effizienz sagt nur: <strong>keine
+            gegenseitig vorteilhaften Tausche mehr möglich</strong>. Die Kontraktkurve hat viele Punkte — auch
+            sehr unfair verteilte.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Nur wenn die Einkommensverteilung fair ist,
+            führt der Markt zu Effizienz."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Jedes Wettbewerbsgleichgewicht ist effizient —
+            <strong>unabhängig</strong> von der Einkommensverteilung (1. Hauptsatz). Die Verteilung entscheidet
+            nur, <strong>welcher</strong> Punkt auf der Kontraktkurve erreicht wird, nicht ob effizient
+            überhaupt erreicht wird.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>λ* wird berechnet, aber nicht interpretiert.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>λ* zeigt beim Planerproblem, <strong>wie
+            wertvoll</strong> eine zusätzliche Einheit von B's Zielnutzen für die Gesamtwirtschaft ist.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>∂U^B/∂x_A = U^B_x (Vorzeichen vergessen, weil
+            x_B = x̄ − x_A ist).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Kettenregel: dU^B/dx_A = (∂U^B/∂x_B)·(∂x_B/∂x_A)
+            = U^B_x · (−1) = <strong>−U^B_x</strong>. Gibt A mehr x, sinkt B's Nutzen entsprechend.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Die Kernbedingung</h4>
+          <pre class="code">Tauscheffizienz:   GRS_A = GRS_B = pₓ/p_y   (im Wettbewerb automatisch erfüllt)
+GRS^i (Haushalt i): U^i_x / U^i_y
+Planerproblem:     ℒ = U^A(x_A,y_A) + λ[U^B(x̄−x_A, ȳ−y_A) − Ū^B]</pre>
+
+          <h4>Edgeworth-Box — Was ist wo?</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Element</th><th>Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><td>Kontraktkurve</td><td>alle Pareto-effizienten Punkte (GRS_A=GRS_B)</td></tr>
+              <tr><td>Tauschlinse</td><td>Region mit noch ungenutzten, für beide vorteilhaften Tauschen</td></tr>
+              <tr><td>O^A / O^B</td><td>Ursprünge der beiden Haushalte (gegenüberliegende Ecken)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>GRS_A = GRS_B</strong> ist die Tauscheffizienz-Bedingung — nicht „Kurven parallel"</li>
+            <li><strong>Effizienz ≠ Gerechtigkeit</strong> — die Kontraktkurve enthält auch unfaire Punkte</li>
+            <li><strong>1. Hauptsatz:</strong> jedes Wettbewerbsgleichgewicht ist Pareto-effizient (unabhängig
+              von der Einkommensverteilung)</li>
+            <li>Beim Planerproblem: Kettenregel nicht vergessen, wenn x_B = x̄−x_A substituiert wird</li>
+            <li>Bei identischen Cobb-Douglas-Nutzenfunktionen (gleiche Exponenten) ist die Kontraktkurve die
+              <strong>Diagonale</strong> der Box (Verhältnis ȳ/x̄)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Wann ist eine Allokation Pareto-effizient?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Wenn beide Haushalte exakt gleich viel bekommen</button>
+              <button class="quiz-choice" type="button" data-correct>Wenn niemand bessergestellt werden kann, ohne jemand anderen schlechterzustellen</button>
+              <button class="quiz-choice" type="button">Wenn der Staat die Verteilung festlegt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Pareto-Effizienz heißt: es gibt keinen für beide vorteilhaften
+              Tausch mehr — nichts über <strong>Gerechtigkeit</strong> der Verteilung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Kontraktkurve y_A=0,5·x_A (x̄=120, ȳ=60). Bei
+              x_A=80: wie groß ist y_A?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>y_A = 0,5 · 80 = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Bei x_A*=80 (x̄=120): wie groß ist x_B*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x_B* = x̄ − x_A* = 120 − 80 = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="kontraktkurve">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie heißt die Menge aller Pareto-effizienten
+              Punkte in der Edgeworth-Box?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>Kontraktkurve</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.5" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Im Optimum ist GRS_A = y_A*/x_A* = 40/80. Wie
+              groß ist GRS_A (als Dezimalzahl)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>40/80 = <strong>0,5</strong>. Da GRS_B = 20/40 ebenfalls 0,5 ist,
+              ist die Allokation tauscheffizient.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: Bei x_A=60, y_A=20 (x̄=120, ȳ=60)
+              ist GRS_A=0,333 und GRS_B=0,667. Ist diese Allokation Pareto-effizient?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, weil beide GRS positiv sind</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, weil GRS_A ≠ GRS_B — es gibt noch eine Tauschlinse</button>
+              <button class="quiz-choice" type="button">Ja, weil x_A+x_B=120 stimmt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Effizienz braucht <strong>GRS_A=GRS_B</strong>, nicht nur, dass die
+              Ressourcen korrekt aufgeteilt sind. Hier ist noch ein vorteilhafter Tausch möglich.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Was besagt der Erste Hauptsatz der
+              Wohlfahrtsökonomik?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Jedes Wettbewerbsgleichgewicht ist Pareto-effizient</button>
+              <button class="quiz-choice" type="button">Der Markt führt immer zu einer gerechten Verteilung</button>
+              <button class="quiz-choice" type="button">Ein Planer erreicht immer ein besseres Ergebnis als der Markt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Markt erreicht Effizienz <strong>automatisch</strong>, ganz ohne
+              zentralen Planer — unabhängig von der Einkommensverteilung.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="01-lagrange.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Die Lagrange-Methode</div>
+        </a>
+        <a class="next" href="03-globale-effizienz.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Globale Effizienz</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Das Solow-Modell · P2 Makro</title>
+<meta name="description" content="Das Solow-Wachstumsmodell bildlich erklärt – Kapitalakkumulation, das Solow-Diagramm mit Investitions- und Abschreibungskurve, der Steady State k* und die Goldene Regel des Kapitalstocks, mit durchgerechnetem Beispiel." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Solow-Diagramm</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 11</div>
+    <span class="th-icon">🌱</span>
+    <h1>Das Solow-Modell</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Kapitalakkumulation &amp; Solow-Diagramm</a></li>
+        <li><a href="#rechnen">Beispiele: Steady State &amp; Goldene Regel</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Die Produktionsfunktion aus Thema 10 sagt dir, wie viel Output aus Kapital und Arbeit
+          entsteht — aber nicht, <strong>wie viel Kapital</strong> eine Volkswirtschaft langfristig überhaupt
+          anhäuft. Genau das beantwortet das <strong>Solow-Modell</strong>: Es zeigt, wie sich der Kapitalstock
+          pro Kopf über die Zeit entwickelt, wo er sich einpendelt — und ob mehr Sparen wirklich immer besser ist.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… eine <strong>Badewanne</strong> mit laufendem Wasserhahn und offenem Abfluss. Der Wasserhahn füllt
+            die Wanne — das sind die <strong>Investitionen s·y</strong> (ein fester Anteil s des Outputs pro Kopf
+            wird investiert). Gleichzeitig läuft ständig Wasser durch den Abfluss ab — das sind
+            <strong>Abschreibung δ und Bevölkerungswachstum n</strong>, die beide den vorhandenen Kapitalstock pro
+            Kopf „verwässern". Ist der Zufluss größer als der Abfluss, steigt der Wasserstand: Der Kapitalstock pro
+            Kopf k wächst. Sind Zufluss und Abfluss exakt gleich groß, bleibt der Wasserstand für immer konstant —
+            das ist der <strong>Steady State</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Kapitalakkumulation &amp; das Solow-Diagramm</h2>
+        <p>Wie viel Kapital pro Kopf in einer Periode dazukommt (oder verloren geht), fasst die
+          <strong>Solow-Grundgleichung</strong> zusammen:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Die Solow-Grundgleichung</div>
+          <span class="formula">Δk = s·y − (δ+n)·k</span>
+          <p><strong>Δk</strong> = Veränderung des Kapitalstocks pro Kopf &nbsp;·&nbsp; <strong>s</strong> =
+            Sparquote (0&lt;s&lt;1, exogen) &nbsp;·&nbsp; <strong>y = A·k^α</strong> = Output pro Kopf &nbsp;·&nbsp;
+            <strong>δ</strong> = Abschreibungsrate &nbsp;·&nbsp; <strong>n</strong> = Bevölkerungswachstumsrate.
+            s·y sind die Investitionen pro Kopf (der „Wasserhahn"), (δ+n)·k ist der Kapitalverlust pro Kopf durch
+            Verschleiß und mehr Köpfe, auf die sich derselbe Kapitalstock verteilt (der „Abfluss").</p>
+        </div>
+
+        <!-- SVG: Solow-Diagramm -->
+        <figure class="diagram">
+          <div class="diagram-title">Solow-Diagramm: Investition s·y trifft Abschreibung (δ+n)·k im Steady State k*</div>
+          <svg viewBox="0 0 660 380" width="660" role="img" aria-label="Solow-Diagramm mit Investitionskurve s mal A mal k hoch alpha und Abschreibungsgerade (delta plus n) mal k, die sich bei k Stern schneiden. Links vom Schnittpunkt liegt die Investitionskurve höher, rechts davon die Abschreibungsgerade.">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Achsen -->
+              <line x1="80" y1="340" x2="615" y2="340" stroke="#8a94a6" stroke-width="1.3"/>
+              <line x1="80" y1="340" x2="80" y2="30" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="600" y="360" text-anchor="end" class="svg-soft" font-size="12">Kapital pro Kopf k →</text>
+              <text x="85" y="24" class="svg-soft" font-size="12">Investition / Abschreibung pro Kopf</text>
+
+              <!-- Abschreibungsgerade (δ+n)·k -->
+              <line x1="80" y1="340" x2="580" y2="60" stroke="#e0483d" stroke-width="2.4"/>
+              <text x="500" y="90" fill="#e0483d" font-weight="800" font-size="13">(δ+n)·k</text>
+
+              <!-- Investitionskurve s·y -->
+              <polyline points="105,275 130,260 180,242 230,229 280,219 304,215 330,210 380,203 430,197 480,191 530,185 580,180"
+                fill="none" stroke="#2f6df6" stroke-width="2.6"/>
+              <text x="430" y="172" fill="#2f6df6" font-weight="800" font-size="13">s·y = s·A·k^α</text>
+
+              <!-- Schnittpunkt k* -->
+              <line x1="304" y1="215" x2="304" y2="340" stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <line x1="80" y1="215" x2="304" y2="215" stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <circle cx="304" cy="215" r="5.5" fill="#15803d"/>
+              <text x="304" y="357" text-anchor="middle" fill="#15803d" font-weight="800" font-size="13">k* ≈ 4,48</text>
+              <text x="60" y="211" text-anchor="end" class="svg-soft" font-size="11">≈0,31</text>
+
+              <!-- Dynamik-Pfeile -->
+              <text x="180" y="298" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="17">→</text>
+              <text x="180" y="315" text-anchor="middle" fill="#12b28c" font-size="11">k wächst</text>
+              <text x="430" y="298" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="17">←</text>
+              <text x="430" y="315" text-anchor="middle" fill="#e0483d" font-size="11">k schrumpft</text>
+            </g>
+          </svg>
+          <figcaption>Links von k* liegt die Investitionskurve über der Abschreibungsgeraden (s·y &gt; (δ+n)·k) →
+            k wächst. Rechts von k* ist es umgekehrt → k schrumpft. Beide Kräfte treiben die Volkswirtschaft immer
+            zu k* — dem Steady State.</figcaption>
+        </figure>
+
+        <h3>Steady State: wo Δk = 0 gilt</h3>
+        <p>Der Steady State ist der Punkt, an dem Zufluss und Abfluss sich exakt ausgleichen: Δk = 0. Setzt man
+          das in die Grundgleichung ein und löst nach k* auf:</p>
+        <div class="evalstep"><span class="arrow">→</span> 0 = s·A·k*^α − (δ+n)·k* &nbsp;⇒&nbsp;
+          s·A·k*^α = (δ+n)·k*</div>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Steady-State-Kapitalstock</div>
+          <span class="formula">k* = [ s·A / (δ+n) ]^(1/(1−α))</span>
+          <p>Und der zugehörige Steady-State-Output pro Kopf: <strong>y* = A·(k*)^α</strong>. In diesem Zustand
+            wächst k nicht mehr — die Volkswirtschaft hat ihr langfristiges Kapitalniveau pro Kopf erreicht.</p>
+        </div>
+
+        <h3>Goldene Regel des Kapitalstocks</h3>
+        <p>Nicht jeder Steady State ist gleich gut: Der Konsum pro Kopf c = (1−s)·y hängt von der Sparquote s ab.
+          Zu wenig sparen heißt wenig Kapital, aber viel vom Output direkt konsumierbar. Zu viel sparen heißt viel
+          Kapital, aber wenig bleibt zum Konsumieren übrig. Es gibt genau ein k*, das den Konsum pro Kopf im
+          Steady State maximiert:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Goldene Regel</div>
+          <span class="formula">MPK = δ + n</span>
+          <p>Ist MPK &gt; δ+n, bringt zusätzliches Kapital mehr Ertrag als es an Abschreibung kostet — mehr sparen
+            lohnt sich. Ist MPK &lt; δ+n, wird bereits mehr investiert, als sich lohnt — weniger sparen wäre besser.
+            Nur bei MPK = δ+n ist der Konsum pro Kopf im Steady State maximal.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>Δk=0</b><span>Definition des Steady State — NICHT k=0!</span></div>
+          <div class="fact"><b>s exogen</b><span>Sparquote ist Modellannahme, nicht optimiert</span></div>
+          <div class="fact"><b>MPK−δ</b><span>Nettokapitalrendite (Abschreibung abgezogen)</span></div>
+          <div class="fact"><b>k^G</b><span>Goldene-Regel-Kapitalstock, maximiert c*</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Steady State &amp; Goldene Regel berechnen</h2>
+
+        <h3>Beispiel: Steady State finden</h3>
+        <p>Aufgabe: A=1, s=0,2, n=0,02, δ=0,05, α=0,3. Berechne k*, y* und c*.</p>
+
+        <ol class="steps">
+          <li><strong>Parameter einsetzen:</strong> k* = [s·A/(δ+n)]^(1/(1−α)) = [0,2·1 / (0,02+0,05)]^(1/0,7) =
+            [0,2/0,07]^(1/0,7) = 2,857^1,4286</li>
+          <li><strong>Potenz auswerten</strong> (über den Logarithmus): ln(2,857) ≈ 1,050 &nbsp;·&nbsp; 1,050·1,4286
+            ≈ 1,500 &nbsp;·&nbsp; e^1,500 ≈ <strong>4,48</strong> → k* ≈ <strong>4,48</strong></li>
+          <li><strong>Output pro Kopf:</strong> y* = A·(k*)^α = 1·4,48^0,3 ≈ <strong>1,57</strong></li>
+          <li><strong>Konsum pro Kopf:</strong> c* = (1−s)·y* = 0,8·1,57 ≈ <strong>1,25</strong></li>
+          <li><strong>Gegenprobe (Δk=0?):</strong> s·y* = 0,2·1,57 ≈ 0,314 und (δ+n)·k* = 0,07·4,48 ≈ 0,314 —
+            <strong>stimmt exakt überein</strong> ✓, genau wie im Diagramm oben am Schnittpunkt zu sehen.</li>
+        </ol>
+
+        <h3>Beispiel: Goldene Regel berechnen</h3>
+        <p>Gleiche Parameter — welcher Kapitalstock k<sup>G</sup> maximiert den Konsum pro Kopf, und wie verhält
+          er sich zum tatsächlichen k*?</p>
+
+        <ol class="steps">
+          <li><strong>Goldene-Regel-Bedingung:</strong> MPK = δ+n &nbsp;⇒&nbsp; α·A·(k<sup>G</sup>)^(α−1) = δ+n
+            &nbsp;⇒&nbsp; k<sup>G</sup> = [α·A/(δ+n)]^(1/(1−α))</li>
+          <li><strong>Einsetzen:</strong> k<sup>G</sup> = [0,3·1/0,07]^(1/0,7) = [4,286]^1,4286</li>
+          <li><strong>Auswerten:</strong> ln(4,286) ≈ 1,455 &nbsp;·&nbsp; 1,455·1,4286 ≈ 2,079 &nbsp;·&nbsp;
+            e^2,079 ≈ <strong>8,00</strong> → k<sup>G</sup> ≈ <strong>8,00</strong></li>
+          <li><strong>Vergleich:</strong> k<sup>G</sup> (≈8,00) ist <strong>größer</strong> als k* (≈4,48) aus
+            dem Steady-State-Beispiel. Die Volkswirtschaft spart aktuell also <strong>weniger</strong>, als für
+            die Goldene Regel nötig wäre — eine höhere Sparquote s würde den Kapitalstock langfristig Richtung
+            k<sup>G</sup> treiben und den Konsum pro Kopf im neuen Steady State erhöhen.</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">Kurzfristiger Verzicht, langfristiger Gewinn</div>
+          <p>Eine höhere Sparquote senkt den Konsum <em>sofort</em> (weniger vom Output wird konsumiert), erhöht
+            ihn aber <em>langfristig</em>, sobald der höhere Kapitalstock mehr Output pro Kopf abwirft — solange
+            k* unterhalb von k<sup>G</sup> liegt. Über k<sup>G</sup> hinaus zu sparen wäre dagegen ineffizient.</p>
+        </div>
+
+        <h3>Komparative Statik: Was passiert bei höherer Sparquote?</h3>
+        <p>Klausurfrage: Erhöht die Regierung die Sparquote von s=0,2 auf <strong>s=0,3</strong> (alle anderen
+          Parameter bleiben: A=1, n=0,02, δ=0,05, α=0,3) — wie verändern sich k*, y* und c*?</p>
+
+        <ol class="steps">
+          <li><strong>Neues k** berechnen:</strong> k** = [0,3·1/0,07]^(1/0,7) = 4,286^1,4286 ≈
+            <strong>8,00</strong> — die Investitionskurve s·y verschiebt sich nach oben, der Schnittpunkt mit der
+            Abschreibungsgeraden wandert nach rechts.</li>
+          <li><strong>Neues y**:</strong> y** = 1·8,00^0,3 ≈ <strong>1,87</strong></li>
+          <li><strong>Neues c**:</strong> c** = (1−0,3)·1,87 = 0,7·1,87 ≈ <strong>1,31</strong> — mehr als das
+            alte c*≈1,25! Die höhere Sparquote lohnt sich hier, weil k* (4,48) noch unter der Goldenen Regel
+            k<sup>G</sup> (8,00) lag.</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Zufall? Nein — bei s = α trifft man automatisch die Goldene Regel</div>
+          <p>Auffällig: Mit s=0,3 landet k** exakt bei k<sup>G</sup>≈8,00. Das liegt daran, dass s hier genau dem
+            Wert von α entspricht. Steady-State-Bedingung (s·A·k^(α−1)=δ+n) und Goldene-Regel-Bedingung
+            (α·A·k^(α−1)=δ+n) sind identisch, sobald <strong>s = α</strong> gilt. Für Cobb-Douglas-Funktionen ist
+            „spare genau den Kapitaleinkommensanteil" also automatisch die goldene Sparquote — ein beliebter
+            Klausur-Kniff, um k<sup>G</sup> ohne Umweg über MPK direkt zu berechnen.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Steady State bedeutet k = 0 (kein Kapital mehr
+            vorhanden).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Steady State heißt <strong>Δk = 0</strong> —
+            der Kapitalstock <em>pro Kopf</em> bleibt konstant, meist bei einem positiven Wert k* &gt; 0. Das ist
+            die wichtigste Falle in diesem Thema!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Im Steady State wächst in der Volkswirtschaft
+            gar nichts mehr.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Y/L (Output pro Kopf) ist konstant, aber der
+            <strong>Gesamtoutput Y wächst trotzdem</strong> mit der Bevölkerung (Rate n), weil L wächst. Mit
+            technischem Fortschritt g wächst sogar Y/L selbst weiter.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Sparquote s wird im Solow-Modell optimal
+            berechnet.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>s ist <strong>exogen</strong> — eine feste
+            Modellannahme, kein Ergebnis einer Optimierung. Nur bei der Goldenen Regel fragt man nachträglich, ob
+            das gegebene s zufällig optimal wäre.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Nettokapitalrendite entspricht MPK.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die <strong>Nettorendite</strong> ist
+            <strong>MPK − δ</strong> — die Abschreibung muss abgezogen werden. MPK allein ist die
+            Brutto-Grenzproduktivität.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein höheres k* ist immer besser — mehr Kapital
+            heißt mehr Wohlstand.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur bis zur Goldenen Regel k<sup>G</sup>!
+            Darüber hinaus sinkt der Konsum pro Kopf wieder, weil zu viel investiert und zu wenig konsumiert wird
+            — mehr Kapital ist nicht automatisch besser.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Formeln auf einen Blick</h4>
+          <pre class="code">Δk = s·y − (δ+n)·k         Solow-Grundgleichung
+k* = [sA/(δ+n)]^(1/(1−α))   Steady-State-Kapitalstock (Δk=0)
+y* = A·(k*)^α                Steady-State-Output pro Kopf
+c* = (1−s)·y*                Steady-State-Konsum pro Kopf
+MPK = δ+n                    Goldene Regel (maximiert c*)</pre>
+
+          <h4>Beispiel-Werte (A=1, s=0,2, n=0,02, δ=0,05, α=0,3)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Größe</th><th>Wert</th></tr></thead>
+            <tbody>
+              <tr><td>k* (Steady State)</td><td>≈ 4,48</td></tr>
+              <tr><td>y* (Output pro Kopf)</td><td>≈ 1,57</td></tr>
+              <tr><td>c* (Konsum pro Kopf)</td><td>≈ 1,25</td></tr>
+              <tr><td>k<sup>G</sup> (Goldene Regel)</td><td>≈ 8,00</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Δk=0, nicht k=0</strong> — Steady State heißt konstant, nicht leer</li>
+            <li>Links von k* wächst k (Investition &gt; Abschreibung), rechts von k* schrumpft es</li>
+            <li><strong>s ist exogen</strong> — keine Optimierung im Grundmodell</li>
+            <li>Goldene Regel: <strong>MPK = δ+n</strong>, maximiert c*, nicht k* oder y*</li>
+            <li>k<sup>G</sup> &gt; k* heißt: mehr sparen würde langfristig mehr Konsum bringen</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was bedeutet „Steady State" im Solow-Modell?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Δk = 0 — der Kapitalstock PRO KOPF bleibt konstant</button>
+              <button class="quiz-choice" type="button">k = 0 — es gibt kein Kapital mehr</button>
+              <button class="quiz-choice" type="button">Y = 0 — die Wirtschaft produziert nichts mehr</button>
+              <button class="quiz-choice" type="button">s = 0 — es wird nichts mehr gespart</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Steady State heißt, dass sich der Kapitalstock <strong>pro Kopf</strong>
+              nicht mehr verändert (Δk=0) — meist bei einem positiven k* &gt; 0, nicht bei k=0!</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4.48" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">2.</span>A=1, s=0,2, n=0,02, δ=0,05, α=0,3. Wie groß ist
+              der Steady-State-Kapitalstock pro Kopf k*? (2 Nachkommastellen)</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>k* = [sA/(δ+n)]^(1/(1−α)) = [0,2/0,07]^(1/0,7) ≈ 2,857^1,4286 ≈
+              <strong>4,48</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1.57" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Gleiche Werte: Wie groß ist der Output pro Kopf
+              y* im Steady State?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>y* = A·(k*)^α = 4,48^0,3 ≈ <strong>1,57</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1.25" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Gleiche Werte: Wie groß ist der Konsum pro Kopf
+              c* im Steady State?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>c* = (1−s)·y* = 0,8·1,57 ≈ <strong>1,25</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Was besagt die Goldene Regel des Kapitalstocks?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>MPK = δ+n — an diesem Punkt ist der Konsum pro Kopf im Steady State maximal</button>
+              <button class="quiz-choice" type="button">s sollte immer bei 100 % liegen, um Kapital zu maximieren</button>
+              <button class="quiz-choice" type="button">k* sollte immer so groß wie möglich sein</button>
+              <button class="quiz-choice" type="button">MPK sollte immer 0 sein</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die Goldene Regel maximiert den <strong>Konsum</strong> pro Kopf,
+              nicht den Kapitalstock oder Output selbst — sie lautet MPK = δ+n.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="8.0" data-tol="0.2">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: Mit den Werten von oben (A=1,
+              δ+n=0,07, α=0,3): Wie groß ist der Goldene-Regel-Kapitalstock k<sup>G</sup>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>k<sup>G</sup> = [αA/(δ+n)]^(1/(1−α)) = [0,3/0,07]^(1/0,7) ≈
+              4,286^1,4286 ≈ <strong>8,00</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>k<sup>G</sup> ≈ 8,00 ist größer als k* ≈ 4,48 aus
+              dem Beispiel oben. Was folgt daraus für die Sparquote?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Die aktuelle Sparquote s=0,2 ist zu niedrig — eine Erhöhung würde den Konsum pro Kopf langfristig steigern</button>
+              <button class="quiz-choice" type="button">Die Sparquote ist bereits optimal</button>
+              <button class="quiz-choice" type="button">Die Sparquote sollte gesenkt werden</button>
+              <button class="quiz-choice" type="button">Das Solow-Modell macht dazu keine Aussage</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Solange k<sup>G</sup> &gt; k* gilt, liegt MPK noch über δ+n — mehr
+              Kapital würde sich noch lohnen. Eine höhere Sparquote treibt k* Richtung k<sup>G</sup> und erhöht so
+              langfristig den Konsum pro Kopf.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="10-produktionsfunktion.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Die Produktionsfunktion</div>
+        </a>
+        <a class="next" href="12-klausurtraining.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Klausurtraining: von BIP bis Solow</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

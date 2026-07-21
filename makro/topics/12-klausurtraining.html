@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klausurtraining: von BIP bis Solow · P2 Makro</title>
+<meta name="description" content="Klausurtraining für P2 Makroökonomie: 23 klausurtypische Übungsaufgaben quer durch alle 11 Themen, Schritt für Schritt durchgerechnet — plus Quick-Reference und Wissenscheck." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+<style>
+  .solution { margin: 14px 0 26px; border: 1px solid var(--c-border); border-radius: var(--radius-s); background: var(--c-surface-2); }
+  .solution summary { cursor: pointer; padding: 13px 18px; font-weight: 700; color: var(--c-primary-d); }
+  .solution summary:hover { color: var(--c-primary); }
+  .solution[open] summary { border-bottom: 1px solid var(--c-border); }
+  .solution > :not(summary) { margin: 14px 18px 18px; }
+</style>
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Ablauf</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P2-Kursübersicht</a> › Thema 12</div>
+    <span class="th-icon">🎯</span>
+    <h1>Klausurtraining: von BIP bis Solow</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Übungsaufgaben</span>
+      <span class="badge badge-soft">23 klausurtypische Aufgaben · alle 11 Themen · noch keine Original-Klausur verfügbar</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">So trainierst du am besten</a></li>
+        <li><a href="#bip">1 · BIP-Berechnung</a></li>
+        <li><a href="#preise-arbeitsmarkt">2 · Preise, Inflation &amp; Arbeitsmarkt</a></li>
+        <li><a href="#guetermarkt">3 · Gütermarkt &amp; Multiplikator</a></li>
+        <li><a href="#geldmarkt">4 · Geldmarkt &amp; Quantitätsgleichung</a></li>
+        <li><a href="#iskurve">5 · Die IS-Kurve</a></li>
+        <li><a href="#lmkurve">6 · Die LM-Kurve</a></li>
+        <li><a href="#islm">7 · IS-LM: Gleichgewicht &amp; Politik</a></li>
+        <li><a href="#solow">8 · Solow-Modell &amp; Steady State</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>So trainierst du am besten</h2>
+        <p class="lead-in">P2 ist mit <strong>6 ECTS</strong> dein Nebenfach-Modul dieses Semesters — aber die
+          Klausur verlangt trotzdem sauberes Rechnen: BIP, Preise, Gütermarkt, Geldmarkt, das komplette IS-LM-Modell
+          und das Solow-Wachstumsmodell. Diese Seite ist kein neuer Stoff, sondern <strong>Training</strong>:
+          23 klausurtypische Aufgaben, quer durch alle 11 Themen, komplett durchgerechnet.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Ehrlich gesagt: noch keine echte Altklausur</div>
+          <p>Für P2 liegt bisher <strong>keine echte Altklausur mit offizieller Musterlösung</strong> vor — die
+            Suche danach läuft noch. Die 23 Aufgaben unten sind deshalb <strong>klausurtypische
+            Übungsaufgaben</strong>, an den bekannten Aufgabenformaten des Moduls orientiert und komplett
+            durchgerechnet, aber <strong>keine Original-Klausuraufgaben</strong>. Sobald echte Altklausuren
+            auftauchen, ist das der nächste Ausbauschritt für diese Seite.</p>
+        </div>
+
+        <h3>Deine Strategie</h3>
+        <ol class="steps">
+          <li><strong>Erst selbst rechnen, dann vergleichen:</strong> jede Aufgabe komplett auf einem Blatt
+            durchrechnen, erst danach den Lösungskasten aufklappen. Reines Mitlesen bringt für eine Rechen-Klausur
+            fast nichts.</li>
+          <li><strong>Formel zuerst hinschreiben, dann erst Zahlen einsetzen:</strong> so siehst du sofort, welchen
+            Ansatz die Aufgabe verlangt — und das ist meist auch in der echten Klausur die Voraussetzung für
+            Teilpunkte.</li>
+          <li><strong>Zwischenschritte aufschreiben, nicht im Kopf rechnen:</strong> gerade bei IS-LM-Einsetzungen
+            und der Solow-Formel findest du so Rechenfehler schneller.</li>
+          <li><strong>Wissenscheck als Zeitdruck-Test:</strong> nach allen 8 Themenblöcken am Stück durcharbeiten,
+            ohne vorher nachzuschlagen.</li>
+        </ol>
+
+        <h3>Die Top-5-Fehlerquellen des Moduls</h3>
+        <p>Diese fünf Fallen tauchen in P2 immer wieder auf. Achte in den Aufgaben unten gezielt darauf, wo sie
+          zuschlagen könnten.</p>
+        <div class="factgrid">
+          <div class="fact"><b>1 · IS negativ, LM positiv</b><span>die Steigungen nicht verwechseln — IS fällt, LM steigt</span></div>
+          <div class="fact"><b>2 · Steady State</b><span>heißt Δk = 0, nicht k = 0 — der Kapitalstock ist nicht null, er wächst nur nicht mehr</span></div>
+          <div class="fact"><b>3 · Zwei Multiplikatoren</b><span>Gütermarkt-Multiplikator (ohne Geldmarkt) ≠ IS-LM-Multiplikator (mit Geldmarkt, wegen Crowding-Out kleiner)</span></div>
+          <div class="fact"><b>4 · Einheiten checken</b><span>nominal vs. real, pro Kopf vs. absolut — vor jeder Interpretation kurz prüfen</span></div>
+          <div class="fact"><b>5 · Komparative Statik</b><span>erst die neue Kurve herleiten, dann den neuen Schnittpunkt suchen — nie umgekehrt</span></div>
+        </div>
+      </section>
+
+      <!-- ===== 1 BIP ===== -->
+      <section id="bip" class="reveal">
+        <h2>Themenblock 1: BIP-Berechnung</h2>
+        <p>Die drei Seiten des BIP — Verwendung, Entstehung, Verteilung — führen zum selben Ergebnis. Dazu die
+          Unterscheidung nominal/real über den BIP-Deflator.</p>
+
+        <h3>🧮 Aufgabe 1.1: Verwendungsseite BIP</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 1.1 · 3 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben: C = 1200, I = 400, G = 600, X = 300, M = 200. Berechne das BIP nach Verwendungsseite.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Formel:</strong> BIP = C + I + G + (X − M).</li>
+            <li><strong>Einsetzen:</strong> BIP = 1200 + 400 + 600 + (300 − 200) = 1200 + 400 + 600 + 100 =
+              <strong>2300</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 1.2: Nominal vs. real</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 1.2 · 3 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Jahr 1: BIP<sub>nom</sub> = 1000, BIP<sub>real</sub> = 1000. Jahr 2: BIP<sub>nom</sub> = 1100,
+            BIP<sub>real</sub> = 1000. Berechne den BIP-Deflator für Jahr 2 und die Inflationsrate.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Deflator:</strong> Deflator = BIP<sub>nom</sub>/BIP<sub>real</sub> × 100 =
+              1100/1000 × 100 = <strong>110</strong>.</li>
+            <li><strong>Inflationsrate:</strong> Deflator ist von 100 auf 110 gestiegen ⇒
+              Inflationsrate = <strong>10 %</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 1.3: Entstehungsseite</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 1.3 · 4 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Wertschöpfung nach Sektor: Landwirtschaft = 100, Industrie = 400, Dienstleistungen = 500. Berechne das
+            BIP und die Sektoranteile.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <p>BIP = 100 + 400 + 500 = <strong>1000</strong>. Anteile: Landwirtschaft 100/1000 = 10 %, Industrie
+            400/1000 = 40 %, Dienstleistungen 500/1000 = 50 %.</p>
+        </details>
+      </section>
+
+      <!-- ===== 2 PREISE/ARBEITSMARKT ===== -->
+      <section id="preise-arbeitsmarkt" class="reveal">
+        <h2>Themenblock 2: Preise, Inflation &amp; Arbeitsmarkt</h2>
+        <p>Preisindizes werden aus gewichteten Warenkörben gebaut, die Arbeitslosenquote aus der Erwerbspersonen-Definition,
+          und die Phillips-Kurve verknüpft beides mit der Inflation.</p>
+
+        <h3>🧮 Aufgabe 2.1: VPI-Berechnung</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 2.1 · 4 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Warenkorb: 60 % Nahrung (p₀=100 → p₁=110), 40 % Energie (p₀=200 → p₁=240). Berechne VPI₁ (Basisjahr
+            = 100).</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Formel (gewichtete Preisindizes):</strong> VPI₁ = Σ wᵢ · (p₁ᵢ/p₀ᵢ × 100) mit den Budgetanteilen wᵢ.</li>
+            <li><strong>Teilindex Nahrung:</strong> 110/100 × 100 = 110.</li>
+            <li><strong>Teilindex Energie:</strong> 240/200 × 100 = 120.</li>
+            <li><strong>Ergebnis:</strong> VPI₁ = 0,6 × 110 + 0,4 × 120 = 66 + 48 = <strong>114</strong> (Inflation 14 %).</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 2.2: Inflationsberechnung &amp; Reallohn</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 2.2 · 3 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>VPI₀ = 100, VPI₁ = 108. Berechne die Inflationsrate und die reale Lohnänderung bei einem
+            Nominallohnwachstum von +2 %.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Inflationsrate:</strong> (108 − 100)/100 = <strong>8 %</strong>.</li>
+            <li><strong>Reales Lohnwachstum:</strong> (1.02/1.08) − 1 ≈ <strong>−5.6 %</strong> — der Nominallohn
+              steigt, aber real sinkt die Kaufkraft, weil die Preise schneller steigen als der Lohn.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 3.1: Arbeitslosenquote</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 3.1 · 3 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Bevölkerung = 100 Mio., Erwerbstätige = 60 Mio., Arbeitslose (aktiv suchend) = 3 Mio. Berechne die
+            Arbeitslosenquote u und die Erwerbsbeteiligung.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Erwerbspersonen L:</strong> L = Erwerbstätige + Arbeitslose = 60 + 3 = 63 Mio.</li>
+            <li><strong>Arbeitslosenquote:</strong> u = Arbeitslose/L = 3/63 ≈ <strong>4.76 %</strong>.</li>
+            <li><strong>Erwerbsbeteiligung:</strong> L/Bevölkerung = 63/100 = <strong>63 %</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 3.2: Phillips-Kurve</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 3.2 · 5 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>π = π<sup>e</sup> − 0.5(u − u*). Gegeben: π<sup>e</sup> = 2 %, u = 4 %, u* = 5 %. Berechne die
+            aktuelle Inflation π.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <p>π = 2 % − 0.5 × (4 % − 5 %) = 2 % − 0.5 × (−1 %) = 2 % + 0.5 % = <strong>2.5 %</strong>. Die
+            Arbeitslosigkeit liegt <em>unter</em> der natürlichen Quote u*, das treibt die Inflation über die
+            Erwartung hinaus.</p>
+        </details>
+      </section>
+
+      <!-- ===== 3 GÜTERMARKT ===== -->
+      <section id="guetermarkt" class="reveal">
+        <h2>Themenblock 3: Gütermarkt &amp; Multiplikator</h2>
+        <p>Der Gütermarkt-Multiplikator 1/(1−c) ist der Grundbaustein — er gilt <strong>ohne</strong> Geldmarkt und
+          ist deshalb größer als der spätere IS-LM-Multiplikator.</p>
+
+        <h3>🧮 Aufgabe 4.1: Gleichgewichtsoutput</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 4.1 · 4 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>C = 100 + 0.8(Y − T), I = 300, G = 200, T = 100. Berechne das Gleichgewichts-Y.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Ansatz:</strong> Y = C + I + G = 100 + 0.8(Y − 100) + 300 + 200.</li>
+            <li><strong>Ausmultiplizieren:</strong> Y = 100 + 0.8Y − 80 + 300 + 200 = 0.8Y + 520.</li>
+            <li><strong>Nach Y auflösen:</strong> 0.2Y = 520 ⇒ Y = <strong>2600</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 4.2: Multiplikator-Effekt</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 4.2 · 5 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben: c = 0.75. G erhöht sich um 100. Berechne den Multiplikator und ΔY.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Multiplikator:</strong> m = 1/(1 − c) = 1/(1 − 0.75) = 1/0.25 = <strong>4</strong>.</li>
+            <li><strong>ΔY:</strong> ΔY = m × ΔG = 4 × 100 = <strong>400</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 4.3: Fiskalpolitik rückwärts</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 4.3 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gleichgewicht bei Y = 2000, Ziel Y = 2200, c = 0.8. Wie groß muss ΔG sein?</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Multiplikator:</strong> m = 1/(1 − 0.8) = <strong>5</strong>.</li>
+            <li><strong>ΔG:</strong> ΔG = ΔY/m = (2200 − 2000)/5 = 200/5 = <strong>40</strong>.</li>
+          </ol>
+        </details>
+      </section>
+
+      <!-- ===== 4 GELDMARKT ===== -->
+      <section id="geldmarkt" class="reveal">
+        <h2>Themenblock 4: Geldmarkt &amp; Quantitätsgleichung</h2>
+        <p>Der Geldmarkt bestimmt den Zins über Angebot und Nachfrage nach Realkasse. Die Quantitätsgleichung
+          MV = PY verknüpft Geldmenge, Umlaufgeschwindigkeit, Preisniveau und Output.</p>
+
+        <h3>🧮 Aufgabe 5.1: Zinsbestimmung</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 5.1 · 4 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Mˢ/P = 500, L(Y,r) = 0.2Y − 100r, Y = 2500. Berechne den Gleichgewichtszins r.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Gleichgewicht:</strong> Mˢ/P = L(Y,r) ⇒ 500 = 0.2 × 2500 − 100r.</li>
+            <li><strong>Einsetzen:</strong> 500 = 500 − 100r ⇒ 100r = 0 ⇒ r = <strong>0 %</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 5.2: Quantitätsgleichung</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 5.2 · 5 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>M = 200, V = 5, P = 2. Berechne Y. Dann erhöht sich M auf 250 — wie ändert sich Y bei konstantem V
+            und P?</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Formel:</strong> MV = PY ⇒ Y = MV/P.</li>
+            <li><strong>Ausgangswert:</strong> Y = (200 × 5)/2 = <strong>500</strong>.</li>
+            <li><strong>Nach Geldmengenerhöhung:</strong> Y = (250 × 5)/2 = <strong>625</strong> ⇒
+              ΔY = <strong>125</strong>.</li>
+          </ol>
+        </details>
+      </section>
+
+      <!-- ===== 5 IS-KURVE ===== -->
+      <section id="iskurve" class="reveal">
+        <h2>Themenblock 5: Die IS-Kurve</h2>
+        <p>Die IS-Kurve fasst alle Gütermarkt-Gleichgewichte (Y,r) zu einer Linie zusammen — sie hat wegen
+          I(r) mit I′(r)&lt;0 immer eine <strong>negative</strong> Steigung.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„IS und LM steigen beide, nur unterschiedlich
+            steil."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die <strong>IS-Kurve fällt</strong> (höherer
+            Zins ⇒ weniger Investitionen ⇒ weniger Y), die <strong>LM-Kurve steigt</strong> (höheres Y ⇒ mehr
+            Geldnachfrage ⇒ bei fixem Geldangebot muss r steigen, um die Nachfrage zu dämpfen).</div>
+        </div>
+
+        <h3>🧮 Aufgabe 6.1: IS-Kurve herleiten</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 6.1 · 5 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>C = 100 + 0.8(Y − T), I = 400 − 50r, G = 300, T = 200. Leite die IS-Kurve her.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Ansatz:</strong> Y = 100 + 0.8(Y − 200) + 400 − 50r + 300.</li>
+            <li><strong>Ausmultiplizieren:</strong> Y = 0.8Y − 160 + 100 + 400 + 300 − 50r = 0.8Y + 640 − 50r.</li>
+            <li><strong>Nach Y auflösen:</strong> 0.2Y = 640 − 50r ⇒ <strong>Y = 3200 − 250r</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 6.2: IS-Verschiebung</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 6.2 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben IS: Y = 3200 − 250r. G erhöht sich um 100. Wie lautet die neue IS-Kurve?</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Verschiebung (für gegebenes r):</strong> ΔY = 1/(1−c) × ΔG = 5 × 100 = 500.</li>
+            <li><strong>Neue IS-Kurve:</strong> Y = (3200 + 500) − 250r = <strong>3700 − 250r</strong> — die
+              Kurve verschiebt sich parallel nach rechts.</li>
+          </ol>
+        </details>
+      </section>
+
+      <!-- ===== 6 LM-KURVE ===== -->
+      <section id="lmkurve" class="reveal">
+        <h2>Themenblock 6: Die LM-Kurve</h2>
+        <p>Die LM-Kurve fasst alle Geldmarkt-Gleichgewichte (Y,r) zusammen — sie steigt, weil ein höheres Y die
+          Geldnachfrage erhöht und bei konstantem Geldangebot nur ein höherer Zins die Nachfrage wieder
+          dämpft.</p>
+
+        <h3>🧮 Aufgabe 7.1: LM-Kurve herleiten</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 7.1 · 5 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Mˢ/P = 1000, L(Y,r) = 0.5Y − 200r. Leite die LM-Kurve her.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Gleichgewicht:</strong> 1000 = 0.5Y − 200r.</li>
+            <li><strong>Nach r auflösen:</strong> 200r = 0.5Y − 1000 ⇒ <strong>r = 0.0025Y − 5</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 7.2: Geldpolitik &amp; LM-Verschiebung</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 7.2 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben LM: r = 0.0025Y − 5. Die Zentralbank erhöht Mˢ auf 1200. Wie lautet die neue LM-Kurve?</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Neues Gleichgewicht:</strong> 1200 = 0.5Y − 200r.</li>
+            <li><strong>Nach r auflösen:</strong> 200r = 0.5Y − 1200 ⇒ <strong>r = 0.0025Y − 6</strong> — die
+              Kurve verschiebt sich nach rechts/unten (bei jedem Y ist der Zins jetzt niedriger).</li>
+          </ol>
+        </details>
+      </section>
+
+      <!-- ===== 7 IS-LM ===== -->
+      <section id="islm" class="reveal">
+        <h2>Themenblock 7: IS-LM — Gleichgewicht &amp; Politik</h2>
+        <p>Jetzt kommen IS und LM zusammen: der Schnittpunkt (Y*, r*) ist das gesamtwirtschaftliche Gleichgewicht.
+          Fiskal- und Geldpolitik verschieben je eine der beiden Kurven — und der IS-LM-Multiplikator ist wegen
+          des <strong>Crowding-Out</strong>-Effekts kleiner als der reine Gütermarkt-Multiplikator.</p>
+
+        <h3>🧮 Aufgabe 8.1: IS-LM-Gleichgewicht</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 8.1 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>IS: Y = 3200 − 250r. LM: r = 0.0025Y − 5. Berechne (Y*, r*).</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>LM in IS einsetzen:</strong> Y = 3200 − 250(0.0025Y − 5).</li>
+            <li><strong>Ausmultiplizieren:</strong> Y = 3200 − 0.625Y + 1250 = 4450 − 0.625Y.</li>
+            <li><strong>Nach Y auflösen:</strong> 1.625Y = 4450 ⇒ <strong>Y* ≈ 2738</strong>.</li>
+            <li><strong>r* über LM:</strong> r* = 0.0025 × 2738 − 5 ≈ <strong>1.845 %</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 8.2: Crowding-Out</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 8.2 · 7 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Ausgangsgleichgewicht wie in 8.1 (Y* ≈ 2738, r* ≈ 1.845 %). G erhöht sich um 200. Bestimme das neue
+            Gleichgewicht und quantifiziere den Crowding-Out-Effekt.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Neue IS-Kurve:</strong> Verschiebung (für gegebenes r) = ΔG × 1/(1−c) = 200 × 5 = 1000.
+              Der ursprüngliche IS-Achsenabschnitt war 3200, also gilt jetzt Y = (3200 + 1000) − 250r =
+              <strong>4200 − 250r</strong>.</li>
+            <li><strong>Neue LM einsetzen (unverändert):</strong> Y = 4200 − 250(0.0025Y − 5) = 4200 − 0.625Y +
+              1250 = 5450 − 0.625Y.</li>
+            <li><strong>Nach Y auflösen:</strong> 1.625Y = 5450 ⇒ <strong>Y ≈ 3354</strong>, r = 0.0025 × 3354 − 5
+              ≈ <strong>3.38 %</strong>.</li>
+            <li><strong>Crowding-Out quantifizieren:</strong> ohne Geldmarkt hätte der reine
+              Gütermarkt-Multiplikator ΔY = 200 × 5 = 1000 gebracht. Tatsächlich sind es nur ΔY ≈ 3354 − 2738 ≈
+              616 — der Rest (≈ 384) geht verloren, weil der Zins von 1.845 % auf 3.38 % steigt und dadurch
+              Investitionen verdrängt: ΔI = −50 × Δr = −50 × 1.54 ≈ <strong>−77</strong>. Die
+              <strong>Investitionen sinken</strong> also durch den Zinsanstieg — genau das ist Crowding-Out.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 8.3: Geldpolitik-Effektivität</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 8.3 · 7 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>IS-LM wie in 8.1. Die Zentralbank erhöht Mˢ stattdessen um 200 (G bleibt unverändert). Bestimme das
+            neue Gleichgewicht und vergleiche den Effekt mit der Fiskalpolitik aus 8.2.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Neue LM-Kurve</strong> (aus 7.2): r = 0.0025Y − 6. IS bleibt: Y = 3200 − 250r.</li>
+            <li><strong>Einsetzen:</strong> Y = 3200 − 250(0.0025Y − 6) = 3200 − 0.625Y + 1500 = 4700 − 0.625Y.</li>
+            <li><strong>Nach Y auflösen:</strong> 1.625Y = 4700 ⇒ <strong>Y ≈ 2892</strong>, r = 0.0025 × 2892 − 6
+              ≈ <strong>1.23 %</strong>.</li>
+            <li><strong>Vergleich:</strong> ΔY ≈ 2892 − 2738 ≈ 154 — deutlich kleiner als der Fiskalpolitik-Effekt
+              aus 8.2 (≈ 616). In diesem Modell wirkt die Fiskalpolitik hier stärker, weil ihre Verschiebung der
+              IS-Kurve (1000) größer ist als die Verschiebung der LM-Kurve durch die Geldpolitik; der Zins sinkt
+              hier auf 1.23 %, was Investitionen ankurbelt, aber den Rückgang der reinen LM-Verschiebung nicht
+              vollständig kompensiert.</li>
+          </ol>
+        </details>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz Crowding-Out</div>
+          <p>Fiskalpolitik verschiebt die <strong>IS</strong>-Kurve, Geldpolitik verschiebt die
+            <strong>LM</strong>-Kurve. Bei Fiskalpolitik steigt der Zins (Crowding-Out drückt Investitionen), bei
+            Geldpolitik sinkt er (Investitionen werden zusätzlich angeregt). Der komplette IS-LM-Multiplikator ist
+            deshalb <strong>immer kleiner</strong> als der reine Gütermarkt-Multiplikator 1/(1−c).</p>
+        </div>
+      </section>
+
+      <!-- ===== 8 SOLOW ===== -->
+      <section id="solow" class="reveal">
+        <h2>Themenblock 8: Solow-Modell &amp; Steady State</h2>
+        <p>Im Steady State gilt <strong>Δk = 0</strong> — der Kapitalstock pro Kopf wächst nicht mehr, weil
+          Ersparnis und Abschreibung/Bevölkerungswachstum sich exakt ausgleichen. Das heißt nicht, dass k selbst
+          null ist.</p>
+
+        <h3>🧮 Aufgabe 9.1: Steady-State-Kapitalstock</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 9.1 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>A = 1, s = 0.2, n = 0.02, δ = 0.05, α = 0.3. Berechne k*, y* und c*.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Formel:</strong> k* = [sA/(δ+n)]<sup>1/(1−α)</sup>.</li>
+            <li><strong>Einsetzen:</strong> k* = [0.2/0.07]<sup>1/0.7</sup> = 2.857<sup>1.4286</sup> ≈
+              <strong>4.48</strong>.</li>
+            <li><strong>Output pro Kopf:</strong> y* = (k*)<sup>α</sup> = 4.48<sup>0.3</sup> ≈
+              <strong>1.57</strong>.</li>
+            <li><strong>Konsum pro Kopf:</strong> c* = (1−s)·y* = 0.8 × 1.57 ≈ <strong>1.25</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 9.2: Goldene Regel</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 9.2 · 7 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gleiche Parameter wie 9.1. Berechne den Goldene-Regel-Kapitalstock k<sup>G</sup> (wobei
+            MPK = δ+n) und vergleiche ihn mit k*.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Bedingung:</strong> MPK = α·A·(k<sup>G</sup>)<sup>α−1</sup> = δ+n ⇒
+              0.3 × (k<sup>G</sup>)<sup>−0.7</sup> = 0.07.</li>
+            <li><strong>Auflösen:</strong> (k<sup>G</sup>)<sup>0.7</sup> = 0.3/0.07 ≈ 4.286 ⇒
+              k<sup>G</sup> = 4.286<sup>1/0.7</sup> ≈ <strong>8.0</strong>.</li>
+            <li><strong>Vergleich:</strong> k<sup>G</sup> (≈8.0) &gt; k* (≈4.48) ⇒ die Volkswirtschaft spart zu
+              wenig für maximalen langfristigen Konsum — die <strong>Sparquote sollte erhöht werden</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 10.2: Ländervergleich &amp; langfristiges Wachstum</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 10.2 · 10 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Land A und Land B haben gleiche Parameter (A=1, α=0.3, δ=0.05, n=0.02), aber unterschiedliche
+            Sparquoten: A hat s=0.3, B hat s=0.1. Berechne k* und y* für beide. Wie ändert sich das langfristige
+            Wachstum mit technischem Fortschritt g = 2 %?</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Land A (s=0.3):</strong> k*<sub>A</sub> = [0.3/0.07]<sup>1/0.7</sup> ≈ <strong>8.0</strong>,
+              y*<sub>A</sub> = 8.0<sup>0.3</sup> ≈ <strong>1.87</strong>. (Land A spart genau mit s=α=0.3 — das ist
+              exakt die Goldene Regel aus Aufgabe 9.2, deshalb dieselbe Zahl wie k<sup>G</sup> dort.)</li>
+            <li><strong>Land B (s=0.1):</strong> k*<sub>B</sub> = [0.1/0.07]<sup>1/0.7</sup> ≈ <strong>1.66</strong>,
+              y*<sub>B</sub> = 1.66<sup>0.3</sup> ≈ <strong>1.16</strong>.</li>
+            <li><strong>Mit technischem Fortschritt (g=2 %):</strong> beide Länder konvergieren zu ihrem eigenen
+              (höheren oder niedrigeren) Steady-State-Niveau, aber Y/L wächst bei <strong>beiden</strong>
+              langfristig mit derselben Rate g = 2 %. Land A hat ein <strong>höheres Einkommensniveau</strong>,
+              nicht schnelleres Wachstum — das langfristige Wachstum ist exogen, bestimmt durch den technischen
+              Fortschritt.</li>
+          </ol>
+        </details>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Sparquote ändert das Niveau, nicht die langfristige Wachstumsrate</div>
+          <p>Eine höhere Sparquote hebt den Steady State (und damit das Einkommensniveau) dauerhaft an — sie
+            ändert aber <strong>nichts</strong> an der langfristigen Wachstumsrate, sobald der neue Steady State
+            erreicht ist. Nur technischer Fortschritt g liefert im Solow-Modell <strong>dauerhaftes</strong>
+            Pro-Kopf-Wachstum.</p>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <div class="factgrid">
+            <div class="fact"><b>BIP</b><span>BIP = C + I + G + (X−M)</span></div>
+            <div class="fact"><b>Deflator</b><span>BIP_nom/BIP_real × 100</span></div>
+            <div class="fact"><b>VPI</b><span>[Σwᵢ·p₁ᵢ / Σwᵢ·p₀ᵢ] × 100, gewichteter Warenkorb</span></div>
+            <div class="fact"><b>Arbeitslosenquote</b><span>u = Arbeitslose / Erwerbspersonen</span></div>
+            <div class="fact"><b>Phillips-Kurve</b><span>π = π^e − b(u − u*)</span></div>
+            <div class="fact"><b>Multiplikator</b><span>m = 1/(1−c), nur Gütermarkt, ohne Crowding-Out</span></div>
+            <div class="fact"><b>Quantitätsgleichung</b><span>M·V = P·Y</span></div>
+            <div class="fact"><b>IS-Kurve</b><span>Y = Ȳ₀ − αr, immer negative Steigung</span></div>
+            <div class="fact"><b>LM-Kurve</b><span>r = r̄₀ + βY, immer positive Steigung</span></div>
+            <div class="fact"><b>Steady State</b><span>k* = [sA/(δ+n)]^(1/(1−α)), definiert über Δk=0</span></div>
+            <div class="fact"><b>Goldene Regel</b><span>MPK = δ+n, maximiert Konsum pro Kopf</span></div>
+          </div>
+
+          <h4>BIP, Preise &amp; Arbeitsmarkt</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>BIP (Verwendungsseite)</td><td>BIP = C + I + G + (X − M)</td></tr>
+              <tr><td>BIP-Deflator</td><td>BIP_nom / BIP_real × 100</td></tr>
+              <tr><td>VPI (Laspeyres-Prinzip)</td><td>[Σ wᵢ·p₁ᵢ / Σ wᵢ·p₀ᵢ] × 100</td></tr>
+              <tr><td>Arbeitslosenquote</td><td>u = Arbeitslose / (Erwerbstätige + Arbeitslose)</td></tr>
+              <tr><td>Erwerbsbeteiligung</td><td>Erwerbspersonen / Bevölkerung</td></tr>
+              <tr><td>Phillips-Kurve</td><td>π = π<sup>e</sup> − b·(u − u*)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Gütermarkt, Geldmarkt &amp; Multiplikator</h4>
+          <pre class="code">Gütermarkt-Gleichgewicht: Y = C + I + G, mit C = C₀ + c(Y−T)
+Gütermarkt-Multiplikator: m = 1/(1−c)          (ohne Geldmarkt/Crowding-Out)
+
+Geldmarktgleichgewicht: M^s/P = L(Y,r)
+Quantitätsgleichung:    M·V = P·Y</pre>
+
+          <h4>IS-LM-Modell</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>IS-Kurve</td><td>aus Gütermarkt-Gleichgewicht, Steigung immer <strong>negativ</strong></td></tr>
+              <tr><td>LM-Kurve</td><td>aus Geldmarkt-Gleichgewicht, Steigung immer <strong>positiv</strong></td></tr>
+              <tr><td>Gleichgewicht (Y*,r*)</td><td>LM-Gleichung in IS-Gleichung einsetzen, nach Y auflösen</td></tr>
+              <tr><td>Fiskalpolitik (ΔG)</td><td>verschiebt IS, Crowding-Out über steigenden Zins dämpft den Effekt</td></tr>
+              <tr><td>Geldpolitik (ΔM<sup>s</sup>)</td><td>verschiebt LM, senkt r, regt zusätzlich Investitionen an</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Solow-Wachstumsmodell</h4>
+          <pre class="code">Steady State (Δk = 0):        k* = [sA / (δ+n)]^(1/(1−α))
+Output pro Kopf im Steady State: y* = (k*)^α
+Konsum pro Kopf im Steady State: c* = (1−s)·y*
+
+Goldene Regel (Konsum-Maximum):  MPK = δ+n  ⇒  k^G löst α·A·(k^G)^(α−1) = δ+n
+  k^G > k*  ⇒  Sparquote erhöhen (mehr Konsum langfristig möglich)
+  k^G < k*  ⇒  Sparquote senken
+
+Langfristiges Pro-Kopf-Wachstum: exogen, nur durch technischen Fortschritt g bestimmt
+  (eine höhere Sparquote hebt das Niveau, aber nicht die langfristige Wachstumsrate)</pre>
+
+          <div class="callout callout-tip">
+            <div class="c-title">Merksatz für die Klausur</div>
+            <p>BIP über die Verwendungsseite ist der Standard-Einstieg. VPI ist ein <strong>gewichteter</strong>
+              Warenkorb, keine einfache Durchschnittsbildung. IS fällt, LM steigt — nie verwechseln. Steady State
+              heißt Δk=0, nicht k=0. Der Gütermarkt-Multiplikator 1/(1−c) ist immer <strong>größer</strong> als
+              der IS-LM-Multiplikator, weil Crowding-Out einen Teil des Effekts auffrisst. Komparative Statik:
+              erst die neue Kurve herleiten, dann den neuen Schnittpunkt suchen. Und: immer prüfen, ob nominal
+              oder real, pro Kopf oder absolut gefragt ist.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">18 Fragen zu allen 8 Themenblöcken oben — 15 rechnen die Zahlen aus den Aufgaben nach
+          oder fragen Fachbegriffe ab, 3 prüfen die typischen Fehlerquellen des Moduls. Tippe deine Antwort ein
+          oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2300">
+            <p class="quiz-prompt"><span class="q-no">1.</span>🧮 Aufgabe 1.1: C=1200, I=400, G=600, X=300, M=200.
+              Wie groß ist das BIP?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>BIP = C+I+G+(X−M) = 1200+400+600+100 = <strong>2300</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="110">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Aufgabe 1.2: BIP_nom=1100, BIP_real=1000. Wie
+              groß ist der BIP-Deflator?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Deflator = 1100/1000 × 100 = <strong>110</strong> (Inflation 10%).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="114" data-tol="0.5">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🧮 Aufgabe 2.1: Warenkorb 60% Nahrung (100→110),
+              40% Energie (200→240). Wie groß ist der VPI₁?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Teilindizes: Nahrung 110, Energie 120. VPI = 0,6×110 + 0,4×120 =
+              <strong>114</strong> (Inflation 14 %).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4.76" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Aufgabe 3.1: Erwerbstätige=60 Mio.,
+              Arbeitslose=3 Mio. Wie groß ist die Arbeitslosenquote u in %?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>L = 60+3 = 63. u = 3/63 ≈ <strong>4.76%</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2.5" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Aufgabe 3.2: π^e=2%, u=4%, u*=5%. Wie groß ist
+              π nach der Phillips-Kurve π=π^e−0.5(u−u*), in %?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>π = 2 − 0.5×(4−5) = 2+0.5 = <strong>2.5%</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2600">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Aufgabe 4.1: C=100+0.8(Y−100), I=300, G=200.
+              Wie groß ist das Gleichgewichts-Y?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>0.2Y = 100−80+300+200 = 520 ⇒ Y = <strong>2600</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Aufgabe 4.2: c=0.75. Wie groß ist der
+              Gütermarkt-Multiplikator 1/(1−c)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>m = 1/(1−0.75) = <strong>4</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🧮 Aufgabe 4.3: Y soll von 2000 auf 2200 steigen,
+              c=0.8. Wie groß muss ΔG sein?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>m = 1/(1−0.8) = 5. ΔG = 200/5 = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🧮 Aufgabe 5.1: Mˢ/P=500, L=0.2Y−100r, Y=2500.
+              Wie groß ist der Zins r (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>500 = 0.2×2500−100r = 500−100r ⇒ r = <strong>0%</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="625">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🧮 Aufgabe 5.2: MV=PY mit V=5, P=2. Bei M=250 —
+              wie groß ist Y?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Y = MV/P = 250×5/2 = <strong>625</strong> (ΔY=125 gegenüber M=200).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3200">
+            <p class="quiz-prompt"><span class="q-no">11.</span>🧮 Aufgabe 6.1: IS-Kurve Y=3200−250r. Wie groß ist
+              Y bei r=0?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Y = 3200 − 250×0 = <strong>3200</strong> — das ist der
+              Achsenabschnitt der IS-Kurve.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-6" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">12.</span>🧮 Aufgabe 7.2: LM war r=0.0025Y−5, Mˢ steigt auf
+              1200. Wie lautet die neue Konstante (Achsenabschnitt bei Y=0) der LM-Kurve?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Neue LM: r = 0.0025Y − <strong>6</strong> — die Kurve verschiebt sich
+              nach rechts/unten.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2738" data-tol="5">
+            <p class="quiz-prompt"><span class="q-no">13.</span>🧮 Aufgabe 8.1: IS Y=3200−250r, LM r=0.0025Y−5.
+              Wie groß ist Y* im Gleichgewicht?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>1.625Y = 4450 ⇒ Y* ≈ <strong>2738</strong> (r* ≈ 1.845%).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-77" data-tol="5">
+            <p class="quiz-prompt"><span class="q-no">14.</span>🧮 Aufgabe 8.2: G steigt um 200, der Zins steigt
+              von 1.845% auf ≈3.38%. Wie groß ist ΔI (mit I=400−50r), also der Crowding-Out-Effekt auf die
+              Investitionen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>ΔI = −50 × Δr = −50 × 1.54 ≈ <strong>−77</strong> — die Investitionen
+              sinken durch den zinsbedingten Crowding-Out-Effekt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="crowding-out|crowding out|verdraengungseffekt|verdrängungseffekt">
+            <p class="quiz-prompt"><span class="q-no">15.</span>🧮 Aufgabe 8.2: Wie heißt der Effekt, bei dem eine
+              expansive Fiskalpolitik über den steigenden Zins private Investitionen verdrängt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Effekt heißt <strong>Crowding-Out</strong>: der zinsbedingte
+              Rückgang der Investitionen frisst einen Teil des Fiskalpolitik-Multiplikators wieder auf.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4.48" data-tol="0.15">
+            <p class="quiz-prompt"><span class="q-no">16.</span>🧮 Aufgabe 9.1: A=1, s=0.2, n=0.02, δ=0.05,
+              α=0.3. Wie groß ist der Steady-State-Kapitalstock k*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>k* = [0.2/0.07]^(1/0.7) ≈ <strong>4.48</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">17.</span>Konzeptfrage: Welche Aussage über die Steigungen
+              von IS- und LM-Kurve stimmt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Die IS-Kurve fällt (negative Steigung), die LM-Kurve steigt (positive Steigung).</button>
+              <button class="quiz-choice" type="button">Beide Kurven fallen, nur die LM-Kurve steiler.</button>
+              <button class="quiz-choice" type="button">Beide Kurven steigen, nur die IS-Kurve steiler.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Höherer Zins senkt am Gütermarkt die Investitionen ⇒ IS fällt.
+              Höheres Y erhöht am Geldmarkt die Geldnachfrage, bei fixem Angebot muss r steigen ⇒
+              <strong>LM steigt</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">18.</span>Konzeptfrage: Was bedeutet „Steady State" im
+              Solow-Modell exakt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Der Kapitalstock pro Kopf ist null (k=0).</button>
+              <button class="quiz-choice" type="button" data-correct>Der Kapitalstock pro Kopf wächst nicht mehr (Δk=0), er bleibt aber positiv und konstant.</button>
+              <button class="quiz-choice" type="button">Das Bevölkerungswachstum ist null (n=0).</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Steady State heißt <strong>Δk = 0</strong>, nicht k = 0: Ersparnis
+              s·y* und „Break-even-Investment" (δ+n)·k* gleichen sich exakt aus, der Kapitalstock bleibt auf
+              einem konstanten, positiven Niveau k*.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="11-solow-modell.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Das Solow-Modell</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Zur Übersicht →</div>
+          <div class="pn-title">Zurück zur Kursübersicht</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Die IS-Kurve · Makro</title>
+<meta name="description" content="Die IS-Kurve bildlich erklärt – Herleitung aus dem Gütermarktgleichgewicht, negative Steigung, Verschiebungen durch G, T, C₀ und I₀, mit durchgerechneten Beispielen und Diagramm." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Herleitung</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 07</div>
+    <span class="th-icon">📉</span>
+    <h1>Die IS-Kurve</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Herleitung &amp; Verschiebungen</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Die <strong>IS-Kurve</strong> ist die erste Hälfte des IS-LM-Modells — dem Herzstück
+          dieser Klausur. Sie beantwortet eine einzige Frage: <strong>Für welche Kombinationen aus Zinssatz r und
+          Output Y ist der Gütermarkt im Gleichgewicht?</strong> Die Antwort ist keine einzelne Zahl, sondern eine
+          ganze <strong>Linie</strong> — für jeden möglichen Zins gibt es genau ein passendes Gleichgewichts-Y.
+          „IS" steht dabei für „Investment = Saving": Investitionen entsprechen dem Sparen, was am Gütermarkt
+          nichts anderes bedeutet als Y = C + I + G.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… die Zentralbank ist wie eine <strong>Mautstelle für Kredite</strong>. Jedes Unternehmen, das eine
+            neue Maschine oder eine neue Halle bauen will, muss sich dafür Geld leihen und dafür „Maut" zahlen —
+            den Zinssatz r. Ist die Maut niedrig, fahren viele Unternehmen über die Brücke: Sie investieren kräftig,
+            beauftragen Baufirmen und Maschinenbauer, zahlen Löhne — die Gesamtwirtschaftsleistung Y steigt.
+            Erhöht die Zentralbank die Maut (r steigt), bleiben mehr Unternehmen zu Hause: weniger Investitionen,
+            weniger Aufträge, weniger Einkommen, niedrigeres Y.<br><br>
+            Die IS-Kurve ist nichts anderes als die Liste aller „Maut-Höhe → passendes Y"-Paare, bei denen der
+            Gütermarkt gerade im Gleichgewicht ist. Jeder Punkt auf der Kurve ist ein <strong>möglicher</strong>
+            Zustand der Wirtschaft — welcher davon tatsächlich eintritt, entscheidet erst die LM-Kurve
+            (Thema 08).</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Herleitung &amp; Verschiebungen</h2>
+
+        <h3>Ausgangspunkt: Gütermarktgleichgewicht mit zinsabhängigen Investitionen</h3>
+        <p>Aus Thema 04 kennst du das Gütermarktgleichgewicht Y = C + I + G mit der Konsumfunktion
+          C = C₀ + c(Y−T). Neu ist jetzt: die Investitionen I sind nicht mehr fix, sondern hängen vom Zinssatz r
+          ab — je teurer ein Kredit, desto weniger wird investiert:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Investitionsfunktion</div>
+          <span class="formula">I(r) = I₀ − b · r</span>
+          <p>I₀ ist die autonome (zinsunabhängige) Investitionsbereitschaft, b &gt; 0 misst, wie stark die
+            Investitionen auf den Zins reagieren — die <strong>Zinssensitivität</strong>.</p>
+        </div>
+
+        <p>Diese Investitionsfunktion setzt du einfach ins Gütermarktgleichgewicht ein und löst wie gewohnt nach
+          Y auf:</p>
+
+        <ol class="steps">
+          <li><strong>Einsetzen:</strong> Y = C₀ + c(Y−T) + (I₀ − br) + G</li>
+          <li><strong>Ausmultiplizieren:</strong> Y = C₀ + cY − cT + I₀ − br + G</li>
+          <li><strong>Y-Terme sammeln:</strong> Y − cY = C₀ − cT + I₀ + G − br, also
+            Y(1−c) = C₀ − cT + I₀ + G − br</li>
+          <li><strong>Durch (1−c) teilen:</strong> Y = <sup>1</sup>&frasl;<sub>(1−c)</sub>·[C₀−cT+I₀+G]
+            − <sup>b</sup>&frasl;<sub>(1−c)</sub>·r</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Die IS-Kurve</div>
+          <span class="formula">Y = Ȳ − α · r
+
+Ȳ = 1/(1−c) · (C₀ − cT + I₀ + G)     [Achsenabschnitt: „autonomer" Output]
+α = b / (1−c)                        [Steigungsparameter]</span>
+          <p>Ȳ ist genau der Gleichgewichtsoutput, den du in Thema 04 berechnet hast — nur ohne Zinseffekt (r=0).
+            α kombiniert zwei Dinge: den <strong>Multiplikator</strong> 1/(1−c) und die
+            <strong>Zinsreagibilität</strong> b der Investitionen.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>negative Steigung</b><span>höherer Zins → weniger Investitionen → niedrigeres Y</span></div>
+          <div class="fact"><b>Ȳ</b><span>Gleichgewichts-Y bei r=0 — der „reine" Multiplikator-Output</span></div>
+          <div class="fact"><b>α = b·m</b><span>Zinssensitivität × Multiplikator m=1/(1−c)</span></div>
+          <div class="fact"><b>b → 0</b><span>Investitionen zinsunelastisch → IS wird (fast) senkrecht</span></div>
+        </div>
+
+        <!-- SVG 1: IS-Kurve mit Verschiebung -->
+        <figure class="diagram">
+          <div class="diagram-title">Die IS-Kurve: negative Steigung &amp; Verschiebung durch ΔG=+100</div>
+          <svg viewBox="0 0 560 340" width="560" role="img" aria-label="IS-Kurven-Diagramm mit Output Y auf der horizontalen und Zins r auf der vertikalen Achse. Die IS-Kurve fällt von links oben nach rechts unten. Eine zweite, parallel verschobene IS-Kurve liegt weiter rechts nach einer Erhöhung der Staatsausgaben um 100.">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Achsen -->
+              <line x1="70" y1="300" x2="500" y2="300" stroke="#8a94a6" stroke-width="1.4"/>
+              <line x1="70" y1="300" x2="70" y2="30" stroke="#8a94a6" stroke-width="1.4"/>
+              <polygon points="500,300 490,296 490,304" fill="#8a94a6"/>
+              <polygon points="70,30 66,40 74,40" fill="#8a94a6"/>
+              <text x="440" y="320" class="svg-soft">Output Y</text>
+              <text x="30" y="35" class="svg-soft">Zins r (%)</text>
+
+              <!-- r-Achsen-Ticks -->
+              <line x1="66" y1="210" x2="70" y2="210" stroke="#8a94a6" stroke-width="1.2"/>
+              <text x="55" y="214" text-anchor="end" class="svg-soft" font-size="11">1</text>
+              <line x1="66" y1="120" x2="70" y2="120" stroke="#8a94a6" stroke-width="1.2"/>
+              <text x="55" y="124" text-anchor="end" class="svg-soft" font-size="11">2</text>
+              <text x="55" y="304" text-anchor="end" class="svg-soft" font-size="11">0</text>
+
+              <!-- IS_alt -->
+              <line x1="285" y1="300" x2="70" y2="84" stroke="#8b5cf6" stroke-width="2.6"/>
+              <text x="96" y="176" fill="#8b5cf6" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">IS_alt: Y=3200−250r</text>
+
+              <!-- IS_neu (verschoben) -->
+              <line x1="464" y1="300" x2="249" y2="84" stroke="#f5810b" stroke-width="2.6" stroke-dasharray="7 5"/>
+              <text x="300" y="150" fill="#f5810b" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">IS_neu: Y=3700−250r</text>
+
+              <!-- Punkte auf IS_alt: Bewegung auf der Kurve -->
+              <circle cx="285" cy="300" r="5" fill="#8b5cf6"/>
+              <text x="292" y="298" fill="#8b5cf6" font-size="10.5" font-weight="700">r=0: Y=3200</text>
+              <circle cx="106" cy="120" r="5" fill="#8b5cf6"/>
+              <text x="8" y="112" fill="#8b5cf6" font-size="10.5" font-weight="700">r=2%: Y=2700</text>
+              <text x="8" y="126" fill="#8b5cf6" font-size="10" font-style="italic" class="svg-soft">↕ Bewegung auf IS_alt</text>
+
+              <!-- r=0 Punkt IS_neu -->
+              <circle cx="464" cy="300" r="5" fill="#f5810b"/>
+
+              <!-- Verschiebungspfeil -->
+              <line x1="290" y1="292" x2="459" y2="292" stroke="#12a150" stroke-width="2"/>
+              <polygon points="459,292 449,288 449,296" fill="#12a150"/>
+              <text x="374" y="278" text-anchor="middle" fill="#12a150" font-weight="800" font-size="12">ΔG=+100 → +500</text>
+
+              <!-- Tick-Labels unten -->
+              <line x1="285" y1="300" x2="285" y2="305" stroke="#8a94a6"/>
+              <text x="285" y="318" text-anchor="middle" class="svg-soft" font-size="11">3200</text>
+              <line x1="464" y1="300" x2="464" y2="305" stroke="#8a94a6"/>
+              <text x="464" y="318" text-anchor="middle" class="svg-soft" font-size="11">3700</text>
+            </g>
+          </svg>
+          <figcaption>Achsen schematisch (nicht 1:1 skaliert). Bewegung entlang IS_alt: nur r ändert sich, Ȳ bleibt
+            gleich. Verschiebung zu IS_neu: G steigt um 100 → bei jedem Zinssatz ist Y jetzt um 500 höher (der volle
+            Multiplikator-Effekt m=5).</figcaption>
+        </figure>
+
+        <h3>Verschiebungen der IS-Kurve</h3>
+        <p>Nur <strong>autonome</strong> Größen verschieben die ganze Kurve — nicht Y selbst und nicht r
+          (die bewegen sich <em>auf</em> der Kurve):</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Schock</th><th>Verschiebung</th><th>Mechanismus</th></tr></thead>
+          <tbody>
+            <tr><td>G ↑</td><td>rechts</td><td>mehr autonome Staatsausgaben</td></tr>
+            <tr><td>T ↑</td><td>links</td><td>weniger verfügbares Einkommen → weniger Konsum</td></tr>
+            <tr><td>C₀ ↑</td><td>rechts</td><td>autonomer Konsum steigt</td></tr>
+            <tr><td>I₀ ↑</td><td>rechts</td><td>autonome Investitionen (Erwartungen) steigen</td></tr>
+            <tr><td>G ↓, T ↑, C₀ ↓, I₀ ↓</td><td>links</td><td>jeweils umgekehrt</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Bewegung auf der IS vs. Verschiebung der IS</div>
+          <p><strong>Bewegung auf der Kurve:</strong> nur der Zinssatz r ändert sich, alle autonomen Größen bleiben
+            gleich — du rutschst einfach zu einem anderen Punkt auf derselben Linie.<br>
+            <strong>Verschiebung der Kurve:</strong> eine autonome Größe (C₀, I₀, G oder T) ändert sich — die
+            gesamte Linie wandert parallel nach rechts oder links, bei <em>jedem</em> Zinssatz gilt jetzt ein
+            anderes Y.</p>
+        </div>
+
+        <p>Zwei Extremfälle helfen, die Steigung α zu verstehen: Sind Investitionen komplett
+          <strong>zinsunelastisch</strong> (b→0), verschwindet der Zinskanal — die IS-Kurve wird senkrecht und
+          Fiskalpolitik ist maximal wirksam (kein Crowding-Out möglich). Reagieren Investitionen dagegen
+          <strong>extrem stark</strong> auf den Zins (b→∞), wird die IS-Kurve nahezu waagerecht — schon eine
+          winzige Zinsänderung genügt, um riesige Investitionsschwankungen auszulösen.</p>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>🧮 Klausurtyp: IS-Kurve herleiten</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>C = 100 + 0,8·Y_d, I = 400 − 50r, G = 300, T = 200. Leite die IS-Kurve her.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Verfügbares Einkommen einsetzen:</strong> Y_d = Y − 200</li>
+          <li><strong>In die Gleichgewichtsbedingung einsetzen:</strong>
+            Y = 100 + 0,8(Y−200) + 400−50r + 300</li>
+          <li><strong>Ausmultiplizieren:</strong> Y = 100 + 0,8Y − 160 + 400 − 50r + 300</li>
+          <li><strong>Zusammenfassen:</strong> Y − 0,8Y = 640 − 50r → 0,2Y = 640 − 50r</li>
+          <li><strong>Ergebnis:</strong> Y = <strong>3200 − 250r</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Kontrolle über die Formel</div>
+          <p>Ȳ = 1/(1−0,8)·(100−0,8·200+400+300) = 5·(100−160+400+300) = 5·640 = <strong>3200</strong> ✓<br>
+            α = b/(1−c) = 50/0,2 = <strong>250</strong> ✓ — beide Wege stimmen überein.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: IS-Verschiebung durch Fiskalpolitik</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Ausgehend von IS: Y = 3200 − 250r erhöht die Regierung G von 300 auf 400. Wie lautet die neue
+            IS-Kurve, und wie groß ist die Verschiebung bei gegebenem r?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>ΔG bestimmen:</strong> ΔG = 400 − 300 = 100</li>
+          <li><strong>Neue Gleichung aufstellen:</strong> Y = 100 + 0,8(Y−200) + 400−50r + 400 →
+            0,2Y = 740 − 50r → Y = <strong>3700 − 250r</strong></li>
+          <li><strong>Multiplikator-Effekt:</strong> ΔY = m · ΔG = [1/(1−0,8)] · 100 = 5 · 100 =
+            <strong>500</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Interpretation</div>
+          <p>Die neue Kurve ist exakt <strong>parallel</strong> zur alten (gleiche Steigung −250!), nur um 500
+            nach rechts verschoben: bei jedem beliebigen Zinssatz ist der Gleichgewichtsoutput jetzt 500 Einheiten
+            höher.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Steigung &amp; Zinssensitivität</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Die Investitionen werden zinsunelastischer: b sinkt von 50 auf 20 (c=0,8 bleibt unverändert). Wie
+            verändert sich die Steigung α, und wird die IS-Kurve dadurch flacher oder steiler?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Neues α berechnen:</strong> α_neu = b/(1−c) = 20/0,2 = <strong>100</strong>
+            (statt vorher 250)</li>
+          <li><strong>Interpretieren:</strong> Ein kleineres α bedeutet, dass sich Y bei gegebener Zinsänderung
+            <strong>weniger</strong> stark bewegt — die Investitionen reagieren ja schwächer auf r.</li>
+          <li><strong>Grafisch:</strong> Im (Y,r)-Diagramm (Y horizontal) wird die Kurve dadurch
+            <strong>steiler</strong> (näher an der Senkrechten) — genau wie im Extremfall b→0, wo die IS-Kurve
+            komplett vertikal wird.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die IS-Kurve verläuft horizontal — Y wird ja
+            vom Staat vorgegeben.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Sie hat immer eine <strong>negative
+            Steigung</strong> α=b/(1−c) &gt; 0. Nur im Extremfall b→∞ (unendlich zinsreagible Investitionen) wird
+            sie annähernd waagerecht.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Wenn Y steigt, verschiebt sich die IS-Kurve
+            nach rechts.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Y ist die abhängige Variable <strong>auf</strong>
+            der Kurve — eine Änderung von Y allein ist nur eine Bewegung entlang der Kurve. Nur autonome Größen
+            (C₀, I₀, G, T) verschieben die IS-Kurve.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Zinssatz wirkt nur indirekt, über den
+            Multiplikator, auf Y.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>r wirkt <strong>direkt</strong> über
+            I(r)=I₀−br auf die Güternachfrage — genau dieser Kanal wird durch die IS-Kurve abgebildet. Der
+            Multiplikator verstärkt diesen Effekt danach zusätzlich.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die IS-Kurve zeigt das gesamtwirtschaftliche
+            Gleichgewicht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Sie zeigt <strong>nur</strong> das
+            Gütermarkt-Gleichgewicht — eine von zwei Bedingungen. Das tatsächliche (Y*, r*) folgt erst aus IS
+            <strong>und</strong> LM gemeinsam (Thema 09).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Beim Einsetzen: c(Y−T) wird zu cY − T
+            (nicht vollständig ausmultipliziert).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>c muss auf <strong>beide</strong> Terme in der
+            Klammer wirken: c(Y−T) = cY <strong>− cT</strong>. Einer der häufigsten Vorzeichenfehler beim
+            Herleiten der IS-Kurve.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grundformeln</h4>
+          <pre class="code">Investitionsfunktion:  I(r) = I₀ − b·r
+Gütermarkt-GG:         Y = C + I(r) + G
+IS-Kurve:              Y = Ȳ − α·r
+Achsenabschnitt Ȳ:     1/(1−c) · (C₀ − cT + I₀ + G)
+Steigung α:            b / (1−c) = b · m
+Multiplikator m:       1 / (1−c)
+Verschiebung:          ΔY = m · ΔAutonome-Größe   (bei gegebenem r)</pre>
+
+          <h4>Schock → Richtung der Verschiebung</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schock</th><th>Verschiebung</th></tr></thead>
+            <tbody>
+              <tr><td>G ↑, I₀ ↑, C₀ ↑, T ↓</td><td>rechts (expansiv)</td></tr>
+              <tr><td>G ↓, I₀ ↓, C₀ ↓, T ↑</td><td>links (restriktiv)</td></tr>
+              <tr><td>r ändert sich (sonst nichts)</td><td>keine Verschiebung — nur Bewegung auf der Kurve</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>IS hat immer negative Steigung</strong> — nie waagerecht, nie senkrecht (außer in den
+              Extremfällen b→∞ bzw. b→0)</li>
+            <li><strong>Nur autonome Größen verschieben</strong> die Kurve: C₀, I₀, G, T — nicht Y oder r selbst</li>
+            <li>α = b·m — <strong>je zinsreagibler die Investitionen (b groß)</strong>, desto flacher die Kurve</li>
+            <li>Verschiebung ist immer <strong>parallel</strong> — die Steigung α ändert sich dabei nicht</li>
+            <li>IS zeigt nur den <strong>Gütermarkt</strong> — für das echte Gleichgewicht fehlt noch die
+              LM-Kurve</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="3200">
+            <p class="quiz-prompt"><span class="q-no">1.</span>C₀=100, c=0,8, I₀=400, G=300, T=200. Wie groß ist
+              der Achsenabschnitt Ȳ der IS-Kurve (Y bei r=0)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ȳ = [1/(1−0,8)]·(100−0,8·200+400+300) = 5·640 =
+              <strong>3200</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="250">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Mit b=50 und c=0,8: wie groß ist die
+              Steigungsparameter α der IS-Kurve?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>α = b/(1−c) = 50/0,2 = <strong>250</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Die Staatsausgaben G steigen. Wie verschiebt sich
+              die IS-Kurve?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Nach rechts</button>
+              <button class="quiz-choice" type="button">Nach links</button>
+              <button class="quiz-choice" type="button">Gar nicht, nur Bewegung auf der Kurve</button>
+              <button class="quiz-choice" type="button">Die Kurve wird steiler</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>G ist eine autonome Größe — sie erhöht Ȳ und verschiebt die ganze
+              Kurve <strong>nach rechts</strong> (bei jedem r höheres Y).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="750">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Klausurtyp: c=0,8, die Staatsausgaben steigen um
+              ΔG=150. Wie groß ist die Verschiebung ΔY der IS-Kurve bei gegebenem r?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>m = 1/(1−0,8) = 5. ΔY = m·ΔG = 5·150 = <strong>750</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="bewegung|bewegung auf der kurve|bewegung entlang der kurve|bewegung auf is">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Der Zins sinkt von 5 % auf 3 %, alle autonomen
+              Größen bleiben gleich. Ist das eine <em>Bewegung</em> auf der Kurve oder eine
+              <em>Verschiebung</em>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nur r ändert sich, Ȳ bleibt konstant → das ist eine
+              <strong>Bewegung</strong> auf der (unveränderten) IS-Kurve, keine Verschiebung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Die Investitionen werden weniger zinsreagibel
+              (b sinkt). Was passiert mit der IS-Kurve?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Sie wird steiler</button>
+              <button class="quiz-choice" type="button">Sie wird flacher</button>
+              <button class="quiz-choice" type="button">Sie verschiebt sich nach rechts</button>
+              <button class="quiz-choice" type="button">Sie bleibt komplett unverändert</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>α=b/(1−c) sinkt mit b → Y reagiert schwächer auf r-Änderungen → die
+              Kurve wird <strong>steiler</strong> (im Extremfall b→0 sogar senkrecht).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2950">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Nach der Erhöhung von G gilt IS_neu:
+              Y = 3700 − 250r. Wie groß ist Y bei r = 3 (also r=3 %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Y = 3700 − 250·3 = 3700 − 750 = <strong>2950</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="06-zinssteuerung.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Zinssteuerung der Zentralbank</div>
+        </a>
+        <a class="next" href="08-lm-kurve.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Die LM-Kurve</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

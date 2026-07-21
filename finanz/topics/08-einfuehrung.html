@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Einführung in die Finanzwissenschaft · P4 Fiwi</title>
+<meta name="description" content="Was ist Finanzwissenschaft? Musgraves Dreiteilung der Staatsaufgaben – Allokation, Verteilung, Stabilisierung – bildlich erklärt, mit Einordnung aller bisherigen Kursthemen und den typischen Klausurfallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Staatsaufgaben</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Fiwi-Kursübersicht</a> › Thema 08</div>
+    <span class="th-icon">🏛️</span>
+    <h1>Einführung in die Finanzwissenschaft</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Die drei Staatsaufgaben</a></li>
+        <li><a href="#rechnen">Beispiele &amp; Einordnung</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">„Finanzwissenschaft" klingt nach Banken und Börse — ist es aber nicht. In diesem
+          Modul geht es um die <strong>ökonomische Analyse des Staates</strong>: Warum wird der Staat
+          wirtschaftlich aktiv, wie tut er das, und mit welchen Folgen? Diese Seite liefert das
+          <strong>Organisationsprinzip</strong> für den ganzen Kurs — und ordnet ein, wo die bisherigen Themen
+          (01–07) eigentlich hingehören.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du lebst in einer WG mit zwei Mitbewohnern. Ihr müsst gemeinsam wirtschaften — und trefft dabei,
+            ohne es zu merken, genau die drei Arten von Entscheidungen, die auch der Staat trifft:<br>
+            <strong>Allokation:</strong> Kauft ihr einen neuen Kühlschrank? Wie viel WLAN-Bandbreite braucht
+            ihr? Das sind Fragen nach der <em>effizienten</em> Verwendung eurer Ressourcen.<br>
+            <strong>Verteilung:</strong> Zahlt jeder gleich viel Miete, oder nach Zimmergröße? Wer räumt wie oft
+            die Spülmaschine aus? Das ist eine Frage der <em>Gerechtigkeit</em>, nicht der Effizienz.<br>
+            <strong>Stabilisierung:</strong> Legt ihr eine gemeinsame Kasse für Notfälle an (kaputte
+            Waschmaschine, Mietausfall eines Mitbewohners)? Das ist <em>Vorsorge gegen Schwankungen</em>.<br>
+            Der Staat macht im Großen exakt dasselbe — nur mit 84 Millionen „Mitbewohnern".</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Die drei Staatsaufgaben nach Musgrave</h2>
+        <p><strong>Finanzwissenschaft (heute)</strong> ist die ökonomische Analyse der Staatstätigkeit: warum
+          und wie der Staat wirtschaftlich aktiv wird. Das Fundament dafür ist der
+          <strong>methodologische Individualismus</strong> (Buchanan &amp; Tullock, 1960er-Jahre): Alle Analyse
+          geht von einzelnen, rational handelnden Individuen aus — nicht von einer abstrakten „Gesellschaft".
+          Fehler entstehen dann nicht, weil Menschen böse oder dumm sind, sondern weil <strong>Spielregeln</strong>
+          (Institutionen, Anreize, Gesetze) falsch gesetzt sind. Die zentrale Frage lautet deshalb: Wie muss man
+          Systeme gestalten, damit individuelle Rationalität zu kollektiv guten Ergebnissen führt?</p>
+
+        <p>Der amerikanische Finanzwissenschaftler <strong>Richard Musgrave</strong> (1910–2007) hat die
+          Staatstätigkeit in drei Funktionen eingeteilt — das Organisationsprinzip dieses ganzen Kurses:</p>
+
+        <!-- SVG 1: Drei Säulen -->
+        <figure class="diagram">
+          <div class="diagram-title">Musgraves Dreiteilung der Staatsaufgaben — drei Säulen, ein Staat</div>
+          <svg viewBox="0 0 480 260" width="480" role="img" aria-label="Drei Säulen tragen einen Balken mit der Aufschrift Staatstätigkeit: Allokation, Verteilung und Stabilisierung, jeweils mit ihrer Leitfrage und ihrem Kernproblem">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="40" y="26" width="400" height="38" rx="8" fill="#8b5cf6" fill-opacity="0.22" stroke="#8b5cf6" stroke-width="1.5"/>
+              <text x="240" y="50" text-anchor="middle" class="svg-ink" font-weight="800" font-size="14">Staatstätigkeit</text>
+
+              <rect x="70" y="76" width="90" height="140" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="115" y="100" text-anchor="middle" fill="#12b28c" font-weight="800">Allokation</text>
+              <text x="115" y="122" text-anchor="middle" class="svg-soft" font-size="11">Welche Güter<tspan x="115" dy="14">werden produziert?</tspan></text>
+              <text x="115" y="196" text-anchor="middle" font-size="18">🏭</text>
+              <text x="115" y="212" text-anchor="middle" class="svg-soft" font-size="10.5">Marktversagen</text>
+
+              <rect x="195" y="76" width="90" height="140" fill="#2f6df6" fill-opacity="0.16" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="240" y="100" text-anchor="middle" fill="#2f6df6" font-weight="800">Verteilung</text>
+              <text x="240" y="122" text-anchor="middle" class="svg-soft" font-size="11">Wer bekommt<tspan x="240" dy="14">wie viel?</tspan></text>
+              <text x="240" y="196" text-anchor="middle" font-size="18">⚖️</text>
+              <text x="240" y="212" text-anchor="middle" class="svg-soft" font-size="10.5">Ungleichheit</text>
+
+              <rect x="320" y="76" width="90" height="140" fill="#f5810b" fill-opacity="0.18" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="365" y="100" text-anchor="middle" fill="#f5810b" font-weight="800">Stabilisierung</text>
+              <text x="365" y="122" text-anchor="middle" class="svg-soft" font-size="11">Wie läuft die<tspan x="365" dy="14">Konjunktur?</tspan></text>
+              <text x="365" y="196" text-anchor="middle" font-size="18">📈</text>
+              <text x="365" y="212" text-anchor="middle" class="svg-soft" font-size="10.5">Arbeitslosigkeit &amp; Inflation</text>
+
+              <line x1="55" y1="216" x2="425" y2="216" stroke="#8a94a6" stroke-width="1.5"/>
+            </g>
+          </svg>
+          <figcaption>Alle drei Säulen tragen gemeinsam die Staatstätigkeit — aber jede beantwortet eine ganz
+            andere Frage und braucht andere Instrumente.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Funktion</th><th>Frage</th><th>Kern-Problem</th><th>Beispiel-Instrument</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Allokation</strong></td><td>Welche Güter werden produziert?</td><td>Marktversagen</td><td>Regulierung, Subventionen</td></tr>
+            <tr><td><strong>Verteilung</strong></td><td>Wer bekommt wie viel?</td><td>Ungleichheit</td><td>Steuern, Transfers</td></tr>
+            <tr><td><strong>Stabilisierung</strong></td><td>Wie ist die Konjunktur?</td><td>Arbeitslosigkeit, Inflation</td><td>Fiskalpolitik, Geldpolitik</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>Typische Anwendungsfelder: <strong>Rentensystem</strong> und <strong>Krankenversicherung</strong>
+          (vor allem Verteilung), <strong>Regulierung von Monopolen</strong> (Allokation),
+          <strong>Fiskalpolitik und Staatsverschuldung</strong> (Stabilisierung). Historisch hat sich der Blick
+          gewandelt: von der reinen Haushaltslehre der Kameralisten (17.–18. Jh.) über die klassische
+          „Markt-zuerst"-Position von Adam Smith und David Ricardo (18.–19. Jh.) bis zur heutigen Analyse, die
+          <strong>sowohl Markt- als auch Staatsversagen</strong> ernst nimmt.</p>
+
+        <h3>Positiv vs. normativ</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Zwei völlig verschiedene Arten von Aussagen</div>
+          <p><strong>Positive Aussage</strong> (beschreibend): „Die deutsche Staatsquote lag 2025 bei 50,3&nbsp;%."
+            — das lässt sich messen und ist entweder wahr oder falsch.<br>
+            <strong>Normative Aussage</strong> (wertend): „Die Staatsquote sollte niedriger sein." — das ist
+            ein Werturteil, keine Messung. Finanzwissenschaft arbeitet meist <em>positiv</em> (analysiert
+            Wirkungen), Politik entscheidet <em>normativ</em> (was soll passieren).</p>
+        </div>
+
+        <h3>Wie groß ist der Staat wirklich?</h3>
+        <p>Die <strong>Staatsquote</strong> (öffentliche Ausgaben in % des BIP) lag in Deutschland 2025 bei
+          rund <strong>50,3&nbsp;%</strong> — von jedem erwirtschafteten Euro gibt der Staat also fast noch
+          einen weiteren aus. Im internationalen Vergleich (2026) liegt Deutschland im Mittelfeld:</p>
+
+        <!-- SVG 2: Staatsquote Ländervergleich -->
+        <figure class="diagram">
+          <div class="diagram-title">Staatsquote im Ländervergleich (2026, in % des BIP)</div>
+          <svg viewBox="0 0 460 220" width="460" role="img" aria-label="Balkendiagramm der Staatsquote 2026 für Finnland, Frankreich, Belgien, Deutschland, Griechenland und USA">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="140" y1="15" x2="140" y2="195" stroke="#8a94a6" stroke-width="1"/>
+
+              <text x="130" y="33" text-anchor="end" class="svg-ink">Finnland</text>
+              <rect x="140" y="20" width="295" height="18" rx="3" fill="#8a94a6" fill-opacity="0.55"/>
+              <text x="440" y="33" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">58,9%</text>
+
+              <text x="130" y="63" text-anchor="end" class="svg-ink">Frankreich</text>
+              <rect x="140" y="50" width="287" height="18" rx="3" fill="#8a94a6" fill-opacity="0.55"/>
+              <text x="432" y="63" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">57,4%</text>
+
+              <text x="130" y="93" text-anchor="end" class="svg-ink">Belgien</text>
+              <rect x="140" y="80" width="275" height="18" rx="3" fill="#8a94a6" fill-opacity="0.55"/>
+              <text x="420" y="93" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">54,9%</text>
+
+              <text x="130" y="123" text-anchor="end" fill="#8b5cf6" font-weight="800">Deutschland</text>
+              <rect x="140" y="110" width="253" height="18" rx="3" fill="#8b5cf6" fill-opacity="0.75"/>
+              <text x="398" y="123" text-anchor="end" fill="#8b5cf6" font-weight="800" font-family="JetBrains Mono, monospace" font-size="11">50,6%</text>
+
+              <text x="130" y="153" text-anchor="end" class="svg-ink">Griechenland</text>
+              <rect x="140" y="140" width="215" height="18" rx="3" fill="#8a94a6" fill-opacity="0.55"/>
+              <text x="360" y="153" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">42,9%</text>
+
+              <text x="130" y="183" text-anchor="end" class="svg-ink">USA</text>
+              <rect x="140" y="170" width="199" height="18" rx="3" fill="#8a94a6" fill-opacity="0.55"/>
+              <text x="344" y="183" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">39,8%</text>
+            </g>
+          </svg>
+          <figcaption>Deutschland liegt mit gut der Hälfte des BIP im europäischen Mittelfeld — deutlich über
+            den USA, aber unter den skandinavisch/kontinentaleuropäischen Spitzenreitern. Eine hohe Staatsquote
+            ist für sich genommen weder gut noch schlecht — <em>was</em> der Staat tut, zählt mehr als
+            <em>wie viel</em> er ausgibt.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele: Situationen den Staatsaufgaben zuordnen</h2>
+        <p>Die häufigste Klausurfrage zu diesem Thema ist <em>nicht</em> rechnerisch, sondern konzeptuell:
+          Welche der drei Musgrave-Funktionen steckt hinter einer gegebenen Maßnahme?</p>
+
+        <ol class="steps">
+          <li><strong>Der Staat baut einen Leuchtturm, weil private Anbieter zu wenig davon bereitstellen
+            würden (Trittbrettfahrer-Problem).</strong><br>
+            → <strong>Allokation</strong>: klassisches Marktversagen bei öffentlichen Gütern, der Markt liefert
+            nicht die effiziente Menge.</li>
+          <li><strong>Der Staat erhöht die Regelsätze beim Bürgergeld.</strong><br>
+            → <strong>Verteilung</strong>: es geht darum, wer wie viel bekommt, nicht um Effizienz.</li>
+          <li><strong>Der Staat erhöht in einer Rezession seine Ausgaben, um Nachfrage zu stabilisieren
+            (Konjunkturpaket).</strong><br>
+            → <strong>Stabilisierung</strong>: Ziel ist Vollbeschäftigung und ein glatter Konjunkturverlauf,
+            nicht die Korrektur eines einzelnen Marktes.</li>
+          <li><strong>Der Staat reguliert die Trassenpreise der Bahn, weil ein privates Schienennetz ein
+            natürliches Monopol wäre.</strong><br>
+            → <strong>Allokation</strong>: fallende Durchschnittskosten führen ohne Eingriff zu einer
+            ineffizient kleinen Menge (siehe Thema 06).</li>
+          <li><strong>Der Staat besteuert hohe Einkommen progressiv, um Ungleichheit zu verringern.</strong><br>
+            → <strong>Verteilung</strong>: klassischer Zielkonflikt zwischen Effizienz (Anreizwirkung) und
+            Gerechtigkeit.</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">🧮 Klausurtyp: Positiv oder normativ?</div>
+          <p>„Die deutsche Staatsquote lag 2025 bei 50,3&nbsp;%." → <strong>positiv</strong> (messbare
+            Tatsachenaussage).<br>
+            „Der Staat sollte mehr in Bildung investieren." → <strong>normativ</strong> (Werturteil, keine
+            Messung).</p>
+        </div>
+
+        <h3>Einordnung ins Gesamtbild: wo stehen die Themen 01–07?</h3>
+        <p>Damit lässt sich der ganze bisherige Kurs auf einen Blick einordnen:</p>
+
+        <!-- SVG 3: Einordnung ins Gesamtbild -->
+        <figure class="diagram">
+          <div class="diagram-title">Einordnung: wo stehen die bisherigen Themen (01–07)?</div>
+          <svg viewBox="0 0 480 300" width="480" role="img" aria-label="Übersicht, welche der Kursthemen 01 bis 07 zu welcher Staatsaufgabe gehören: Allokation umfasst die Themen 02 bis 06, Verteilung Thema 07, Stabilisierung wird im Kurs nicht vertieft, Thema 01 ist das Werkzeug für alle drei">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <rect x="30" y="20" width="130" height="230" rx="8" fill="#12b28c" fill-opacity="0.12" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="95" y="42" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="13">Allokation</text>
+              <text x="95" y="68" text-anchor="middle" class="svg-ink">02 Tauscheffizienz</text>
+              <text x="95" y="90" text-anchor="middle" class="svg-ink">03 Globale Effizienz</text>
+              <text x="95" y="112" text-anchor="middle" class="svg-ink">04 Öffentliche Güter</text>
+              <text x="95" y="134" text-anchor="middle" class="svg-ink">05 Externe Effekte</text>
+              <text x="95" y="156" text-anchor="middle" class="svg-ink">06 Nat. Monopol</text>
+
+              <rect x="175" y="20" width="130" height="230" rx="8" fill="#2f6df6" fill-opacity="0.1" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="240" y="42" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="13">Verteilung</text>
+              <text x="240" y="68" text-anchor="middle" class="svg-ink">07 Besteuerung</text>
+              <text x="240" y="94" text-anchor="middle" class="svg-soft" font-size="10.5">(Steuerinzidenz =</text>
+              <text x="240" y="110" text-anchor="middle" class="svg-soft" font-size="10.5">wer trägt die Last?)</text>
+
+              <rect x="320" y="20" width="130" height="230" rx="8" fill="#f5810b" fill-opacity="0.1" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="385" y="42" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="13">Stabilisierung</text>
+              <text x="385" y="70" text-anchor="middle" class="svg-soft" font-size="10.5">(in diesem Kurs</text>
+              <text x="385" y="86" text-anchor="middle" class="svg-soft" font-size="10.5">nicht vertieft —</text>
+              <text x="385" y="102" text-anchor="middle" class="svg-soft" font-size="10.5">Fiskalpolitik &amp;</text>
+              <text x="385" y="118" text-anchor="middle" class="svg-soft" font-size="10.5">Staatsverschuldung)</text>
+
+              <rect x="30" y="260" width="420" height="30" rx="6" fill="#8b5cf6" fill-opacity="0.16" stroke="#8b5cf6" stroke-width="1.3"/>
+              <text x="240" y="280" text-anchor="middle" fill="#8b5cf6" font-weight="700" font-size="11.5">Werkzeug für alle drei: 01 Lagrange-Methode</text>
+            </g>
+          </svg>
+          <figcaption>Fast der ganze bisherige Kurs war <strong>Allokation</strong> (wann funktioniert der
+            Markt, wann nicht?) — <strong>Besteuerung</strong> (07) war der erste Schritt Richtung
+            <strong>Verteilung</strong>. Die <strong>Stabilisierung</strong> kommt in diesem Kurs nur am Rande
+            vor.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Finanzwissenschaft = wie der Staat sein
+            Budget aufstellt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Finanzwissenschaft ist die
+            <strong>ökonomische Analyse der Staatstätigkeit</strong>: Wann ist Staatseingriff effizient? Welche
+            Anreize entstehen? Reine Haushaltslehre war nur die historische Vorstufe (Kameralisten).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Methodologischer Individualismus bedeutet:
+            Menschen sind grundsätzlich egoistisch.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Menschen können egoistisch, altruistisch
+            oder sonst was sein — <strong>methodologischer Individualismus</strong> heißt nur, dass alle
+            Analyse bei <em>einzelnen Individuen</em> ansetzt, nicht bei abstrakten Kollektiven wie „der
+            Gesellschaft".</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Allokation bedeutet Umverteilung von Reich
+            zu Arm.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Allokation</strong> = effiziente
+            Menge an Gütern produzieren (Marktversagen beheben). <strong>Verteilung</strong> = wer wie viel
+            bekommt. Zwei verschiedene Ziele mit verschiedenen Instrumenten — nicht verwechseln!</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Eine Staatsquote von 50&nbsp;% bedeutet
+            automatisch „über-reguliert" oder ineffizient.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Staatsquote ist nur eine Kennzahl.
+            <em>Was</em> der Staat mit dem Geld tut, ist wichtiger als <em>wie viel</em> er ausgibt — hohe
+            Quoten können effizient sein (z.&nbsp;B. Skandinavien), niedrige ineffizient.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Der Staat sollte mehr in Bildung
+            investieren" ist eine positive Aussage, weil sie über den Staat spricht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Das ist eine <strong>normative</strong>
+            Aussage (ein Werturteil, ein „sollte"). Positive Aussagen sind rein beschreibend und überprüfbar,
+            z.&nbsp;B. „Die Staatsquote lag 2025 bei 50,3&nbsp;%".</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Die drei Staatsaufgaben (Musgrave)</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Funktion</th><th>Frage</th><th>Kern-Problem</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Allokation</strong></td><td>Welche Güter werden produziert?</td><td>Marktversagen</td></tr>
+              <tr><td><strong>Verteilung</strong></td><td>Wer bekommt wie viel?</td><td>Ungleichheit</td></tr>
+              <tr><td><strong>Stabilisierung</strong></td><td>Wie ist die Konjunktur?</td><td>Arbeitslosigkeit, Inflation</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Begriffe auf einen Blick</h4>
+          <pre class="code">Finanzwissenschaft        ökonomische Analyse der Staatstätigkeit
+Methodolog. Individualismus  Analyse startet bei einzelnen Individuen, nicht "der Gesellschaft"
+Positive Aussage           beschreibend, überprüfbar ("ist")
+Normative Aussage          wertend, kein Fakt ("sollte")
+Staatsquote                öffentliche Ausgaben / BIP (Deutschland 2025: ~50,3 %)</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Allokation ≠ Verteilung ≠ Stabilisierung</strong> — drei verschiedene Fragen, drei
+              verschiedene Instrumente</li>
+            <li>Methodologischer Individualismus: Fehler sind <strong>System-Fehler</strong>, nicht
+              Menschen-Fehler</li>
+            <li><strong>Positiv</strong> = beschreiben, <strong>normativ</strong> = bewerten — Klausurfragen
+              testen das gerne explizit ab</li>
+            <li>Die Staatsquote allein sagt nichts über Effizienz — <em>was</em> zählt, nicht <em>wie viel</em></li>
+            <li>In diesem Kurs: Themen 02–06 = Allokation, Thema 07 = Verteilung, 01 = Werkzeug für alle drei</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Ein Staat baut einen Leuchtturm, weil private
+              Anbieter zu wenig davon bereitstellen würden (Trittbrettfahrer-Problem). Welche Staatsaufgabe ist
+              das?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Allokation</button>
+              <button class="quiz-choice" type="button">Verteilung</button>
+              <button class="quiz-choice" type="button">Stabilisierung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Öffentliche Güter sind ein klassischer Fall von Marktversagen →
+              <strong>Allokation</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Der Staat erhöht in einer Rezession seine
+              Ausgaben, um die Konjunktur zu stützen. Welche Funktion steht im Vordergrund?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Allokation</button>
+              <button class="quiz-choice" type="button">Verteilung</button>
+              <button class="quiz-choice" type="button" data-correct>Stabilisierung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Konjunkturglättung und Vollbeschäftigung sind das Ziel der
+              <strong>Stabilisierungsfunktion</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>„Die deutsche Staatsquote lag 2025 bei
+              50,3&nbsp;%." — ist das eine positive oder eine normative Aussage?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Positiv (beschreibend, überprüfbar)</button>
+              <button class="quiz-choice" type="button">Normativ (wertend)</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Es handelt sich um eine messbare Tatsachenaussage — also
+              <strong>positiv</strong>. Ein „sollte" oder ein Werturteil käme hier nicht vor.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Musgrave|Richard Musgrave|Richard A. Musgrave">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie heißt der Finanzwissenschaftler, der die
+              Dreiteilung in Allokation, Verteilung und Stabilisierung entwickelt hat?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Name …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Richard Musgrave</strong> (1910–2007).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Was besagt der methodologische Individualismus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Alle ökonomische Analyse geht von
+                einzelnen, rational handelnden Individuen aus — nicht von abstrakten Kollektiven.</button>
+              <button class="quiz-choice" type="button">Menschen sind grundsätzlich egoistisch und
+                unkooperativ.</button>
+              <button class="quiz-choice" type="button">Nur der Staat kann wirklich rational handeln.</button>
+              <button class="quiz-choice" type="button">Individuen sollten immer für sich allein
+                entscheiden, nie im Kollektiv.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Es geht um den <strong>Ausgangspunkt der Analyse</strong>
+              (Individuen, nicht „die Gesellschaft"), nicht um eine Aussage über den Charakter der Menschen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="50.3" data-tol="0.2">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie hoch war die deutsche Staatsquote 2025,
+              gerundet auf eine Nachkommastelle?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Rund <strong>50,3&nbsp;%</strong> — von jedem erwirtschafteten
+              Euro gibt der Staat fast noch einen weiteren aus.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: Der Staat besteuert hohe
+              Einkommen progressiv, um Ungleichheit zu verringern. Welche Musgrave-Funktion steht hier im
+              Vordergrund?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Allokation</button>
+              <button class="quiz-choice" type="button" data-correct>Verteilung</button>
+              <button class="quiz-choice" type="button">Stabilisierung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Es geht darum, wer wie viel bekommt bzw. behält — die klassische
+              <strong>Verteilungsfunktion</strong> (mit dem bekannten Zielkonflikt Effizienz vs. Gerechtigkeit).</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="07-besteuerung.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Besteuerung &amp; Steuerwirkungen</div>
+        </a>
+        <a class="next" href="09-klausurtraining.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Klausurtraining</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

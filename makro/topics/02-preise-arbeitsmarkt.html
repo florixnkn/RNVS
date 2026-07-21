@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Preise &amp; Arbeitsmarkt · P2 Makro</title>
+<meta name="description" content="Verbraucherpreisindex, Inflation, reale vs. nominale Löhne, Arbeitslosenquote und die Phillips-Kurve bildlich erklärt – mit durchgerechneten Beispielen und typischen Fallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">VPI &amp; Arbeitsmarkt</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 02</div>
+    <span class="th-icon">🛒</span>
+    <h1>Preise &amp; Arbeitsmarkt</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Grundlagen</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">VPI, Löhne &amp; Arbeitsmarkt</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Zwei Fragen bestimmen, wie es einer Volkswirtschaft im Alltag geht:
+          <strong>Werden die Dinge teurer?</strong> (Preise/Inflation) und <strong>haben die Menschen einen
+          Job?</strong> (Arbeitsmarkt). Beide Fragen hängen enger zusammen, als man zunächst denkt — das zeigt
+          am Ende die <strong>Phillips-Kurve</strong>.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du kaufst jede Woche denselben <strong>Einkaufskorb</strong>: Brot, Milch, Strom, Miete — immer
+            dieselben Mengen. Wird dieser exakt gleiche Korb von Monat zu Monat teurer, hast du ganz persönlich
+            <strong>Inflation</strong> erlebt. Der <strong>Verbraucherpreisindex (VPI)</strong> macht genau das
+            für einen "Durchschnittshaushalt" im ganzen Land — mit einem festen Warenkorb, der nur alle paar Jahre
+            aktualisiert wird.<br><br>
+            Für den Arbeitsmarkt: stell dir eine Reihe von Stühlen vor. Wer auf einem Stuhl <em>sitzt</em>, ist
+            erwerbstätig. Wer <em>aktiv nach einem Stuhl sucht</em>, aber keinen findet, ist arbeitslos. Wer gar
+            nicht mitspielt (Kinder, Rentner, Studierende ohne Nebenjob), zählt nicht zu den
+            <strong>Erwerbspersonen</strong> — weder als beschäftigt noch als arbeitslos.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Preisindizes, Löhne &amp; Arbeitsmarkt im Bild</h2>
+
+        <h3>Verbraucherpreisindex (VPI) — der Laspeyres-Index</h3>
+        <p>Der VPI misst die Kosten eines <strong>festen Warenkorbs</strong> zu unterschiedlichen Zeitpunkten.
+          Jede Warengruppe geht mit ihrem <strong>Gewicht</strong> (Budgetanteil im Basisjahr) ein:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Verbraucherpreisindex (Laspeyres)</div>
+          <span class="formula">VPI_t = Σ (pₜⁱ · q₀ⁱ) / Σ (p₀ⁱ · q₀ⁱ) × 100
+          entspricht:  VPI_t = Σ wᵢ · (pₜⁱ / p₀ⁱ × 100)</span>
+          <p>Die zweite Schreibweise ist praktisch: <strong>wᵢ</strong> ist der Budgetanteil der Warengruppe i im
+            Basisjahr, <strong>pₜⁱ/p₀ⁱ×100</strong> ihr eigener Preisindex. Basisjahr wird immer auf 100 gesetzt.</p>
+        </div>
+
+        <!-- SVG 1: VPI Warenkorb-Balken -->
+        <figure class="diagram">
+          <div class="diagram-title">Warenkorb mit zwei Gütergruppen, Basis (t₀) vs. jetzt (t₁)</div>
+          <svg viewBox="0 0 520 240" width="520" role="img" aria-label="Balkendiagramm: Preis von Nahrung steigt von 100 auf 110, Preis von Energie von 200 auf 240, gewichtet mit 60 Prozent und 40 Prozent ergibt das einen VPI von 114">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <text x="130" y="24" text-anchor="middle" class="svg-ink" font-weight="800">🍞 Nahrung (Gewicht 60 %)</text>
+              <rect x="40"  y="46" width="100" height="26" fill="#12b28c" fill-opacity="0.45"/>
+              <rect x="150" y="46" width="110" height="26" fill="#12b28c" fill-opacity="0.7"/>
+              <text x="90" y="63" text-anchor="middle" fill="#fff" font-size="10.5">p₀=100</text>
+              <text x="205" y="63" text-anchor="middle" fill="#fff" font-size="10.5">p₁=110</text>
+              <text x="330" y="63" class="svg-soft" font-size="11">Index: 110/100×100 = <tspan fill="#12b28c" font-weight="800">110</tspan></text>
+
+              <text x="130" y="110" text-anchor="middle" class="svg-ink" font-weight="800">⚡ Energie (Gewicht 40 %)</text>
+              <rect x="40"  y="132" width="200" height="26" fill="#f5810b" fill-opacity="0.45"/>
+              <rect x="240" y="132" width="240" height="26" fill="#f5810b" fill-opacity="0.7"/>
+              <text x="140" y="149" text-anchor="middle" fill="#fff" font-size="10.5">p₀=200</text>
+              <text x="360" y="149" text-anchor="middle" fill="#fff" font-size="10.5">p₁=240</text>
+              <text x="330" y="172" class="svg-soft" font-size="11">Index: 240/200×100 = <tspan fill="#f5810b" font-weight="800">120</tspan></text>
+
+              <line x1="40" y1="195" x2="480" y2="195" stroke="#8a94a6" stroke-width="1" stroke-dasharray="4 4"/>
+              <text x="260" y="220" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="800" font-size="14">VPI = 0,6×110 + 0,4×120 = 114</text>
+            </g>
+          </svg>
+          <figcaption>Jede Gütergruppe bekommt ihren eigenen kleinen Preisindex, gewichtet nach Budgetanteil im
+            Basisjahr addiert — nicht die Rohpreise selbst.</figcaption>
+        </figure>
+
+        <div class="callout callout-info">
+          <div class="c-title">VPI ≠ BIP-Deflator</div>
+          <p>Der VPI misst nur den <strong>Warenkorb der Haushalte</strong> (Laspeyres, feste Basis-Mengen). Der
+            <strong>BIP-Deflator</strong> (Thema 01) erfasst dagegen <strong>alle</strong> BIP-Komponenten und ist
+            ein Paasche-Index (gewichtet mit aktuellen Mengen). Sie können unterschiedlich stark steigen.</p>
+        </div>
+
+        <h3>Inflation &amp; reale vs. nominale Löhne</h3>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Inflationsrate</div>
+          <span class="formula">πₜ = (VPIₜ − VPIₜ₋₁) / VPIₜ₋₁ × 100 %</span>
+        </div>
+        <p>Dein <strong>Nominallohn</strong> ist die Zahl auf dem Gehaltszettel. Dein <strong>Reallohn</strong>
+          zeigt, wie viel du dir davon tatsächlich <em>kaufen</em> kannst — er wird um die Inflation bereinigt:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Reallohn</div>
+          <span class="formula">Reallohn = Nominallohn / VPI × 100
+Faustformel: reales Lohnwachstum ≈ nominales Lohnwachstum − Inflationsrate</span>
+        </div>
+
+        <h3>Arbeitsmarkt — Grundbegriffe</h3>
+        <p>Nicht jede erwachsene Person zählt als "Erwerbsperson". Erst wer entweder arbeitet oder aktiv einen Job
+          sucht, gehört zur Erwerbsbevölkerung:</p>
+
+        <!-- SVG 2: Bevölkerungsaufteilung -->
+        <figure class="diagram">
+          <div class="diagram-title">Wer zählt zu den Erwerbspersonen? (Beispiel: 100 Mio. Bevölkerung)</div>
+          <svg viewBox="0 0 620 160" width="620" role="img" aria-label="Gestapelter Balken der die Bevölkerung in Erwerbstätige, Arbeitslose und Nicht-Erwerbspersonen aufteilt, mit Klammer über Erwerbstätigen und Arbeitslosen als Erwerbspersonen L">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="20" y="60" width="360" height="50" fill="#12b28c" fill-opacity="0.55"/>
+              <rect x="380" y="60" width="18"  height="50" fill="#e0483d" fill-opacity="0.8"/>
+              <rect x="398" y="60" width="222" height="50" fill="#8a94a6" fill-opacity="0.35"/>
+              <text x="200" y="90" text-anchor="middle" fill="#fff" font-weight="800">Erwerbstätige: 60 Mio.</text>
+              <text x="389" y="45" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="10.5">AL: 3 Mio.</text>
+              <text x="509" y="90" text-anchor="middle" class="svg-ink" font-weight="700" font-size="11">Nicht-Erwerbspersonen: 37 Mio.</text>
+
+              <path d="M20,52 L398,52" stroke="#2f6df6" stroke-width="2" fill="none"/>
+              <path d="M20,52 L20,44" stroke="#2f6df6" stroke-width="2"/>
+              <path d="M398,52 L398,44" stroke="#2f6df6" stroke-width="2"/>
+              <text x="209" y="30" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="13">Erwerbspersonen L = 63 Mio.</text>
+
+              <text x="209" y="140" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-weight="700">u = U/L = 3/63 × 100 % ≈ 4,76 %</text>
+            </g>
+          </svg>
+          <figcaption>Erwerbspersonen L = Erwerbstätige + Arbeitslose. Rentner, Kinder und Studierende ohne
+            Job-Suche fallen komplett aus der Berechnung heraus.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formeln: Arbeitsmarkt</div>
+          <span class="formula">Erwerbspersonen L = Erwerbstätige + Arbeitslose
+Arbeitslosenquote u = U / L × 100 %
+Erwerbsbeteiligungsquote = L / Bevölkerung(ab 15) × 100 %</span>
+          <p><strong>NAIRU</strong> (Non-Accelerating Inflation Rate of Unemployment): die strukturelle
+            "natürliche" Arbeitslosenquote, bei der die Inflation stabil bleibt — meist um 3–5 %.</p>
+        </div>
+
+        <h3>Die Phillips-Kurve: Inflation trifft Arbeitsmarkt</h3>
+        <p>Die Phillips-Kurve verbindet beide Themen der Seite: Ist die Arbeitslosigkeit <strong>unter</strong>
+          ihrem natürlichen Niveau u* (Wirtschaft "brummt"), steigt die Inflation über die Erwartung. Ist sie
+          <strong>darüber</strong>, sinkt sie.</p>
+
+        <!-- SVG 3: Phillips-Kurve mit Beispielpunkt -->
+        <figure class="diagram">
+          <div class="diagram-title">Kurzfristige Phillips-Kurve mit Beispielpunkt (π^e=2 %, u*=5 %, α=0,5)</div>
+          <svg viewBox="0 0 460 300" width="460" role="img" aria-label="Phillips-Kurve: fallende Kurve zwischen Arbeitslosenquote und Inflation, mit markiertem Punkt bei u=4 Prozent und Inflation 2,5 Prozent, sowie vertikaler Linie bei der natürlichen Arbeitslosenquote u* von 5 Prozent">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <line x1="60" y1="30" x2="60" y2="250" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="60" y1="250" x2="420" y2="250" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="30" y="30" class="svg-soft">π</text>
+              <text x="420" y="270" class="svg-soft">u</text>
+
+              <path d="M90,60 C160,110 260,150 380,230" stroke="#8b5cf6" stroke-width="2.5" fill="none"/>
+              <text x="120" y="55" fill="#8b5cf6" font-weight="800">kurzfristige Phillips-Kurve</text>
+
+              <line x1="240" y1="30" x2="240" y2="250" stroke="#f5810b" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <text x="245" y="42" fill="#f5810b" font-weight="700" font-size="11">u* = 5 % (NAIRU)</text>
+
+              <circle cx="200" cy="140" r="6" fill="#e0483d"/>
+              <text x="205" y="128" fill="#e0483d" font-weight="800" font-size="12">(u=4 %, π=2,5 %)</text>
+
+              <text x="55" y="265" text-anchor="end" class="svg-soft" font-size="10.5">0</text>
+              <text x="240" y="265" text-anchor="middle" class="svg-soft" font-size="10.5">u*</text>
+            </g>
+          </svg>
+          <figcaption>Liegt u unter u* (hier 4 % &lt; 5 %), liegt die tatsächliche Inflation über der erwarteten
+            Inflation π^e — die Wirtschaft "überhitzt" leicht.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Phillips-Kurve (erwartungsaugmentiert)</div>
+          <span class="formula">πₜ = πₜ^e − α · (uₜ − u*) + εₜ</span>
+          <p>Negative Steigung kurzfristig: u ↓ → π ↑. Langfristig gilt die Kurve als <strong>vertikal</strong>
+            bei u = u* (NAIRU) — Erwartungen passen sich irgendwann an.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele durchgerechnet</h2>
+
+        <h3>Beispiel 1: VPI &amp; Inflationsrate</h3>
+        <p>Warenkorb: 60 % Nahrung (Preis steigt von 100 auf 110), 40 % Energie (Preis steigt von 200 auf 240).
+          Basisjahr = 100. Berechne VPI und Inflationsrate.</p>
+        <ol class="steps">
+          <li><strong>Eigene Preisindizes je Gruppe:</strong> Nahrung: 110/100×100 = 110 · Energie: 240/200×100 = 120</li>
+          <li><strong>Mit Gewichten gewichten und addieren:</strong> VPI = 0,6×110 + 0,4×120 = 66 + 48</li>
+          <li><strong>VPI = <strong>114</strong></strong></li>
+          <li><strong>Inflationsrate:</strong> (114 − 100) / 100 × 100 % = <strong>14 %</strong></li>
+        </ol>
+
+        <h3>Beispiel 2: Arbeitslosenquote &amp; Erwerbsbeteiligung</h3>
+        <p>100 Mio. Bevölkerung, 60 Mio. Erwerbstätige, 3 Mio. aktiv arbeitssuchend, 37 Mio. nicht erwerbstätig
+          (Kinder, Rentner, Studierende).</p>
+        <ol class="steps">
+          <li><strong>Erwerbspersonen:</strong> L = 60 + 3 = <strong>63 Mio.</strong></li>
+          <li><strong>Arbeitslosenquote:</strong> u = 3/63 × 100 % ≈ <strong>4,76 %</strong></li>
+          <li><strong>Erwerbsbeteiligung:</strong> 63/100 × 100 % = <strong>63 %</strong></li>
+          <li><strong>Einordnung:</strong> NAIRU liegt meist bei 3–5 % — 4,76 % ist nahe am strukturellen
+            Niveau, also kein starker Inflationsdruck von dieser Seite zu erwarten.</li>
+        </ol>
+
+        <h3>Beispiel 3: Reallohn-Wachstum</h3>
+        <p>Dein Nominallohn steigt um 5 %, die Inflation liegt bei 3 %. Wie verändert sich dein Reallohn?</p>
+        <ol class="steps">
+          <li><strong>Faustformel anwenden:</strong> reales Lohnwachstum ≈ nominal − Inflation = 5 % − 3 %</li>
+          <li><strong>Ergebnis (Näherung):</strong> ≈ <strong>+2 %</strong></li>
+          <li><strong>Exakt (zur Kontrolle):</strong> 1,05 / 1,03 ≈ 1,0194 → +1,94 % — nah an der 2 %-Faustformel,
+            der kleine Unterschied kommt vom Rundungseffekt der Näherung.</li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: Phillips-Kurve anwenden</h3>
+        <p>Erwartete Inflation π^e = 2 %, aktuelle Arbeitslosenquote u = 4 %, natürliche Arbeitslosenquote
+          u* = 5 %, Elastizität α = 0,5. Wie hoch ist die tatsächliche Inflation π (ohne Schock, ε=0)?</p>
+        <ol class="steps">
+          <li><strong>Lücke berechnen:</strong> u − u* = 4 % − 5 % = <strong>−1 %</strong> (Arbeitslosigkeit
+            unter NAIRU)</li>
+          <li><strong>In Formel einsetzen:</strong> π = π^e − α·(u−u*) = 2 % − 0,5 × (−1 %)</li>
+          <li><strong>Vorzeichen beachten:</strong> −0,5 × (−1 %) = +0,5 %</li>
+          <li><strong>Ergebnis:</strong> π = 2 % + 0,5 % = <strong>2,5 %</strong></li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>VPI und BIP-Deflator sind dasselbe.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der VPI misst nur den <strong>Haushalts-Warenkorb</strong>,
+            der Deflator <strong>alle</strong> BIP-Komponenten (auch Investitionsgüter, Staatsausgaben).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nominallohn steigt = ich habe mehr Kaufkraft.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Entscheidend ist der <strong>Reallohn</strong> =
+            Nominallohn / VPI × 100. Steigt die Inflation stärker als der Nominallohn, sinkt die Kaufkraft trotz
+            "mehr Geld".</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Mehr Arbeitslose in absoluten Zahlen bedeutet
+            immer eine höhere Arbeitslosenquote.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>u = U/L — wenn gleichzeitig L sinkt (Menschen
+            geben die Jobsuche auf und verlassen die Erwerbspersonen), kann die Quote sogar <strong>fallen</strong>,
+            obwohl mehr Menschen ohne Job sind.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Phillips-Kurve sagt, dass niedrige
+            Arbeitslosigkeit <em>immer</em> hohe Inflation bedeutet.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Kurzfristig ja (negative Steigung), aber
+            <strong>langfristig</strong> gilt sie als vertikal bei u* — Erwartungen passen sich an, dauerhaft
+            niedrige Arbeitslosigkeit erkauft man sich nicht durch Inflation allein.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Rentner und Studierende zählen als arbeitslos,
+            wenn sie keinen Job haben.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Sie zählen zu den <strong>Nicht-Erwerbspersonen</strong>,
+            solange sie nicht aktiv einen Job suchen — sie fließen weder in Erwerbstätige noch in Arbeitslose ein.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Preisindizes &amp; Löhne</h4>
+          <pre class="code">VPI_t   = Σ wᵢ · (pₜⁱ/p₀ⁱ × 100)              [Laspeyres, feste Basis-Gewichte]
+Deflator = BIP_nominal / BIP_real × 100        [Paasche, siehe Thema 01]
+Inflation π = (VPI_t − VPI_t-1) / VPI_t-1 × 100 %
+Reallohn = Nominallohn / VPI × 100
+Faustformel: reales Lohnwachstum ≈ nominales Wachstum − Inflation</pre>
+
+          <h4>Arbeitsmarkt</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Größe</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>Erwerbspersonen L</td><td>Erwerbstätige + Arbeitslose</td></tr>
+              <tr><td>Arbeitslosenquote u</td><td>U / L × 100 %</td></tr>
+              <tr><td>Erwerbsbeteiligung</td><td>L / Bevölkerung(ab 15) × 100 %</td></tr>
+              <tr><td>Phillips-Kurve</td><td>π = π^e − α·(u−u*) + ε</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>VPI ≠ Deflator</strong> — unterschiedlicher Umfang (Haushalt vs. gesamtes BIP)</li>
+            <li>Immer <strong>Real-</strong> vor Nominalgrößen vergleichen, wenn es um Kaufkraft geht</li>
+            <li><strong>u = U/L</strong>, nicht U/Bevölkerung — Nicht-Erwerbspersonen bleiben außen vor</li>
+            <li>Phillips-Kurve: <strong>kurzfristig</strong> negative Steigung, <strong>langfristig vertikal</strong> bei u*</li>
+            <li>u &lt; u* → Inflation steigt (über Erwartung) · u &gt; u* → Inflation sinkt</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="114">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Warenkorb: 60 % Nahrung (100→110), 40 % Energie (200→240). Wie groß ist der VPI (Basis=100)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>0,6×110 + 0,4×120 = 66+48 = <strong>114</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="14">
+            <p class="quiz-prompt"><span class="q-no">2.</span>VPI steigt von 100 auf 114. Wie hoch ist die Inflationsrate in Prozent (nur die Zahl)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(114−100)/100 × 100 % = <strong>14 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="4.76" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">3.</span>100 Mio. Bevölkerung, 60 Mio. Erwerbstätige, 3 Mio. arbeitssuchend. Wie hoch ist die Arbeitslosenquote in Prozent (2 Nachkommastellen, mit Punkt oder Komma)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>L = 60+3 = 63 Mio. u = 3/63 × 100 % ≈ <strong>4,76 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="63">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Gleiche Daten (L=63 Mio., Bevölkerung=100 Mio.). Wie hoch ist die Erwerbsbeteiligungsquote in Prozent?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>63/100 × 100 % = <strong>63 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Dein Nominallohn steigt um 5 %, die Inflation liegt bei 3 %. Wie verändert sich dein Reallohn ungefähr?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>≈ +2 %</button>
+              <button class="quiz-choice" type="button">≈ +8 %</button>
+              <button class="quiz-choice" type="button">≈ −2 %</button>
+              <button class="quiz-choice" type="button">unverändert</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Faustformel: reales Wachstum ≈ nominal − Inflation = 5 %−3 % =
+              <strong>≈ +2 %</strong> (exakt ≈ +1,94 %).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2.5" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Phillips-Kurve: π^e=2 %, u=4 %, u*=5 %, α=0,5, kein Schock. Wie hoch ist π in Prozent?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>π = 2 % − 0,5×(4 %−5 %) = 2 % − 0,5×(−1 %) = 2 %+0,5 % =
+              <strong>2,5 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="nairu">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Wie lautet die Abkürzung für die strukturelle Arbeitslosenquote, bei der die Inflation stabil bleibt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Antwort …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>NAIRU</strong> (Non-Accelerating Inflation Rate of Unemployment).</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="01-bip.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">BIP: das Maß aller Dinge</div>
+        </a>
+        <a class="next" href="03-kreislaufmodell.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Der Wirtschaftskreislauf</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IS-LM: Gleichgewicht &amp; Politik · Makro</title>
+<meta name="description" content="Das komplette IS-LM-Modell bildlich erklärt – simultanes Gleichgewicht (Y*, r*), Fiskal- vs. Geldpolitik und Crowding-Out, mit durchgerechneten Beispielen und großem IS-LM-Diagramm." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Gleichgewicht</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 09</div>
+    <span class="th-icon">⚖️</span>
+    <h1>IS-LM: Gleichgewicht &amp; Politik</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨🚨 Klausur</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Gleichgewicht &amp; Politik-Kanäle</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Jetzt kommt alles zusammen: Die <strong>IS-Kurve</strong> (Thema 07) zeigt alle
+          (Y,r)-Kombinationen, bei denen der <strong>Gütermarkt</strong> im Gleichgewicht ist. Die
+          <strong>LM-Kurve</strong> (Thema 08) zeigt alle Kombinationen, bei denen der <strong>Geldmarkt</strong>
+          im Gleichgewicht ist. Beide Bedingungen müssen aber <strong>gleichzeitig</strong> gelten — das
+          tatsächliche makroökonomische Gleichgewicht (Y*, r*) ist genau der <strong>Schnittpunkt</strong> beider
+          Kurven. Damit lässt sich endlich beantworten, wie Fiskal- und Geldpolitik wirklich wirken — inklusive
+          des berühmten <strong>Crowding-Out</strong>.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… erinnere dich an die <strong>Mautstelle</strong> aus Thema 07 (IS: je höher die Kredit-Maut r,
+            desto weniger investieren Unternehmen, desto niedriger Y) und an den <strong>Schrank mit Bargeld</strong>
+            aus Thema 08 (LM: je höher Y, desto mehr Bargeld wollen alle halten, desto höher muss r sein, damit das
+            zur festen Geldmenge passt).<br><br>
+            Beide Mechanismen laufen <strong>gleichzeitig</strong> in derselben Wirtschaft ab und ziehen am selben
+            Zinssatz r. Es gibt nur einen einzigen Punkt (Y*, r*), an dem sich Gütermarkt UND Geldmarkt beide in
+            Ruhe befinden — wie zwei Personen, die an entgegengesetzten Enden eines Seils ziehen, bis sich ein
+            stabiler Punkt einstellt. Erhöht der Staat G, zieht das am IS-Seil; erhöht die Zentralbank M^s, zieht
+            das am LM-Seil. Beides verschiebt den gemeinsamen Gleichgewichtspunkt — aber auf unterschiedliche
+            Weise, wie du gleich siehst.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Simultanes Gleichgewicht &amp; Politik-Kanäle</h2>
+
+        <h3>Algebraische Lösung: IS in LM einsetzen</h3>
+        <p>IS-Kurve: Y = Ȳ_IS − α·r. LM-Kurve: r = β·Y − γ. Da beide Bedingungen gleichzeitig gelten müssen,
+          setzt du einfach die eine Gleichung in die andere ein:</p>
+
+        <ol class="steps">
+          <li><strong>LM in IS einsetzen:</strong> Y = Ȳ_IS − α(βY − γ)</li>
+          <li><strong>Ausmultiplizieren:</strong> Y = Ȳ_IS − αβY + αγ</li>
+          <li><strong>Y-Terme sammeln:</strong> Y(1 + αβ) = Ȳ_IS + αγ</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Das IS-LM-Gleichgewicht</div>
+          <span class="formula">Y* = (Ȳ_IS + α·γ) / (1 + α·β)
+r* = β · Y* − γ</span>
+          <p>Erst Y* mit dieser Formel berechnen, dann r* durch Einsetzen von Y* in die LM-Kurve (oder die
+            IS-Kurve — beide müssen dasselbe r* liefern, das ist eine gute Kontrolle!).</p>
+        </div>
+
+        <!-- SVG 1: IS-LM Grundgleichgewicht -->
+        <figure class="diagram">
+          <div class="diagram-title">Das IS-LM-Gleichgewicht — Schnittpunkt bei Y*≈2738, r*≈1,85 %</div>
+          <svg viewBox="0 0 560 340" width="560" role="img" aria-label="IS-LM-Diagramm mit Output Y auf der horizontalen und Zins r auf der vertikalen Achse. Die fallende IS-Kurve und die steigende LM-Kurve schneiden sich im Gleichgewichtspunkt E0 bei Y ungefähr 2738 und r ungefähr 1,85 Prozent.">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Achsen -->
+              <line x1="70" y1="300" x2="500" y2="300" stroke="#8a94a6" stroke-width="1.4"/>
+              <line x1="70" y1="300" x2="70" y2="30" stroke="#8a94a6" stroke-width="1.4"/>
+              <polygon points="500,300 490,296 490,304" fill="#8a94a6"/>
+              <polygon points="70,30 66,40 74,40" fill="#8a94a6"/>
+              <text x="440" y="320" class="svg-soft">Output Y</text>
+              <text x="30" y="35" class="svg-soft">Zins r (%)</text>
+
+              <!-- r-Achsen-Ticks -->
+              <line x1="66" y1="222.9" x2="70" y2="222.9" stroke="#8a94a6" stroke-width="1.2"/>
+              <text x="55" y="227" text-anchor="end" class="svg-soft" font-size="11">1</text>
+              <line x1="66" y1="145.7" x2="70" y2="145.7" stroke="#8a94a6" stroke-width="1.2"/>
+              <text x="55" y="150" text-anchor="end" class="svg-soft" font-size="11">2</text>
+              <line x1="66" y1="68.6" x2="70" y2="68.6" stroke="#8a94a6" stroke-width="1.2"/>
+              <text x="55" y="73" text-anchor="end" class="svg-soft" font-size="11">3</text>
+              <text x="55" y="304" text-anchor="end" class="svg-soft" font-size="11">0</text>
+
+              <!-- IS-Kurve -->
+              <line x1="70" y1="53.1" x2="452.2" y2="300" stroke="#8b5cf6" stroke-width="2.6"/>
+              <text x="88" y="120" fill="#8b5cf6" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">IS: Y=3200−250r</text>
+
+              <!-- LM-Kurve -->
+              <line x1="70" y1="222.9" x2="500" y2="49.3" stroke="#2f6df6" stroke-width="2.6"/>
+              <text x="330" y="90" fill="#2f6df6" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">LM: r=0,0025Y−5</text>
+
+              <!-- Gleichgewicht -->
+              <line x1="231.7" y1="157.6" x2="231.7" y2="300" stroke="#e0483d" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <line x1="70" y1="157.6" x2="231.7" y2="157.6" stroke="#e0483d" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <circle cx="231.7" cy="157.6" r="6" fill="#e0483d"/>
+              <text x="240" y="152" fill="#e0483d" font-weight="800">E₀ = Gleichgewicht</text>
+              <text x="231.7" y="316" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="11">Y*≈2738</text>
+              <text x="20" y="153" fill="#e0483d" font-weight="800" font-size="11">r*≈1,85</text>
+            </g>
+          </svg>
+          <figcaption>Achsen schematisch (nicht 1:1 skaliert). Nur am Schnittpunkt E₀ sind Güter- UND Geldmarkt
+            gleichzeitig im Gleichgewicht — jeder andere Punkt erfüllt höchstens eine der beiden Bedingungen.</figcaption>
+        </figure>
+
+        <h3>Politik-Kanäle: Fiskalpolitik vs. Geldpolitik</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th></th><th>Fiskalpolitik (z. B. G↑)</th><th>Geldpolitik (z. B. M^s↑)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Welche Kurve verschiebt sich?</strong></td><td>IS (nach rechts)</td><td>LM (nach rechts/unten)</td></tr>
+            <tr><td><strong>Der neue Punkt liegt auf …</strong></td><td>der <em>unveränderten</em> LM-Kurve</td><td>der <em>unveränderten</em> IS-Kurve</td></tr>
+            <tr><td><strong>Effekt auf Y</strong></td><td>steigt (gedämpft)</td><td>steigt (gedämpft)</td></tr>
+            <tr><td><strong>Effekt auf r</strong></td><td>steigt (Crowding-Out)</td><td>sinkt</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Crowding-Out — der Mechanismus hinter der Fiskalpolitik-Dämpfung</div>
+          <p>1. G↑ verschiebt die IS-Kurve nach rechts → bei gegebenem r würde Y kräftig steigen.<br>
+            2. Aber höheres Y bedeutet mehr Geldnachfrage — bei fester Geldmenge muss der Zins r
+            <strong>steigen</strong>, damit der Geldmarkt geräumt bleibt (Bewegung auf der unveränderten LM).<br>
+            3. Höherer Zins <strong>verdrängt</strong> private Investitionen (I=I₀−br sinkt).<br>
+            4. Der Nettoeffekt auf Y ist deshalb <strong>kleiner</strong> als der einfache Multiplikator-Effekt
+            (m·ΔG) vorhersagen würde — dieser gedämpfte Effekt heißt Crowding-Out.</p>
+        </div>
+
+        <!-- SVG 2: Politikvergleich Fiskal vs. Geld -->
+        <figure class="diagram">
+          <div class="diagram-title">Fiskalpolitik vs. Geldpolitik im direkten Vergleich</div>
+          <svg viewBox="0 0 700 360" width="700" role="img" aria-label="Erweitertes IS-LM-Diagramm mit Basiskurven IS0 und LM0, dem Gleichgewicht E0, sowie IS1 nach einer Staatsausgabenerhöhung mit neuem Gleichgewicht E1 und LM1 nach einer Geldmengenerhöhung mit neuem Gleichgewicht E2. E1 liegt auf der unveränderten LM0, E2 liegt auf der unveränderten IS0.">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Achsen -->
+              <line x1="70" y1="300" x2="580" y2="300" stroke="#8a94a6" stroke-width="1.4"/>
+              <line x1="70" y1="300" x2="70" y2="30" stroke="#8a94a6" stroke-width="1.4"/>
+              <polygon points="580,300 570,296 570,304" fill="#8a94a6"/>
+              <polygon points="70,30 66,40 74,40" fill="#8a94a6"/>
+              <text x="520" y="320" class="svg-soft">Output Y</text>
+              <text x="30" y="35" class="svg-soft">Zins r (%)</text>
+
+              <!-- Basiskurven -->
+              <line x1="70" y1="53.1" x2="361.4" y2="300" stroke="#8b5cf6" stroke-width="2.4"/>
+              <line x1="70" y1="222.9" x2="434.3" y2="30" stroke="#2f6df6" stroke-width="2.4"/>
+
+              <!-- IS1 (Fiskalpolitik) -->
+              <line x1="252.1" y1="53.1" x2="543.6" y2="300" stroke="#f5810b" stroke-width="2.4" stroke-dasharray="7 5"/>
+
+              <!-- LM1 (Geldpolitik) -->
+              <line x1="70" y1="300" x2="580" y2="30" stroke="#12b28c" stroke-width="2.4" stroke-dasharray="7 5"/>
+
+              <!-- Gleichgewichtspunkte -->
+              <circle cx="193.3" cy="157.6" r="6" fill="#e0483d"/>
+              <circle cx="305.4" cy="98.3" r="6" fill="#f5810b"/>
+              <circle cx="249.4" cy="205.0" r="6" fill="#12b28c"/>
+
+              <!-- Legende -->
+              <g font-size="11.5">
+                <line x1="598" y1="55" x2="620" y2="55" stroke="#8b5cf6" stroke-width="3"/>
+                <text x="626" y="59" class="svg-ink">IS₀ (Basis)</text>
+                <line x1="598" y1="82" x2="620" y2="82" stroke="#2f6df6" stroke-width="3"/>
+                <text x="626" y="86" class="svg-ink">LM₀ (Basis)</text>
+                <circle cx="609" cy="112" r="5" fill="#e0483d"/>
+                <text x="626" y="116" class="svg-ink">E₀ Ausgangs-GG</text>
+                <line x1="598" y1="146" x2="620" y2="146" stroke="#f5810b" stroke-width="3" stroke-dasharray="5 4"/>
+                <text x="626" y="150" class="svg-ink">IS₁: G+100</text>
+                <circle cx="609" cy="176" r="5" fill="#f5810b"/>
+                <text x="626" y="180" class="svg-ink">E₁ Fiskal-GG</text>
+                <line x1="598" y1="210" x2="620" y2="210" stroke="#12b28c" stroke-width="3" stroke-dasharray="5 4"/>
+                <text x="626" y="214" class="svg-ink">LM₁: M^s+200</text>
+                <circle cx="609" cy="240" r="5" fill="#12b28c"/>
+                <text x="626" y="244" class="svg-ink">E₂ Geld-GG</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>Achsen schematisch (nicht 1:1 skaliert). E₁ (Fiskalpolitik) liegt exakt auf der
+            unveränderten LM₀ — der Punkt wandert entlang LM₀ nach rechts oben. E₂ (Geldpolitik) liegt exakt auf
+            der unveränderten IS₀ — der Punkt wandert entlang IS₀ nach rechts unten. Das ist kein Zufall: die
+            jeweils nicht verschobene Kurve bleibt die „Führungsschiene" für den neuen Gleichgewichtspunkt.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>🧮 Klausurtyp: IS-LM-Gleichgewicht berechnen</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>IS: Y = 3200 − 250r. LM: r = 0,0025Y − 5. Berechne das Gleichgewicht (Y*, r*).</p>
+        </div>
+        <ol class="steps">
+          <li><strong>LM in IS einsetzen:</strong> Y = 3200 − 250·(0,0025Y − 5)</li>
+          <li><strong>Ausmultiplizieren:</strong> Y = 3200 − 0,625Y + 1250 = 4450 − 0,625Y</li>
+          <li><strong>Y-Terme sammeln:</strong> 1,625Y = 4450 → Y* = <strong>2738,46</strong></li>
+          <li><strong>r* aus LM:</strong> r* = 0,0025·2738,46 − 5 = 6,846 − 5 = <strong>1,846 %</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Kontrolle über die IS-Kurve</div>
+          <p>Y = 3200 − 250·1,846 = 3200 − 461,5 = <strong>2738,5</strong> ✓ Beide Kurven liefern (bis auf
+            Rundung) dasselbe Ergebnis — das bestätigt die Rechnung.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Fiskalpolitik &amp; Crowding-Out</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Ausgehend vom obigen Gleichgewicht erhöht der Staat G um 100 (neue IS: Y = 3700 − 250r, LM
+            unverändert). Berechne das neue Gleichgewicht und quantifiziere das Crowding-Out.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Typischer erster (falscher) Impuls:</strong> „Der Multiplikator ist 5, also müsste Y um
+            5·100=500 steigen." Das gilt aber nur, wenn r <em>konstant</em> bliebe — genau das ist im IS-LM-Modell
+            nicht der Fall!</li>
+          <li><strong>LM in die neue IS einsetzen:</strong> Y = 3700 − 250·(0,0025Y − 5) = 3700 − 0,625Y + 1250
+            = 4950 − 0,625Y</li>
+          <li><strong>Auflösen:</strong> 1,625Y = 4950 → Y* = <strong>3046,15</strong></li>
+          <li><strong>r* aus LM:</strong> r* = 0,0025·3046,15 − 5 = 7,615 − 5 = <strong>2,615 %</strong></li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Das Crowding-Out beziffern</div>
+          <p>Ohne Zinsanstieg (r bliebe bei 1,846 %) läge Y bei 3700 − 250·1,846 = <strong>3238,5</strong>. Weil
+            der Zins aber auf 2,615 % steigt, sind die tatsächlichen ΔY nur 3046,15 − 2738,46 =
+            <strong>307,7</strong> statt der naiv erwarteten 500. Die Differenz (3238,5 − 3046,15 ≈
+            <strong>192,3</strong>) ist genau der Betrag, den der Zinsanstieg an Investitionen verdrängt — das
+            Crowding-Out.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Geldpolitik</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Ausgehend vom ursprünglichen Gleichgewicht erhöht die Zentralbank M^s/P um 200 (neue LM:
+            r = 0,0025Y − 6, IS unverändert). Berechne das neue Gleichgewicht.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Neue LM in die (unveränderte) IS einsetzen:</strong> Y = 3200 − 250·(0,0025Y − 6)
+            = 3200 − 0,625Y + 1500 = 4700 − 0,625Y</li>
+          <li><strong>Auflösen:</strong> 1,625Y = 4700 → Y* = <strong>2892,31</strong></li>
+          <li><strong>r* aus LM:</strong> r* = 0,0025·2892,31 − 6 = 7,231 − 6 = <strong>1,231 %</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Vergleich zur Ausgangslage</div>
+          <p>ΔY = 2892,31 − 2738,46 = <strong>+153,8</strong>, Δr = 1,231 − 1,846 = <strong>−0,615 %-Punkte</strong>.
+            Genau wie erwartet: expansive Geldpolitik senkt den Zins und erhöht den Output — ohne den
+            Crowding-Out-Effekt, der die Fiskalpolitik bremst.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Vergleich: Fiskalpolitik vs. Geldpolitik in diesem Beispiel</div>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th></th><th>Ausgangslage</th><th>Fiskalpolitik (ΔG=100)</th><th>Geldpolitik (ΔM^s/P=200)</th></tr></thead>
+            <tbody>
+              <tr><td>Y*</td><td>2738,46</td><td>3046,15 (+307,7)</td><td>2892,31 (+153,8)</td></tr>
+              <tr><td>r*</td><td>1,846 %</td><td>2,615 % (+0,77 Pkt.)</td><td>1,231 % (−0,62 Pkt.)</td></tr>
+            </tbody>
+          </table></div>
+          <p>Beide Politiken erhöhen Y — aber sie bewegen r in <strong>entgegengesetzte</strong> Richtungen. Das
+            ist ein beliebtes Klausur-Unterscheidungsmerkmal: Steigt r zusammen mit Y, war es Fiskalpolitik; sinkt
+            r, während Y steigt, war es Geldpolitik.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Fiskalmultiplikator im IS-LM-Modell ist
+            genauso groß wie im einfachen Gütermarktmodell: ΔY/ΔG = 1/(1−c).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Im IS-LM-Modell ist er
+            <strong>kleiner</strong>: ΔY/ΔG = m/(1+αβ), weil der steigende Zins über Crowding-Out einen Teil des
+            Effekts wieder auffrisst.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Zinssatz r ist exogen vorgegeben und ändert
+            sich bei Politikmaßnahmen nicht.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>r ist <strong>endogen</strong> — er wird erst
+            durch das Zusammenspiel von IS <strong>und</strong> LM bestimmt, nicht von außen festgelegt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>IS nach links = expansiv, LM nach rechts =
+            restriktiv.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Verschiebung der IS nach <strong>links</strong>
+            = restriktiv (weniger Y); Verschiebung der LM nach <strong>rechts</strong> = expansiv (mehr Y bei
+            gegebenem r). Die Richtungen sind für IS und LM nicht symmetrisch zu verwechseln.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei einer Fiskalexpansion bleibt der Zins
+            konstant, nur Y steigt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>r steigt bei Fiskalpolitik <strong>immer
+            mit</strong> (Crowding-Out) — außer im Extremfall einer waagerechten LM (Liquiditätsfalle), wo r
+            konstant bleibt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Y* lässt sich berechnen, indem man einfach
+            r=0 in die IS-Kurve einsetzt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Y* und r* ergeben sich <strong>nur</strong>
+            aus dem simultanen Schnittpunkt von IS <strong>und</strong> LM — dafür muss eine Kurve in die andere
+            eingesetzt werden, r=0 ist willkürlich und in aller Regel falsch.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grundformeln</h4>
+          <pre class="code">IS-LM-Gleichgewicht:  Y* = (Ȳ_IS + α·γ) / (1 + α·β)
+                       r* = β·Y* − γ
+
+Fiskalmultiplikator (mit Crowding-Out):
+                       ΔY/ΔG = m / (1 + α·β)      [m = 1/(1−c)]
+
+Geldpolitik-Multiplikator:
+                       ΔY/Δγ = α / (1 + α·β)      [Δγ = ΔM^s / (P·h)]
+
+Fiskalpolitik  → verschiebt IS → r steigt (Crowding-Out)
+Geldpolitik    → verschiebt LM → r sinkt</pre>
+
+          <h4>Wirksamkeit von Fiskal- vs. Geldpolitik</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Fiskalpolitik</th><th>Geldpolitik</th></tr></thead>
+            <tbody>
+              <tr><td>Normalfall (α, β &gt; 0)</td><td>wirksam, aber Crowding-Out</td><td>wirksam</td></tr>
+              <tr><td>Liquiditätsfalle (h→∞, LM flach)</td><td>sehr wirksam</td><td>unwirksam</td></tr>
+              <tr><td>Zinsunelastische I (b→0, IS steil/vertikal)</td><td>sehr wirksam (kein Crowding-Out)</td><td>weniger wirksam</td></tr>
+              <tr><td>Zinsreagible Geldnachfrage (h groß, LM flach)</td><td>weniger wirksam</td><td>sehr wirksam</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li>Gleichgewicht = <strong>Schnittpunkt</strong> von IS und LM — niemals getrennt betrachten</li>
+            <li><strong>Fiskalpolitik verschiebt IS</strong>, <strong>Geldpolitik verschiebt LM</strong> — die
+              jeweils andere Kurve bleibt die „Führungsschiene" für den neuen Punkt</li>
+            <li>Crowding-Out dämpft <strong>immer</strong> die Fiskalpolitik (außer in der Liquiditätsfalle)</li>
+            <li>r steigt bei Fiskalpolitik, r sinkt bei Geldpolitik — ein zuverlässiges Unterscheidungsmerkmal</li>
+            <li>Erst die Formel Y*=(Ȳ_IS+αγ)/(1+αβ) anwenden, <strong>dann</strong> r* durch Einsetzen von Y*
+              berechnen — nie umgekehrt raten</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2738.46" data-tol="5">
+            <p class="quiz-prompt"><span class="q-no">1.</span>IS: Y=3200−250r, LM: r=0,0025Y−5. Wie hoch ist der
+              Gleichgewichtsoutput Y*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>1,625Y = 4450 → Y* = <strong>2738,46</strong> (≈2738).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1.846" data-tol="0.1">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Mit demselben Gleichgewicht: wie hoch ist der
+              Gleichgewichtszins r* (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>r* = 0,0025·2738,46 − 5 = <strong>1,846 %</strong> (≈1,85 %).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Eine expansive Fiskalpolitik (G↑) verschiebt …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>die IS-Kurve nach rechts</button>
+              <button class="quiz-choice" type="button">die LM-Kurve nach rechts</button>
+              <button class="quiz-choice" type="button">beide Kurven gleichzeitig</button>
+              <button class="quiz-choice" type="button">gar keine Kurve, nur den Y-Achsenabschnitt der LM</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>G ist eine autonome Größe der IS-Kurve — Fiskalpolitik verschiebt
+              <strong>die IS-Kurve</strong>, die LM bleibt unverändert.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Eine expansive Geldpolitik (M^s↑) verschiebt …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>die LM-Kurve nach rechts/unten</button>
+              <button class="quiz-choice" type="button">die IS-Kurve nach rechts</button>
+              <button class="quiz-choice" type="button">beide Kurven gleichzeitig</button>
+              <button class="quiz-choice" type="button">gar keine Kurve, nur r direkt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>M^s ist eine Größe der LM-Kurve — Geldpolitik verschiebt
+              <strong>die LM-Kurve</strong> nach rechts/unten, die IS bleibt unverändert.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3046.15" data-tol="5">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Klausurtyp: G steigt um 100 (neue IS:
+              Y=3700−250r, LM unverändert: r=0,0025Y−5). Wie hoch ist das neue Y*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>1,625Y = 4950 → Y* = <strong>3046,15</strong> (≈3046) — deutlich
+              weniger als die naiv erwarteten +500 (Crowding-Out).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="1.231" data-tol="0.1">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: M^s/P steigt um 200 (neue LM:
+              r=0,0025Y−6, IS unverändert: Y=3200−250r). Wie hoch ist das neue r* (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>1,625Y = 4700 → Y*=2892,31 → r* = 0,0025·2892,31 − 6 =
+              <strong>1,231 %</strong> (≈1,23 %) — niedriger als vorher, wie bei Geldpolitik erwartet.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Bei einer Geldpolitik-Maßnahme (LM verschiebt
+              sich) bewegt sich der neue Gleichgewichtspunkt entlang …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>der unveränderten IS-Kurve</button>
+              <button class="quiz-choice" type="button">der unveränderten LM-Kurve</button>
+              <button class="quiz-choice" type="button">der 45°-Linie</button>
+              <button class="quiz-choice" type="button">gar keiner Kurve — er springt frei</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Da nur die LM sich verschiebt, muss der neue Schnittpunkt auf der
+              <strong>unveränderten IS-Kurve</strong> liegen — analog liegt bei Fiskalpolitik der neue Punkt auf
+              der unveränderten LM-Kurve.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="08-lm-kurve.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Die LM-Kurve</div>
+        </a>
+        <a class="next" href="10-produktionsfunktion.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Die Produktionsfunktion</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

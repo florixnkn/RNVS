@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zinssteuerung der Zentralbank · Makro</title>
+<meta name="description" content="Wie die Zentralbank über Leitzins, Offenmarktgeschäfte und die Taylor-Regel den Marktzins steuert – Transmissionsmechanismus und Zins- vs. Geldmengen-Targeting bildlich erklärt." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Instrumente</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 06</div>
+    <span class="th-icon">🏦</span>
+    <h1>Zinssteuerung der Zentralbank</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Instrumente &amp; Taylor-Regel</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Im letzten Thema hast du gesehen, dass der Zins sich aus Geldangebot und Geldnachfrage
+          ergibt. Aber <strong>wer legt das Geldangebot eigentlich fest — und wie?</strong> Das ist die Aufgabe der
+          Zentralbank (in der Eurozone: die EZB). Modern steuert sie nicht direkt eine Geldmenge, sondern gibt einen
+          <strong>Zielzins</strong> vor und passt die Geldmenge so an, dass sich dieser Zins am Markt einstellt.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… die Zentralbank ist wie ein <strong>Thermostat für die Wirtschaft</strong>. Sie stellt eine
+            Zieltemperatur (den Leitzins) ein, statt direkt an der Heizleistung (der Geldmenge) herumzuschrauben.
+            Wird es der Wirtschaft zu „heiß" (hohe Inflation, Überhitzung), dreht sie den Zins hoch — das kühlt
+            Investitionen und Konsum ab. Droht eine „Unterkühlung" (Rezession, niedrige Inflation), senkt sie den
+            Zins, um Investitionen anzukurbeln. Nur wirkt dieser Thermostat mit erheblicher <strong>Verzögerung</strong>
+            — 12 bis 24 Monate, bis die volle Wirkung spürbar ist.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Instrumente &amp; die Taylor-Regel</h2>
+
+        <h3>Der Zinskorridor der Zentralbank</h3>
+        <p>Die EZB steuert nicht mit einem einzigen Zinssatz, sondern mit einem <strong>Korridor</strong> aus drei
+          Sätzen, zwischen denen sich der Markt-Tagesgeldzins bewegt:</p>
+
+        <!-- SVG 1: Zinskorridor -->
+        <figure class="diagram">
+          <div class="diagram-title">Der Zinskorridor — drei Sätze, ein Rahmen</div>
+          <svg viewBox="0 0 480 220" width="480" role="img" aria-label="Zinskorridor-Diagramm mit Spitzensatz als Obergrenze bei 4,5 Prozent, Repo-Satz in der Mitte bei 4,0 Prozent und Einlagensatz als Untergrenze bei 3,5 Prozent">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <line x1="70" y1="190" x2="70" y2="30" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <!-- Spitzensatz (oben) -->
+              <line x1="70" y1="45" x2="430" y2="45" stroke="#e0483d" stroke-width="2.5"/>
+              <text x="80" y="38" fill="#e0483d" font-weight="800">Spitzensatz — 4,5 % (Obergrenze, Notfallkredit)</text>
+
+              <!-- Repo-Satz (Mitte) -->
+              <line x1="70" y1="110" x2="430" y2="110" stroke="#2f6df6" stroke-width="3"/>
+              <text x="80" y="100" fill="#2f6df6" font-weight="800">Repo-Satz (Leitzins) — 4,0 % (Hauptsteuerungssatz)</text>
+
+              <!-- Einlagensatz (unten) -->
+              <line x1="70" y1="175" x2="430" y2="175" stroke="#12b28c" stroke-width="2.5"/>
+              <text x="80" y="192" fill="#12b28c" font-weight="800">Einlagensatz — 3,5 % (Untergrenze, Mindestverzinsung)</text>
+
+              <!-- Korridor-Fläche -->
+              <rect x="70" y="45" width="360" height="130" fill="#2f6df6" fill-opacity="0.06"/>
+            </g>
+          </svg>
+          <figcaption>Der Repo-Satz (Hauptrefinanzierungssatz) ist der eigentliche Leitzins in der Mitte des
+            Korridors. Spitzensatz und Einlagensatz begrenzen, wie weit der Marktzins nach oben bzw. unten
+            ausschlagen kann — Beispielwerte, keine aktuellen EZB-Sätze.</figcaption>
+        </figure>
+
+        <h3>Wie die Zentralbank die Geldmenge tatsächlich bewegt</h3>
+        <div class="factgrid">
+          <div class="fact"><b>Offenmarktgeschäfte</b><span>Kauf/Verkauf von Anleihen — erhöht bzw. senkt die
+            Geldmenge direkt</span></div>
+          <div class="fact"><b>Quantitative Easing</b><span>Ankauf großer Mengen langfristiger Papiere, wenn der
+            Leitzins schon bei der Zinsuntergrenze ist</span></div>
+          <div class="fact"><b>Mindestreservequote</b><span>Pflicht-Reserveanteil der Banken — höhere Quote
+            senkt den Geldschöpfungsmultiplikator (restriktiv)</span></div>
+        </div>
+
+        <h3>Zwei Strategien der Geldpolitik</h3>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Strategie</th><th>Was wird vorgegeben?</th><th>Vor-/Nachteil</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Geldmengen-Targeting</strong> (klassisch)</td><td>M^s fest vorgeben</td>
+              <td>direkte Kontrolle über M^s, aber Zinsvolatilität bei Nachfrageschocks</td></tr>
+            <tr><td><strong>Zins-Targeting</strong> (modern, seit 1980ern)</td><td>Zielzins i* vorgeben,
+              M^s wird angepasst</td><td>stabile Zinsen, aber M^s reagiert nicht mehr automatisch auf Schocks</td></tr>
+          </tbody>
+        </table></div>
+        <p>Die EZB (wie die meisten modernen Zentralbanken) betreibt <strong>Zins-Targeting</strong>: Sie gibt einen
+          Leitzins vor und stellt über Offenmarktgeschäfte (Kauf/Verkauf von Anleihen), Mindestreservequoten und den
+          Zinskorridor sicher, dass sich am Geldmarkt genau dieser Zins einstellt.</p>
+
+        <h3>Die Taylor-Regel: eine praktische Zins-Formel</h3>
+        <p>Wie genau soll die Zentralbank ihren Zielzins wählen? Die Taylor-Regel schlägt eine formelhafte
+          Orientierung vor:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Taylor-Regel</div>
+          <span class="formula">i = r* + π* + 1,5·(π − π*) + 0,5·(Y − Y*)</span>
+        </div>
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Symbol</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>r*</strong></td><td>realer Gleichgewichtszins (≈ 2 %)</td></tr>
+            <tr><td><strong>π*</strong></td><td>Inflationsziel (EZB: 2 %)</td></tr>
+            <tr><td><strong>π</strong></td><td>aktuelle Inflation</td></tr>
+            <tr><td><strong>(Y−Y*)</strong></td><td>Output-Lücke: Abweichung vom Produktionspotential</td></tr>
+          </tbody>
+        </table></div>
+        <p>Interpretation: Die Zentralbank erhöht den Zins, wenn die Inflation über dem Ziel liegt oder die
+          Wirtschaft „überhitzt" (positive Output-Lücke) — und senkt ihn im umgekehrten Fall.</p>
+
+        <h3>Der Transmissionsmechanismus</h3>
+        <p>Eine Zinsänderung wirkt nicht sofort auf die Wirtschaft, sondern über eine mehrstufige Kette mit
+          Verzögerung (12–24 Monate):</p>
+
+        <!-- SVG 2: Transmission expansiv/restriktiv -->
+        <figure class="diagram">
+          <div class="diagram-title">Transmissionsmechanismus — restriktiv vs. expansiv</div>
+          <svg viewBox="0 0 620 190" width="620" role="img" aria-label="Zwei Wirkungsketten: restriktive Geldpolitik mit steigendem Zins senkt Investitionen, Output und Inflation; expansive Geldpolitik mit sinkendem Zins erhöht Investitionen, Output und Inflation">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Restriktiv -->
+              <text x="10" y="25" fill="#e0483d" font-weight="800">Restriktiv (ZB erhöht i)</text>
+              <g fill="#e0483d" fill-opacity="0.14" stroke="#e0483d" stroke-width="1.3">
+                <rect x="10" y="35" width="90" height="46" rx="7"/><rect x="180" y="35" width="90" height="46" rx="7"/>
+                <rect x="350" y="35" width="90" height="46" rx="7"/><rect x="520" y="35" width="90" height="46" rx="7"/>
+              </g>
+              <g class="svg-ink" text-anchor="middle" font-weight="700">
+                <text x="55" y="63">Zins i ↑</text>
+                <text x="225" y="63">Invest. I ↓</text>
+                <text x="395" y="63">Output Y ↓</text>
+                <text x="565" y="63">Inflation π ↓</text>
+              </g>
+              <g fill="#e0483d">
+                <text x="107" y="63" font-size="16">→</text><text x="277" y="63" font-size="16">→</text><text x="447" y="63" font-size="16">→</text>
+              </g>
+
+              <!-- Expansiv -->
+              <text x="10" y="115" fill="#12b28c" font-weight="800">Expansiv (ZB senkt i)</text>
+              <g fill="#12b28c" fill-opacity="0.14" stroke="#12b28c" stroke-width="1.3">
+                <rect x="10" y="125" width="90" height="46" rx="7"/><rect x="180" y="125" width="90" height="46" rx="7"/>
+                <rect x="350" y="125" width="90" height="46" rx="7"/><rect x="520" y="125" width="90" height="46" rx="7"/>
+              </g>
+              <g class="svg-ink" text-anchor="middle" font-weight="700">
+                <text x="55" y="153">Zins i ↓</text>
+                <text x="225" y="153">Invest. I ↑</text>
+                <text x="395" y="153">Output Y ↑</text>
+                <text x="565" y="153">Inflation π ↑</text>
+              </g>
+              <g fill="#12b28c">
+                <text x="107" y="153" font-size="16">→</text><text x="277" y="153" font-size="16">→</text><text x="447" y="153" font-size="16">→</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>Beide Ketten laufen über denselben Kanal (Zins → Investitionen → Output → Inflation),
+            nur mit umgekehrtem Vorzeichen. Daneben wirken schwächere Nebenkanäle: Vermögenseffekt (Anleihenpreise)
+            und Wechselkurskanal (Exporte/Importe).</figcaption>
+        </figure>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>🧮 Klausurtyp: Taylor-Regel bei hoher Inflation (restriktiv)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>r*=2 %, π*=2 %, aktuelle Inflation π=4 %, Output-Lücke (Y−Y*)=2 %. Berechne den Zielzins i nach der
+            Taylor-Regel.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Formel einsetzen:</strong> i = 2 + 2 + 1,5·(4−2) + 0,5·(2)</li>
+          <li><strong>Klammern ausrechnen:</strong> i = 4 + 1,5·2 + 0,5·2 = 4 + 3 + 1</li>
+          <li><strong>Ergebnis:</strong> i = <strong>8 %</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Interpretation</div>
+          <p>Inflation (4 %) liegt 2 Prozentpunkte über dem Ziel und die Wirtschaft läuft heiß (positive
+            Output-Lücke) — die Taylor-Regel empfiehlt einen deutlich <strong>restriktiven</strong> Zins von 8 %,
+            weit über dem „neutralen" Niveau von r*+π*=4 %.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Taylor-Regel in der Rezession (expansiv)</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>r*=2 %, π*=2 %, aktuelle Inflation π=1 %, Output-Lücke (Y−Y*)=−1 %. Berechne den Zielzins i.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Formel einsetzen:</strong> i = 2 + 2 + 1,5·(1−2) + 0,5·(−1)</li>
+          <li><strong>Klammern ausrechnen:</strong> i = 4 + 1,5·(−1) + 0,5·(−1) = 4 − 1,5 − 0,5</li>
+          <li><strong>Ergebnis:</strong> i = <strong>2 %</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Interpretation</div>
+          <p>Inflation liegt unter dem Ziel und die Wirtschaft hat eine negative Output-Lücke (Rezession) — die
+            Taylor-Regel empfiehlt einen Zins von nur 2 %, <strong>unter</strong> dem neutralen Niveau von 4 %:
+            expansive Geldpolitik, um Investitionen anzukurbeln.</p>
+        </div>
+
+        <h3>Real- vs. Nominalzins</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Der Nominalzins beträgt i=8 % (aus dem ersten Beispiel), die erwartete Inflation π^e=5 %.
+            Wie hoch ist der Realzins r?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Formel:</strong> r = i − π^e</li>
+          <li><strong>Einsetzen:</strong> r = 8 − 5 = <strong>3 %</strong></li>
+        </ol>
+        <div class="callout callout-warning">
+          <div class="c-title">Warum das wichtig ist</div>
+          <p>Investitionsentscheidungen hängen vom <strong>Realzins</strong> ab, nicht vom Nominalzins — 8 %
+            Nominalzins bei 5 % erwarteter Inflation ist real nur eine moderate Bremse von 3 %, nicht die
+            drastische Straffung, die die reine Zahl 8 % suggeriert.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Zentralbank kann bei r=0 einfach weiter den
+            Zins senken, um die Wirtschaft anzukurbeln.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bei der Liquiditätsfalle (i=0) verliert die
+            klassische Zinssteuerung ihre Wirkung — die Zentralbank braucht andere Instrumente wie
+            <strong>Quantitative Easing</strong> oder die Fiskalpolitik muss einspringen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Eine Zinsänderung wirkt sofort auf Inflation
+            und Arbeitslosigkeit.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Transmissionslags betragen typischerweise
+            <strong>12–24 Monate</strong> — Geldpolitik ist ein Instrument mit spürbarer Verzögerung, kein
+            Schnellschuss.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die EZB steuert heute primär über eine feste
+            Geldmenge M^s (Geldmengen-Targeting).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Moderne Zentralbanken (inkl. EZB) betreiben
+            <strong>Zins-Targeting</strong>: sie geben einen Zielzins vor und passen M^s an, um ihn zu erreichen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Spitzensatz ist der eigentliche Leitzins,
+            an dem sich alles orientiert.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der <strong>Repo-Satz</strong> (Hauptrefinanzierungssatz)
+            ist der zentrale Leitzins in der Mitte des Korridors. Der Spitzensatz ist nur die
+            <strong>Obergrenze</strong> für Notfallkredite, der Einlagensatz die Untergrenze.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Höhere Zinsen wirken nur über die Investitionen
+            auf die Wirtschaft.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es gibt mehrere Kanäle: den
+            <strong>Investitionskanal</strong>, den <strong>Vermögenseffekt</strong> (Anleihenpreise sinken,
+            Vermögen sinkt, Konsum sinkt) und den <strong>Wechselkurskanal</strong> (höherer Zins → Aufwertung →
+            weniger Exporte).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Nominal- und Realzins werden in der
+            Taylor-Regel gleichgesetzt.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>r* in der Taylor-Regel ist bereits ein
+            <strong>realer</strong> Gleichgewichtszins; die Formel liefert den <strong>nominalen</strong> Zielzins i.
+            Für den Realzins gilt separat r = i − π.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grundformeln</h4>
+          <pre class="code">Taylor-Regel:     i = r* + π* + 1,5·(π−π*) + 0,5·(Y−Y*)
+Realzins:         r = i − π (bzw. π^e für erwartete Inflation)
+Neutraler Zins:   i_neutral = r* + π*  (wenn π=π* und Y=Y*)
+
+Zinskorridor:     Spitzensatz (oben) > Repo-Satz (Mitte, Leitzins) > Einlagensatz (unten)
+
+Restriktiv:       i ↑ → I ↓ → Y ↓ → π ↓  (mit Lag 12–24 Monate)
+Expansiv:         i ↓ → I ↑ → Y ↑ → π ↑  (mit Lag 12–24 Monate)</pre>
+
+          <h4>Geldmengen- vs. Zins-Targeting</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Strategie</th><th>Vorteil</th><th>Nachteil</th></tr></thead>
+            <tbody>
+              <tr><td>Geldmengen-Targeting</td><td>direkte Kontrolle über M^s</td><td>Zinsvolatilität</td></tr>
+              <tr><td>Zins-Targeting (modern)</td><td>stabile, vorhersehbare Zinsen</td><td>M^s reagiert nicht
+                automatisch auf Schocks</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Repo-Satz = Leitzins</strong>, Spitzensatz/Einlagensatz sind nur Ober-/Untergrenze</li>
+            <li>Taylor-Regel: <strong>π über Ziel oder Y über Potential → i steigt</strong>, sonst sinkt er</li>
+            <li>Geldpolitik wirkt mit <strong>Verzögerung</strong> (12–24 Monate) — nicht sofort</li>
+            <li>Bei r=0: <strong>Liquiditätsfalle</strong> — klassische Zinssteuerung wirkungslos, QE oder
+              Fiskalpolitik nötig</li>
+            <li>Immer <strong>Real- und Nominalzins</strong> auseinanderhalten: r = i − π</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="8">
+            <p class="quiz-prompt"><span class="q-no">1.</span>r*=2 %, π*=2 %, π=4 %, Output-Lücke=2 %.
+              Taylor-Regel: wie hoch ist der Zielzins i (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>i = 2+2+1,5·(4−2)+0,5·2 = 4+3+1 = <strong>8 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Klausurtyp: r*=2 %, π*=2 %, π=1 %,
+              Output-Lücke=−1 %. Taylor-Regel: Zielzins i (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>i = 2+2+1,5·(1−2)+0,5·(−1) = 4−1,5−0,5 = <strong>2 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Was ist der Repo-Satz (Hauptrefinanzierungssatz)?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Der zentrale Leitzins, zu dem sich Banken
+                bei der Zentralbank refinanzieren</button>
+              <button class="quiz-choice" type="button">Die Obergrenze des Zinskorridors</button>
+              <button class="quiz-choice" type="button">Die Untergrenze des Zinskorridors</button>
+              <button class="quiz-choice" type="button">Der Zins für Spareinlagen von Privatkunden</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Repo-Satz liegt in der Mitte des Korridors und ist der
+              eigentliche Steuerungssatz der Zentralbank.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Zins-Targeting|Zinssteuerung|Zinstargeting">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie heißt die moderne Strategie, bei der die
+              Zentralbank direkt einen Zielzins vorgibt und die Geldmenge daran anpasst?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Zins-Targeting</strong> (bzw. Zinssteuerung) — das
+              Gegenstück zum klassischen Geldmengen-Targeting.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Was passiert laut Transmissionsmechanismus, wenn
+              die Zentralbank den Leitzins erhöht?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Investitionen sinken, Output sinkt, mit
+                Zeitverzögerung sinkt auch die Inflation</button>
+              <button class="quiz-choice" type="button">Investitionen steigen sofort</button>
+              <button class="quiz-choice" type="button">Es hat keinen Effekt auf Y</button>
+              <button class="quiz-choice" type="button">Nur der Wechselkurs reagiert, sonst nichts</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Kette: Zins ↑ → Investitionen ↓ → Output ↓ → (mit 12–24 Monaten
+              Lag) Inflation ↓.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="3">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Der Nominalzins beträgt i=8 %, die erwartete
+              Inflation π^e=5 %. Wie hoch ist der Realzins r (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>r = i − π^e = 8 − 5 = <strong>3 %</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="5.75" data-tol="0.05">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: r*=2 %, π*=2 %, π=3 %,
+              Output-Lücke=0,5 %. Taylor-Regel: Zielzins i (in %)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">%</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>i = 2+2+1,5·(3−2)+0,5·0,5 = 4+1,5+0,25 = <strong>5,75 %</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="05-geldmarkt.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Geldmarkt &amp; Zins</div>
+        </a>
+        <a class="next" href="07-is-kurve.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Die IS-Kurve</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

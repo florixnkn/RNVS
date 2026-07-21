@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klausurtraining: Lagrange bis Steuerinzidenz · P4 Fiwi</title>
+<meta name="description" content="Klausurtraining für P4 Finanzwissenschaft: 8 klausurtypische Übungsaufgaben quer durch 5 Themenblöcke — Lagrange, Tauscheffizienz, öffentliche Güter, externe Effekte/Coase und Steuerinzidenz — Schritt für Schritt durchgerechnet, plus Quick-Reference und Wissenscheck." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+<style>
+  .solution { margin: 14px 0 26px; border: 1px solid var(--c-border); border-radius: var(--radius-s); background: var(--c-surface-2); }
+  .solution summary { cursor: pointer; padding: 13px 18px; font-weight: 700; color: var(--c-primary-d); }
+  .solution summary:hover { color: var(--c-primary); }
+  .solution[open] summary { border-bottom: 1px solid var(--c-border); }
+  .solution > :not(summary) { margin: 14px 18px 18px; }
+</style>
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#worum">Ablauf</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P4-Fiwi-Kursübersicht</a> › Thema 09</div>
+    <span class="th-icon">🎯</span>
+    <h1>Klausurtraining: Lagrange bis Steuerinzidenz</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Übungsaufgaben</span>
+      <span class="badge badge-soft">8 klausurtypische Aufgaben · 5 Themenblöcke · noch keine Original-Klausur verfügbar</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">So trainierst du am besten</a></li>
+        <li><a href="#lagrange">1 · Lagrange &amp; Nutzenmaximierung</a></li>
+        <li><a href="#tauscheffizienz">2 · Tauscheffizienz</a></li>
+        <li><a href="#oeffentliche-gueter">3 · Öffentliche Güter</a></li>
+        <li><a href="#externe-effekte">4 · Externe Effekte &amp; Coase</a></li>
+        <li><a href="#besteuerung">5 · Besteuerung &amp; Steuerinzidenz</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>So trainierst du am besten</h2>
+        <p class="lead-in">P4 ist mit <strong>6 ECTS</strong> dein Nebenfach-Modul dieses Semesters — aber die
+          Klausur verlangt trotzdem sauberes Rechnen: Lagrange-Optimierung, Tauscheffizienz, öffentliche Güter,
+          externe Effekte und Steuerwirkungen. Diese Seite ist kein neuer Stoff, sondern <strong>Training</strong>:
+          8 klausurtypische Aufgaben, quer durch 5 Themenblöcke, komplett durchgerechnet.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Ehrlich gesagt: noch keine echte Altklausur</div>
+          <p>Für P4 liegt bisher <strong>keine echte Altklausur mit offizieller Musterlösung</strong> vor — die
+            Suche danach läuft noch. Die Aufgaben unten sind deshalb <strong>klausurtypische
+            Übungsaufgaben</strong>, an den bekannten Aufgabenformaten des Moduls orientiert und komplett
+            durchgerechnet, aber <strong>keine Original-Klausuraufgaben</strong>. Sobald echte Altklausuren
+            auftauchen, ist das der nächste Ausbauschritt für diese Seite.</p>
+        </div>
+
+        <h3>Deine Strategie</h3>
+        <ol class="steps">
+          <li><strong>Erst selbst rechnen, dann vergleichen:</strong> jede Aufgabe komplett auf einem Blatt
+            durchrechnen, erst danach den Lösungskasten aufklappen. Reines Mitlesen bringt für eine Rechen-Klausur
+            fast nichts.</li>
+          <li><strong>Lagrange-Schritte vollständig aufschreiben:</strong> Zielfunktion, Nebenbedingung, alle FOCs
+            (inklusive ∂L/∂λ!) — das bringt in der Klausur Teilpunkte, auch wenn am Ende ein Rechenfehler
+            passiert.</li>
+          <li><strong>Bei jedem Marktversagen zuerst fragen:</strong> „Was würde der Markt allein tun, und wie
+            weit weicht das vom Optimum ab?" — das ist die rote Linie durch öffentliche Güter, externe Effekte
+            und Besteuerung.</li>
+          <li><strong>Wissenscheck als Zeitdruck-Test:</strong> nach allen 5 Themenblöcken am Stück durcharbeiten,
+            ohne vorher nachzuschlagen.</li>
+        </ol>
+
+        <h3>Die wichtigsten Fehlerquellen des Moduls</h3>
+        <p>Diese Fallen tauchen in P4 immer wieder auf. Achte in den Aufgaben unten gezielt darauf, wo sie
+          zuschlagen könnten.</p>
+        <div class="factgrid">
+          <div class="fact"><b>1 · ∂L/∂λ nicht vergessen</b><span>diese FOC ist nichts anderes als die
+            Nebenbedingung selbst — oft die wichtigste Kontrollgleichung</span></div>
+          <div class="fact"><b>2 · Vertikal, nicht horizontal</b><span>bei öffentlichen Gütern werden die
+            Zahlungsbereitschaften Σ GRS <strong>vertikal</strong> addiert, nicht wie bei privaten Gütern
+            horizontal</span></div>
+          <div class="fact"><b>3 · Negativer externer Effekt ⇒ zu viel Markt</b><span>weil private Grenzkosten
+            kleiner sind als soziale Grenzkosten, produziert der unregulierte Markt <strong>zu viel</strong></span></div>
+          <div class="fact"><b>4 · Inzidenz folgt Elastizität</b><span>wer die Steuer formal zahlt, ist egal — die
+            <strong>unelastischere</strong> Marktseite trägt die größere Last</span></div>
+          <div class="fact"><b>5 · Zusatzlast wächst quadratisch</b><span>verdoppelst du den Steuersatz t,
+            vervierfacht sich die Zusatzlast (∝ t²) — kein linearer Zusammenhang</span></div>
+        </div>
+      </section>
+
+      <!-- ===== 1 LAGRANGE ===== -->
+      <section id="lagrange" class="reveal">
+        <h2>Themenblock 1: Lagrange &amp; Nutzenmaximierung</h2>
+        <p>Fast jede Optimierungsaufgabe in P4 läuft über denselben Lagrange-Mechanismus: Zielfunktion aufstellen,
+          Nebenbedingung ergänzen, nach allen Variablen <strong>inklusive λ</strong> ableiten, Gleichungssystem
+          lösen.</p>
+
+        <h3>🧮 Aufgabe 1.1: Nutzenmaximierung mit konkreter Nutzenfunktion</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 1.1 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben: U(x₁,x₂) = x₁² · x₂², Budget 5x₁ + 10x₂ = 200 (p₁=5, p₂=10). Bestimme die optimalen Mengen
+            x₁* und x₂* mit dem Lagrange-Ansatz.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Lagrange-Funktion:</strong> L = x₁²x₂² + λ(200 − 5x₁ − 10x₂).</li>
+            <li><strong>FOCs:</strong> ∂L/∂x₁ = 2x₁x₂² − 5λ = 0 (1); ∂L/∂x₂ = 2x₂x₁² − 10λ = 0 (2); ∂L/∂λ = 200 −
+              5x₁ − 10x₂ = 0 (3) — die Nebenbedingung, nicht vergessen!</li>
+            <li><strong>(1)/(2) dividieren:</strong> (2x₁x₂²)/(2x₂x₁²) = 5λ/10λ ⇒ x₂/x₁ = 1/2 ⇒ x₂ = x₁/2.</li>
+            <li><strong>In (3) einsetzen:</strong> 200 − 5x₁ − 10·(x₁/2) = 200 − 5x₁ − 5x₁ = 200 − 10x₁ = 0.</li>
+            <li><strong>Auflösen:</strong> <strong>x₁* = 20</strong>, <strong>x₂* = 10</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 1.2: Cobb-Douglas &amp; Budgetanteil-Regel</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 1.2 · 7 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Gegeben: U(x,y) = x¹·y³ (also a=1, b=3), Einkommen I=400, p_x=4, p_y=10. Bestimme x* und y* — erst
+            allgemein über die Lagrange-Bedingung, dann mit den Zahlen.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Lagrange:</strong> L = xᵃyᵇ + λ(I − p_x·x − p_y·y).</li>
+            <li><strong>FOCs:</strong> ∂L/∂x = a·xᵃ⁻¹yᵇ − λp_x = 0; ∂L/∂y = b·xᵃyᵇ⁻¹ − λp_y = 0; ∂L/∂λ = I − p_x x
+              − p_y y = 0.</li>
+            <li><strong>Division der ersten beiden FOCs:</strong> (a·y)/(b·x) = p_x/p_y ⇒ y = (b·p_x·x)/(a·p_y).</li>
+            <li><strong>In die Budgetgleichung einsetzen:</strong> p_x x + p_y·(b p_x x)/(a p_y) = I ⇒ p_x
+              x·(1 + b/a) = I ⇒ p_x x·(a+b)/a = I.</li>
+            <li><strong>Allgemeine Lösung (Budgetanteil-Regel):</strong> <strong>x* = [a/(a+b)]·I/p_x</strong>,
+              analog y* = [b/(a+b)]·I/p_y. Ökonomisch: jeder Haushalt gibt einen festen Budgetanteil a/(a+b) für
+              Gut x aus, unabhängig vom Einkommen.</li>
+            <li><strong>Mit Zahlen (a=1, b=3, I=400, p_x=4, p_y=10):</strong> x* = [1/4]·400/4 = 100/4 =
+              <strong>25</strong>. y* = [3/4]·400/10 = 300/10 = <strong>30</strong>.</li>
+            <li><strong>Probe:</strong> Budget: 4×25 + 10×30 = 100 + 300 = 400 ✓.</li>
+          </ol>
+        </details>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz Lagrange</div>
+          <p>∂L/∂λ liefert immer die Nebenbedingung selbst zurück — nutze sie als Kontrollgleichung. Und: GRS =
+            Preisverhältnis ist nur eine andere Schreibweise für „Division der ersten beiden FOCs".</p>
+        </div>
+      </section>
+
+      <!-- ===== 2 TAUSCHEFFIZIENZ ===== -->
+      <section id="tauscheffizienz" class="reveal">
+        <h2>Themenblock 2: Tauscheffizienz</h2>
+        <p>Bei zwei Haushalten und zwei privaten Gütern ist eine Allokation genau dann Pareto-effizient, wenn die
+          Grenzraten der Substitution beider Haushalte übereinstimmen: GRS_A = GRS_B. Ist das nicht der Fall, gibt
+          es noch einen für beide Seiten vorteilhaften Tausch.</p>
+
+        <h3>🧮 Aufgabe 2.1: Tauschlinse erkennen</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 2.1 · 5 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>In einer Edgeworth-Box mit den Gütern x und y hat Haushalt A an der aktuellen Allokation eine
+            Grenzrate der Substitution GRS_A = 3 (A gibt maximal 3 Einheiten y für 1 Einheit x mehr her). Haushalt
+            B hat GRS_B = 1. Ist diese Allokation Pareto-effizient? Wenn nicht: in welche Richtung sollte
+            getauscht werden, und wo endet der Tausch?</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Effizienzbedingung prüfen:</strong> Pareto-effizient wäre die Allokation nur bei GRS_A =
+              GRS_B. Hier gilt 3 ≠ 1 — die Allokation ist <strong>nicht effizient</strong>, es existiert eine
+              „Tauschlinse".</li>
+            <li><strong>Richtung des Tauschs:</strong> A ist bereit, bis zu 3 Einheiten y für 1x herzugeben (A
+              bewertet x hoch relativ zu B). B verlangt dagegen nur 1 Einheit y für 1x (B bewertet x niedriger).
+              Bei jedem Tauschverhältnis zwischen 1 und 3 Einheiten y pro x gewinnen <strong>beide</strong> — z. B.
+              tauscht B 1 Einheit x gegen 2 Einheiten y von A: B bekommt mehr als seine geforderte 1y, A zahlt
+              weniger als die maximal akzeptierten 3y.</li>
+            <li><strong>Wo der Tausch endet:</strong> Mit jedem Tausch sinkt GRS_A (A hat jetzt mehr x, weniger y
+              — abnehmende GRS) und GRS_B steigt (B hat weniger x, mehr y). Der Tausch läuft weiter, bis
+              <strong>GRS_A = GRS_B</strong> gilt — das ist ein Punkt auf der <strong>Kontraktkurve</strong>, dort
+              gibt es keinen weiteren vorteilhaften Tausch mehr.</li>
+          </ol>
+        </details>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Pareto-effizient heißt, beide haben am Ende
+            gleich viel."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Pareto-Effizienz bedeutet nur: <strong>kein</strong>
+            weiterer für beide vorteilhafter Tausch ist mehr möglich. Wie viel jeder besitzt (Gerechtigkeit), ist
+            eine ganz andere Frage — die Kontraktkurve hat viele effiziente, aber sehr unterschiedlich „faire"
+            Punkte.</div>
+        </div>
+      </section>
+
+      <!-- ===== 3 ÖFFENTLICHE GÜTER ===== -->
+      <section id="oeffentliche-gueter" class="reveal">
+        <h2>Themenblock 3: Öffentliche Güter</h2>
+        <p>Bei einem öffentlichen Gut konsumieren alle dieselbe Menge — die Zahlungsbereitschaften (Grenzraten der
+          Substitution) werden deshalb <strong>vertikal</strong> addiert, nicht wie bei privaten Gütern
+          horizontal über die Mengen.</p>
+
+        <h3>🧮 Aufgabe 3.1: Samuelson-Bedingung</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 3.1 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Zwei Konsumenten haben für ein öffentliches Gut G die Zahlungsbereitschaften GRS₁ = 10 − G und GRS₂ =
+            8 − G. Die Grenzkosten der Bereitstellung sind konstant GRT = 6. Bestimme die effiziente Menge G*.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Samuelson-Bedingung (vertikale Aggregation):</strong> Σ GRSᵢ = GRT ⇒ GRS₁ + GRS₂ = GRT.</li>
+            <li><strong>Einsetzen:</strong> (10 − G) + (8 − G) = 6.</li>
+            <li><strong>Vereinfachen:</strong> 18 − 2G = 6.</li>
+            <li><strong>Auflösen:</strong> 2G = 12 ⇒ <strong>G* = 6</strong>.</li>
+            <li><strong>Probe (beide Zahlungsbereitschaften bei G*=6 noch positiv?):</strong> GRS₁(6) = 4 &gt; 0,
+              GRS₂(6) = 2 &gt; 0 — beide sind an der Bereitstellung noch positiv interessiert, die Lösung ist
+              plausibel.</li>
+          </ol>
+        </details>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Bei privaten und öffentlichen Gütern addiert
+            man die Nachfrage genauso — horizontal, also Mengen bei gegebenem Preis."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Nur bei <strong>privaten</strong> Gütern wird
+            horizontal addiert (jeder zahlt denselben Preis, die Mengen werden summiert). Bei
+            <strong>öffentlichen</strong> Gütern konsumieren alle dieselbe Menge G — hier werden die
+            <strong>Zahlungsbereitschaften vertikal</strong> addiert: Σ GRSᵢ = GRT.</div>
+        </div>
+      </section>
+
+      <!-- ===== 4 EXTERNE EFFEKTE ===== -->
+      <section id="externe-effekte" class="reveal">
+        <h2>Themenblock 4: Externe Effekte &amp; Coase</h2>
+        <p>Bei einem negativen externen Effekt trägt der Verursacher nur seine <strong>privaten</strong>
+          Grenzkosten — die <strong>sozialen</strong> Grenzkosten (privat + extern) liegen höher. Der
+          unregulierte Markt produziert deshalb <strong>zu viel</strong>.</p>
+
+        <h3>🧮 Aufgabe 4.1: Pigou-Steuer &amp; Wohlfahrtsverlust</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 4.1 · 8 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Nachfrage (Grenznutzen): P = 100 − Q. Private Grenzkosten: GK = Q. Externe Grenzkosten (z. B.
+            Umweltschaden) sind konstant 20 pro Einheit. Bestimme (a) die Marktmenge ohne Regulierung, (b) das
+            soziale Optimum, (c) die optimale Pigou-Steuer und (d) den Wohlfahrtsverlust, wenn nicht reguliert
+            wird.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>(a) Marktmenge (privates Gleichgewicht):</strong> Nachfrage = private GK ⇒ 100 − Q = Q ⇒
+              100 = 2Q ⇒ <strong>Q_Markt = 50</strong>.</li>
+            <li><strong>(b) Soziales Optimum:</strong> Nachfrage = soziale GK = private GK + externe GK ⇒
+              100 − Q = Q + 20 ⇒ 80 = 2Q ⇒ <strong>Q* = 40</strong>. Der Markt produziert mit 50 &gt; 40
+              tatsächlich <strong>zu viel</strong>.</li>
+            <li><strong>(c) Optimale Pigou-Steuer:</strong> Die Steuer muss die externen Grenzkosten im Optimum
+              internalisieren ⇒ t* = externe GK bei Q* = <strong>20</strong> (hier konstant, deshalb unabhängig
+              von Q*).</li>
+            <li><strong>(d) Wohlfahrtsverlust ohne Steuer:</strong> Zwischen Q*=40 und Q_Markt=50 übersteigen die
+              sozialen Grenzkosten den Grenznutzen — das Dreieck hat Basis (50−40)=10 und Höhe = externe GK = 20.
+              Zusatzlast = ½ × 10 × 20 = <strong>100</strong>.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 4.2: Coase-Verhandlung</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 4.2 · 7 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Eine Fabrik hat einen Grenzgewinn aus ihrer Produktion x von GG(x) = 100 − 2x. Die Produktion
+            verursacht bei einer benachbarten Wäscherei einen konstanten Grenzschaden von 20 pro Einheit. Zeige
+            mit dem Coase-Theorem: (a) wie viel die Fabrik ohne Rücksicht auf den Schaden produzieren würde, (b)
+            die gesellschaftlich effiziente Menge x*, und (c) dass Verhandlungen unabhängig davon, wem das Recht
+            gehört, zu x* führen.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>(a) Private Menge (ohne Rücksicht auf Schaden):</strong> Fabrik maximiert eigenen Gewinn ⇒
+              GG(x) = 0 ⇒ 100 − 2x = 0 ⇒ x = <strong>50</strong>.</li>
+            <li><strong>(b) Effiziente Menge:</strong> Grenzgewinn = Grenzschaden ⇒ 100 − 2x = 20 ⇒ 80 = 2x ⇒
+              <strong>x* = 40</strong>.</li>
+            <li><strong>(c) Szenario 1 — Fabrik hat das Recht zu emittieren (Ausgangspunkt x=50):</strong> Für
+              jede Einheit Reduktion unter 50 verlangt die Fabrik mindestens ihren entgangenen Grenzgewinn GG(x),
+              die Wäscherei spart 20 an Schaden. Solange GG(x) &lt; 20 (also für x zwischen 40 und 50), zahlt sich
+              die Kompensation für die Wäscherei aus ⇒ Verhandlung stoppt bei x=40.</li>
+            <li><strong>Szenario 2 — Wäscherei hat das Recht auf saubere Luft (Ausgangspunkt x=0):</strong> Die
+              Fabrik ist bereit, bis zu GG(x) pro Einheit an die Wäscherei zu zahlen; die Wäscherei verlangt
+              mindestens ihren Grenzschaden 20. Solange GG(x) &gt; 20 (also für x &lt; 40), lohnt sich der Deal
+              für beide ⇒ Verhandlung stoppt wieder bei x=40.</li>
+            <li><strong>Fazit (Coase-Theorem):</strong> In <strong>beiden</strong> Szenarien einigt man sich bei
+              <strong>x* = 40</strong> — die effiziente Menge ist unabhängig von der Rechtezuteilung. Nur die
+              <strong>Zahlungsrichtung</strong> (wer wen kompensiert) und damit die Vermögensverteilung
+              unterscheiden sich.</li>
+          </ol>
+        </details>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Coase-Theorem ≠ Fairness</div>
+          <p>Das Coase-Theorem garantiert <strong>Effizienz</strong> bei klaren Eigentumsrechten und niedrigen
+            Transaktionskosten — nicht Gerechtigkeit. Wer am Ende reicher oder ärmer ist, hängt stark davon ab,
+            wem das Recht ursprünglich zugeteilt wurde.</p>
+        </div>
+      </section>
+
+      <!-- ===== 5 BESTEUERUNG ===== -->
+      <section id="besteuerung" class="reveal">
+        <h2>Themenblock 5: Besteuerung &amp; Steuerinzidenz</h2>
+        <p>Eine Mengensteuer treibt einen Keil zwischen Konsumenten- und Produzentenpreis: p_K − p_P = t. Wer
+          davon wie viel trägt, entscheidet <strong>nicht</strong> die formale Zahllast, sondern die relativen
+          Preiselastizitäten.</p>
+
+        <h3>🧮 Aufgabe 5.1: Mengensteuer-Gleichgewicht</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 5.1 · 8 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Nachfrage: P = 100 − Q. Angebot: P = Q. Es wird eine Mengensteuer t = 20 auf die Produzenten erhoben.
+            Bestimme (a) das Gleichgewicht ohne Steuer, (b) Menge, Konsumenten- und Produzentenpreis mit Steuer,
+            (c) das Steueraufkommen, (d) die Zusatzlast und (e) wie sich die Last zwischen Konsumenten und
+            Produzenten aufteilt.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>(a) Ohne Steuer:</strong> 100 − Q = Q ⇒ <strong>Q = 50</strong>, <strong>P = 50</strong>.</li>
+            <li><strong>(b) Mit Steuer:</strong> Steuerkeil p_K − p_P = t = 20, Angebotspreis p_P = Q,
+              Nachfragepreis p_K = 100 − Q ⇒ 100 − Q = Q + 20 ⇒ 80 = 2Q ⇒ <strong>Q = 40</strong>. Damit
+              <strong>p_K = 100 − 40 = 60</strong> und <strong>p_P = 40</strong> (Kontrolle: 60 − 40 = 20 = t ✓).</li>
+            <li><strong>(c) Steueraufkommen:</strong> T = t × Q = 20 × 40 = <strong>800</strong>.</li>
+            <li><strong>(d) Zusatzlast:</strong> ½ × t × (Q_ohne − Q_mit) = ½ × 20 × (50 − 40) = <strong>100</strong>.</li>
+            <li><strong>(e) Lastverteilung:</strong> Konsumentenpreis steigt von 50 auf 60 (+10), Produzentenpreis
+              fällt von 50 auf 40 (−10). Da Nachfrage- (Steigung −1) und Angebotskurve (Steigung +1) hier
+              <strong>symmetrisch elastisch</strong> sind, tragen beide Seiten je <strong>10</strong> — genau die
+              Hälfte der Steuer.</li>
+          </ol>
+        </details>
+
+        <h3>🧮 Aufgabe 5.2: Zusatzfrage — Inzidenz bei unelastischer Nachfrage</h3>
+        <p class="lead-in"><span class="badge badge-soft">Übungsaufgabe 5.2 · 6 Punkte</span></p>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabenstellung</div>
+          <p>Jetzt ist die Nachfrage steiler (unelastischer): P = 90 − 2Q. Das Angebot bleibt P = Q. Mengensteuer
+            t = 15. Bestimme das neue Gleichgewicht und zeige, wer den größeren Teil der Steuerlast trägt.</p>
+        </div>
+        <details class="solution">
+          <summary>Musterlösung anzeigen</summary>
+          <ol class="steps">
+            <li><strong>Ohne Steuer:</strong> 90 − 2Q = Q ⇒ 90 = 3Q ⇒ Q₀ = 30, P₀ = 30.</li>
+            <li><strong>Elastizitäten am Gleichgewicht:</strong> Nachfrage Q=45−0,5P ⇒ dQ/dP=−0,5 ⇒ |ε_D| =
+              0,5×(30/30) = 0,5 (unelastisch). Angebot Q=P ⇒ dQ/dP=1 ⇒ ε_S = 1×(30/30) = 1.</li>
+            <li><strong>Mit Steuer:</strong> 90 − 2Q = Q + 15 ⇒ 75 = 3Q ⇒ <strong>Q = 25</strong>. p_K =
+              90 − 2×25 = <strong>40</strong>, p_P = Q = <strong>25</strong> (Kontrolle: 40 − 25 = 15 = t ✓).</li>
+            <li><strong>Lastverteilung:</strong> Konsumentenpreis steigt von 30 auf 40 (+10 von 15 = 66,7 %),
+              Produzentenpreis fällt von 30 auf 25 (−5 von 15 = 33,3 %).</li>
+            <li><strong>Interpretation:</strong> Die Nachfrage ist unelastischer (|ε_D|=0,5 &lt; ε_S=1) — die
+              Konsumenten können schlechter ausweichen und tragen deshalb mit 66,7 % den <strong>größeren</strong>
+              Teil der Steuerlast. Formel-Kontrolle: Konsumentenanteil = ε_S/(ε_S+|ε_D|) = 1/1,5 ≈ 66,7 % ✓.</li>
+          </ol>
+        </details>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Merksatz Inzidenz</div>
+          <p>Es ist egal, ob der Staat die Steuer formal bei Konsumenten oder Produzenten erhebt — das
+            ökonomische Gleichgewicht (Q, p_K, p_P) ist identisch. Entscheidend ist einzig, welche Seite
+            <strong>unelastischer</strong> reagieren kann: die unelastischere Seite trägt die größere Last.</p>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <div class="factgrid">
+            <div class="fact"><b>Lagrange</b><span>L = Zielfunktion + λ·(Nebenbedingung=0); ∂L/∂λ nicht
+              vergessen</span></div>
+            <div class="fact"><b>Nutzenmax-Bedingung</b><span>GRS = Preisverhältnis p_x/p_y</span></div>
+            <div class="fact"><b>Budgetanteil-Regel</b><span>x* = a/(a+b) · I/p_x bei U=xᵃyᵇ</span></div>
+            <div class="fact"><b>Tauscheffizienz</b><span>GRS_A = GRS_B (Kontraktkurve)</span></div>
+            <div class="fact"><b>Samuelson-Bedingung</b><span>Σ GRSᵢ = GRT, vertikale Aggregation!</span></div>
+            <div class="fact"><b>Negative Externalität</b><span>SGK = private GK + externe GK; Markt produziert
+              zu viel</span></div>
+            <div class="fact"><b>Pigou-Steuer</b><span>t* = externe Grenzkosten im sozialen Optimum</span></div>
+            <div class="fact"><b>Coase-Theorem</b><span>klare Rechte + niedrige Transaktionskosten ⇒ effizientes
+              Ergebnis, unabhängig von der Rechtezuteilung</span></div>
+            <div class="fact"><b>Steuerkeil</b><span>p_K − p_P = t</span></div>
+            <div class="fact"><b>Zusatzlast</b><span>½·t·ΔQ, wächst quadratisch mit t (∝ t²)</span></div>
+            <div class="fact"><b>Steuerinzidenz</b><span>unelastischere Marktseite trägt mehr, unabhängig von
+              formaler Zahllast</span></div>
+          </div>
+
+          <h4>Lagrange &amp; Nutzenmaximierung</h4>
+          <pre class="code">L = Zielfunktion + λ·(Nebenbedingung nach 0 aufgelöst)
+FOCs: ∂L/∂x₁=0, ∂L/∂x₂=0, ∂L/∂λ=0   (die λ-Ableitung liefert die Nebenbedingung zurück!)
+Division zweier FOCs ⇒ GRS = Preisverhältnis
+
+Budgetanteil-Regel bei U(x,y) = xᵃyᵇ:
+  x* = [a/(a+b)] · I/p_x
+  y* = [b/(a+b)] · I/p_y</pre>
+
+          <h4>Effizienz &amp; Marktversagen</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Effizienzbedingung</th></tr></thead>
+            <tbody>
+              <tr><td>Tausch privater Güter (2 Haushalte)</td><td>GRS_A = GRS_B = p_x/p_y (horizontale
+                Aggregation der Nachfrage)</td></tr>
+              <tr><td>Öffentliches Gut</td><td>Σ GRSᵢ = GRT (vertikale Aggregation der
+                Zahlungsbereitschaften)</td></tr>
+              <tr><td>Negativer externer Effekt</td><td>Nachfrage = soziale GK (= private GK + externe GK);
+                unreguliert: Nachfrage = private GK ⇒ zu viel</td></tr>
+              <tr><td>Pigou-Steuer</td><td>t* = externe Grenzkosten im Optimum</td></tr>
+              <tr><td>Coase</td><td>Verhandlung führt zu x* = Menge, wo Grenzgewinn = Grenzschaden — unabhängig
+                von den Rechten</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Besteuerung</h4>
+          <pre class="code">Steuerkeil (Mengensteuer t):  p_K − p_P = t
+Neue Gleichgewichtsmenge:      Nachfrage(Q) = Angebot(Q) + t
+Steueraufkommen:               T = t · Q_t
+Zusatzlast (Dreieck):          Zusatzlast = ½ · t · (Q_ohne − Q_mit)   ∝ t² (quadratisch in t!)
+
+Inzidenz (Elastizität):
+  Konsumentenanteil ≈ ε_S / (ε_S + |ε_D|)
+  ⇒ die unelastischere Seite trägt den größeren Anteil, egal wer formal zahlt</pre>
+
+          <div class="callout callout-tip">
+            <div class="c-title">Merksatz für die Klausur</div>
+            <p>Lagrange: nie ∂L/∂λ vergessen — sie ist die Nebenbedingung. Öffentliche Güter: <strong>vertikal</strong>
+              addieren, nicht horizontal. Negative Externalität: der Markt produziert <strong>zu viel</strong>,
+              weil er externe Kosten ignoriert. Steuerinzidenz: die <strong>unelastischere</strong> Seite trägt
+              mehr, unabhängig davon, wer formal zahlt. Und: Zusatzlast wächst <strong>quadratisch</strong> mit
+              dem Steuersatz — doppelter Steuersatz heißt vierfache Zusatzlast.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">18 Fragen zu allen 5 Themenblöcken oben — 14 rechnen die Zahlen aus den Aufgaben nach,
+          4 prüfen die typischen Fehlerquellen des Moduls. Tippe deine Antwort ein oder wähle eine Option — du
+          bekommst sofort Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="20">
+            <p class="quiz-prompt"><span class="q-no">1.</span>🧮 Aufgabe 1.1: U=x₁²x₂², Budget 5x₁+10x₂=200. Wie
+              groß ist x₁*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Aus GRS = Preisverhältnis folgt x₂=x₁/2; eingesetzt in die
+              Budgetgleichung: x₁* = <strong>20</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="10">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🧮 Aufgabe 1.1: Und wie groß ist x₂*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x₂* = x₁*/2 = <strong>10</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="25">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🧮 Aufgabe 1.2: U=x¹y³, I=400, p_x=4, p_y=10. Wie
+              groß ist x* nach der Budgetanteil-Regel?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x* = [1/(1+3)]·400/4 = 0,25×100 = <strong>25</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="30">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Aufgabe 1.2: Und wie groß ist y*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>y* = [3/4]·400/10 = <strong>30</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="6">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Aufgabe 3.1: GRS₁=10−G, GRS₂=8−G, GRT=6. Wie
+              groß ist die effiziente Menge G*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(10−G)+(8−G)=6 ⇒ 18−2G=6 ⇒ G* = <strong>6</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="50">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Aufgabe 4.1: Nachfrage P=100−Q, private GK=Q.
+              Wie groß ist die unregulierte Marktmenge Q_Markt?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>100−Q=Q ⇒ Q_Markt = <strong>50</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Aufgabe 4.1: Externe GK=20 konstant. Wie groß
+              ist das soziale Optimum Q*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>100−Q=Q+20 ⇒ Q* = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="20">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🧮 Aufgabe 4.1: Wie hoch muss die optimale
+              Pigou-Steuer t* sein?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>t* = externe Grenzkosten im Optimum = <strong>20</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="100">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🧮 Aufgabe 4.1: Wie groß ist der Wohlfahrtsverlust
+              ohne Pigou-Steuer (Dreieck zwischen Q* und Q_Markt)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>½×(50−40)×20 = <strong>100</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">10.</span>🧮 Aufgabe 4.2: Grenzgewinn GG(x)=100−2x,
+              Grenzschaden=20 konstant. Bei welcher Menge x* stoppt die Coase-Verhandlung — unabhängig davon, wer
+              das Recht hat?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Grenzgewinn = Grenzschaden ⇒ 100−2x=20 ⇒ x* = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">11.</span>🧮 Aufgabe 5.1: Nachfrage P=100−Q, Angebot P=Q,
+              Mengensteuer t=20. Wie groß ist die Menge Q mit Steuer?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>100−Q=Q+20 ⇒ Q = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="60">
+            <p class="quiz-prompt"><span class="q-no">12.</span>🧮 Aufgabe 5.1: Wie hoch ist der
+              Konsumentenpreis p_K?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>p_K = 100−40 = <strong>60</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="800">
+            <p class="quiz-prompt"><span class="q-no">13.</span>🧮 Aufgabe 5.1: Wie groß ist das
+              Steueraufkommen T?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>T = t×Q = 20×40 = <strong>800</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="100">
+            <p class="quiz-prompt"><span class="q-no">14.</span>🧮 Aufgabe 5.1: Wie groß ist die Zusatzlast?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>½×20×(50−40) = <strong>100</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">15.</span>Konzeptfrage: Wie werden die Zahlungsbereitschaften
+              bei einem öffentlichen Gut zur Samuelson-Bedingung aggregiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Vertikal — bei gleicher Menge G addieren sich die Zahlungsbereitschaften Σ GRSᵢ.</button>
+              <button class="quiz-choice" type="button">Horizontal — bei gegebenem Preis addieren sich die nachgefragten Mengen.</button>
+              <button class="quiz-choice" type="button">Gar nicht — jeder Konsument entscheidet unabhängig über seine eigene Menge.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei öffentlichen Gütern konsumieren alle dieselbe Menge — deshalb
+              werden die Zahlungsbereitschaften <strong>vertikal</strong> addiert (Σ GRSᵢ = GRT). Horizontale
+              Aggregation (Mengen bei gleichem Preis) gilt nur bei privaten Gütern.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">16.</span>Konzeptfrage: Was passiert im unregulierten Markt
+              bei einem negativen externen Effekt?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Der Markt produziert genau die effiziente Menge, weil Angebot und Nachfrage sich ausgleichen.</button>
+              <button class="quiz-choice" type="button">Der Markt produziert zu wenig, weil Produzenten die externen Kosten fürchten.</button>
+              <button class="quiz-choice" type="button" data-correct>Der Markt produziert zu viel, weil die privaten Grenzkosten unter den sozialen Grenzkosten liegen.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Produzenten tragen nur ihre privaten Grenzkosten, nicht die externen
+              Kosten Dritter. Weil die privaten GK unter den sozialen GK liegen, wird bis zu einer zu hohen Menge
+              produziert — deshalb Q_Markt (50) &gt; Q* (40).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">17.</span>Konzeptfrage: Eine Mengensteuer wird formal
+              komplett bei den Produzenten erhoben. Wer trägt die ökonomische Last?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Immer die Produzenten, weil sie die Steuer zahlen müssen.</button>
+              <button class="quiz-choice" type="button" data-correct>Hängt von den Preiselastizitäten ab — die unelastischere Marktseite trägt den größeren Anteil, unabhängig von der formalen Zahllast.</button>
+              <button class="quiz-choice" type="button">Immer die Konsumenten, weil sie letztlich den höheren Preis zahlen.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die ökonomische Steuerinzidenz ist unabhängig davon, wer die Steuer
+              formal überweist. Entscheidend sind die relativen Preiselastizitäten: die Seite, die schlechter
+              ausweichen kann (unelastischer reagiert), trägt den größeren Teil der Last.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">18.</span>Konzeptfrage: Was sagt das Coase-Theorem aus?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Bei klaren Eigentumsrechten und niedrigen Transaktionskosten führt private Verhandlung zu einer effizienten Allokation — unabhängig davon, wem das Recht ursprünglich zugeteilt wurde.</button>
+              <button class="quiz-choice" type="button">Externe Effekte lassen sich nur durch eine staatliche Steuer beseitigen.</button>
+              <button class="quiz-choice" type="button">Verhandlungen führen immer zu einer gerechten Verteilung zwischen den Parteien.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Coase zeigt Effizienz, nicht Gerechtigkeit: Die Menge (hier x*=40)
+              ist unabhängig von der Rechtezuteilung, aber wer am Ende wen bezahlt — und damit wie das Vermögen
+              verteilt ist — hängt sehr wohl davon ab, wem das Recht ursprünglich gehört.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="08-einfuehrung.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Einführung in die Finanzwissenschaft</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Zur Übersicht →</div>
+          <div class="pn-title">Zurück zur Kursübersicht</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

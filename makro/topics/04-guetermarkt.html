@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gütermarkt &amp; Multiplikator · Makro</title>
+<meta name="description" content="Konsumfunktion, Gütermarktgleichgewicht und der Multiplikator-Effekt bildlich erklärt – mit Keynes-Kreuz, durchgerechneten Beispielen (Y=2600) und Fiskalpolitik-Aufgaben." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2315803d'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>Y</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">Y</span>
+      <span>P2 · Makro<small>Makroökonomie, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Modell</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Makro-Kursübersicht</a> › Thema 04</div>
+    <span class="th-icon">🏭</span>
+    <h1>Gütermarkt &amp; Multiplikator</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🧮 Rechnen</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Modell &amp; Keynes-Kreuz</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Der <strong>Gütermarkt</strong> ist im Gleichgewicht, wenn das, was in einer Volkswirtschaft
+          <strong>produziert</strong> wird (Y), genau dem entspricht, was alle zusammen <strong>ausgeben wollen</strong>
+          — Haushalte (Konsum C), Unternehmen (Investitionen I) und Staat (Staatsausgaben G). Der spannende Teil:
+          jeder ausgegebene Euro wird zum Einkommen von irgendjemand anderem, der ihn dann wieder zum Teil ausgibt.
+          Diese Kettenreaktion heißt <strong>Multiplikator-Effekt</strong> — und sie ist der Kern dieses Themas.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du bekommst <strong>100 € geschenkt</strong>. Du gibst 80 % davon für einen Kinobesuch aus — deine
+            <strong>Konsumquote</strong> beträgt c = 0,8, also 80 €. Der Kinobetreiber hat jetzt 80 € mehr Einkommen
+            und gibt davon wiederum 80 % aus: 64 €. Die Empfängerin dieser 64 € gibt wieder 80 % aus: 51,20 € — und
+            so weiter, immer kleinere Runden.<br><br>
+            Am Ende hat deine anfängliche Ausgabe von 100 € <strong>viel mehr</strong> als 100 € zusätzliches
+            Einkommen in der Volkswirtschaft erzeugt: nämlich das <strong>Fünffache</strong>, 500 €. Genau das
+            beschreibt der Multiplikator m = 1/(1−c) = 1/(1−0,8) = 5. Eine einzelne Ausgabe pflanzt sich durch die
+            ganze Wirtschaft fort.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Das Modell &amp; das Keynes-Kreuz</h2>
+        <p>In der einfachen, geschlossenen Volkswirtschaft (keine Exporte/Importe) setzt sich die gesamte Nachfrage
+          aus drei Teilen zusammen: <strong>Konsum C</strong>, <strong>Investitionen I</strong> und
+          <strong>Staatsausgaben G</strong>. Das Gütermarktgleichgewicht verlangt, dass die Produktion Y genau
+          dieser Nachfrage entspricht:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Gütermarktgleichgewicht</div>
+          <span class="formula">Y = C + I + G</span>
+        </div>
+
+        <h3>Die Konsumfunktion</h3>
+        <p>Der Konsum hängt linear vom <strong>verfügbaren Einkommen</strong> Y − T ab (Einkommen minus Steuern):</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Konsumfunktion</div>
+          <span class="formula">C = C₀ + c · (Y − T)</span>
+        </div>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Symbol</th><th>Bedeutung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>C₀</strong></td><td>autonomer Konsum — was auch ohne Einkommen ausgegeben wird</td></tr>
+            <tr><td><strong>c</strong></td><td>marginale Konsumquote (0 &lt; c &lt; 1), meist ≈ 0,8</td></tr>
+            <tr><td><strong>T</strong></td><td>Steuern (pauschal abgezogen)</td></tr>
+            <tr><td><strong>Y − T</strong></td><td>verfügbares Einkommen Y_d</td></tr>
+            <tr><td><strong>I</strong></td><td>Investitionen — im einfachen Modell exogen (fest vorgegeben)</td></tr>
+            <tr><td><strong>G</strong></td><td>Staatsausgaben — exogen (Politikinstrument)</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Nach Y auflösen: die Gleichgewichtsformel</h3>
+        <p>Setzt man die Konsumfunktion in die Gleichgewichtsbedingung ein und löst nach Y auf:</p>
+        <ol class="steps">
+          <li><strong>Einsetzen:</strong> Y = C₀ + c(Y − T) + I + G</li>
+          <li><strong>Ausmultiplizieren:</strong> Y = C₀ + cY − cT + I + G</li>
+          <li><strong>Y-Terme sammeln:</strong> Y − cY = C₀ − cT + I + G, also Y(1 − c) = C₀ − cT + I + G</li>
+          <li><strong>Durch (1−c) teilen:</strong> Y = <sup>1</sup>&frasl;<sub>(1−c)</sub> · [C₀ − cT + I + G]</li>
+        </ol>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Multiplikator</div>
+          <span class="formula">m = 1 / (1 − c)         ΔY = m · ΔG</span>
+          <p>Da 0 &lt; c &lt; 1 ist, gilt immer <strong>m &gt; 1</strong>. Eine kleine Änderung der Staatsausgaben
+            (oder von C₀ oder I) wirkt <strong>verstärkt</strong> auf Y — das ist kein Fehler, sondern genau der
+            Sinn des Multiplikators.</p>
+        </div>
+
+        <h3>Die Kehrseite: Sparen</h3>
+        <p>Was nicht konsumiert wird, wird gespart. Das ergibt eine Sparidentität, die im Gleichgewicht genauso
+          gilt wie die Konsumfunktion — nur aus der anderen Perspektive:</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Sparidentität</div>
+          <span class="formula">S = Y_d − C = (1 − c) · (Y − T) − C₀</span>
+          <p>Die marginale <strong>Sparquote</strong> s = 1 − c ist der Anteil eines zusätzlichen Euro Einkommen,
+            der gespart statt konsumiert wird. Bei c = 0,8 ist s = 0,2 — von jedem zusätzlichen Euro werden
+            20 Cent gespart und 80 Cent konsumiert.</p>
+        </div>
+
+        <!-- SVG 1: Keynes-Kreuz -->
+        <figure class="diagram">
+          <div class="diagram-title">Das Keynes-Kreuz — Beispiel C₀=100, c=0,8, T=100, I=300, G=200</div>
+          <svg viewBox="0 0 460 400" width="460" role="img" aria-label="Keynes-Kreuz-Diagramm: 45-Grad-Linie und Nachfragekurve AD schneiden sich im Gleichgewichtspunkt bei Y=2600">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <!-- Achsen -->
+              <line x1="80" y1="360" x2="410" y2="360" stroke="#8a94a6" stroke-width="1.4"/>
+              <line x1="80" y1="360" x2="80" y2="30" stroke="#8a94a6" stroke-width="1.4"/>
+              <polygon points="410,360 400,356 400,364" fill="#8a94a6"/>
+              <polygon points="80,30 76,40 84,40" fill="#8a94a6"/>
+              <text x="405" y="380" class="svg-soft">Output Y</text>
+              <text x="20" y="35" class="svg-soft">AD = C+I+G</text>
+
+              <!-- 45°-Linie -->
+              <line x1="80" y1="360" x2="400" y2="40" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <text x="330" y="55" fill="#8a94a6" font-weight="700">45°-Linie (Y = AD)</text>
+
+              <!-- AD-Linie -->
+              <line x1="80" y1="308" x2="400" y2="52" stroke="#2f6df6" stroke-width="2.2"/>
+              <text x="245" y="150" fill="#2f6df6" font-weight="800">AD = 520 + 0,8·Y</text>
+
+              <!-- Gleichgewicht -->
+              <line x1="340" y1="100" x2="340" y2="360" stroke="#e0483d" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <line x1="80" y1="100" x2="340" y2="100" stroke="#e0483d" stroke-width="1.2" stroke-dasharray="4 3"/>
+              <circle cx="340" cy="100" r="6" fill="#e0483d"/>
+              <text x="346" y="94" fill="#e0483d" font-weight="800">Gleichgewicht</text>
+              <text x="316" y="378" text-anchor="middle" fill="#e0483d" font-weight="800">Y* = 2600</text>
+            </g>
+          </svg>
+          <figcaption>Wo die Nachfragekurve AD die 45°-Linie schneidet, ist Y = AD erfüllt — das ist der einzige
+            stabile Gleichgewichtspunkt. Rechts vom Schnittpunkt wird mehr produziert als nachgefragt (Lager füllen
+            sich, Produktion sinkt); links davon ist es umgekehrt.</figcaption>
+        </figure>
+
+        <!-- SVG 2: Multiplikator-Kette -->
+        <figure class="diagram">
+          <div class="diagram-title">Der Multiplikator als Kettenreaktion — 100 € bei c = 0,8</div>
+          <svg viewBox="0 0 620 220" width="620" role="img" aria-label="Balkendiagramm der Multiplikator-Runden: 100, 80, 64, 51.2, 41, 32.8 Euro, die sich zu einer Summe von 500 Euro addieren">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+              <line x1="20" y1="190" x2="600" y2="190" stroke="#8a94a6" stroke-width="1.2"/>
+              <g fill="#2f6df6" fill-opacity="0.75">
+                <rect x="40" y="70" width="46" height="120"/>
+                <rect x="110" y="94" width="46" height="96"/>
+                <rect x="180" y="113" width="46" height="77"/>
+                <rect x="250" y="129" width="46" height="61"/>
+                <rect x="320" y="141" width="46" height="49"/>
+                <rect x="390" y="151" width="46" height="39"/>
+              </g>
+              <g class="svg-ink" font-weight="700" text-anchor="middle">
+                <text x="63" y="63">100 €</text>
+                <text x="133" y="87">80 €</text>
+                <text x="203" y="106">64 €</text>
+                <text x="273" y="122">51,20 €</text>
+                <text x="343" y="134">41 €</text>
+                <text x="413" y="144">32,80 €</text>
+              </g>
+              <g class="svg-soft" text-anchor="middle">
+                <text x="63" y="205">Runde 1</text>
+                <text x="133" y="205">Runde 2</text>
+                <text x="203" y="205">Runde 3</text>
+                <text x="273" y="205">Runde 4</text>
+                <text x="343" y="205">Runde 5</text>
+                <text x="413" y="205">Runde 6</text>
+              </g>
+              <text x="480" y="130" class="svg-soft" font-size="18">…</text>
+              <rect x="520" y="40" width="80" height="150" rx="8" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="560" y="105" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="13">Σ =</text>
+              <text x="560" y="125" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="15">500 €</text>
+              <text x="560" y="205" text-anchor="middle" class="svg-soft">= 100 · 5</text>
+            </g>
+          </svg>
+          <figcaption>Jede Runde ist 80 % der vorherigen (c=0,8) — eine unendliche geometrische Reihe. Ihre Summe ist
+            100 · 1/(1−0,8) = 100 · 5 = 500 €. Der Multiplikator m ist genau dieser Reihen-Faktor.</figcaption>
+        </figure>
+
+        <div class="factgrid">
+          <div class="fact"><b>m = 1/(1−c)</b><span>Ausgabenmultiplikator</span></div>
+          <div class="fact"><b>m_T = −c/(1−c)</b><span>Steuermultiplikator (kleiner als m)</span></div>
+          <div class="fact"><b>s = 1 − c</b><span>marginale Sparquote</span></div>
+          <div class="fact"><b>c ≈ 0,8</b><span>typischer Klausur-Wert</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>🧮 Klausurtyp: Gleichgewichtsoutput berechnen</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>C = 100 + 0,8·(Y − 100), I = 300, G = 200. Wie hoch ist der Gleichgewichtsoutput Y?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Konsumfunktion vereinfachen:</strong> C = 100 + 0,8Y − 80 = 20 + 0,8Y</li>
+          <li><strong>Gleichgewichtsbedingung einsetzen:</strong> Y = C + I + G = 20 + 0,8Y + 300 + 200 = 520 + 0,8Y</li>
+          <li><strong>Nach Y auflösen:</strong> Y − 0,8Y = 520 → 0,2Y = 520</li>
+          <li><strong>Ergebnis:</strong> Y = 520 / 0,2 = <strong>2600</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Kontrolle</div>
+          <p>C = 20 + 0,8·2600 = 20 + 2080 = 2100. Check: C + I + G = 2100 + 300 + 200 = <strong>2600</strong> = Y ✓</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Multiplikator-Effekt einer Ausgabenerhöhung</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Die marginale Konsumquote beträgt jetzt c = 0,75. Der Staat erhöht seine Ausgaben um ΔG = 100.
+            Um wie viel steigt Y?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Multiplikator berechnen:</strong> m = 1/(1−c) = 1/(1−0,75) = 1/0,25 = 4</li>
+          <li><strong>Multiplikatorformel anwenden:</strong> ΔY = m · ΔG = 4 · 100 = <strong>400</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Intuition</div>
+          <p>Die zusätzlichen 100 € Staatsausgaben werden zu Einkommen, wovon 75 % (=75€) wieder ausgegeben werden,
+            das wird wieder zu 75 % Einkommen für die nächste Person usw. — genau die Kettenreaktion von oben,
+            nur mit c=0,75 statt 0,8.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Rückwärts rechnen — nötige Ausgabenerhöhung</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Bei c = 0,8 soll Y von 2000 auf 2200 steigen. Um wie viel muss der Staat G erhöhen (ΔG)?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Gewünschte Änderung bestimmen:</strong> ΔY = 2200 − 2000 = 200</li>
+          <li><strong>Multiplikator:</strong> m = 1/(1−0,8) = 5</li>
+          <li><strong>Formel umstellen:</strong> ΔG = ΔY / m = 200 / 5 = <strong>40</strong></li>
+        </ol>
+
+        <h3>🧮 Klausurtyp: Steuermultiplikator statt Ausgabenmultiplikator</h3>
+        <div class="callout callout-info">
+          <div class="c-title">Aufgabe</div>
+          <p>Statt mehr Staatsausgaben erhöht die Regierung die Steuern um ΔT = 50 (weiterhin c = 0,75, m = 4).
+            Wie ändert sich Y?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Erstrundeneffekt auf den Konsum:</strong> ΔC = −c · ΔT = −0,75 · 50 = −37,5
+            <em>(nur der konsumierte Teil der Steuer fehlt sofort, nicht die vollen 50)</em></li>
+          <li><strong>Multiplikator anwenden:</strong> ΔY = m · ΔC = 4 · (−37,5) = <strong>−150</strong></li>
+          <li><strong>Alternativ direkt:</strong> Steuermultiplikator m_T = −c/(1−c) = −0,75/0,25 = −3, also
+            ΔY = m_T · ΔT = −3 · 50 = <strong>−150</strong></li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Warum ist der Effekt kleiner?</div>
+          <p>Eine Steuersenkung/-erhöhung wirkt nur <strong>indirekt</strong> über den Konsum (Faktor c), während
+            eine Ausgabenänderung <strong>direkt und vollständig</strong> in die Nachfrage eingeht. Deshalb ist
+            |m_T| = c · m immer kleiner als m.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>C = c · Y (Steuern werden vergessen)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>C = C₀ + c · <strong>(Y − T)</strong> — nur das
+            <strong>verfügbare</strong> Einkommen wird teilweise konsumiert, nicht das Bruttoeinkommen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Ein Multiplikator von 4 oder 5 kann nicht
+            stimmen, das ist zu groß."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>m &gt; 1 ist bei 0&lt;c&lt;1 immer
+            <strong>korrekt</strong> — je näher c an 1 liegt, desto größer wird m.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Investitionen I hängen im Gütermarkt-Modell vom
+            Zinssatz ab: I = I₀ − b·r</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Im <strong>einfachen</strong> Gütermarkt-Modell
+            ist I <strong>exogen</strong> (konstant vorgegeben). Die Zinsabhängigkeit kommt erst bei der IS-Kurve.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>C + I + G wird berechnet, indem man die Quoten
+            addiert (z. B. 0,8 + 300 + 200).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es werden <strong>absolute Werte</strong>
+            (Euro-Beträge) addiert, nicht Quoten. Die Konsumquote c fließt nur in die Berechnung von C ein.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ausgaben- und Steuermultiplikator sind gleich
+            groß, nur mit anderem Vorzeichen.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>|m_T| = c · m ist <strong>immer kleiner</strong>
+            als m, weil eine Steueränderung erst über den Konsum wirkt (Faktor c), eine Ausgabenänderung dagegen
+            direkt und vollständig.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Beim Auflösen: Y = C₀ + cY − T + I + G
+            (T wird nicht mit c multipliziert)</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>c(Y−T) muss <strong>vollständig</strong>
+            ausmultipliziert werden: cY <strong>− cT</strong>. Ein sehr häufiger Vorzeichen-/Faktorfehler.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Grundformeln</h4>
+          <pre class="code">Konsumfunktion:      C = C₀ + c(Y−T)
+Gütermarkt-GG:        Y = C + I + G
+Lösungsformel:        Y = [1/(1−c)] · [C₀ − cT + I + G]
+Ausgabenmultiplikator: m   = 1/(1−c)
+Steuermultiplikator:   m_T = −c/(1−c)
+Fiskalimpuls:          ΔY = m·ΔG   bzw.   ΔY = m_T·ΔT</pre>
+
+          <h4>Situation → Formel</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Formel</th></tr></thead>
+            <tbody>
+              <tr><td>Gleichgewichtsoutput direkt</td><td>Y = [1/(1−c)]·[C₀−cT+I+G]</td></tr>
+              <tr><td>Wirkung von ΔG</td><td>ΔY = ΔG / (1−c)</td></tr>
+              <tr><td>Wirkung von ΔT</td><td>ΔY = −c·ΔT / (1−c)</td></tr>
+              <tr><td>Nötiges ΔG für Ziel-ΔY</td><td>ΔG = ΔY · (1−c)</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Immer zuerst die Konsumfunktion mit Y−T vereinfachen</strong>, bevor du einsetzt</li>
+            <li><strong>m &gt; 1 ist normal</strong>, nicht verdächtig — je größer c, desto größer m</li>
+            <li>I und G sind im Gütermarkt-Modell <strong>exogen</strong> (konstant), nicht von Y oder r abhängig</li>
+            <li><strong>Steuermultiplikator ist immer kleiner</strong> als der Ausgabenmultiplikator: |m_T| = c·m</li>
+            <li>Bei Rückwärtsaufgaben („wie groß muss ΔG sein…") einfach die Formel <strong>nach ΔG umstellen</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="2600">
+            <p class="quiz-prompt"><span class="q-no">1.</span>C₀=100, c=0,8, T=100, I=300, G=200. Wie hoch ist der
+              Gleichgewichtsoutput Y?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>C = 20+0,8Y. Y = 20+0,8Y+300+200 → 0,2Y = 520 →
+              Y = <strong>2600</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Welche Formel beschreibt den Ausgabenmultiplikator m?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>1 / (1 − c)</button>
+              <button class="quiz-choice" type="button">1 − c</button>
+              <button class="quiz-choice" type="button">c / (1 − c)</button>
+              <button class="quiz-choice" type="button">1 / c</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Aus Y(1−c) = C₀−cT+I+G folgt Y = [1/(1−c)]·[…] — der Vorfaktor
+              <strong>1/(1−c)</strong> ist der Multiplikator.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="400">
+            <p class="quiz-prompt"><span class="q-no">3.</span>c=0,75. Der Staat erhöht G um 100. Um wie viel
+              steigt Y (ΔY)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>m = 1/(1−0,75) = 4. ΔY = 4·100 = <strong>400</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">4.</span>c=0,8. Y soll um 200 Einheiten steigen. Um wie
+              viel muss G steigen (ΔG)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>m = 1/(1−0,8) = 5. ΔG = ΔY/m = 200/5 = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Klausurtyp: Warum ist der Steuermultiplikator
+              betragsmäßig kleiner als der Ausgabenmultiplikator?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Eine Steueränderung wirkt nur indirekt über
+                den Konsum (Faktor c), eine Ausgabenänderung direkt und vollständig</button>
+              <button class="quiz-choice" type="button">Steuern sind immer negativ definiert</button>
+              <button class="quiz-choice" type="button">T taucht in der Gleichgewichtsformel gar nicht auf</button>
+              <button class="quiz-choice" type="button">Beide Multiplikatoren sind eigentlich gleich groß</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nur der über c konsumierte Teil einer Steueränderung schlägt auf die
+              Nachfrage durch, daher |m_T| = c·m &lt; m.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="-150">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: c=0,75 (m=4). Die Steuern steigen
+              um ΔT=50. Wie ändert sich Y (mit Vorzeichen)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>m_T = −c/(1−c) = −3. ΔY = −3·50 = <strong>−150</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.2" data-tol="0.01">
+            <p class="quiz-prompt"><span class="q-no">7.</span>c=0,8. Wie hoch ist die marginale Sparquote s
+              (s = 1−c)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>s = 1 − c = 1 − 0,8 = <strong>0,2</strong>.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="03-kreislaufmodell.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Der Wirtschaftskreislauf</div>
+        </a>
+        <a class="next" href="05-geldmarkt.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Geldmarkt &amp; Zins</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Makroökonomie · Grundlagen der VWL II (P 2, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

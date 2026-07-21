@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Besteuerung &amp; Steuerwirkungen · P4 Fiwi</title>
+<meta name="description" content="Steuerkeil, Steueraufkommen und Zusatzlast (Wohlfahrtsverlust) bildlich erklärt – mit durchgerechnetem Beispiel (Mengensteuer, Wertsteuer-Äquivalenz), Steuerinzidenz nach Elastizität und den typischen Klausurfallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat3);--cat-soft:var(--c-cat3-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Steuerkeil</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">Fiwi-Kursübersicht</a> › Thema 07</div>
+    <span class="th-icon">🧾</span>
+    <h1>Besteuerung &amp; Steuerwirkungen</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 6</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Steuerkeil &amp; Zusatzlast</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Eine <strong>Steuer</strong> klingt erstmal simpel: Der Staat verlangt einen festen
+          Betrag pro verkaufter Einheit. Die eigentliche Klausur-Kompetenz ist aber zu verstehen, dass Angebot
+          und Nachfrage auf diese Steuer <strong>reagieren</strong> — der Preis, den Käufer zahlen, und der
+          Preis, den Verkäufer bekommen, laufen auseinander. Und: Wer die Steuer formal ans Finanzamt überweist,
+          ist für die Frage, wer sie <em>wirklich</em> trägt, fast egal.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… du betreibst eine Eisdiele. Bisher hat eine Kugel Eis 2&nbsp;€ gekostet, und du hast die vollen
+            2&nbsp;€ behalten. Jetzt verlangt die Stadt eine „Eis-Steuer" von 50&nbsp;Cent pro Kugel — <strong>du
+            als Verkäufer</strong> musst sie abführen.<br>
+            Kannst du den Preis einfach um 50&nbsp;Cent erhöhen? Nur, wenn deine Kunden trotzdem genauso viel Eis
+            kaufen würden. Gibt es aber eine zweite Eisdiele um die Ecke, wirst du einen Teil der Steuer selbst
+            schlucken müssen, um keine Kunden zu verlieren.<br>
+            Am Ende zahlen deine Kunden vielleicht 2,30&nbsp;€ (30&nbsp;Cent mehr) und du behältst nur noch
+            1,80&nbsp;€ (20&nbsp;Cent weniger) — die Differenz von 50&nbsp;Cent ist die Steuer. Genau das ist
+            <strong>Steuerinzidenz</strong>: nicht wer zahlt, sondern wer am Ende ärmer wird.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Der Steuerkeil im Bild</h2>
+        <p>Eine <strong>Mengensteuer</strong> t treibt einen Keil zwischen den Preis, den Konsumenten zahlen
+          (Bruttopreis p_B), und den Preis, den Produzenten erhalten (Nettopreis p_P):</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Der Steuerkeil</div>
+          <span class="formula">p_B − p_P = t</span>
+          <p>Egal wer die Steuer formal zahlt: Am Markt-Gleichgewicht klafft immer genau eine Lücke der Größe
+            t zwischen Käufer- und Verkäuferpreis.</p>
+        </div>
+
+        <p>Rechnen wir mit einem konkreten linearen Beispiel: Nachfrage p = 100 − x, Angebot p = x, Steuer
+          t = 20 auf den Produzenten. Ohne Steuer treffen sich beide Kurven bei x* = 50, p* = 50. Mit Steuer
+          verschiebt sich die Angebotskurve um t nach oben — Produzenten brauchen jetzt mindestens
+          x + 20, um überhaupt anzubieten.</p>
+
+        <!-- SVG 1: Steuerkeil, Aufkommen, Zusatzlast -->
+        <figure class="diagram">
+          <div class="diagram-title">Mengensteuer t = 20 — Nachfrage p = 100−x, Angebot p = x</div>
+          <svg viewBox="0 0 480 350" width="480" role="img" aria-label="Angebot-Nachfrage-Diagramm mit Steuerkeil: Nachfragekurve, ursprüngliche Angebotskurve, um die Steuer nach oben verschobene Angebotskurve, Steueraufkommen als Rechteck und Zusatzlast als Dreieck">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Flächen zuerst, damit Linien darüber liegen -->
+              <rect x="80" y="150" width="120" height="60" fill="#f5810b" fill-opacity="0.20"/>
+              <polygon points="200,150 200,210 230,180" fill="#e0483d" fill-opacity="0.45"/>
+
+              <!-- Achsen -->
+              <line x1="80" y1="330" x2="412" y2="330" stroke="#8a94a6" stroke-width="1.3"/>
+              <polygon points="412,330 402,326 402,334" fill="#8a94a6"/>
+              <line x1="80" y1="330" x2="80" y2="20" stroke="#8a94a6" stroke-width="1.3"/>
+              <polygon points="80,20 76,30 84,30" fill="#8a94a6"/>
+              <text x="418" y="334" class="svg-soft">Menge x</text>
+              <text x="52" y="16" class="svg-soft">Preis p</text>
+
+              <!-- Kurven -->
+              <line x1="80" y1="30" x2="380" y2="330" stroke="#2f6df6" stroke-width="2"/>
+              <text x="300" y="270" fill="#2f6df6" font-weight="700" font-size="11.5">Nachfrage p=100−x</text>
+
+              <line x1="80" y1="330" x2="380" y2="30" stroke="#12b28c" stroke-width="2"/>
+              <text x="270" y="112" fill="#12b28c" font-weight="700" font-size="11.5">Angebot p=x</text>
+
+              <line x1="80" y1="270" x2="320" y2="30" stroke="#f5810b" stroke-width="2" stroke-dasharray="6 4"/>
+              <text x="222" y="62" fill="#f5810b" font-weight="700" font-size="11.5">Angebot+Steuer p=x+20</text>
+
+              <!-- Steuerkeil -->
+              <line x1="200" y1="150" x2="200" y2="210" stroke="#e0483d" stroke-width="3"/>
+              <text x="207" y="184" fill="#e0483d" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">t=20</text>
+
+              <!-- Hilfslinien -->
+              <line x1="230" y1="180" x2="230" y2="330" stroke="#8a94a6" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="200" y1="150" x2="200" y2="330" stroke="#8a94a6" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="80" y1="180" x2="230" y2="180" stroke="#8a94a6" stroke-width="1" stroke-dasharray="3 3"/>
+
+              <!-- Punkte -->
+              <circle cx="230" cy="180" r="4" fill="#0b0d12" class="svg-ink"/>
+              <circle cx="200" cy="150" r="4" fill="#2f6df6"/>
+              <circle cx="200" cy="210" r="4" fill="#12b28c"/>
+
+              <!-- Achsbeschriftungen -->
+              <text x="196" y="345" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">40</text>
+              <text x="226" y="345" text-anchor="middle" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">50</text>
+              <text x="66" y="214" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">40</text>
+              <text x="66" y="184" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">50</text>
+              <text x="66" y="154" text-anchor="end" class="svg-ink" font-family="JetBrains Mono, monospace" font-size="11">60</text>
+
+              <text x="206" y="140" fill="#2f6df6" font-weight="700" font-family="JetBrains Mono, monospace" font-size="10.5">P_B=60</text>
+              <text x="206" y="226" fill="#12b28c" font-weight="700" font-family="JetBrains Mono, monospace" font-size="10.5">P_P=40</text>
+              <text x="236" y="172" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="10.5">E₀ (50,50)</text>
+            </g>
+          </svg>
+          <figcaption>Orange Fläche = Steueraufkommen (20·40 = 800). Rotes Dreieck = Zusatzlast (½·10·20 = 100).
+            Der senkrechte Abstand zwischen den beiden Angebotskurven ist überall genau t = 20 — das ist der
+            „Steuerkeil".</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Typ</th><th>Zahlschuldner</th><th>Bruttopreis</th><th>Aufkommen</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mengensteuer</strong></td><td>fester Betrag t je Einheit</td><td>p_B = p_P + t</td><td>T = t · x_t</td></tr>
+            <tr><td><strong>Wertsteuer</strong></td><td>Prozentsatz τ des Preises</td><td>p_B = p_P·(1+τ)</td><td>T = τ · p_P · x_τ</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Zusatzlast: quadratisch in der Steuer</h3>
+        <p>Die <strong>Zusatzlast</strong> (Excess Burden, Wohlfahrtsverlust) ist <em>nicht</em> das Geld, das
+          beim Staat landet — sie ist die Rente, die komplett <strong>verloren geht</strong>, weil weniger
+          gehandelt wird. Bei linearen Kurven ist sie ein Dreieck, dessen beide Seiten proportional zu t
+          wachsen — die Fläche also proportional zu t²:</p>
+
+        <!-- SVG 2: Verdopplung der Steuer -->
+        <figure class="diagram">
+          <div class="diagram-title">Verdopplung der Steuer: Zusatzlast vervierfacht sich (gleiche Kurven wie oben)</div>
+          <svg viewBox="0 0 400 240" width="400" role="img" aria-label="Vergleich zweier Zusatzlast-Dreiecke: bei doppelter Steuer sind beide Seiten des Dreiecks doppelt so lang, die Fläche ist damit viermal so groß">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="20" y1="200" x2="380" y2="200" stroke="#8a94a6" stroke-width="1.2"/>
+
+              <polygon points="60,200 100,120 100,200" fill="#f5810b" fill-opacity="0.45" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="80" y="222" text-anchor="middle" class="svg-ink" font-weight="700">t = 20</text>
+              <text x="80" y="236" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11">Zusatzlast = 100</text>
+
+              <polygon points="220,200 300,40 300,200" fill="#e0483d" fill-opacity="0.45" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="260" y="222" text-anchor="middle" class="svg-ink" font-weight="700">t = 40</text>
+              <text x="260" y="236" text-anchor="middle" class="svg-soft" font-family="JetBrains Mono, monospace" font-size="11">Zusatzlast = 400</text>
+
+              <text x="76" y="108" text-anchor="middle" fill="#f5810b" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">×1</text>
+              <text x="270" y="28" text-anchor="middle" fill="#e0483d" font-weight="800" font-family="JetBrains Mono, monospace" font-size="12">×4 Fläche</text>
+            </g>
+          </svg>
+          <figcaption>Mengenrückgang Δx und Steuer t verdoppeln sich beide — die Fläche (∝ Länge²) vervierfacht
+            sich also: von 100 auf 400. Das Aufkommen wächst dabei nur von 800 auf 1200 (siehe Beispiele unten) —
+            Aufkommen und Zusatzlast entwickeln sich völlig unterschiedlich!</figcaption>
+        </figure>
+
+        <h3>Steuerinzidenz: die unelastischere Seite trägt mehr</h3>
+        <p>Wer die Steuer wirklich trägt, hängt <strong>nicht</strong> davon ab, wer sie ans Finanzamt überweist,
+          sondern davon, wer schlechter ausweichen kann:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Inzidenz nach Elastizität</div>
+          <span class="formula">Anteil Konsument ≈ ε_S / (ε_S + |ε_D|)</span>
+          <p>ε_S = Preiselastizität des Angebots, ε_D = Preiselastizität der Nachfrage
+            (negativ). Je <strong>kleiner</strong> die Elastizität einer Seite, desto <strong>größer</strong>
+            ihr Anteil an der Last.</p>
+        </div>
+
+        <!-- SVG 3: Inzidenz elastisch/inelastisch -->
+        <figure class="diagram">
+          <div class="diagram-title">Steuerinzidenz: die unelastischere Seite trägt mehr Last</div>
+          <svg viewBox="0 0 520 260" width="520" role="img" aria-label="Zwei Mini-Diagramme: links steile unelastische Nachfrage mit großer Preisänderung beim Käufer, rechts steiles unelastisches Angebot mit großer Preisänderung beim Verkäufer">
+            <g font-family="Segoe UI, sans-serif" font-size="11.5">
+
+              <text x="140" y="18" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13">Inelastische Nachfrage</text>
+              <line x1="50" y1="220" x2="230" y2="220" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="50" y1="220" x2="50" y2="30" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="75" y1="30" x2="100" y2="220" stroke="#2f6df6" stroke-width="2"/>
+              <line x1="50" y1="220" x2="210" y2="40" stroke="#12b28c" stroke-width="2"/>
+              <circle cx="93" cy="171" r="4" class="svg-ink" fill="#0b0d12"/>
+              <line x1="118" y1="130" x2="118" y2="190" stroke="#2f6df6" stroke-width="3"/>
+              <line x1="112" y1="130" x2="124" y2="130" stroke="#2f6df6" stroke-width="3"/>
+              <line x1="112" y1="190" x2="124" y2="190" stroke="#2f6df6" stroke-width="3"/>
+              <text x="132" y="164" fill="#2f6df6" font-weight="700">ΔP groß</text>
+              <line x1="70" y1="196" x2="70" y2="214" stroke="#12b28c" stroke-width="3"/>
+              <text x="28" y="234" fill="#12b28c" font-weight="700" font-size="10.5">ΔP klein</text>
+              <text x="140" y="252" text-anchor="middle" class="svg-soft">Käufer trägt den Großteil der Steuer</text>
+
+              <text x="400" y="18" text-anchor="middle" class="svg-ink" font-weight="800" font-size="13">Inelastisches Angebot</text>
+              <line x1="310" y1="220" x2="490" y2="220" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="310" y1="220" x2="310" y2="30" stroke="#8a94a6" stroke-width="1"/>
+              <line x1="335" y1="220" x2="360" y2="30" stroke="#12b28c" stroke-width="2"/>
+              <line x1="310" y1="140" x2="470" y2="80" stroke="#2f6df6" stroke-width="2"/>
+              <circle cx="353" cy="171" r="4" class="svg-ink" fill="#0b0d12"/>
+              <line x1="378" y1="130" x2="378" y2="190" stroke="#12b28c" stroke-width="3"/>
+              <line x1="372" y1="130" x2="384" y2="130" stroke="#12b28c" stroke-width="3"/>
+              <line x1="372" y1="190" x2="384" y2="190" stroke="#12b28c" stroke-width="3"/>
+              <text x="392" y="164" fill="#12b28c" font-weight="700">ΔP groß</text>
+              <line x1="330" y1="196" x2="330" y2="214" stroke="#2f6df6" stroke-width="3"/>
+              <text x="288" y="234" fill="#2f6df6" font-weight="700" font-size="10.5">ΔP klein</text>
+              <text x="400" y="252" text-anchor="middle" class="svg-soft">Verkäufer trägt den Großteil der Steuer</text>
+            </g>
+          </svg>
+          <figcaption>Je steiler (unelastischer) eine Marktseite reagiert, desto größer ihr Anteil an der
+            Steuerlast — komplett unabhängig davon, wer die Steuer formal überweist.</figcaption>
+        </figure>
+
+        <div class="factgrid">
+          <div class="fact"><b>p_B − p_P = t</b><span>Steuerkeil bei Mengensteuer</span></div>
+          <div class="fact"><b>T = t · x_t</b><span>Steueraufkommen</span></div>
+          <div class="fact"><b>∝ t²</b><span>Zusatzlast wächst quadratisch</span></div>
+          <div class="fact"><b>t* = τ · p_P</b><span>Äquivalente Mengensteuer</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele durchgerechnet</h2>
+        <p>Wir bleiben beim linearen Beispiel: Nachfrage p = 100 − x, Angebot p = x.</p>
+
+        <h3>Grundfall: Mengensteuer t = 20 auf den Produzenten</h3>
+        <ol class="steps">
+          <li><strong>Ohne Steuer:</strong> 100 − x = x ⇒ x* = 50, p* = 50</li>
+          <li><strong>Neues Angebot mit Steuer:</strong> p = x + 20 (Produzenten brauchen jetzt mindestens
+            diesen Preis)</li>
+          <li><strong>Neues Gleichgewicht:</strong> 100 − x = x + 20 ⇒ 80 = 2x ⇒
+            x_t = 40</li>
+          <li><strong>Preise:</strong> p_B = 100 − 40 = 60 (Käufer zahlen). p_P = p_B − t = 40
+            (Verkäufer erhalten — Kontrolle: auf der Original-Angebotskurve gilt bei x=40 ebenfalls p=40
+            ✓)</li>
+          <li><strong>Aufkommen:</strong> T = t · x_t = 20 · 40 = <strong>800</strong></li>
+          <li><strong>Zusatzlast:</strong> ½ · (x*−x_t) · t = ½ · 10 · 20
+            = <strong>100</strong></li>
+          <li><strong>Inzidenz:</strong> Käufer zahlen 10 mehr (von 50 auf 60), Verkäufer erhalten 10 weniger
+            (von 50 auf 40) — genau <strong>50 : 50</strong>. Kein Zufall: Nachfrage- und Angebotskurve haben
+            hier die exakt gleiche Steigung (beide Betrag 1), also auch die gleiche Elastizität am
+            Gleichgewicht.</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">🧮 Klausurtyp: Was passiert, wenn der Staat die Steuer verdoppelt (t = 40)?</div>
+          <p>Gleiche Nachfrage- und Angebotsfunktion, jetzt t = 40.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Neues Gleichgewicht:</strong> 100 − x = x + 40 ⇒ 60 = 2x ⇒
+            x_t = 30</li>
+          <li><strong>Preise:</strong> p_B = 100 − 30 = 70, p_P = 70 − 40 = 30 (Kontrolle: Original-Angebot
+            bei x=30 ⇒ p=30 ✓)</li>
+          <li><strong>Aufkommen:</strong> T = 40 · 30 = <strong>1200</strong> — nur das 1,5-fache von vorher
+            (800), <strong>nicht</strong> das Doppelte!</li>
+          <li><strong>Zusatzlast:</strong> ½ · (50−30) · 40 = ½ · 20 · 40
+            = <strong>400</strong> — das ist exakt das <strong>Vierfache</strong> von 100, wie im Diagramm oben.</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="c-title">🧮 Klausurtyp: Äquivalente Wertsteuer finden</div>
+          <p>Welcher Wertsteuersatz τ erzeugt <em>dieselbe</em> Allokation wie t=20 oben (also
+            x_τ=40, p_B=60, p_P=40)?</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Ansatz:</strong> Bei Wertsteuer gilt p_B = (1+τ) · p_P und weiterhin
+            p_P = x (unveränderte Grenzkosten). Markträumung: (1+τ)·x = 100 − x
+            ⇒ x = 100 / (2+τ)</li>
+          <li><strong>τ = 0,5 (50&nbsp;%) einsetzen:</strong> x_τ = 100 / 2,5 = <strong>40</strong> —
+            exakt die gleiche Menge wie mit t=20!</li>
+          <li><strong>Preise:</strong> p_P = 40, p_B = 1,5 · 40 = <strong>60</strong> — identisch zu oben.</li>
+          <li><strong>Aufkommen:</strong> T = τ · p_P · x_τ = 0,5 · 40 · 40 =
+            <strong>800</strong> — auch das Aufkommen stimmt exakt überein.</li>
+          <li><strong>Äquivalenzformel bestätigt:</strong> t* = τ · p_P = 0,5 · 40 =
+            <strong>20</strong> ✓ — genau der Mengensteuersatz, mit dem wir gestartet sind.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Mit Steuer steigt der Preis, und beide zahlen
+            den vollen Betrag t zusätzlich.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Preis <strong>spaltet sich</strong>:
+            Bruttopreis (Käufer) steigt <em>weniger</em> als t, Nettopreis (Verkäufer) fällt. Nur die
+            <strong>Differenz</strong> p_B − p_P ist genau t.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Steueraufkommen und Zusatzlast sind
+            dasselbe — beides ist „der Schaden der Steuer".</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Aufkommen (T = t · x_t) ist Geld, das
+            beim <strong>Staat</strong> landet. Zusatzlast ist Rente, die <strong>komplett verloren geht</strong>
+            (Dreiecksfläche) — niemand bekommt sie.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Weil die Steuer formal beim Produzenten
+            erhoben wird, trägt auch der Produzent die Hauptlast.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Inzidenz hängt <strong>nur von den
+            Elastizitäten</strong> ab, nicht davon, wer formal zahlt. Wer weniger ausweichen kann, trägt mehr —
+            unabhängig vom Zahlschuldner.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Staat sollte den Steuersatz immer auf das
+            Maximum der Laffer-Kurve setzen, dann ist alles optimal.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Laffer-Kurve zeigt nur, wo das
+            <strong>Aufkommen</strong> maximal ist — nicht, wo Politik optimal ist. Verteilungsgerechtigkeit,
+            Effizienz und Lenkungsziele können ganz andere Steuersätze nahelegen.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Mengensteuer und Wertsteuer verschieben die
+            Angebotskurve auf die gleiche Art.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Mengensteuer verschiebt <strong>additiv</strong>
+            um einen festen Betrag t (parallel nach oben). Wertsteuer verschiebt <strong>multiplikativ</strong>
+            um den Faktor (1+τ) — bei höheren Preisen wird der Abstand also größer.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Wenn der Staat die Steuer verdoppelt,
+            verdoppelt sich auch die Zusatzlast.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Zusatzlast wächst <strong>quadratisch</strong>
+            mit t (Dreiecksfläche, beide Seiten proportional zu t). Verdopplung von t ⇒
+            <strong>Vervierfachung</strong> der Zusatzlast (siehe Beispiel oben: 100 → 400).</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Formeln auf einen Blick</h4>
+          <pre class="code">Steuerkeil (Mengensteuer)   p_B − p_P = t
+Steuerkeil (Wertsteuer)     p_B − p_P = τ · p_P,  also p_B = p_P·(1+τ)
+Steueraufkommen             T = t · x_t              (bzw. τ · p_P · x_τ)
+Zusatzlast (linear)         Zusatzlast = ½ · (x* − x_t) · t
+Inzidenz-Faustregel         Anteil Konsument ≈ ε_S / (ε_S + |ε_D|)
+Äquivalente Mengensteuer    t* = τ · p_P,τ</pre>
+
+          <h4>Situation → Formel</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Situation</th><th>Was gilt</th></tr></thead>
+            <tbody>
+              <tr><td>t verdoppelt sich</td><td>Zusatzlast vervierfacht sich (∝ t²)</td></tr>
+              <tr><td>Kurven gleich steil</td><td>Last teilt sich 50:50</td></tr>
+              <tr><td>Angebot sehr unelastisch</td><td>Produzent trägt (fast) die ganze Last</td></tr>
+              <tr><td>Nachfrage sehr unelastisch</td><td>Konsument trägt (fast) die ganze Last</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Bruttopreis ≠ Nettopreis</strong> — die Differenz ist immer genau die Steuer</li>
+            <li><strong>Aufkommen ≠ Zusatzlast</strong> — Aufkommen ist Geld für den Staat, Zusatzlast ist
+              reine Ineffizienz (verloren)</li>
+            <li><strong>Inzidenz ≠ Zahlschuldner</strong> — nur die Elastizität entscheidet, wer wirklich
+              zahlt</li>
+            <li>Zusatzlast wächst <strong>quadratisch</strong> mit dem Steuersatz — kleine Steuererhöhungen
+              tun wenig weh, große sehr</li>
+            <li>Mengensteuer = additive Verschiebung, Wertsteuer = multiplikative Verschiebung</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="800">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Nachfrage p=100−x, Angebot p=x, Mengensteuer
+              t=20 auf den Produzenten. Wie hoch ist das Steueraufkommen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Neues Gleichgewicht bei x_t=40. Aufkommen T = t·x_t = 20·40 =
+              <strong>800</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="100">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Gleiches Beispiel (t=20): wie groß ist die
+              Zusatzlast (Wohlfahrtsverlust)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ohne Steuer x*=50, mit Steuer x_t=40. Zusatzlast = ½·(50−40)·20 =
+              ½·10·20 = <strong>100</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Bei p=100−x (Nachfrage) und p=x (Angebot) sind
+              beide Kurven gleich steil. Wie verteilt sich die Steuerlast?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Je zur Hälfte (50:50)</button>
+              <button class="quiz-choice" type="button">Nur der Verkäufer trägt sie</button>
+              <button class="quiz-choice" type="button">Nur der Käufer trägt sie</button>
+              <button class="quiz-choice" type="button">Der Staat trägt sie</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Gleiche Steigung ⇒ gleiche Elastizität am Gleichgewicht ⇒ die
+              Last teilt sich exakt <strong>50:50</strong> (Käufer zahlen +10, Verkäufer erhalten −10).</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="400">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🧮 Klausurtyp: Gleiches Beispiel, aber der Staat
+              verdoppelt die Steuer auf t=40. Wie groß ist jetzt die Zusatzlast?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Neues Gleichgewicht x_t=30. Zusatzlast = ½·(50−30)·40 = ½·20·40 =
+              <strong>400</strong> — das Vierfache von 100 bei t=20.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🧮 Klausurtyp: Welche Aussage zur Steuerinzidenz
+              ist richtig?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Die unelastischere Marktseite trägt die
+                größere Last — egal wer formal zahlt.</button>
+              <button class="quiz-choice" type="button">Der Zahlschuldner trägt immer die Hauptlast.</button>
+              <button class="quiz-choice" type="button">Bei linearen Kurven trägt immer der Konsument die
+                Hauptlast.</button>
+              <button class="quiz-choice" type="button">Inzidenz hängt nur vom Steuersatz ab, nicht von den
+                Kurven.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Wer schlechter ausweichen kann (unelastischer reagiert), trägt
+              mehr von der Last — <strong>unabhängig</strong> davon, wer die Steuer ans Finanzamt überweist.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="20">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Eine Wertsteuer von τ=0,5 (50%) führt zu einem
+              Nettopreis von p_P=40. Wie hoch ist die äquivalente Mengensteuer t*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>t* = τ · p_P = 0,5 · 40 = <strong>20</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Was passiert mit dem Steueraufkommen, wenn der
+              Steuersatz weit über das Maximum der Laffer-Kurve hinaus erhöht wird?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Es sinkt wieder, weil die gehandelte
+                Menge gegen null geht.</button>
+              <button class="quiz-choice" type="button">Es steigt immer weiter linear an.</button>
+              <button class="quiz-choice" type="button">Es bleibt konstant auf dem Maximalwert.</button>
+              <button class="quiz-choice" type="button">Die Zusatzlast sinkt dann auf null.</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>T(t) = t·x(t): bei t=0 ist T=0, bei sehr hohem t geht x gegen 0
+              und damit auch T wieder gegen 0 — die Laffer-Kurve ist parabelförmig. Die Zusatzlast wächst dabei
+              sogar weiter.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="06-natuerliches-monopol.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Natürliches Monopol &amp; Regulierung</div>
+        </a>
+        <a class="next" href="08-einfuehrung.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Einführung in die Finanzwissenschaft</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

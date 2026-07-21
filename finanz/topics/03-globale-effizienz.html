@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Globale Effizienz · P4 Fiwi</title>
+<meta name="description" content="Produktionseffizienz (GRTS), die Transformationskurve und die globale Effizienzbedingung GRS = GRT bildlich erklärt – mit durchgerechneten Beispielen zur Cobb-Douglas-Produktionsfunktion, dem Ersten und Zweiten Hauptsatz der Wohlfahrtsökonomik und typischen Fallen." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat1);--cat-soft:var(--c-cat1-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Produktion &amp; PPF</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P4-Fiwi-Kursübersicht</a> › Thema 03</div>
+    <span class="th-icon">🌍</span>
+    <h1>Globale Effizienz</h1>
+    <div class="th-meta">
+      <span class="stars">★★☆</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 2</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Produktionseffizienz &amp; PPF</a></li>
+        <li><a href="#rechnen">Beispiele durchgerechnet</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Thema 2 hat geklärt, wie man <strong>fertige</strong> Güter effizient auf Haushalte
+          verteilt. Aber vorher müssen diese Güter erst <strong>produziert</strong> werden — und auch dabei kann
+          man Ressourcen verschwenden. <strong>Globale Effizienz</strong> verlangt beides gleichzeitig: effiziente
+          Produktion <em>und</em> effiziente Verteilung <em>und</em> dass beide Seiten zueinander passen.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… eine Bäckerei hat eine feste Anzahl Bäcker (Arbeit N) und Öfen (Kapital K), die sie auf zwei
+            Produkte verteilen kann: Brot und Kuchen. Verteilt sie Bäcker und Öfen <strong>ungeschickt</strong>
+            (z. B. viele Öfen, aber kaum Bäcker in der Kuchenabteilung), backt sie insgesamt weniger, als sie
+            könnte — reine Verschwendung, ganz unabhängig davon, wer später wie viel Brot oder Kuchen isst. Erst
+            wenn die Produktion optimal aufgeteilt ist <em>und</em> Brot und Kuchen anschließend so unter den
+            Kund:innen verteilt werden, dass niemand durch Tausch noch besser gestellt werden könnte, ist die
+            gesamte Wirtschaft <strong>global effizient</strong>.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Produktionseffizienz &amp; die Transformationskurve</h2>
+        <p>Zwei Güter x und y werden aus zwei Faktoren produziert: Arbeit N und Kapital K, mit festen
+          Gesamtmengen N̄ und K̄ (N_x+N_y=N̄, K_x+K_y=K̄). Die <strong>Grenzrate der technischen Substitution</strong>
+          (GRTS) sagt, wie viel K ein Sektor gegen eine zusätzliche Einheit N eintauschen kann, ohne seinen
+          Output zu verändern:</p>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: GRTS &amp; Produktionseffizienz</div>
+          <span class="formula">GRTSⁱ = Fⁱ_N / Fⁱ_K          Produktionseffizienz:  GRTS_x = GRTS_y</span>
+          <p>Für die häufig genutzte <strong>Cobb-Douglas-Produktionsfunktion</strong> Fⁱ(Nᵢ,Kᵢ)=Nᵢ^α·Kᵢ^(1−α)
+            vereinfacht sich das zu <strong>GRTSⁱ = [α/(1−α)] · Kᵢ/Nᵢ</strong>. Haben beide Sektoren dasselbe α,
+            kürzt sich der Faktor weg — übrig bleibt die Bedingung <strong>K_x/N_x = K_y/N_y</strong>: beide
+            Sektoren müssen dieselbe Kapitalintensität haben.</p>
+        </div>
+
+        <h3>Die Transformationskurve (PPF)</h3>
+        <p>Trägt man alle produktionseffizienten Kombinationen von x- und y-Output gegeneinander ab, ergibt sich
+          die <strong>Transformationskurve</strong> (production possibility frontier, PPF) — nach außen gewölbt
+          (konkav), weil die Opportunitätskosten mit zunehmender Spezialisierung steigen.</p>
+
+        <!-- SVG 1: Transformationskurve (schematisch) -->
+        <figure class="diagram">
+          <div class="diagram-title">Transformationskurve (schematisch) — konkav, weil GRT mit Spezialisierung steigt</div>
+          <svg viewBox="0 0 440 300" width="440" role="img" aria-label="Konkave Transformationskurve von der y-Achse zur x-Achse gewölbt, mit einem Punkt P auf der Kurve und einer Tangente, deren Steigung die Grenzrate der Transformation zeigt">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="60" y1="260" x2="400" y2="260" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="60" y1="260" x2="60" y2="40" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="390" y="278" class="svg-soft">Menge x</text>
+              <text x="35" y="48" class="svg-soft">Menge y</text>
+
+              <path d="M 60,80 Q 280,140 370,260" fill="none" stroke="#8b5cf6" stroke-width="2.5"/>
+              <text x="150" y="90" fill="#8b5cf6" font-weight="700" font-size="11.5">Transformationskurve</text>
+
+              <circle cx="247" cy="155" r="5.5" fill="#e0483d"/>
+              <line x1="197" y1="185" x2="297" y2="125" stroke="#e0483d" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <text x="255" y="148" fill="#e0483d" font-weight="800" font-size="12">P</text>
+              <text x="260" y="120" fill="#e0483d" font-size="10.5">Tangente: Steigung = GRT</text>
+
+              <text x="55" y="76" text-anchor="end" class="svg-soft" font-size="10.5">nur y</text>
+              <text x="372" y="278" text-anchor="middle" class="svg-soft" font-size="10.5">nur x</text>
+            </g>
+          </svg>
+          <figcaption>Bewegt man sich auf der Kurve weiter Richtung „nur x", wird die Kurve steiler — für jede
+            zusätzliche Einheit x muss man immer mehr y opfern. Das ist die steigende Grenzrate der
+            Transformation (GRT).</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Globale Effizienz-Bedingung</div>
+          <span class="formula">GRS_A = GRS_B = GRT = GRTS_x = GRTS_y          (im Wettbewerb: alle = w/r)</span>
+          <p>Die Konsumseite (GRS, wie Haushalte x gegen y tauschen wollen) muss zur Produktionsseite (GRT, wie
+            die Wirtschaft x gegen y tatsächlich umwandeln kann) passen. Nur dann lohnt sich keine Umschichtung
+            mehr — weder beim Tauschen noch beim Produzieren.</p>
+        </div>
+
+        <div class="factgrid">
+          <div class="fact"><b>GRTS</b><span>Substitution von N gegen K (innerhalb eines Sektors)</span></div>
+          <div class="fact"><b>GRT</b><span>Transformation von y in x (Steigung der PPF)</span></div>
+          <div class="fact"><b>GRS</b><span>Substitution von x gegen y (Konsumseite, Thema 2)</span></div>
+          <div class="fact"><b>3 Bedingungen</b><span>Produktion + Tausch + GRS=GRT müssen ALLE gelten</span></div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Erster &amp; Zweiter Hauptsatz der Wohlfahrtsökonomik</div>
+          <p><strong>1. Hauptsatz:</strong> Jedes Wettbewerbsgleichgewicht (mit Wettbewerb auf allen Märkten —
+            Güter <em>und</em> Faktoren) ist global Pareto-effizient. <strong>2. Hauptsatz:</strong> Jede global
+            effiziente Allokation lässt sich über eine passende Anfangsverteilung von Ressourcen als
+            Wettbewerbsgleichgewicht realisieren — der Staat kann also über Umverteilung <em>vor</em> dem Markt
+            eingreifen, ohne die Effizienz selbst zu gefährden.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Beispiele durchgerechnet</h2>
+
+        <h3>Beispiel 1: Ist diese Faktorallokation produktionseffizient?</h3>
+        <p>Zwei Sektoren x und y, beide mit Fⁱ=Nᵢ^0,6·Kᵢ^0,4 (α=0,6), Gesamtfaktoren N̄=90, K̄=60. Gegeben ist die
+          Allokation N_x=60, K_x=20, N_y=30, K_y=40.</p>
+
+        <!-- SVG 2: GRTS-Vergleich als Balken -->
+        <figure class="diagram">
+          <div class="diagram-title">Kapitalintensität &amp; GRTS in beiden Sektoren im Vergleich</div>
+          <svg viewBox="0 0 420 190" width="420" role="img" aria-label="Balkendiagramm: Sektor x hat GRTS 0,5 und Sektor y hat GRTS 2,0 – die Werte sind ungleich, die Allokation ist daher nicht produktionseffizient">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="60" y1="160" x2="380" y2="160" stroke="#8a94a6" stroke-width="1.5"/>
+              <rect x="100" y="120" width="60" height="40" fill="#8b5cf6" fill-opacity="0.5"/>
+              <rect x="240" y="30"  width="60" height="130" fill="#f5810b" fill-opacity="0.5"/>
+              <text x="130" y="145" text-anchor="middle" fill="#fff" font-weight="800" font-size="12">0,5</text>
+              <text x="270" y="55" text-anchor="middle" fill="#fff" font-weight="800" font-size="12">2,0</text>
+              <text x="130" y="178" text-anchor="middle" class="svg-ink" font-size="11">GRTS_x</text>
+              <text x="270" y="178" text-anchor="middle" class="svg-ink" font-size="11">GRTS_y</text>
+              <text x="200" y="20" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="12.5">0,5 ≠ 2,0 → ineffizient</text>
+            </g>
+          </svg>
+          <figcaption>Sektor y ist im Vergleich zu seiner Arbeitsmenge deutlich kapitalintensiver als nötig — eine
+            Umschichtung von Kapital nach x würde den Gesamtoutput erhöhen.</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li><strong>GRTS_x berechnen:</strong> [α/(1−α)]·K_x/N_x = (0,6/0,4)·(20/60) = 1,5 · 0,333 =
+            <strong>0,5</strong></li>
+          <li><strong>GRTS_y berechnen:</strong> 1,5 · (40/30) = 1,5 · 1,333 = <strong>2,0</strong></li>
+          <li><strong>Vergleichen:</strong> 0,5 ≠ 2,0 ⟹ <strong>nicht produktionseffizient</strong> — Sektor y ist
+            zu kapitalintensiv, Sektor x zu arbeitsintensiv relativ zueinander.</li>
+        </ol>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Achtung: gleiches α ≠ automatisch effizient!</div>
+          <p>Beide Sektoren haben hier dasselbe α=0,6 — trotzdem ist die Allokation <strong>nicht</strong>
+            effizient, weil K_x/N_x (=0,333) ≠ K_y/N_y (=1,333). Gleiche Technologie-Parameter reichen nicht,
+            die <strong>tatsächliche Faktoraufteilung</strong> muss auch stimmen.</p>
+        </div>
+
+        <p>Zum Vergleich eine effiziente Allokation mit denselben Gesamtfaktoren (N̄=90, K̄=60): N_x=54, K_x=36,
+          N_y=36, K_y=24. Dann gilt K_x/N_x = 36/54 = 0,667 = K_y/N_y = 24/36 ⟹ GRTS_x = GRTS_y = 1,5·0,667 =
+          <strong>1,0</strong> — jetzt effizient.</p>
+
+        <h3>🧮 Klausurtyp: Ist die gesamte Wirtschaft global effizient?</h3>
+        <p>Nimm die eben gefundene <strong>effiziente</strong> Produktionsallokation (GRTS_x=GRTS_y=1,0) und die
+          Tauscheffizienz-Lösung aus Thema 2 (GRS_A=GRS_B=0,5, mit x̄=120, ȳ=60). Ist die Gesamtwirtschaft global
+          effizient?</p>
+
+        <!-- SVG 3: 3-Schritte-Checkliste -->
+        <figure class="diagram">
+          <div class="diagram-title">Die 3-Schritte-Prüfung für globale Effizienz</div>
+          <svg viewBox="0 0 620 130" width="620" role="img" aria-label="Drei Prüfschritte: Produktion effizient ja, Tausch effizient ja, GRS gleich GRT nein – Gesamtergebnis nicht global effizient">
+            <g font-family="Segoe UI, sans-serif" font-size="12.5">
+              <rect x="10"  y="20" width="180" height="80" rx="10" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="100" y="45" text-anchor="middle" class="svg-ink" font-weight="800" font-size="12">1. Produktion effizient?</text>
+              <text x="100" y="65" text-anchor="middle" class="svg-soft" font-size="11">GRTS_x = GRTS_y = 1,0</text>
+              <text x="100" y="88" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="16">✓ ja</text>
+
+              <rect x="220" y="20" width="180" height="80" rx="10" fill="#12b28c" fill-opacity="0.18" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="310" y="45" text-anchor="middle" class="svg-ink" font-weight="800" font-size="12">2. Tausch effizient?</text>
+              <text x="310" y="65" text-anchor="middle" class="svg-soft" font-size="11">GRS_A = GRS_B = 0,5</text>
+              <text x="310" y="88" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="16">✓ ja</text>
+
+              <rect x="430" y="20" width="180" height="80" rx="10" fill="#e0483d" fill-opacity="0.16" stroke="#e0483d" stroke-width="1.5"/>
+              <text x="520" y="45" text-anchor="middle" class="svg-ink" font-weight="800" font-size="12">3. GRS = GRT?</text>
+              <text x="520" y="65" text-anchor="middle" class="svg-soft" font-size="11">0,5 ≠ 1,0</text>
+              <text x="520" y="88" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="16">✗ nein</text>
+            </g>
+          </svg>
+          <figcaption>Zwei von drei Bedingungen erfüllt reicht nicht — erst wenn auch Konsum- und
+            Produktionsseite zueinander passen (GRS=GRT), ist die Wirtschaft global effizient.</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li><strong>Produktion effizient?</strong> GRTS_x = GRTS_y = 1,0 ✓</li>
+          <li><strong>Tausch effizient?</strong> GRS_A = GRS_B = 0,5 ✓</li>
+          <li><strong>Konsistent?</strong> GRS (0,5) vs. GRT (1,0): <strong>nicht gleich</strong> ✗</li>
+          <li><strong>Fazit:</strong> Obwohl Produktion für sich genommen effizient ist UND Tausch für sich
+            genommen effizient ist, ist die Gesamtwirtschaft <strong>nicht global effizient</strong> — die
+            Wirtschaft produziert relativ zu viel y und zu wenig x, gemessen daran, wie die Haushalte x gegen y
+            tauschen würden. Eine Verschiebung der Produktion Richtung x würde alle bessergestellt.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„GRTS ist einfach das Grenzprodukt von N."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>GRTS ist das <strong>Verhältnis</strong> der
+            Grenzprodukte: F_N/F_K — nicht das Grenzprodukt allein.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Wenn beide Sektoren α=0,6 haben, ist
+            Produktionseffizienz automatisch erfüllt."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Effizienz erfordert <strong>K_x/N_x =
+            K_y/N_y</strong> — gleiche Technologie-Parameter allein reichen nicht, wie unser Beispiel mit
+            GRTS_x=0,5 ≠ GRTS_y=2,0 trotz gleichem α zeigt.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Wenn Sektor x vollkommener Wettbewerb ist,
+            reicht das für automatische Effizienz."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><strong>Beide</strong> Sektoren müssen im
+            vollkommenen Wettbewerb sein — sonst sehen sie unterschiedliche w, r und die Bedingung F_N/F_K = w/r
+            gilt nicht für beide gleichzeitig.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Transformationskurve wird als Gerade oder
+            nach innen gewölbt (konvex) gezeichnet.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die PPF ist <strong>konkav</strong> (nach
+            außen gewölbt) — die Opportunitätskosten (GRT) steigen, je mehr man sich auf ein Gut
+            spezialisiert.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>„Produktionseffizienz UND Tauscheffizienz
+            erfüllt ⟹ die Wirtschaft ist global effizient."</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Es braucht <strong>zusätzlich</strong> GRS=GRT
+            — Konsum- und Produktionsseite müssen zueinander passen. Wie im Klausurtyp-Beispiel oben können
+            beide Teilbedingungen gelten und die Wirtschaft trotzdem nicht global effizient sein.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Formeln</h4>
+          <pre class="code">GRTSⁱ = Fⁱ_N / Fⁱ_K   (Cobb-Douglas: [α/(1−α)] · Kᵢ/Nᵢ)
+
+Produktionseffizienz:  GRTS_x = GRTS_y      (bei gleichem α ⟺ K_x/N_x = K_y/N_y)
+Tauscheffizienz:       GRS_A  = GRS_B        (siehe Thema 2)
+Globale Effizienz:     GRS_A = GRS_B = GRT = GRTS_x = GRTS_y</pre>
+
+          <h4>Die 3-Schritte-Prüfung</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Schritt</th><th>Prüfung</th></tr></thead>
+            <tbody>
+              <tr><td>1. Produktion</td><td>GRTS_x = GRTS_y ?</td></tr>
+              <tr><td>2. Tausch</td><td>GRS_A = GRS_B ?</td></tr>
+              <tr><td>3. Konsistenz</td><td>GRS = GRT ?</td></tr>
+              <tr><td>Alle 3 ja</td><td>→ global effizient</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>GRTS = Verhältnis</strong> der Grenzprodukte, nicht das Grenzprodukt selbst</li>
+            <li><strong>Gleiches α reicht nicht</strong> — die tatsächliche Faktorallokation muss K_x/N_x=K_y/N_y
+              erfüllen</li>
+            <li>PPF ist <strong>konkav</strong> — steigende Opportunitätskosten bei Spezialisierung</li>
+            <li>Alle drei Bedingungen (Produktion, Tausch, GRS=GRT) müssen <strong>gleichzeitig</strong> gelten</li>
+            <li>1. Hauptsatz: Wettbewerb auf allen Märkten ⟹ global effizient; 2. Hauptsatz: jede effiziente
+              Allokation ist über die richtige Anfangsverteilung erreichbar</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Was ist die GRTS korrekt definiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Das Grenzprodukt der Arbeit F_N</button>
+              <button class="quiz-choice" type="button" data-correct>Das Verhältnis der Grenzprodukte F_N/F_K</button>
+              <button class="quiz-choice" type="button">Der Kapitalstock K</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>GRTS = F_N/F_K — wie viel K man für eine zusätzliche Einheit N
+              aufgeben kann, bei gleichem Output.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="0.5" data-tol="0.02">
+            <p class="quiz-prompt"><span class="q-no">2.</span>N_x=60, K_x=20, α=0,6. Wie groß ist GRTS_x =
+              [α/(1−α)]·K_x/N_x?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(0,6/0,4)·(20/60) = 1,5·0,333 = <strong>0,5</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">3.</span>N_y=30, K_y=40, α=0,6. Wie groß ist GRTS_y?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>1,5·(40/30) = 1,5·1,333 = <strong>2,0</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Ist die Allokation N_x=60,K_x=20,N_y=30,K_y=40
+              (GRTS_x=0,5, GRTS_y=2,0) produktionseffizient?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, weil beide α gleich sind</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, weil GRTS_x ≠ GRTS_y</button>
+              <button class="quiz-choice" type="button">Ja, weil N_x+N_y=90 stimmt</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Produktionseffizienz braucht <strong>GRTS_x=GRTS_y</strong>. Hier
+              0,5 ≠ 2,0 — nicht effizient.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="globale effizienz|globale effizienzbedingung">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Wie heißt die Bedingung GRS = GRT (Konsum- trifft
+              Produktionsseite)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Die <strong>globale Effizienz</strong>-Bedingung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: GRTS_x=GRTS_y=1,0 (Produktion
+              effizient) und GRS_A=GRS_B=0,5 (Tausch effizient), aber 0,5 ≠ 1,0. Ist die Gesamtwirtschaft global
+              effizient?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Ja, weil beide Teilbedingungen erfüllt sind</button>
+              <button class="quiz-choice" type="button" data-correct>Nein, weil GRS ≠ GRT die dritte Bedingung verletzt</button>
+              <button class="quiz-choice" type="button">Das lässt sich ohne weitere Daten nicht sagen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Produktion und Tausch sind je für sich effizient, aber sie passen
+              nicht zueinander (GRS≠GRT) — die Wirtschaft produziert relativ zu viel y statt x. <strong>Nicht
+              global effizient.</strong></div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Warum ist die Transformationskurve konkav (nach
+              außen gewölbt) statt einer Geraden?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Weil beide Güter mit denselben Faktoren produziert werden</button>
+              <button class="quiz-choice" type="button" data-correct>Weil die Opportunitätskosten (GRT) mit zunehmender Spezialisierung steigen</button>
+              <button class="quiz-choice" type="button">Weil N und K immer gleich groß sind</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Je stärker man sich auf ein Gut spezialisiert, desto mehr vom
+              anderen Gut muss man für dieselbe zusätzliche Einheit opfern — die Kurve wird steiler.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="02-tauscheffizienz.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Tauscheffizienz &amp; Edgeworth-Box</div>
+        </a>
+        <a class="next" href="04-oeffentliche-gueter.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Öffentliche Güter</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

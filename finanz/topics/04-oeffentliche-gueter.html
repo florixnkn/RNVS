@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Öffentliche Güter · P4 Fiwi</title>
+<meta name="description" content="Öffentliche Güter bildlich erklärt: Nicht-Ausschluss und Nicht-Rivalität, die 2×2-Gütermatrix, das Trittbrettfahrer-Problem, die Samuelson-Bedingung mit vertikaler Aggregation der Zahlungsbereitschaften und das Lindahl-Gleichgewicht – mit durchgerechneten Beispielen für die P4-Klausur." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P4-Fiwi-Kursübersicht</a> › Thema 04</div>
+    <span class="th-icon">🏮</span>
+    <h1>Öffentliche Güter</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-exam">🚨 Klausur</span>
+      <span class="badge badge-blatt">Blatt 3</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie im Bild</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Der Markt ist super darin, <strong>private Güter</strong> zu verteilen: Wer nicht zahlt,
+          kriegt kein Brötchen. Aber es gibt Güter, bei denen dieser Trick <strong>nicht funktioniert</strong> —
+          und genau die nennen wir <strong>öffentliche Güter</strong>. Hier geht's darum, warum der Markt sie von
+          allein zu wenig bereitstellt, und wie man trotzdem eine „richtige" Menge berechnen kann.</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… deine Stadt überlegt, zu Silvester ein großes <strong>Feuerwerk</strong> im Stadtpark zu
+            veranstalten. Wenn es losgeht, kann buchstäblich <strong>jeder</strong> im Umkreis zugucken — vom
+            Balkon, aus dem Park, vom Nachbardach. Niemand kann ausgeschlossen werden, der nicht bezahlt hat
+            (<strong>Nicht-Ausschluss</strong>). Und ob 500 oder 5.000 Leute zuschauen: dein eigener Blick aufs
+            Feuerwerk wird dadurch nicht schlechter (<strong>Nicht-Rivalität</strong>).<br><br>
+            Das Problem: Wenn die Stadt eine Umfrage macht „Wie viel wärst du bereit zu zahlen?", hat jede·r einen
+            Anreiz, <strong>niedrig zu stapeln</strong> — schließlich kann man ja trotzdem zugucken, auch wenn man
+            nichts beisteuert. Genau dieses <strong>Trittbrettfahrer-Problem</strong> ist der Kern des
+            Marktversagens bei öffentlichen Gütern.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie im Bild</h2>
+        <p>Güter lassen sich entlang <strong>zweier Dimensionen</strong> einordnen: Kann man Leute vom Konsum
+          <strong>ausschließen</strong>? Und mindert der Konsum einer Person das Angebot für andere
+          (<strong>Rivalität</strong>)? Aus diesen zwei Fragen ergibt sich eine 2×2-Matrix mit vier Güterarten:</p>
+
+        <!-- SVG 1: 2x2-Matrix der Gütertypen -->
+        <figure class="diagram">
+          <div class="diagram-title">Die vier Gütertypen — Ausschließbarkeit × Rivalität</div>
+          <svg viewBox="0 0 560 380" width="560" role="img" aria-label="2x2-Matrix: Private Güter (ausschließbar, rival), Klubgüter (ausschließbar, nicht-rival), Allmendegüter (nicht-ausschließbar, rival) und Öffentliche Güter (nicht-ausschließbar, nicht-rival)">
+            <g font-family="Segoe UI, sans-serif" font-size="13">
+              <!-- Achsentitel -->
+              <text x="300" y="26" text-anchor="middle" class="svg-ink" font-weight="800" font-size="14">Rivalität →</text>
+              <text x="30" y="200" text-anchor="middle" class="svg-ink" font-weight="800" font-size="14" transform="rotate(-90 30 200)">Ausschließbarkeit →</text>
+
+              <text x="185" y="52" text-anchor="middle" class="svg-soft" font-weight="700">rival</text>
+              <text x="415" y="52" text-anchor="middle" class="svg-soft" font-weight="700">nicht-rival</text>
+              <text x="90" y="130" text-anchor="middle" class="svg-soft" font-weight="700">ausschließbar</text>
+              <text x="90" y="320" text-anchor="middle" class="svg-soft" font-weight="700">nicht-ausschließbar</text>
+
+              <!-- Quadrant: Private Güter -->
+              <rect x="70" y="65" width="230" height="140" rx="10" fill="#2f6df6" fill-opacity="0.14" stroke="#2f6df6" stroke-width="1.5"/>
+              <text x="185" y="95" text-anchor="middle" fill="#2f6df6" font-weight="800" font-size="15">Private Güter</text>
+              <text x="185" y="120" text-anchor="middle" class="svg-ink" font-size="12.5">Brötchen, Auto, Fahrrad</text>
+              <text x="185" y="140" text-anchor="middle" class="svg-soft" font-size="11.5">Wer nicht zahlt, kriegt nichts</text>
+              <text x="185" y="185" text-anchor="middle" class="svg-soft" font-size="11.5">→ Markt funktioniert</text>
+
+              <!-- Quadrant: Klubgüter -->
+              <rect x="300" y="65" width="230" height="140" rx="10" fill="#12b28c" fill-opacity="0.14" stroke="#12b28c" stroke-width="1.5"/>
+              <text x="415" y="95" text-anchor="middle" fill="#12b28c" font-weight="800" font-size="15">Klubgüter</text>
+              <text x="415" y="120" text-anchor="middle" class="svg-ink" font-size="12.5">Streaming-Abo, Mautstraße</text>
+              <text x="415" y="140" text-anchor="middle" class="svg-soft" font-size="11.5">Grenzkosten ≈ 0, Zugang kontrolliert</text>
+              <text x="415" y="185" text-anchor="middle" class="svg-soft" font-size="11.5">→ Unterversorgung möglich</text>
+
+              <!-- Quadrant: Allmendegüter -->
+              <rect x="70" y="205" width="230" height="140" rx="10" fill="#f5810b" fill-opacity="0.14" stroke="#f5810b" stroke-width="1.5"/>
+              <text x="185" y="235" text-anchor="middle" fill="#f5810b" font-weight="800" font-size="15">Allmendegüter</text>
+              <text x="185" y="260" text-anchor="middle" class="svg-ink" font-size="12.5">Fischbestände, Weideland</text>
+              <text x="185" y="280" text-anchor="middle" class="svg-soft" font-size="11.5">Jeder darf nutzen, aber Konflikt</text>
+              <text x="185" y="325" text-anchor="middle" class="svg-soft" font-size="11.5">→ Übernutzung (Tragedy of the Commons)</text>
+
+              <!-- Quadrant: Öffentliche Güter -->
+              <rect x="300" y="205" width="230" height="140" rx="10" fill="#e0483d" fill-opacity="0.16" stroke="#e0483d" stroke-width="2"/>
+              <text x="415" y="235" text-anchor="middle" fill="#e0483d" font-weight="800" font-size="15">Öffentliche Güter</text>
+              <text x="415" y="260" text-anchor="middle" class="svg-ink" font-size="12.5">Landesverteidigung, Leuchttürme</text>
+              <text x="415" y="280" text-anchor="middle" class="svg-soft" font-size="11.5">Niemand ausschließbar, keine Rivalität</text>
+              <text x="415" y="325" text-anchor="middle" fill="#e0483d" font-size="11.5" font-weight="700">→ Free-Riding, Unterversorgung</text>
+            </g>
+          </svg>
+          <figcaption>Unser Thema sitzt unten rechts: nicht-ausschließbar UND nicht-rival — die schwierigste Kombination für den Markt.</figcaption>
+        </figure>
+
+        <div class="callout callout-warning">
+          <div class="c-title">Öffentliches Interesse ≠ Öffentliches Gut</div>
+          <p>Ein Sitzplatz im Fußballstadion ist ein <strong>privates Gut</strong> (ausschließbar über das Ticket,
+            rival — der Platz ist besetzt), obwohl viele Menschen ein „öffentliches Interesse" am Sport haben.
+            Ob etwas ein öffentliches Gut ist, entscheidet sich <strong>ausschließlich</strong> an
+            Nicht-Ausschluss und Nicht-Rivalität — nicht daran, wie wichtig die Gesellschaft es findet.</p>
+        </div>
+
+        <h3>Warum unterversorgt der Markt öffentliche Güter?</h3>
+        <p>Weil niemand vom Konsum ausgeschlossen werden kann, hat jede·r einen Anreiz, sich als
+          <strong>Trittbrettfahrer</strong> zu verhalten: die eigene Zahlungsbereitschaft verschweigen oder klein
+          rechnen, in der Hoffnung, dass andere zahlen. Rechnet jede·r so, wird am Ende <strong>zu wenig</strong>
+          (oder gar nichts) bereitgestellt — klassisches Marktversagen.</p>
+
+        <h3>Die Samuelson-Bedingung: vertikal statt horizontal addieren</h3>
+        <p>Bei einem <strong>privaten</strong> Gut bekommt jede Person eine eigene Menge, und die Marktnachfrage
+          entsteht durch <strong>horizontales</strong> Aufaddieren der Mengen bei gegebenem Preis. Bei einem
+          <strong>öffentlichen</strong> Gut ist das anders: <strong>alle konsumieren dieselbe Menge x</strong>
+          gleichzeitig (das Feuerwerk ist für alle gleich groß) — aber jede Person hat eine eigene
+          Zahlungsbereitschaft (GZB) dafür. Deshalb addiert man hier <strong>vertikal</strong>: die
+          Zahlungsbereitschaften bei gleicher Menge.</p>
+
+        <!-- SVG 2: Vertikale Aggregation der Zahlungsbereitschaften -->
+        <figure class="diagram">
+          <div class="diagram-title">Vertikale Aggregation: GZB<sub>H</sub>(x) = 400−x, GZB<sub>N</sub>(x) = 240−0,5x, GK = 230</div>
+          <svg viewBox="0 0 620 320" width="620" role="img" aria-label="Liniendiagramm mit den Zahlungsbereitschaftskurven von Fans und übrigen Personen, ihrer vertikalen Summe und der Grenzkostenlinie; Schnittpunkt bei x=273,3">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Achsen -->
+              <line x1="70" y1="280" x2="590" y2="280" stroke="#8a94a6" stroke-width="1.3"/>
+              <line x1="70" y1="24" x2="70" y2="280" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="330" y="308" text-anchor="middle" class="svg-soft">Menge x (Quadratmeter Leinwand)</text>
+              <text x="26" y="150" text-anchor="middle" class="svg-soft" transform="rotate(-90 26 150)">GZB / GK (€)</text>
+
+              <!-- Summenkurve GZB_H + GZB_N = 640 - 1.5x -->
+              <line x1="70" y1="24" x2="563" y2="280" stroke="#8b5cf6" stroke-width="2.4"/>
+              <text x="120" y="45" fill="#8b5cf6" font-weight="800" font-size="12.5">Σ GZB = 640 − 1,5x</text>
+
+              <!-- GZB_H -->
+              <line x1="70" y1="120" x2="532" y2="280" stroke="#2f6df6" stroke-width="2"/>
+              <text x="345" y="230" fill="#2f6df6" font-weight="700" font-size="12">GZB_H = 400 − x</text>
+
+              <!-- GZB_N -->
+              <line x1="70" y1="184" x2="590" y2="274" stroke="#12b28c" stroke-width="2"/>
+              <text x="440" y="255" fill="#12b28c" font-weight="700" font-size="12">GZB_N = 240 − 0,5x</text>
+
+              <!-- GK-Linie -->
+              <line x1="70" y1="188" x2="590" y2="188" stroke="#e0483d" stroke-width="1.8" stroke-dasharray="6 4"/>
+              <text x="500" y="180" fill="#e0483d" font-weight="800" font-size="12.5">GK = 230</text>
+
+              <!-- Schnittpunkt x* -->
+              <line x1="386" y1="188" x2="386" y2="280" stroke="#8a94a6" stroke-width="1.3" stroke-dasharray="3 3"/>
+              <circle cx="386" cy="188" r="5" fill="#8b5cf6"/>
+              <text x="386" y="300" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">x* ≈ 273,3</text>
+
+              <!-- x-Achsen-Ticks -->
+              <text x="70" y="296" text-anchor="middle" class="svg-soft" font-size="11">0</text>
+              <text x="590" y="296" text-anchor="middle" class="svg-soft" font-size="11">450</text>
+            </g>
+          </svg>
+          <figcaption>Bei jeder Menge x werden die beiden GZB-Kurven <strong>vertikal</strong> aufaddiert (lila). Wo die Summenkurve die Grenzkostenlinie schneidet, liegt die optimale Menge x*.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Samuelson-Bedingung</div>
+          <span class="formula">Σᵢ GZBᵢ(x) = GK       (zwei Personen: GZB_A(x) + GZB_B(x) = GK)</span>
+          <p>Die <strong>Summe der Grenznutzen</strong> (Zahlungsbereitschaften) aller Nutzer·innen bei gleicher
+            Menge x muss den Grenzkosten entsprechen. Das ist das Gegenstück zur GRS = GRT-Bedingung bei privaten
+            Gütern, nur eben mit vertikaler statt horizontaler Aggregation.</p>
+        </div>
+
+        <h3>Lindahl-Gleichgewicht: individuelle Preise für dieselbe Menge</h3>
+        <p>Im <strong>Lindahl-Gleichgewicht</strong> zahlt jede Person einen <strong>eigenen, personalisierten
+          Preis</strong> für das öffentliche Gut — genau in Höhe ihrer Grenzzahlungsbereitschaft bei der optimalen
+          Menge x*. Diese individuellen Preise addieren sich exakt zu den Grenzkosten. Im Diagramm oben sind das
+          schlicht die y-Werte der beiden einzelnen Kurven an der Stelle x*: Person H zahlt GZB_H(x*), Person N
+          zahlt GZB_N(x*), zusammen genau GK.</p>
+
+        <div class="factgrid">
+          <div class="fact"><b>Vertikal</b><span>öffentliche Güter: GZB addieren</span></div>
+          <div class="fact"><b>Horizontal</b><span>private Güter: Mengen addieren</span></div>
+          <div class="fact"><b>Lindahl-Preis</b><span>individuelle GZB bei x*</span></div>
+          <div class="fact"><b>Enthüllungsproblem</b><span>niemand nennt seine wahre GZB freiwillig</span></div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="c-title">Enthüllungsproblem &amp; Finanzierung</div>
+          <p>Die Samuelson-Bedingung sagt nur, <strong>was</strong> optimal ist — nicht, <strong>wie</strong> man
+            es finanziert. In der Praxis kennt der Staat die individuellen GZB nicht (jede·r würde sie aus
+            Eigeninteresse zu niedrig angeben, um weniger zu zahlen und trotzdem zu profitieren). Dieses
+            <strong>Enthüllungsproblem</strong> ist genau das Trittbrettfahrer-Problem auf Ebene der
+            Informationsbeschaffung. Der Clarke-Groves-Mechanismus ist ein (in dieser Vorlesung nur am Rande
+            behandelter) Lösungsansatz dafür.</p>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Beispiele</h2>
+
+        <h3>Durchgerechnetes Beispiel: Leinwände zur WM</h3>
+        <p>Ein Verein plant öffentliche Leinwände zur Fußball-WM. Gegeben sind die Grenzzahlungsbereitschaften
+          zweier Gruppen und die konstanten Grenzkosten je Quadratmeter Leinwandfläche:</p>
+        <div class="callout callout-info">
+          <div class="c-title">Gegeben</div>
+          <p>GZB<sub>H</sub>(x) = 400 − x &nbsp;(Fans)<br>
+            GZB<sub>N</sub>(x) = 240 − 0,5x &nbsp;(übrige Bevölkerung)<br>
+            GK = 230 &nbsp;(konstant)</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Vertikal addieren:</strong> GZB<sub>H</sub>(x) + GZB<sub>N</sub>(x) = (400−x) + (240−0,5x)
+            = 640 − 1,5x</li>
+          <li><strong>Mit GK gleichsetzen:</strong> 640 − 1,5x = 230 &nbsp;⇒&nbsp; 1,5x = 410</li>
+          <li><strong>Auflösen:</strong> x* = 410 / 1,5 = <strong>273,3 m²</strong></li>
+          <li><strong>Probe: negative GZB?</strong> GZB<sub>H</sub>(273,3) = 400 − 273,3 = 126,7 &gt; 0 ✓ &nbsp;
+            GZB<sub>N</sub>(273,3) = 240 − 0,5·273,3 = 103,3 &gt; 0 ✓ &nbsp; (Summe: 126,7 + 103,3 = 230,0 ✓)</li>
+        </ol>
+        <div class="callout callout-tip">
+          <div class="c-title">Bonus: Lindahl-Preise direkt ablesen</div>
+          <p>Die beiden Werte aus der Probe sind gleichzeitig die <strong>Lindahl-Preise</strong>: Die Fans zahlen
+            126,7 € je Quadratmeter, die übrige Bevölkerung 103,3 € je Quadratmeter — zusammen genau die
+            Grenzkosten von 230 €. Beide bekommen dieselbe Fläche von 273,3 m², aber zu unterschiedlichen
+            individuellen Preisen.</p>
+        </div>
+
+        <h3>🧮 Klausurtyp: Samuelson-Bedingung mit zwei Individuen</h3>
+        <p>Gegeben: GZB<sub>A</sub>(x) = 300 − 2x, GZB<sub>B</sub>(x) = 180 − x, GK = 60. Wie groß ist die optimale
+          Menge x*?</p>
+        <ol class="steps">
+          <li><strong>Vertikal addieren:</strong> (300 − 2x) + (180 − x) = 480 − 3x</li>
+          <li><strong>Mit GK gleichsetzen:</strong> 480 − 3x = 60 &nbsp;⇒&nbsp; 3x = 420</li>
+          <li><strong>Auflösen:</strong> x* = <strong>140</strong></li>
+          <li><strong>Probe:</strong> GZB<sub>A</sub>(140) = 300 − 280 = 20 &gt; 0 ✓ &nbsp;
+            GZB<sub>B</sub>(140) = 180 − 140 = 40 &gt; 0 ✓ &nbsp; (Summe 20+40 = 60 = GK ✓) — das sind zugleich
+            die Lindahl-Preise von A und B.</li>
+        </ol>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Nachfrage nach dem öffentlichen Gut entsteht
+            wie bei privaten Gütern: Mengen bei gegebenem Preis addieren (horizontal).</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bei öffentlichen Gütern konsumieren alle
+            <strong>dieselbe Menge</strong> — die Zahlungsbereitschaften werden bei dieser Menge
+            <strong>vertikal</strong> addiert.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Man addiert die GZB einfach immer, auch wenn sie
+            für einzelne Personen negativ wird.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Negative GZB bedeutet: diese Person würde
+            zahlen, um <strong>weniger</strong> vom Gut zu bekommen. Bei der Prüfung des Ergebnisses immer
+            checken, ob alle GZB im Optimum noch positiv sind.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Die Samuelson-Bedingung löst das
+            Trittbrettfahrer-Problem.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Samuelson sagt nur, <strong>was optimal</strong>
+            wäre — nicht, wie man es <strong>finanziert</strong>, ohne dass alle lügen. Das ist ein eigenes
+            Problem (Enthüllungsproblem / Clarke-Groves-Mechanismus).</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Alles, was der Staat bereitstellt, ist ein
+            öffentliches Gut.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Öffentlich = nicht-ausschließbar &amp;
+            nicht-rival. Straßen z. B. werden oft staatlich gebaut, sind aber über Maut durchaus ausschließbar —
+            also eher ein Klubgut.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Ein Stadionsitzplatz ist ein öffentliches Gut,
+            weil Fußball „öffentliches Interesse" ist.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Sitzplatz ist ausschließbar (Ticket) und
+            rival (besetzt) — also ein <strong>privates Gut</strong>. „Öffentliches Interesse" ist keine der
+            beiden definierenden Eigenschaften.</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Die vier Gut-Kategorien</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Gut</th><th>Ausschließbar?</th><th>Rival?</th><th>Beispiele</th><th>Problem</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Privat</strong></td><td>Ja</td><td>Ja</td><td>Brötchen, Buch</td><td>Keins (Markt funktioniert)</td></tr>
+              <tr><td><strong>Klub</strong></td><td>Ja</td><td>Nein</td><td>Netflix, Mautstraße</td><td>Unterversorgung (GK ≈ 0)</td></tr>
+              <tr><td><strong>Allmende</strong></td><td>Nein</td><td>Ja</td><td>Fischbestand, Weide</td><td>Übernutzung</td></tr>
+              <tr><td><strong>Öffentlich</strong></td><td>Nein</td><td>Nein</td><td>Landesverteidigung, Leuchtturm</td><td>Free-Riding, Unterversorgung</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Samuelson-Bedingung</h4>
+          <pre class="code">Σᵢ GZBᵢ(x) = GK
+Zwei Personen: GZB_A(x) + GZB_B(x) = GK
+→ vertikal addieren, nicht horizontal!</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>Vertikal</strong> addieren bei öffentlichen Gütern (gleiche Menge, unterschiedliche Preise)</li>
+            <li><strong>Horizontal</strong> addieren bei privaten Gütern (gleicher Preis, unterschiedliche Mengen)</li>
+            <li>Immer <strong>GZB im Optimum auf Positivität prüfen</strong></li>
+            <li><strong>Lindahl-Preis</strong> = individuelle GZB bei x* — Summe der Lindahl-Preise = GK</li>
+            <li>Samuelson löst nur die Frage <em>„was ist optimal"</em>, nicht <em>„wie finanzieren"</em></li>
+            <li>Öffentliches Gut ⇔ nicht-ausschließbar &amp; nicht-rival — <strong>nicht</strong> „vom Staat bereitgestellt"</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="140">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Gegeben: GZB<sub>A</sub>(x) = 300 − 2x,
+              GZB<sub>B</sub>(x) = 180 − x, GK = 60. Wie groß ist die optimale Menge x*?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Vertikal addieren: (300−2x)+(180−x) = 480−3x. Mit GK gleichsetzen:
+              480−3x = 60 ⇒ 3x = 420 ⇒ x* = <strong>140</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Landesverteidigung ist ein öffentliches Gut, weil …</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">sie im öffentlichen Interesse liegt</button>
+              <button class="quiz-choice" type="button" data-correct>sie nicht-ausschließbar und nicht-rival ist</button>
+              <button class="quiz-choice" type="button">der Staat sie bereitstellt</button>
+              <button class="quiz-choice" type="button">sie besonders teuer ist</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Entscheidend sind ausschließlich die zwei Eigenschaften
+              Nicht-Ausschluss und Nicht-Rivalität — nicht, wie wichtig die Gesellschaft das Gut findet oder wer
+              es bereitstellt.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Ein Fischbestand im offenen Meer (frei zugänglich,
+              aber begrenzt) ist welches Gut?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Privates Gut</button>
+              <button class="quiz-choice" type="button">Klubgut</button>
+              <button class="quiz-choice" type="button" data-correct>Allmendegut</button>
+              <button class="quiz-choice" type="button">Öffentliches Gut</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Nicht-ausschließbar (jeder darf fischen) aber rival (jeder Fisch
+              kann nur einmal gefangen werden) → <strong>Allmendegut</strong>, mit Gefahr der Übernutzung.</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Trittbrettfahrerproblem|Trittbrettfahrer-Problem|Free-Rider-Problem|Free Riding|Trittbrettfahren">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Wie heißt das Problem, dass jede·r vom öffentlichen
+              Gut profitiert, ohne dafür zu zahlen?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Das <strong>Trittbrettfahrer-Problem</strong> (Free-Rider-Problem):
+              niemand hat einen Anreiz, seine wahre Zahlungsbereitschaft zu offenbaren.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="20">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Im Beispiel oben (GZB<sub>A</sub>=300−2x,
+              GZB<sub>B</sub>=180−x, GK=60, x*=140): Wie hoch ist der Lindahl-Preis von Person A?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">€</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Lindahl-Preis von A ist ihre GZB bei x*: GZB_A(140) =
+              300 − 2·140 = 300 − 280 = <strong>20</strong>. (B zahlt entsprechend 40, zusammen 60 = GK.)</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>Wie werden individuelle Zahlungsbereitschaften bei
+              öffentlichen Gütern aggregiert?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Horizontal (Mengen addieren)</button>
+              <button class="quiz-choice" type="button" data-correct>Vertikal (Preise/GZB addieren)</button>
+              <button class="quiz-choice" type="button">Gar nicht, jede·r zahlt einzeln am Markt</button>
+              <button class="quiz-choice" type="button">Multiplikativ</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Weil alle dieselbe Menge x konsumieren, addiert man bei gegebenem x
+              die Zahlungsbereitschaften <strong>vertikal</strong> — das ist der zentrale Unterschied zur
+              Marktnachfrage privater Güter.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="273.3" data-tol="0.5">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🧮 Klausurtyp: GZB<sub>H</sub>(x) = 400 − x,
+              GZB<sub>N</sub>(x) = 240 − 0,5x, GK = 230. Wie groß ist die optimale Fläche x* (in m²)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">m²</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>(400−x)+(240−0,5x) = 640−1,5x = 230 ⇒ 1,5x = 410 ⇒
+              x* = <strong>273,3</strong> m².</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="03-globale-effizienz.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Globale Effizienz</div>
+        </a>
+        <a class="next" href="05-externe-effekte.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Externe Effekte</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Natürliches Monopol &amp; Regulierung · P4 Fiwi</title>
+<meta name="description" content="Natürliches Monopol bildlich erklärt: fallende Durchschnittskosten durch Skalenerträge, der Monopol-Wohlfahrtsverlust, Grenzkostenpreis-Regulierung mit Subvention, Durchschnittskostenregulierung und Anreizregulierung (Price-Cap) – mit durchgerechnetem Zahlenbeispiel für die P4-Klausur." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23be123c'/><text x='50' y='72' font-size='58' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>€</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat2);--cat-soft:var(--c-cat2-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">€</span>
+      <span>P4 · Fiwi<small>Finanzwissenschaft, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Kursübersicht</a>
+      <a href="#theorie">Theorie</a>
+      <a href="#rechnen">Beispiele</a>
+      <a href="#fallen">Fallen</a>
+      <a href="#quickref">Quick-Ref</a>
+      <a href="#check">Check</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">P4-Fiwi-Kursübersicht</a> › Thema 06</div>
+    <span class="th-icon">🚰</span>
+    <h1>Natürliches Monopol &amp; Regulierung</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span>
+      <span class="badge badge-blatt">Blatt 5</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#theorie">Theorie im Bild</a></li>
+        <li><a href="#rechnen">Beispiele</a></li>
+        <li><a href="#fallen">Typische Fallen</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Normalerweise ist Wettbewerb gut für Konsument·innen. Aber es gibt Märkte, in denen
+          <strong>ein einziger</strong> Anbieter günstiger produziert als mehrere gemeinsam — und Wettbewerb
+          dort sogar <strong>schädlich</strong> wäre. Das nennt man ein <strong>natürliches Monopol</strong>.
+          Die Frage ist dann nicht „Wie verhindern wir das Monopol?", sondern „Wie regulieren wir es, damit es
+          nicht seine Marktmacht ausnutzt?"</p>
+
+        <div class="analogy">
+          <div class="a-title">Stell dir vor …</div>
+          <p>… in deiner Stadt würden <strong>fünf konkurrierende Firmen</strong> jeweils ihr eigenes
+            <strong>Wasserleitungsnetz</strong> verlegen — fünf mal Straßen aufreißen, fünf mal Rohre verlegen,
+            fünf mal Pumpstationen bauen. Das wäre absurd teuer, und am Ende zahlt jede Firma horrende Fixkosten
+            für viel zu wenige Kund·innen. <strong>Ein</strong> Anbieter, der das ganze Netz betreibt, ist
+            hier schlicht billiger pro Kubikmeter Wasser — das ist die Definition eines natürlichen Monopols:
+            <strong>fallende Durchschnittskosten</strong> mit steigender Menge.</p>
+        </div>
+      </section>
+
+      <!-- ===== THEORIE ===== -->
+      <section id="theorie" class="reveal">
+        <h2>Theorie im Bild</h2>
+
+        <h3>Warum ist ein Anbieter billiger als mehrere?</h3>
+        <p>Ein natürliches Monopol entsteht durch <strong>hohe Fixkosten</strong> (Rohrnetz, Schienen,
+          Kraftwerksinfrastruktur) bei <strong>niedrigen variablen Kosten</strong> (eine weitere Kilowattstunde
+          oder ein weiterer Kubikmeter Wasser ist billig). Je mehr eine einzelne Firma produziert, desto mehr
+          verteilen sich die Fixkosten auf mehr Einheiten — die <strong>Durchschnittskosten fallen</strong>.</p>
+
+        <!-- SVG 1: Kostenkurven - fallende DK, GK < DK -->
+        <figure class="diagram">
+          <div class="diagram-title">Kostenkurven — DK(x) = 700/x + 20 (fallend), GK = 20 (konstant)</div>
+          <svg viewBox="0 0 620 300" width="620" role="img" aria-label="Liniendiagramm mit fallender Durchschnittskostenkurve und konstanter, darunterliegender Grenzkostenlinie">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Achsen -->
+              <line x1="70" y1="260" x2="590" y2="260" stroke="#8a94a6" stroke-width="1.3"/>
+              <line x1="70" y1="30" x2="70" y2="260" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="330" y="288" text-anchor="middle" class="svg-soft">Menge x</text>
+              <text x="26" y="150" text-anchor="middle" class="svg-soft" transform="rotate(-90 26 150)">Kosten je Einheit (€)</text>
+
+              <!-- DK-Kurve (fallend, Hyperbel) -->
+              <polyline points="122,62 148,113.3 174,139 226,164.7 278,177.5 330,185.2 434,194 590,200.6"
+                fill="none" stroke="#e0483d" stroke-width="2.4"/>
+              <text x="150" y="52" fill="#e0483d" font-weight="800" font-size="12.5">DK(x) = 700/x + 20</text>
+
+              <!-- GK-Linie (konstant) -->
+              <line x1="70" y1="216" x2="590" y2="216" stroke="#2f6df6" stroke-width="2.2" stroke-dasharray="7 4"/>
+              <text x="500" y="208" fill="#2f6df6" font-weight="800" font-size="12.5">GK = 20</text>
+
+              <!-- Lücke markieren -->
+              <line x1="278" y1="177.5" x2="278" y2="216" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="300" y="200" class="svg-soft" font-size="11">Fixkosten pro Einheit</text>
+
+              <text x="122" y="280" text-anchor="middle" class="svg-soft" font-size="11">10</text>
+              <text x="590" y="280" text-anchor="middle" class="svg-soft" font-size="11">100</text>
+            </g>
+          </svg>
+          <figcaption>Weil hohe Fixkosten auf immer mehr Einheiten verteilt werden, fällt DK mit steigendem x — aber DK bleibt immer über der konstanten Grenzkostenlinie GK. Der Abstand ist genau der Fixkostenanteil je Einheit.</figcaption>
+        </figure>
+
+        <div class="callout callout-formula">
+          <div class="c-title">Formel: Natürliches Monopol</div>
+          <span class="formula">DK(x) = (F + GK·x) / x = F/x + GK          dDK/dx &lt; 0</span>
+          <p>F = Fixkosten. Weil F/x mit steigendem x sinkt, fallen die Durchschnittskosten — das ist die formale
+            Definition eines natürlichen Monopols.</p>
+        </div>
+
+        <h3>Das Monopol-Dilemma</h3>
+        <p>Ein unregulierter Monopolist maximiert seinen Gewinn bei <strong>Grenzerlös = Grenzkosten</strong>
+          (MR = GK) — <strong>nicht</strong> bei Preis = Grenzkosten wie im Wettbewerb. Weil der Grenzerlös wegen
+          der fallenden Nachfragekurve immer unter dem Preis liegt (MR &lt; p), setzt der Monopolist einen Preis
+          <strong>über</strong> den Grenzkosten. Das Ergebnis: zu wenig Menge, zu hoher Preis, Wohlfahrtsverlust.</p>
+
+        <!-- SVG 2: Monopol-Wohlfahrtsverlust -->
+        <figure class="diagram">
+          <div class="diagram-title">Monopol-Wohlfahrtsverlust — Nachfrage p(x)=100−x, GK=20 konstant</div>
+          <svg viewBox="0 0 620 300" width="620" role="img" aria-label="Liniendiagramm mit Nachfragekurve, Grenzerlöskurve und konstanter Grenzkostenlinie; das Dreieck zwischen Monopolmenge und Wettbewerbsmenge ist als Wohlfahrtsverlust markiert">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <!-- Achsen -->
+              <line x1="70" y1="260" x2="590" y2="260" stroke="#8a94a6" stroke-width="1.3"/>
+              <line x1="70" y1="30" x2="70" y2="260" stroke="#8a94a6" stroke-width="1.3"/>
+              <text x="330" y="288" text-anchor="middle" class="svg-soft">Menge x</text>
+              <text x="26" y="150" text-anchor="middle" class="svg-soft" transform="rotate(-90 26 150)">Preis / Kosten (€)</text>
+
+              <!-- DWL-Dreieck -->
+              <polygon points="278,128 486,216 278,216" fill="#e0483d" fill-opacity="0.35" stroke="#e0483d" stroke-width="1"/>
+
+              <!-- Nachfrage p(x) = 100-x -->
+              <line x1="70" y1="40" x2="590" y2="260" stroke="#2f6df6" stroke-width="2.2"/>
+              <text x="470" y="228" fill="#2f6df6" font-weight="700" font-size="12">Nachfrage p = 100 − x</text>
+
+              <!-- MR = 100-2x -->
+              <line x1="70" y1="40" x2="330" y2="260" stroke="#8b5cf6" stroke-width="2.2"/>
+              <text x="180" y="130" fill="#8b5cf6" font-weight="700" font-size="12">MR = 100 − 2x</text>
+
+              <!-- GK-Linie -->
+              <line x1="70" y1="216" x2="590" y2="216" stroke="#12b28c" stroke-width="2" stroke-dasharray="6 4"/>
+              <text x="500" y="208" fill="#12b28c" font-weight="800" font-size="12.5">GK = 20</text>
+
+              <!-- Monopolpunkt (x_M=40, p_M=60) -->
+              <line x1="278" y1="128" x2="278" y2="216" stroke="#8a94a6" stroke-width="1.2" stroke-dasharray="3 3"/>
+              <circle cx="278" cy="128" r="4.5" fill="#8b5cf6"/>
+              <text x="278" y="298" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">x_M=40</text>
+              <text x="200" y="118" class="svg-ink" font-size="11" font-weight="700">p_M = 60</text>
+
+              <!-- Wettbewerbspunkt (x*=80, p=GK=20) -->
+              <circle cx="486" cy="216" r="4.5" fill="#12b28c"/>
+              <text x="486" y="235" text-anchor="middle" class="svg-ink" font-weight="800" font-family="JetBrains Mono, monospace">x*=80</text>
+
+              <text x="320" y="180" fill="#e0483d" font-size="11.5" font-weight="700">Wohlfahrts-</text>
+              <text x="320" y="193" fill="#e0483d" font-size="11.5" font-weight="700">verlust</text>
+            </g>
+          </svg>
+          <figcaption>Der Monopolist setzt MR = GK bei x_M = 40 und verlangt p_M = 60 (auf der Nachfragekurve). Bei Wettbewerb (p = GK) würde bei x* = 80 zum Preis 20 produziert. Das rote Dreieck ist der Wohlfahrtsverlust des Monopols.</figcaption>
+        </figure>
+
+        <h3>Regulierungsinstrumente</h3>
+        <p>Der Staat steckt in einem Zielkonflikt: die <strong>effiziente</strong> Menge (p = GK) erreichen,
+          <strong>ohne</strong> den Monopolisten in die Pleite zu treiben (bei fallenden DK deckt p = GK die
+          Fixkosten nicht!).</p>
+
+        <div class="table-wrap"><table class="data">
+          <thead><tr><th>Regime</th><th>Preisregel</th><th>Effizienz</th><th>Kosten für den Staat</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Monopol (unreguliert)</strong></td><td>MR = GK</td><td>Niedrig</td><td>Monopolgewinn beim Anbieter</td></tr>
+            <tr><td><strong>Grenzkostenpreis</strong></td><td>p = GK</td><td>Optimal (First-Best)</td><td>Subvention = Fixkosten F</td></tr>
+            <tr><td><strong>Durchschnittskostenpreis</strong></td><td>p = DK(x)</td><td>Second-Best</td><td>Keine Subvention nötig</td></tr>
+            <tr><td><strong>Vollk. Wettbewerb</strong></td><td>p = GK</td><td>Optimal</td><td>Firma macht Verlust bei F&gt;0</td></tr>
+          </tbody>
+        </table></div>
+
+        <p><strong>Grenzkostenpreis mit Subvention:</strong> Der Staat zwingt den Monopolisten zu p = GK
+          (allokativ effizient), gleicht aber den entstehenden Verlust in Höhe der Fixkosten per Subvention aus.
+          Nachteil: Das Geld muss über Steuern aufgebracht werden.</p>
+        <p><strong>Durchschnittskostenpreis:</strong> Der Staat erlaubt p = DK(x), sodass der Monopolist genau
+          seine Kosten deckt (Gewinn = 0) — ohne Subvention. Nachteil: p &gt; GK, also nicht ganz effizient, und
+          die Menge muss oft numerisch aus p(x) = DK(x) gelöst werden.</p>
+        <p><strong>Anreizregulierung (Price-Cap):</strong> Statt die Kosten laufend zu erstatten
+          („Cost-Plus"-Regulierung, die keinen Sparanreiz setzt), legt der Regulierer eine
+          <strong>Preisobergrenze</strong> fest, die sich über mehrere Jahre nur mit Inflation minus einem
+          Effizienzfaktor X entwickelt (RPI−X-Regulierung). Senkt der Monopolist seine Kosten schneller als X,
+          <strong>behält er die Differenz als Gewinn</strong> — das schafft echte Anreize zur Kostensenkung,
+          die bei reiner DK-Regulierung fehlen.</p>
+
+        <div class="factgrid">
+          <div class="fact"><b>DK &gt; GK</b><span>wegen Fixkosten, die sich verteilen</span></div>
+          <div class="fact"><b>MR &lt; p</b><span>Monopolist muss Preis senken, um mehr zu verkaufen</span></div>
+          <div class="fact"><b>p = GK</b><span>effizient, aber macht Verlust = −F</span></div>
+          <div class="fact"><b>p = DK</b><span>kostendeckend, aber nicht first-best</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECHNEN ===== -->
+      <section id="rechnen" class="reveal">
+        <h2>Schritt-für-Schritt: Durchgerechnetes Beispiel</h2>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gegeben</div>
+          <p>Inverse Nachfrage: p(x) = 100 − x<br>
+            Kosten: C(x) = 20x + 700 &nbsp;(Grenzkosten GK = 20, Fixkosten F = 700)</p>
+        </div>
+
+        <h3>1. Monopol-Gleichgewicht</h3>
+        <ol class="steps">
+          <li><strong>Erlös &amp; Grenzerlös:</strong> R(x) = p(x)·x = 100x − x². MR = dR/dx = 100 − 2x</li>
+          <li><strong>MR = GK setzen:</strong> 100 − 2x = 20 ⇒ 2x = 80 ⇒ <strong>x_M = 40</strong></li>
+          <li><strong>Preis:</strong> p_M = p(40) = 100 − 40 = <strong>60</strong></li>
+          <li><strong>Gewinn:</strong> π_M = 60·40 − (20·40 + 700) = 2.400 − 1.500 = <strong>900</strong></li>
+        </ol>
+
+        <h3>2. Effiziente Menge mit Grenzkostenpreis (p = GK)</h3>
+        <ol class="steps">
+          <li><strong>Preis = Grenzkosten:</strong> 100 − x = 20 ⇒ <strong>x* = 80</strong>, p* = 20</li>
+          <li><strong>Gewinn prüfen:</strong> π = 20·80 − (20·80 + 700) = 1.600 − 2.100 = <strong>−700</strong>
+            — ein Verlust in genau Höhe der Fixkosten!</li>
+          <li><strong>Nötige Subvention:</strong> S = F = <strong>700</strong> (insgesamt), also s = F/x* =
+            700/80 = 8,75 € je Einheit.</li>
+        </ol>
+
+        <h3>3. Durchschnittskostenregulierung (p = DK(x))</h3>
+        <ol class="steps">
+          <li><strong>Gleichung aufstellen:</strong> 100 − x = 700/x + 20</li>
+          <li><strong>Umformen:</strong> (100−x)·x = 700 + 20x ⇒ 100x − x² = 700 + 20x ⇒
+            x² − 80x + 800 = 0</li>
+          <li><strong>Lösen (quadratische Formel):</strong> x = [80 ± √(6.400 − 3.200)] / 2 = [80 ± 60] / 2 ⇒
+            x = 70 oder x = 10. Ökonomisch sinnvoll ist die Lösung <strong>zwischen</strong> Monopol- und
+            Wettbewerbsmenge (40 &lt; x &lt; 80): <strong>x_K = 70</strong></li>
+          <li><strong>Preis:</strong> p_K = DK(70) = 700/70 + 20 = 10 + 20 = <strong>30</strong> (Probe: p(70) =
+            100−70 = 30 ✓)</li>
+          <li><strong>Gewinn prüfen:</strong> π = 30·70 − (20·70+700) = 2.100 − 2.100 = <strong>0</strong> —
+            genau kostendeckend, keine Subvention nötig.</li>
+        </ol>
+
+        <h3>4. Wohlfahrtsverlust des unregulierten Monopols</h3>
+        <ol class="steps">
+          <li><strong>Dreiecksfläche zwischen Monopol- und Wettbewerbsmenge:</strong> Grundseite = x* − x_M =
+            80 − 40 = 40. Höhe = p_M − GK = 60 − 20 = 40.</li>
+          <li><strong>Fläche:</strong> ΔW = ½ · 40 · 40 = <strong>800</strong></li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Die vier Zahlen im Überblick</div>
+          <p>Monopol: x_M = 40, p_M = 60, π_M = 900 &nbsp;|&nbsp; Grenzkostenpreis: x* = 80, p* = 20, Verlust =
+            −700 (Subvention nötig) &nbsp;|&nbsp; DK-Preis: x_K = 70, p_K = 30, π = 0 &nbsp;|&nbsp;
+            Wohlfahrtsverlust Monopol vs. Wettbewerb: 800.</p>
+        </div>
+      </section>
+
+      <!-- ===== FALLEN ===== -->
+      <section id="fallen" class="reveal">
+        <h2>Typische Fallen</h2>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Der Monopolist setzt p = GK, genau wie im
+            Wettbewerb.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Monopolist setzt <strong>MR = GK</strong>
+            (nicht Preis = GK!). Da MR &lt; p, ist am Ende p &gt; GK.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Mit Grenzkostenpreis-Regulierung (p = GK) ist
+            alles optimal — Ende der Geschichte.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Mit p = GK macht der Monopolist einen Verlust
+            in Höhe der Fixkosten (−F). Ohne Subvention geht er pleite — die Regulierung braucht eine zweite
+            Zutat.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>DK-Regulierung ist einfach: DK = GK + F/x, und
+            fertig.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Der Preis <strong>hängt selbst von x ab</strong>
+            — man muss die Gleichung p(x) = DK(x) auflösen (oft quadratisch), nicht einfach GK und F/x addieren
+            und fertig sein.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Jedes Monopol ist ein natürliches Monopol.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Natürliches Monopol = <strong>fallende
+            Durchschnittskosten</strong>. Andere Monopole entstehen z. B. durch Patente oder
+            Marktzutrittsbeschränkungen und können auch <strong>steigende</strong> DK haben.</div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>In der Grafik sind Monopolpreis und
+            DK-regulierter Preis ungefähr gleich hoch.</div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die Reihenfolge ist immer
+            <strong>p_M &gt; DK &gt; GK</strong>: Der Monopolpreis liegt über dem DK-Preis, der wiederum über
+            dem Grenzkostenpreis liegt (in unserem Beispiel: 60 &gt; 30 &gt; 20).</div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Quick-Reference für die Klausur</h3>
+
+          <h4>Die vier Preisregime</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Regime</th><th>Formel</th><th>Effizienz</th><th>Kosten</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Monopol</strong></td><td>MR = GK</td><td>Niedrig</td><td>Monopolgewinn</td></tr>
+              <tr><td><strong>Grenzkostenpreis</strong></td><td>p = GK</td><td>Optimal</td><td>Subvention = F</td></tr>
+              <tr><td><strong>Durchschnittspreis</strong></td><td>p = C(x)/x</td><td>Mittel</td><td>Keine Subvention</td></tr>
+              <tr><td><strong>Wettbewerb</strong></td><td>p = GK</td><td>Optimal</td><td>Pleite, wenn F&gt;0</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>Kernformeln</h4>
+          <pre class="code">DK(x)   = C(x)/x = (F + GK·x)/x        Durchschnittskosten
+MR      = p(x) + x · dp/dx             Grenzerlös
+Monopol: MR = GK  →  x_M, p_M = p(x_M)
+Subvention (bei p=GK): s = F / x*      total: S = F
+DK-Regulierung: löse p(x) = DK(x) nach x auf</pre>
+
+          <h4>Merksätze</h4>
+          <ul>
+            <li><strong>MR = GK</strong> beim Monopolisten — nicht p = GK!</li>
+            <li><strong>DK fällt</strong>, weil Fixkosten sich auf mehr Einheiten verteilen — GK bleibt konstant/darunter</li>
+            <li>Grenzkostenpreis ist <strong>first-best</strong>, braucht aber Subvention in Höhe der Fixkosten</li>
+            <li>Durchschnittskostenpreis ist <strong>kostendeckend</strong>, aber nicht ganz effizient</li>
+            <li>Reihenfolge in jeder Grafik: <strong>p_M &gt; p_DK &gt; GK</strong></li>
+            <li><strong>Price-Cap/Anreizregulierung</strong> koppelt den Preis an Inflation minus Effizienzfaktor X — belohnt Kostensenkung</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Teste dich selbst! Tippe deine Antwort ein oder wähle eine Option — du bekommst sofort
+          Rückmeldung. Mit „Lösung" siehst du die Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="40">
+            <p class="quiz-prompt"><span class="q-no">1.</span>Gegeben p(x) = 100 − x, GK = 20. Wie groß ist die
+              Monopolmenge x_M (MR = GK)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>MR = 100−2x = 20 ⇒ 2x = 80 ⇒ x_M = <strong>40</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="60">
+            <p class="quiz-prompt"><span class="q-no">2.</span>Wie hoch ist der Monopolpreis p_M im selben
+              Beispiel?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">€</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>p_M = p(40) = 100 − 40 = <strong>60</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="80">
+            <p class="quiz-prompt"><span class="q-no">3.</span>Wie groß ist die Menge x* bei Grenzkostenpreis
+              (p = GK = 20)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>100 − x = 20 ⇒ x* = <strong>80</strong>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="700">
+            <p class="quiz-prompt"><span class="q-no">4.</span>Bei Fixkosten F = 700: Wie hoch muss die
+              Gesamtsubvention bei Grenzkostenpreis-Regulierung sein?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <span class="quiz-unit">€</span>
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Bei p = GK verdient der Monopolist −F, also muss der Staat genau
+              F = <strong>700</strong> subventionieren, damit er kostendeckend arbeitet.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">5.</span>Warum ist bei einem natürlichen Monopol ein
+              einziger Anbieter günstiger als mehrere?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button">Weil ein Anbieter immer effizienter arbeitet als mehrere</button>
+              <button class="quiz-choice" type="button" data-correct>Weil die Durchschnittskosten mit steigender Menge fallen (Skalenerträge)</button>
+              <button class="quiz-choice" type="button">Weil der Staat es so vorschreibt</button>
+              <button class="quiz-choice" type="button">Weil die Grenzkosten mit der Menge steigen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Hohe Fixkosten, verteilt auf mehr Einheiten, senken die
+              Durchschnittskosten (dDK/dx &lt; 0) — genau das ist die Definition eines natürlichen Monopols.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="70">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🧮 Klausurtyp: Löse p(x) = DK(x) für
+              p(x)=100−x, DK(x)=700/x+20. Welche der beiden Lösungen ist die ökonomisch sinnvolle
+              DK-regulierte Menge x_K (zwischen 40 und 80)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>x² − 80x + 800 = 0 ⇒ x = [80±60]/2 = 70 oder 10. Nur x_K =
+              <strong>70</strong> liegt zwischen Monopol- (40) und Wettbewerbsmenge (80).</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="Price-Cap|Preisobergrenze|Anreizregulierung|Price Cap Regulierung|Price-Cap-Regulierung|Price Cap|Preisdeckelregulierung">
+            <p class="quiz-prompt"><span class="q-no">7.</span>Wie heißt die Regulierungsform, bei der der Preis
+              über mehrere Jahre nur mit Inflation minus einem Effizienzfaktor steigen darf, um dem Monopolisten
+              einen Anreiz zur Kostensenkung zu geben?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Begriff …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>Price-Cap-Regulierung / Anreizregulierung</strong>
+              (RPI−X): senkt der Monopolist Kosten schneller als vorgegeben, behält er die Differenz als
+              zusätzlichen Gewinn.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== PREV / NEXT ===== -->
+      <nav class="prev-next">
+        <a class="prev" href="05-externe-effekte.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Externe Effekte</div>
+        </a>
+        <a class="next" href="07-besteuerung.html">
+          <div class="pn-label">Nächstes Thema →</div>
+          <div class="pn-title">Besteuerung &amp; Steuerwirkungen</div>
+        </a>
+      </nav>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Finanzwissenschaft &amp; Wirtschaftspolitik (P 4, LMU · SoSe 2026) · bildlich erklärt</span>
+    <span><a href="../index.html">← Zurück zur Kursübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>
