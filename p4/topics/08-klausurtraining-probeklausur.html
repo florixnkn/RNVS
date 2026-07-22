@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klausurtraining: Probeklausur ProMo'24 · P4 Haskell</title>
+<meta name="description" content="Klausurtraining für P4 Programmierung &amp; Modellierung: komplette Probeklausur ProMo'24 (Prof. Dr. Johannes Kinder, 08.07.2024) mit Schritt-für-Schritt-Musterlösung — Rekursion, Polymorphie &amp; Foldable, eigene Datentypen, Auswertungsstrategien, Monaden." />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238b5cf6'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Georgia, serif' font-weight='bold'>λ</text></svg>" />
+</head>
+<body style="--cat:var(--c-cat4);--cat-soft:var(--c-cat4-soft)">
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">
+      <span class="logo">λ</span>
+      <span>P4 · Prog&amp;Mod<small>Haskell, bildlich erklärt</small></span>
+    </a>
+    <span class="nav-spacer"></span>
+    <nav class="nav-links">
+      <a class="nav-cta" href="../index.html">← Alle Themen</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Design wechseln">🌙</button>
+  </div>
+</header>
+
+<section class="topic-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="../../index.html">Lernhub</a> › <a href="../index.html">P4 Haskell</a> › Thema 08</div>
+    <span class="th-icon">🎯</span>
+    <h1>Klausurtraining: Probeklausur ProMo'24</h1>
+    <div class="th-meta">
+      <span class="stars">★★★</span><span class="badge badge-exam">🚨🚨 Klausurrelevant</span><span class="badge badge-soft">Probeklausur 08.07.2024 · 60 Punkte · 90 Min.</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    <aside class="toc">
+      <h4>Auf dieser Seite</h4>
+      <ul>
+        <li><a href="#worum">Worum geht's?</a></li>
+        <li><a href="#aufg1">Aufgabe 1: Rekursion</a></li>
+        <li><a href="#aufg2">Aufgabe 2: Polymorphie</a></li>
+        <li><a href="#aufg3">Aufgabe 3: Datentypen</a></li>
+        <li><a href="#aufg4">Aufgabe 4: Auswertung</a></li>
+        <li><a href="#aufg5">Aufgabe 5: Monaden</a></li>
+        <li><a href="#quickref">Quick-Reference</a></li>
+        <li><a href="#check">🧩 Wissenscheck</a></li>
+      </ul>
+    </aside>
+
+    <article class="content">
+
+      <!-- ===== WORUM ===== -->
+      <section id="worum" class="reveal">
+        <h2>Worum geht's?</h2>
+        <p class="lead-in">Diese Seite rechnet die komplette <strong>Probeklausur „Programmierung und Modellierung"</strong>
+          von Prof. Dr. Johannes Kinder (LMU, 08.07.2024) durch — 5 Aufgaben, 60 Punkte, 90 Minuten. Zu jeder
+          Teilaufgabe gibt es den <strong>Original-Aufgabentext</strong>, eine <strong>Schritt-für-Schritt-Musterlösung</strong>
+          und die <strong>typischen Fallen</strong>, an denen in echten Klausuren die meisten Punkte verloren gehen.</p>
+
+        <div class="callout callout-info">
+          <div class="c-title">Gut zu wissen</div>
+          <p>Auch diese Klausur bündelt genau die Themen dieses Lernhubs: Aufgabe 1 nutzt <strong>Rekursion,
+            Endrekursion und foldr</strong> (Thema 01/04), Aufgabe 2 <strong>Polymorphie und Foldable</strong>
+            (Thema 02/04), Aufgabe 3 <strong>eigene algebraische Datentypen</strong> (Thema 03), Aufgabe 4
+            <strong>Auswertungsstrategien und einen Terminationsbeweis</strong> (Thema 05) und Aufgabe 5
+            <strong>Applicative/Monad in Maybe und IO</strong> (Thema 06). Zusammen mit der
+            <a href="07-klausurtraining.html">Nachklausur ProMo'25</a> deckt diese Seite den kompletten Kursstoff
+            zweimal komplett ab.</p>
+        </div>
+      </section>
+
+      <!-- ===== AUFGABE 1 ===== -->
+      <section id="aufg1" class="reveal">
+        <h2>Aufgabe 1 (10 Punkte): Rekursion — Vektorbetrag</h2>
+        <p class="lead-in"><strong>Original-Aufgabentext:</strong> Der Betrag eines Vektors x = (x₁,…,xₙ) ist die
+          Quadratwurzel aus der Summe der Quadrate seiner Komponenten. Der Vektor wird als nicht-leere endliche
+          Liste dargestellt.</p>
+        <div class="callout callout-formula">
+          <div class="c-title">Formel</div>
+          <span class="formula">|x| = √(x₁² + x₂² + … + xₙ²)</span>
+        </div>
+
+        <h3>(a) 2 P. — magnitude, rekursiv (nicht endrekursiv)</h3>
+        <p><strong>Original-Aufgabentext:</strong> Vervollständige <code>magnitude</code> mit einer rekursiven,
+          aber nicht endrekursiven Hilfsfunktion <code>sumOfSquares</code>.</p>
+        <pre class="code hs">magnitude :: Floating a =&gt; [a] -&gt; a
+magnitude = sqrt . sumOfSquares
+  where sumOfSquares [] = ...
+        sumOfSquares (x:xs) = ...</pre>
+        <p><strong>Musterlösung:</strong></p>
+        <pre class="code hs">magnitude :: Floating a =&gt; [a] -&gt; a
+magnitude = sqrt . sumOfSquares
+  where sumOfSquares [] = 0
+        sumOfSquares (x:xs) = x * x + sumOfSquares xs</pre>
+        <p>Der Basisfall liefert <code>0</code> (neutrales Element der Addition). Im rekursiven Fall wird
+          <strong>das Quadrat</strong> von <code>x</code> zum rekursiven Ergebnis addiert — nicht <code>x</code>
+          selbst, sonst wäre es die Summe statt der Quadratsumme.</p>
+
+        <h3>(b) 4 P. — magnitude', endrekursiv</h3>
+        <p><strong>Original-Aufgabentext:</strong> Formuliere die Funktion so, dass die Vektorsumme
+          <strong>endrekursiv</strong> ausgedrückt wird. <code>magnitude'</code> soll sich ansonsten identisch
+          zu <code>magnitude</code> verhalten.</p>
+        <p><strong>Musterlösung:</strong></p>
+        <pre class="code hs">magnitude' :: Floating a =&gt; [a] -&gt; a
+magnitude' xs = sqrt (go xs 0)
+  where go [] acc = acc
+        go (x:xs) acc = go xs (x * x + acc)</pre>
+        <p>Die Hilfsfunktion braucht einen <strong>Akkumulator</strong> als zusätzliches Argument. Der Rumpf von
+          <code>magnitude'</code> kann nicht mehr punktfrei (<code>sqrt . go</code>) geschrieben werden, weil
+          ein Startwert (<code>0</code>) für den Akkumulator übergeben werden muss. Entscheidend für
+          Endrekursion: <code>x * x</code> wird <strong>vor</strong> dem rekursiven Aufruf in den Akkumulator
+          eingerechnet (<code>go xs (x*x + acc)</code>) — nach dem rekursiven Aufruf passiert nichts mehr.</p>
+
+        <h3>(c) 4 P. — magnitude'', mit foldr</h3>
+        <p><strong>Original-Aufgabentext:</strong> Definiere <code>magnitude''</code> ohne explizite Rekursion,
+          mithilfe der Listenfunktion <code>foldr</code>.</p>
+        <p><strong>Musterlösung:</strong></p>
+        <pre class="code hs">magnitude'' :: Floating a =&gt; [a] -&gt; a
+magnitude'' xs = sqrt (foldr (\x acc -&gt; x * x + acc) 0 xs)</pre>
+        <p>Vergleiche die Struktur von <code>sumOfSquares</code> aus (a) mit der Definition von <code>foldr</code>
+          selbst (<code>foldr f z [] = z</code>, <code>foldr f z (x:xs) = f x (foldr f z xs)</code>) — beide sehen
+          fast identisch aus. Der Basisfall <code>[] = 0</code> wird zum Startwert <code>z = 0</code>, und der
+          rekursive Fall <code>x*x + sumOfSquares xs</code> wird zur Kombinationsfunktion
+          <code>f x acc = x*x + acc</code>.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (a)/(c) vergessen, <code>x</code> zu
+            quadrieren:
+            <pre class="code hs">sumOfSquares (x:xs) = x + sumOfSquares xs   -- FALSCH: das ist nur die Summe!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><code>x</code> mit sich selbst multiplizieren,
+            bevor addiert wird:
+            <pre class="code hs">sumOfSquares (x:xs) = x * x + sumOfSquares xs</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (b) die Addition NACH dem rekursiven Aufruf
+            stehen lassen — das ist gar keine Endrekursion mehr:
+            <pre class="code hs">go (x:xs) acc = x * x + go xs acc   -- FALSCH: nicht endrekursiv!
+-- Nach dem rekursiven Aufruf muss noch "x*x + ..." berechnet werden.</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span><code>x*x</code> VOR dem rekursiven Aufruf in
+            den Akkumulator einrechnen:
+            <pre class="code hs">go (x:xs) acc = go xs (x * x + acc)</pre></div>
+        </div>
+      </section>
+
+      <!-- ===== AUFGABE 2 ===== -->
+      <section id="aufg2" class="reveal">
+        <h2>Aufgabe 2 (10 Punkte): Polymorphie — Binärbaum mit Foldable</h2>
+        <pre class="code hs">data Tree a = Empty | Leaf a | Node (Tree a) (Tree a)</pre>
+        <p><strong>Original-Aufgabentext:</strong> Ein Binärbaum, der Knotenmarkierungen nur in Blättern
+          (<code>Leaf</code>) trägt, aber auch leere Teilbäume enthalten kann (<code>Empty</code>).</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Beispielbaum t = Node (Leaf 3) (Node Empty (Leaf 4)) — findValue 4 t</div>
+          <svg viewBox="0 0 700 260" width="700" role="img" aria-label="Baumdiagramm: Wurzel Node mit linkem Kind Leaf 3 und rechtem Kind Node; dessen linkes Kind ist Empty, dessen rechtes Kind ist Leaf 4. findValue 4 t geht rechts, dann rechts, und findet 4 im Blatt">
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <line x1="350" y1="55" x2="180" y2="120" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="350" y1="55" x2="520" y2="120" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="520" y1="156" x2="440" y2="220" stroke="#8a94a6" stroke-width="1.5"/>
+              <line x1="520" y1="156" x2="600" y2="220" stroke="#8a94a6" stroke-width="1.5"/>
+
+              <text x="230" y="83" class="svg-soft" font-size="10">4 ≠ 3 → False</text>
+              <text x="450" y="83" class="svg-soft" font-size="10">|| weiter rechts</text>
+              <text x="450" y="183" class="svg-soft" font-size="10">→ Empty: False</text>
+              <text x="600" y="183" class="svg-soft" font-size="10">|| 4 == 4 → True</text>
+
+              <rect x="290" y="20" width="120" height="38" rx="8" fill="#8b5cf6" fill-opacity="0.20" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="350" y="44" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">Node</text>
+
+              <rect x="120" y="122" width="120" height="36" rx="8" fill="#12b28c" fill-opacity="0.20" stroke="#12b28c" stroke-width="2"/>
+              <text x="180" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">Leaf 3</text>
+
+              <rect x="460" y="122" width="120" height="36" rx="8" fill="#8b5cf6" fill-opacity="0.20" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="520" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">Node</text>
+
+              <rect x="380" y="222" width="120" height="36" rx="8" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="440" y="245" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink">Empty</text>
+
+              <rect x="540" y="222" width="120" height="36" rx="8" fill="#12b28c" fill-opacity="0.20" stroke="#12b28c" stroke-width="2"/>
+              <text x="600" y="245" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700">Leaf 4</text>
+            </g>
+          </svg>
+          <figcaption><code>findValue</code> kombiniert die Ergebnisse aus linkem und rechtem Teilbaum mit
+            <code>||</code> — sobald EIN Teilbaum den Wert enthält, ist das Gesamtergebnis <code>True</code>.</figcaption>
+        </figure>
+
+        <h3>(a) 4 P. — findValue :: Eq a =&gt; a -&gt; Tree a -&gt; Bool</h3>
+        <p><strong>Original-Aufgabentext:</strong> Vervollständige die Funktion, die prüft, ob ein Wert im Baum
+          vorkommt.</p>
+        <pre class="code hs">findValue :: Eq a =&gt; a -&gt; Tree a -&gt; Bool
+findValue v Empty = False
+findValue v (Leaf a) = v == a
+findValue v (Node l r) = findValue v l || findValue v r</pre>
+        <p><code>Empty</code> enthält nie den gesuchten Wert (<code>False</code>). Bei <code>Leaf a</code> wird
+          direkt verglichen. Bei <code>Node l r</code> reicht es, wenn der Wert in <strong>einem</strong> der
+          beiden Teilbäume vorkommt — daher <code>||</code>, nicht <code>&amp;&amp;</code>.</p>
+
+        <h3>(b) 4 P. — Foldable-Instanz</h3>
+        <p><strong>Original-Aufgabentext:</strong> Definiere für <code>Tree a</code> eine sinnvolle Instanz der
+          Typklasse <code>Foldable</code> über <code>foldMap :: Monoid m =&gt; (a -&gt; m) -&gt; Tree a -&gt; m</code>.</p>
+        <pre class="code hs">instance Foldable Tree where
+  foldMap f Empty = mempty
+  foldMap f (Leaf a) = f a
+  foldMap f (Node l r) = foldMap f l &lt;&gt; foldMap f r</pre>
+        <p>Genau wie bei <code>findValue</code>: <code>Empty</code> trägt nichts bei (<code>mempty</code>),
+          <code>Leaf a</code> wendet <code>f</code> auf den einen Wert an, und bei <code>Node</code> werden die
+          Beiträge <strong>beider</strong> Teilbäume mit <code>&lt;&gt;</code> zusammengeführt.</p>
+
+        <h3>(c) 2 P. — allEven mit foldr</h3>
+        <p><strong>Original-Aufgabentext:</strong> Nutze, dass <code>Tree a</code> <code>Foldable</code> ist, und
+          definiere <code>allEven :: Integral a =&gt; Tree a -&gt; Bool</code> mithilfe von <code>foldr</code>.</p>
+        <pre class="code hs">allEven :: Integral a =&gt; Tree a -&gt; Bool
+allEven = foldr (\x acc -&gt; even x &amp;&amp; acc) True</pre>
+        <p>Startwert <code>True</code> (neutrales Element von <code>&amp;&amp;</code>) — ein leerer Baum hat
+          „alle" Elemente gerade, vacuously true. Jedes Element muss gerade sein <strong>und</strong> der Rest
+          des Baumes auch, daher <code>&amp;&amp;</code>.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (a) <code>&amp;&amp;</code> statt
+            <code>||</code> verwenden:
+            <pre class="code hs">findValue v (Node l r) = findValue v l &amp;&amp; findValue v r
+-- FALSCH: würde verlangen, dass der Wert in BEIDEN Teilbäumen vorkommt!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Ein Vorkommen in irgendeinem Teilbaum genügt:
+            <pre class="code hs">findValue v (Node l r) = findValue v l || findValue v r</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (c) mit <code>False</code> statt
+            <code>True</code> starten:
+            <pre class="code hs">allEven = foldr (\x acc -&gt; even x &amp;&amp; acc) False
+-- FALSCH: liefert für JEDEN Baum False, weil False &amp;&amp; irgendwas immer False bleibt!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Neutrales Element von <code>&amp;&amp;</code>
+            als Startwert:
+            <pre class="code hs">allEven = foldr (\x acc -&gt; even x &amp;&amp; acc) True</pre></div>
+        </div>
+      </section>
+
+      <!-- ===== AUFGABE 3 ===== -->
+      <section id="aufg3" class="reveal">
+        <h2>Aufgabe 3 (10 Punkte): Datentypen — Bundesliga-Tabelle</h2>
+        <p class="lead-in"><strong>Original-Aufgabentext:</strong> Die Bundesliga-Tabelle soll als verknüpfte Liste
+          dargestellt werden: jeder Knoten speichert Mannschaftsname (<code>String</code>), Punktzahl
+          (<code>Int</code>) und einen Verweis auf den nächsten Knoten. Das Ende wird mit <code>Nil</code>
+          markiert.</p>
+
+        <figure class="diagram">
+          <div class="diagram-title">Beispiel: Position "Leverkusen" 90 → Position "Stuttgart" 73 → … → Position "Darmstadt" 17 → Nil</div>
+          <svg viewBox="0 0 720 130" width="720" role="img" aria-label="Verkettete Liste aus vier Positions-Knoten: Leverkusen 90, Stuttgart 73, Auslassungspunkte, Darmstadt 17, gefolgt von Nil, jeweils durch Pfeile verbunden">
+            <defs>
+              <marker id="ar-bl" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a94a6"/></marker>
+            </defs>
+            <g font-family="Segoe UI, sans-serif" font-size="12">
+              <rect x="10" y="30" width="140" height="50" rx="8" fill="#8b5cf6" fill-opacity="0.20" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="80" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700" font-size="11">"Leverkusen"</text>
+              <text x="80" y="68" text-anchor="middle" class="svg-ink" font-size="11">90 Punkte</text>
+
+              <line x1="150" y1="55" x2="190" y2="55" stroke="#8a94a6" stroke-width="2" marker-end="url(#ar-bl)"/>
+
+              <rect x="195" y="30" width="140" height="50" rx="8" fill="#8b5cf6" fill-opacity="0.20" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="265" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700" font-size="11">"Stuttgart"</text>
+              <text x="265" y="68" text-anchor="middle" class="svg-ink" font-size="11">73 Punkte</text>
+
+              <line x1="335" y1="55" x2="375" y2="55" stroke="#8a94a6" stroke-width="2" marker-end="url(#ar-bl)"/>
+              <text x="400" y="59" text-anchor="middle" class="svg-soft" font-size="16">⋯</text>
+              <line x1="425" y1="55" x2="465" y2="55" stroke="#8a94a6" stroke-width="2" marker-end="url(#ar-bl)"/>
+
+              <rect x="470" y="30" width="140" height="50" rx="8" fill="#8b5cf6" fill-opacity="0.20" stroke="#8b5cf6" stroke-width="2"/>
+              <text x="540" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink" font-weight="700" font-size="11">"Darmstadt"</text>
+              <text x="540" y="68" text-anchor="middle" class="svg-ink" font-size="11">17 Punkte</text>
+
+              <line x1="610" y1="55" x2="650" y2="55" stroke="#8a94a6" stroke-width="2" marker-end="url(#ar-bl)"/>
+
+              <rect x="655" y="35" width="55" height="40" rx="8" fill="#8a94a6" fill-opacity="0.15" stroke="#8a94a6" stroke-width="1.5"/>
+              <text x="682" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" class="svg-ink">Nil</text>
+            </g>
+          </svg>
+          <figcaption>Jeder <code>Position</code>-Knoten trägt drei Felder: Name, Punktzahl und den Rest der
+            Tabelle (rekursiv vom Typ <code>Bundesliga</code>) — <code>Nil</code> beendet die Liste.</figcaption>
+        </figure>
+
+        <h3>(a) 2 P. — data Bundesliga</h3>
+        <p><strong>Original-Aufgabentext:</strong> Definiere den rekursiven Datentyp mit den Konstruktoren
+          <code>Position</code> und <code>Nil</code> — ohne eingebaute Datentypen wie Listen oder Tupel.</p>
+        <pre class="code hs">data Bundesliga = Position String Int Bundesliga
+                 | Nil</pre>
+        <p><code>Position</code> nimmt genau die drei in der Aufgabe genannten Felder als eigene Argumente
+          (nicht als Tupel gebündelt) — das dritte Feld ist wieder vom Typ <code>Bundesliga</code> selbst, das
+          macht den Typ rekursiv.</p>
+
+        <h3>(b) 4 P. — inTable</h3>
+        <p><strong>Original-Aufgabentext:</strong> Definiere <code>inTable :: String -&gt; Bundesliga -&gt; Bool</code>,
+          das prüft, ob eine Mannschaft in der Tabelle vorkommt.</p>
+        <pre class="code hs">inTable :: String -&gt; Bundesliga -&gt; Bool
+inTable _ Nil = False
+inTable name (Position n _ rest)
+  | name == n = True
+  | otherwise = inTable name rest</pre>
+        <p>Basisfall <code>Nil</code>: die leere Tabelle enthält keine Mannschaft. Sonst wird der Name des
+          aktuellen Knotens verglichen; bei Treffer <code>True</code>, sonst rekursiv im Rest der Tabelle
+          weitersuchen.</p>
+
+        <h3>(c) 4 P. — inOrder</h3>
+        <p><strong>Original-Aufgabentext:</strong> Definiere <code>inOrder :: Bundesliga -&gt; Bool</code>, das
+          prüft, ob die Tabelle absteigend sortiert ist (jedes Team ≥ Punkte des nächsten Teams).</p>
+        <pre class="code hs">inOrder :: Bundesliga -&gt; Bool
+inOrder Nil = True
+inOrder (Position _ _ Nil) = True
+inOrder (Position _ p1 rest@(Position _ p2 _)) = p1 >= p2 &amp;&amp; inOrder rest</pre>
+        <p>Zwei Basisfälle: die leere Tabelle und eine Tabelle mit nur einem Eintrag (letzter Knoten vor
+          <code>Nil</code>) sind trivial sortiert. Bei mindestens zwei Einträgen wird der Punktevergleich mit
+          <code>&gt;=</code> (nicht <code>&gt;</code>, denn Gleichstand ist laut Aufgabe erlaubt) durchgeführt und
+          rekursiv mit dem Rest der Tabelle fortgesetzt.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (a) ein eingebautes Tupel statt separater
+            Felder verwenden:
+            <pre class="code hs">data Bundesliga = Position (String, Int) Bundesliga | Nil
+-- FALSCH: Aufgabe verbietet explizit Tupel/Listen als Hilfsmittel</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Drei eigenständige Konstruktor-Argumente:
+            <pre class="code hs">data Bundesliga = Position String Int Bundesliga | Nil</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (c) den Basisfall mit genau einem
+            verbleibenden Eintrag vergessen:
+            <pre class="code hs">inOrder Nil = True
+inOrder (Position _ p1 rest@(Position _ p2 _)) = p1 &gt;= p2 &amp;&amp; inOrder rest
+-- FALSCH: Non-exhaustive patterns bei einer Tabelle mit genau einem Team!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Auch den Ein-Element-Fall abdecken:
+            <pre class="code hs">inOrder (Position _ _ Nil) = True   -- letzter Eintrag: nichts mehr zu vergleichen</pre></div>
+        </div>
+      </section>
+
+      <!-- ===== AUFGABE 4 ===== -->
+      <section id="aufg4" class="reveal">
+        <h2>Aufgabe 4 (10 Punkte): Auswertung &amp; Termination</h2>
+
+        <h3>(a) 2 P. — Call by Value, nächster Schritt</h3>
+        <p><strong>Original-Aufgabentext:</strong> Führe bei folgendem Ausdruck den nächsten Auswertungsschritt
+          gemäß <em>Call by Value</em> durch.</p>
+        <div class="evalstep">(\x -&gt; if x &lt;= 0 then 1 else x * (x - 1)) (10 + 1)</div>
+        <p><strong>Musterlösung:</strong> Call by Value wertet das Argument zuerst vollständig aus, bevor
+          substituiert wird:</p>
+        <div class="evalstep">(\x -&gt; if x &lt;= 0 then 1 else x * (x - 1)) 11</div>
+
+        <h3>(b) 2 P. — Call by Name, nächster Schritt</h3>
+        <p><strong>Original-Aufgabentext:</strong> Führe bei folgendem Ausdruck den nächsten Auswertungsschritt
+          gemäß <em>Call by Name</em> durch.</p>
+        <div class="evalstep">(\y -&gt; if y &lt;= 1 then y * y * y else y) (10 + 1)</div>
+        <p><strong>Musterlösung:</strong> Call by Name substituiert das Argument unausgewertet (an <strong>jeder</strong>
+          Stelle, an der <code>y</code> vorkommt) in den Rumpf:</p>
+        <div class="evalstep">if (10 + 1) &lt;= 1 then (10 + 1) * (10 + 1) * (10 + 1) else (10 + 1)</div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (b) das Argument trotzdem zuerst auswerten:
+            <pre class="code hs">if 11 &lt;= 1 then 11 * 11 * 11 else 11
+-- FALSCH: das wäre Call by Value, nicht Call by Name!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Bei Call by Name wird zunächst nur substituiert,
+            nicht ausgewertet:
+            <pre class="code hs">if (10 + 1) &lt;= 1 then (10 + 1) * (10 + 1) * (10 + 1) else (10 + 1)</pre></div>
+        </div>
+
+        <h3>(c) 6 P. — Terminationsbeweis für _sum</h3>
+        <p><strong>Original-Aufgabentext:</strong> Beweise, dass <code>_sum</code> für jede mögliche
+          <strong>endliche Liste</strong> vom Typ <code>[Int]</code> terminiert.</p>
+        <pre class="code hs">sum :: [Int] -&gt; Int
+sum xs = _sum 0 xs where
+  _sum akk [] = akk
+  _sum akk (x:xs) = _sum (akk + x) xs</pre>
+        <p><strong>Musterlösung:</strong> Beweis durch (starke) Induktion über die Länge von <code>xs</code>.</p>
+        <ul>
+          <li><strong>Basisfall</strong> (<code>xs = []</code>): <code>_sum akk [] = akk</code> — kein rekursiver
+            Aufruf, terminiert sofort.</li>
+          <li><strong>Induktionsschritt</strong> (<code>xs = y:ys</code>): <code>_sum akk (y:ys) = _sum (akk+y) ys</code>.
+            Die Liste <code>ys</code> ist echt kürzer als <code>y:ys</code>. Nach Induktionsvoraussetzung
+            terminiert <code>_sum (akk+y) ys</code>, da <code>ys</code> eine kürzere endliche Liste ist. Also
+            terminiert auch <code>_sum akk (y:ys)</code>.</li>
+        </ul>
+        <p>Formal als Abstiegsfunktion: <code>m(akk, xs) = length xs ∈ ℕ₀</code>. Bei jedem rekursiven Aufruf gilt
+          <code>m(akk+x, xs) = length xs &lt; length (x:xs) = m(akk, x:xs)</code>. Da <code>ℕ₀</code> wohlfundiert
+          ist (keine unendlich absteigende Kette natürlicher Zahlen), terminiert <code>_sum</code> für jede
+          endliche Liste.</p>
+
+        <div class="callout callout-tip">
+          <div class="c-title">Gut zu wissen</div>
+          <p>Dieselbe Beweisstruktur (Abgeschlossenheit, Definiertheit, Abstiegsfunktion) findet sich ausführlicher
+            vorgeführt in der <a href="07-klausurtraining.html#aufg4">Nachklausur-Aufgabe zu <code>skip</code></a> —
+            dort wird das Verfahren formaler in drei benannte Teilschritte zerlegt.</p>
+        </div>
+      </section>
+
+      <!-- ===== AUFGABE 5 ===== -->
+      <section id="aufg5" class="reveal">
+        <h2>Aufgabe 5 (20 Punkte): Monaden — Variablen in Ausdrücken ersetzen</h2>
+        <pre class="code hs">data Expr = Const Int
+          | Var String
+          | Plus Expr Expr
+          deriving Show
+
+type Env = [(String, Int)]
+
+getVar :: Env -&gt; String -&gt; Maybe Int
+getVar [] _ = Nothing
+getVar ((k, val):xs) var | k == var  = Just val
+                         | otherwise = getVar xs var</pre>
+
+        <h3>(a) 6 P. — replaceAp, applikativ</h3>
+        <p><strong>Original-Aufgabentext:</strong> Schreibe mithilfe von <code>getVar</code> und den
+          <code>Functor</code>-/<code>Applicative</code>-Instanzen von <code>Maybe</code> eine applikative
+          Funktion <code>replaceAp</code>, die Variablen durch Konstanten entsprechend ihrer Werte in <code>Env</code>
+          ersetzt. Undefinierte Variable → <code>Nothing</code> für den ganzen Ausdruck.</p>
+        <pre class="code hs">ghci&gt; replaceAp [("x", 1), ("y", 3)] (Var "x" `Plus` (Const 2 `Plus` Var "y"))
+Just (Plus (Const 1) (Plus (Const 2) (Const 3)))
+ghci&gt; replaceAp [("x", 1)] (Var "x" `Plus` Var "y")
+Nothing</pre>
+        <p><strong>Musterlösung:</strong></p>
+        <pre class="code hs">replaceAp :: Env -&gt; Expr -&gt; Maybe Expr
+replaceAp env (Const n)  = Just (Const n)
+replaceAp env (Var c)    = Const &lt;$&gt; getVar env c
+replaceAp env (Plus a b) = Plus &lt;$&gt; replaceAp env a &lt;*&gt; replaceAp env b</pre>
+        <p>Eine Konstante bleibt unverändert. Eine Variable wird mit <code>getVar</code> nachgeschlagen
+          (<code>Maybe Int</code>) und das Ergebnis mit <code>Const &lt;$&gt;</code> in einen <code>Maybe Expr</code>
+          gehoben — schlägt die Suche fehl, bleibt es <code>Nothing</code>. Bei <code>Plus a b</code> müssen
+          <strong>beide</strong> Teilausdrücke ersetzt werden; mit <code>&lt;*&gt;</code> werden zwei unabhängige
+          <code>Maybe</code>-Werte kombiniert — ist einer der beiden <code>Nothing</code>, ist das Gesamtergebnis
+          <code>Nothing</code>.</p>
+
+        <h3>(b) 6 P. — replaceBd, mit return/&gt;&gt;=</h3>
+        <p><strong>Original-Aufgabentext:</strong> Schreibe eine zu <code>replaceAp</code> äquivalente Funktion
+          <code>replaceBd</code> unter Verwendung von <code>return</code> und Bind (<code>&gt;&gt;=</code>) —
+          nicht <code>replaceAp</code> selbst verwenden.</p>
+        <pre class="code hs">replaceBd :: Env -&gt; Expr -&gt; Maybe Expr
+replaceBd env (Const n)  = return (Const n)
+replaceBd env (Var c)    = getVar env c &gt;&gt;= \v -&gt; return (Const v)
+replaceBd env (Plus a b) =
+  replaceBd env a &gt;&gt;= \a' -&gt;
+  replaceBd env b &gt;&gt;= \b' -&gt;
+  return (Plus a' b')</pre>
+        <p>Bei <code>Plus</code> müssen die beiden rekursiven Ergebnisse <strong>sequenziell</strong> ausgepackt
+          werden: erst <code>a'</code> aus <code>replaceBd env a</code>, dann — nur falls das erfolgreich war —
+          <code>b'</code> aus <code>replaceBd env b</code>. Schlägt einer der beiden Binds fehl (<code>Nothing</code>),
+          bricht die ganze Kette automatisch ab (das ist eingebautes Verhalten der <code>Maybe</code>-Monade).</p>
+
+        <h3>(c) 2 P. — Warum keine Functor-Instanz für Expr?</h3>
+        <p><strong>Original-Aufgabentext:</strong> Wieso kann man für <code>Expr</code> keine
+          <code>Functor</code>-Instanz definieren?</p>
+        <p><strong>Musterlösung:</strong> <code>Expr</code> ist nicht über einen Typparameter polymorph — sein
+          Kind ist <code>*</code>, nicht <code>* -&gt; *</code>. <code>Functor</code> verlangt aber
+          <code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code>, also einen Typkonstruktor <code>f</code> mit einem
+          „Slot" für einen Elementtyp. <code>Expr</code> hat keinen solchen Parameter (die enthaltenen Werte sind
+          fest auf <code>Int</code> bzw. <code>String</code> verdrahtet) — es gibt kein <code>a</code>, über das
+          <code>fmap</code> abbilden könnte.</p>
+
+        <h3>(d) 6 P. — buildEnv :: IO Env</h3>
+        <p><strong>Original-Aufgabentext:</strong> Lies eine Umgebung von der Standardeingabe: abwechselnd
+          Variablenname und Wert in einer Zeile, bis der Benutzer den Variablennamen leer lässt.</p>
+        <pre class="code hs">buildEnv :: IO Env
+buildEnv = do
+  var &lt;- getLine
+  val &lt;- getLine
+  ...</pre>
+        <p><strong>Musterlösung:</strong></p>
+        <pre class="code hs">buildEnv :: IO Env
+buildEnv = do
+  var &lt;- getLine
+  if null var
+    then return []
+    else do
+      val &lt;- getLine
+      rest &lt;- buildEnv
+      return ((var, read val) : rest)</pre>
+        <p>Die Abbruchbedingung (<code>null var</code>) muss direkt nach dem Einlesen von <code>var</code> geprüft
+          werden — <strong>bevor</strong> überhaupt versucht wird, <code>val</code> einzulesen, sonst würde bei
+          leerer Eingabe auf eine Wertzeile gewartet, die nie kommt. Im Erfolgsfall wird rekursiv der Rest der
+          Umgebung eingelesen (<code>buildEnv</code> wieder von vorn) und das neue Paar vorne angehängt.</p>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (a) die Variable-Konstruktor <code>Var</code>
+            beibehalten, statt sie durch <code>Const</code> zu ersetzen:
+            <pre class="code hs">replaceAp env (Var c) = Var &lt;$&gt; getVar env c   -- FALSCH: Typfehler + falsche Semantik!
+-- getVar env c :: Maybe Int, aber Var erwartet String, nicht Int</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Die gefundene Zahl in einen <code>Const</code>
+            verpacken:
+            <pre class="code hs">replaceAp env (Var c) = Const &lt;$&gt; getVar env c</pre></div>
+        </div>
+
+        <div class="fr">
+          <div class="wrong"><span class="fr-tag">❌ Falsch</span>Bei (d) die leere-Zeile-Prüfung vergessen —
+            das Programm liest endlos weiter und crasht irgendwann bei <code>getLine</code> auf EOF:
+            <pre class="code hs">buildEnv = do
+  var &lt;- getLine
+  val &lt;- getLine
+  rest &lt;- buildEnv
+  return ((var, read val) : rest)   -- FALSCH: kein Abbruch!</pre></div>
+          <div class="right"><span class="fr-tag">✅ Richtig</span>Direkt nach <code>var &lt;- getLine</code> auf
+            <code>null var</code> prüfen und dann abbrechen:
+            <pre class="code hs">buildEnv = do
+  var &lt;- getLine
+  if null var then return [] else do
+    val &lt;- getLine
+    rest &lt;- buildEnv
+    return ((var, read val) : rest)</pre></div>
+        </div>
+      </section>
+
+      <!-- ===== QUICKREF ===== -->
+      <section id="quickref" class="reveal">
+        <h2>Quick-Reference</h2>
+        <div class="quickref">
+          <h3>🎯 Das Wichtigste für die Klausur</h3>
+
+          <div class="factgrid">
+            <div class="fact"><b>sumOfSquares</b><span>x*x + rest, nicht x + rest</span></div>
+            <div class="fact"><b>Endrekursion</b><span>Addition VOR dem rekursiven Aufruf, im Akkumulator</span></div>
+            <div class="fact"><b>findValue</b><span>|| zwischen Teilbäumen, nicht &amp;&amp;</span></div>
+            <div class="fact"><b>allEven</b><span>Startwert True, nicht False</span></div>
+            <div class="fact"><b>Bundesliga</b><span>3 eigene Felder, keine Tupel</span></div>
+            <div class="fact"><b>inOrder</b><span>Basisfall für genau 1 Eintrag nicht vergessen</span></div>
+            <div class="fact"><b>Call by Value</b><span>Argument sofort auswerten</span></div>
+            <div class="fact"><b>Call by Name</b><span>unausgewertet einsetzen, erst dann reduzieren</span></div>
+            <div class="fact"><b>Expr kein Functor</b><span>Kind * statt * -&gt; *</span></div>
+            <div class="fact"><b>buildEnv</b><span>null var direkt nach getLine prüfen</span></div>
+          </div>
+
+          <h4>Kernsignaturen im Überblick</h4>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Funktion</th><th>Signatur</th></tr></thead>
+            <tbody>
+              <tr><td><code>magnitude</code></td><td><code>Floating a =&gt; [a] -&gt; a</code></td></tr>
+              <tr><td><code>findValue</code></td><td><code>Eq a =&gt; a -&gt; Tree a -&gt; Bool</code></td></tr>
+              <tr><td><code>foldMap</code></td><td><code>Monoid m =&gt; (a -&gt; m) -&gt; Tree a -&gt; m</code></td></tr>
+              <tr><td><code>inTable</code></td><td><code>String -&gt; Bundesliga -&gt; Bool</code></td></tr>
+              <tr><td><code>replaceAp</code></td><td><code>Env -&gt; Expr -&gt; Maybe Expr</code></td></tr>
+              <tr><td><code>buildEnv</code></td><td><code>IO Env</code></td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="callout callout-tip">
+            <div class="c-title">Merksatz für die Klausur</div>
+            <p>Bei Foldable-Instanzen (<code>Tree</code>, <code>DT</code>, …) immer <strong>alle</strong>
+              Teilbäume mit <code>&lt;&gt;</code> zusammenführen — keinen vergessen. Bei Startwerten für
+              <code>foldr</code> das neutrale Element der verwendeten Operation wählen (<code>0</code> für
+              <code>+</code>, <code>True</code> für <code>&amp;&amp;</code>, <code>[]</code> für <code>++</code>).
+              Bei eigenen ADTs keine eingebauten Typen verwenden, wenn die Aufgabe das explizit verbietet. Bei
+              <code>IO</code>-Schleifen die Abbruchbedingung immer <strong>sofort</strong> nach dem Einlesen
+              prüfen, bevor weitere Eingaben verlangt werden.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WISSENSCHECK ===== -->
+      <section id="check" class="reveal">
+        <h2>🧩 Wissenscheck</h2>
+        <p class="lead-in">Alle Aufgaben stammen 1:1 aus der Probeklausur ProMo'24 (08.07.2024). Tippe deine
+          Antwort ein oder wähle eine Option — du bekommst sofort Rückmeldung. Mit „Lösung" siehst du die
+          Erklärung.</p>
+        <div class="quiz">
+
+          <div class="quiz-q" data-type="number" data-answer="5">
+            <p class="quiz-prompt"><span class="q-no">1.</span>🎓 Probeklausur 08.07.2024: Aufgabe 1a — Gegeben
+              <code>magnitude = sqrt . sumOfSquares</code> mit <code>sumOfSquares (x:xs) = x*x + sumOfSquares xs</code>.
+              Was liefert <code>magnitude [3, 4]</code>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><code>sumOfSquares [3,4] = 3*3 + (4*4 + 0) = 9 + 16 = 25</code>,
+              <code>sqrt 25 = <strong>5</strong></code> — das klassische 3-4-5-Dreieck.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">2.</span>🎓 Probeklausur 08.07.2024: Aufgabe 1b — Warum ist
+              <code>go (x:xs) acc = x * x + go xs acc</code> KEINE gültige endrekursive Lösung?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Nach dem rekursiven Aufruf muss noch eine
+                Addition ausgeführt werden</button>
+              <button class="quiz-choice" type="button">Die Funktion hat die falsche Signatur</button>
+              <button class="quiz-choice" type="button">Der Akkumulator fehlt komplett</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Endrekursion heißt: der rekursive Aufruf ist die LETZTE Aktion. Hier
+              muss nach <code>go xs acc</code> noch <code>x*x + …</code> berechnet werden — richtig wäre
+              <code>go xs (x*x + acc)</code>, wo die Addition VOR dem rekursiven Aufruf passiert.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">3.</span>🎓 Probeklausur 08.07.2024: Aufgabe 2a — Für
+              <code>data Tree a = Empty | Leaf a | Node (Tree a) (Tree a)</code>: welcher Operator gehört in
+              <code>findValue v (Node l r) = findValue v l ? findValue v r</code>?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>||</button>
+              <button class="quiz-choice" type="button">&amp;&amp;</button>
+              <button class="quiz-choice" type="button">==</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der Wert muss nur in EINEM der beiden Teilbäume vorkommen, damit
+              <code>findValue</code> <code>True</code> liefert — das ist <code>||</code>, nicht <code>&amp;&amp;</code>
+              (das würde Vorkommen in BEIDEN Teilbäumen verlangen).</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="True">
+            <p class="quiz-prompt"><span class="q-no">4.</span>🎓 Probeklausur 08.07.2024: Aufgabe 2c — Für
+              <code>allEven = foldr (\x acc -&gt; even x &amp;&amp; acc) True</code>: was liefert
+              <code>allEven Empty</code> (leerer Baum)?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="True oder False …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Ein leerer Baum enthält <code>foldMap</code>-mäßig keine Elemente,
+              also greift direkt der Startwert <code>True</code> — „alle Elemente sind gerade" ist für eine leere
+              Menge von Elementen <em>vacuously true</em>.</div>
+          </div>
+
+          <div class="quiz-q" data-type="number" data-answer="2">
+            <p class="quiz-prompt"><span class="q-no">5.</span>🎓 Probeklausur 08.07.2024: Aufgabe 3a — Wie viele
+              Konstruktoren hat <code>data Bundesliga = Position String Int Bundesliga | Nil</code>?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Zahl …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><strong>2</strong> Konstruktoren: <code>Position</code> (mit drei
+              Feldern) und <code>Nil</code> (ohne Felder, markiert das Ende der Tabelle).</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">6.</span>🎓 Probeklausur 08.07.2024: Aufgabe 3c — Warum
+              braucht <code>inOrder</code> neben <code>Nil</code> noch einen zweiten Basisfall
+              <code>inOrder (Position _ _ Nil) = True</code>?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Ohne ihn gibt es bei einer Tabelle mit genau
+                einem Eintrag ein Pattern-Match-Problem, weil kein zweites Team zum Vergleichen existiert</button>
+              <button class="quiz-choice" type="button">Aus Stilgründen, notwendig ist er nicht</button>
+              <button class="quiz-choice" type="button">Weil sonst die Punktzahl falsch berechnet wird</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Der dritte Fall <code>Position _ p1 rest@(Position _ p2 _)</code>
+              matcht nur, wenn NOCH ein zweiter <code>Position</code>-Knoten folgt. Bei genau einem verbleibenden
+              Eintrag (<code>rest = Nil</code>) würde ohne den zweiten Basisfall kein Pattern mehr passen.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">7.</span>🎓 Probeklausur 08.07.2024: Aufgabe 4a/b — Welche
+              Auswertungsstrategie wertet <code>(10 + 1)</code> SOFORT zu <code>11</code> aus, bevor es in den
+              Funktionskörper eingesetzt wird?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct>Call by Value</button>
+              <button class="quiz-choice" type="button">Call by Name</button>
+              <button class="quiz-choice" type="button">Beide gleichermaßen</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Call by Value wertet Argumente immer VOR der Substitution vollständig
+              aus. Call by Name substituiert erst unausgewertet und wertet erst bei Bedarf im Rumpf aus.</div>
+          </div>
+
+          <div class="quiz-q" data-type="choice">
+            <p class="quiz-prompt"><span class="q-no">8.</span>🎓 Probeklausur 08.07.2024: Aufgabe 5c — Wieso kann
+              man für <code>data Expr = Const Int | Var String | Plus Expr Expr</code> keine
+              <code>Functor</code>-Instanz schreiben?</p>
+            <div class="quiz-choices">
+              <button class="quiz-choice" type="button" data-correct><code>Expr</code> hat keinen Typparameter
+                (Kind <code>*</code>), <code>Functor</code> braucht aber Kind <code>* -&gt; *</code></button>
+              <button class="quiz-choice" type="button"><code>Expr</code> ist rekursiv definiert, das verbietet
+                Functor-Instanzen generell</button>
+              <button class="quiz-choice" type="button"><code>Expr</code> hat drei Konstruktoren, Functor erlaubt
+                aber nur zwei</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code> braucht einen
+              Typkonstruktor <code>f</code> mit einem Elementtyp-Parameter. <code>Expr</code> ist aber ein
+              konkreter Typ (Kind <code>*</code>) ohne einen solchen Parameter — die Rekursion allein ist dabei
+              kein Problem (andere rekursive Typen wie <code>Tree a</code> HABEN durchaus einen Parameter und
+              damit eine Functor-Instanz).</div>
+          </div>
+
+          <div class="quiz-q" data-type="text" data-answer="null var">
+            <p class="quiz-prompt"><span class="q-no">9.</span>🎓 Probeklausur 08.07.2024: Aufgabe 5d — Mit
+              welcher Bedingung prüft <code>buildEnv</code>, ob die Eingabe beendet werden soll?</p>
+            <div class="quiz-input-row">
+              <input type="text" class="quiz-input" placeholder="Bedingung …" aria-label="Antwort">
+              <button class="quiz-check" type="button">Prüfen</button>
+              <button class="quiz-reveal" type="button">Lösung</button>
+            </div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+            <div class="quiz-explain" hidden>Direkt nach <code>var &lt;- getLine</code> wird mit
+              <strong><code>null var</code></strong> geprüft, ob die eingelesene Zeile leer ist — falls ja, wird
+              sofort mit <code>return []</code> abgebrochen, ohne eine Wertzeile einzulesen.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Prev/Next -->
+      <nav class="prev-next">
+        <a class="prev" href="07-klausurtraining.html">
+          <div class="pn-label">← Vorheriges Thema</div>
+          <div class="pn-title">Klausurtraining: Nachklausur ProMo'25</div>
+        </a>
+        <a class="next" href="../index.html">
+          <div class="pn-label">Übersicht</div>
+          <div class="pn-title">Zurück zur P4-Übersicht</div>
+        </a>
+      </nav>
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>P 4 · Programmierung &amp; Modellierung (Haskell · LMU) · bildlich erklärt</span>
+    <span><a href="../index.html">Zur Themenübersicht</a></span>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>
